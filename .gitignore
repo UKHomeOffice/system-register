@@ -2,8 +2,11 @@ node_modules
 dist
 .vscode
 .DS_Store
-.idea
 .npmrc
+
+# IntelliJ
+.idea
+*.iml
 
 #backend
 **/META-INF/resources
