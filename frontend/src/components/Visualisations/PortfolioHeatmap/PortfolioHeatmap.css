@@ -1,0 +1,44 @@
+div.portfolioHeatmapContainer{
+  margin-bottom: 100px;
+}
+
+.riskPanel:hover{
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.portfolioHeatmap {
+    margin-bottom: 40px;
+}
+
+.visContainer {
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-evenly;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.leftVis {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.rightVis {
+    display: flex;
+    flex-direction: column;
+    padding-top: 65px;
+}
+
+.rightVis > h3 {
+  max-width: 490px;
+  font-size: 12pt;
+}
+
+.selectedCell {
+  outline-color: black;
+  outline-style: solid;
+}

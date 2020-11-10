@@ -1,0 +1,19 @@
+.highRiskBackground{
+    background-color: var(--risk-colour-high);
+}
+
+.mediumRiskBackground{
+    background-color: var(--risk-colour-medium);
+}
+
+.lowRiskBackground{
+    background-color: var(--risk-colour-low);
+}
+
+.unknownRiskBackground{
+    background-color: var(--risk-colour-unknown);
+}
+
+.noRiskBackground{
+    background-color: var(--blue);
+}

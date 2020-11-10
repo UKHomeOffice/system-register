@@ -1,0 +1,19 @@
+.criticalityHigh {
+    background-color: #D9241E;
+}
+
+.criticalityMedium {
+    background-color: #FF7F00;
+}
+  
+.criticalityLow {
+    background-color: #26A122;
+}
+
+.criticalityUnknown {
+    background-color: #7F7F7F;
+}
+
+.criticalityCNI{
+   background-color: #C65911; 
+}

@@ -1,0 +1,66 @@
+#!/usr/bin/env sh
+project_dir="$( cd "$( dirname "$0" )" > /dev/null && pwd )"
+backend_dir="${project_dir}/backend"
+frontend_dir="${project_dir}/frontend"
+
+set -e
+
+set_local_environment_variables() {
+    export DB_USERNAME=postgres
+    export DB_PASSWORD=test
+    export DB_API_USERNAME=apiuser
+    export DB_API_PASSWORD=test
+    export DB_HOST=localhost
+    export DB_NAME=systemregister
+
+    export KC_HOST=localhost
+    export KC_PORT=8081
+    export KC_REALM=local-realm
+    export KC_CLIENT_ID=system-register
+    export DEV_KEYCLOAK_ADMIN_PASSWORD=test
+
+    export REACT_APP_KEYCLOAK_URL=http://localhost:8081/auth/
+    export REACT_APP_KEYCLOAK_REALM=local-realm
+    export REACT_APP_KEYCLOAK_CLIENT_ID=system-register
+    export REACT_APP_API_URL=http://localhost:8080
+}
+
+for command in "$@"
+do
+  echo "--- ${command} ---"
+  case "${command}" in
+    build-frontend)
+        echo "Building for local development environment..."
+        set_local_environment_variables
+        cd $frontend_dir
+        yarn install
+        yarn audit
+        yarn test
+        yarn run build
+        cd $project_dir
+        ;;
+    build-backend)
+        cd $backend_dir
+        mkdir -p $backend_dir/src/main/resources/META-INF/resources/
+        cp -r $frontend_dir/build/* $backend_dir/src/main/resources/META-INF/resources/
+        mvn package
+        cd $project_dir
+        ;;
+    dev-frontend)
+        cd $frontend_dir
+        yarn start
+        ;;
+    dev-backend)
+        set_local_environment_variables
+        docker-compose -f compose/local-deps.yml up -d
+        export QUARKUS_PROFILE=dev
+        cd $backend_dir
+        mvn compile quarkus:dev
+        ;;
+    *)
+        echo "Invalid command: '${command}'"
+        exit 1
+        ;;
+  esac
+done
+set +e

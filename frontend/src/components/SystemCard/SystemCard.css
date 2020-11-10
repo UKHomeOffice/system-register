@@ -1,0 +1,19 @@
+.systemCard:hover {
+    background-color: wheat;
+    border-radius: 5px;
+  }
+  
+div.systemCard {
+    cursor: pointer;
+    padding: 6px;
+    margin-left: -6px;
+    margin-top: 6px;
+  }
+
+.systemCard > a{
+    display:inline-block;
+    text-decoration: none;
+    color: black;
+    width:100%;
+    height:100%;
+  }

@@ -1,0 +1,23 @@
+.investEvergreen {
+    background-color: #26A122;
+}
+
+.invest {
+    background-color: #BDBE00;
+}
+  
+.investMaintain {
+    background-color: #00BED1;
+}
+
+.investSunset {
+    background-color: #FF7F00;
+}
+
+.investDecommissioned{
+    background-color: #7F7F7F; 
+}
+
+.investmentUnknown{
+    background-color: #7F7F7F;
+}

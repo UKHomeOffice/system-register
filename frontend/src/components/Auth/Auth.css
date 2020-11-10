@@ -1,0 +1,23 @@
+/* unvisited link */
+.logout {
+    background-color: var(--risk-colour-high);
+}
+
+.login {
+    background-color: var(--risk-colour-low);
+}
+
+  .auth > button:hover {
+    background-color: #FFDD02;
+    color: black;
+}
+
+  .auth > button {
+      cursor: pointer;
+      color: white;
+      font-size: small;
+      font-weight: bold;
+      margin-left: 6px;
+      padding-right: 8px;
+      padding-bottom: 3px;
+  }

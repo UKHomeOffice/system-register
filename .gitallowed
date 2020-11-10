@@ -1,0 +1,3 @@
+keycloak-export.json.*username.*corey
+keycloak-export.json.*username.*admin
+keycloak-export.json.*require.password.update.after.registration": "false"

@@ -1,0 +1,33 @@
+{
+    "systems": [
+        {
+            "aliases": [
+                "systems register",
+                "systems audit",
+                "system audit"
+            ],
+            "businessOwner": null,
+            "criticality": "low",
+            "description": "Central source of system names, contacts and risk information",
+            "developedBy": "Home Office",
+            "informationAssetOwner": null,
+            "investmentState": "evergreen",
+            "name": "System Register",
+            "portfolio": "SPAN-R",
+            "productOwner": null,
+            "risks": [
+                {
+                    "level": "low",
+                    "name": "change",
+                    "rationale": "Designed to be easy to change"
+                }
+            ],
+            "serviceOwner": "Home Office",
+            "supportedBy": "All",
+            "technicalOwner": "Home Office",
+            "id": 1,
+            "lastUpdated": "2020-10-09T16:04:36.211144Z"
+        }
+    ],
+    "timestamp": "2020-10-09T16:04:36.227867Z"
+}

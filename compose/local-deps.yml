@@ -1,0 +1,41 @@
+version: "3.1"
+#Compose
+services:
+    db:
+        image: quay.io/ukhomeofficedigital/postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - "5432:5432"
+    auth:
+        image: quay.io/ukhomeofficedigital/keycloak
+        volumes:
+            - "./importdata:/importdata"
+        command: 
+            - "-b 0.0.0.0 \
+               -Djboss.http.port=8080 \
+               -Dkeycloak.migration.action=import \
+               -Dkeycloak.migration.provider=singleFile \
+               -Dkeycloak.migration.file=/importdata/keycloak-export.json"
+        environment:
+            KEYCLOAK_USER: admin
+            KEYCLOAK_PASSWORD: ${DEV_KEYCLOAK_ADMIN_PASSWORD}
+            DB_VENDOR: h2
+        ports:
+            - "8081:8080"
+
+#If you need to export a new realm:
+# docker exec -it compose_auth_1 /opt/jboss/keycloak/bin/standalone.sh \
+# -Djboss.socket.binding.port-offset=100 \
+# -Dkeycloak.migration.action=export \
+# -Dkeycloak.migration.provider=singleFile \
+# -Dkeycloak.migration.file=/importdata/keycloak-export.json
+
+#manual import realm
+#   docker exec -it compose_auth_1 /opt/jboss/keycloak/bin/standalone.sh \
+#   -Djboss.socket.binding.port-offset=100 \
+#   -Dkeycloak.migration.action=import \
+#   -Dkeycloak.migration.provider=singleFile \
+#   -Dkeycloak.migration.file=/importdata/keycloak-export.json

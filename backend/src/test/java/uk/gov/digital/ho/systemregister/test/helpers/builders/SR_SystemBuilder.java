@@ -1,0 +1,54 @@
+package uk.gov.digital.ho.systemregister.test.helpers.builders;
+
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import uk.gov.digital.ho.systemregister.domain.SR_Risk;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
+
+public class SR_SystemBuilder {
+    SecureRandom secureRandom = new SecureRandom();
+    public String name = "System Register";
+    public String description = "Central source of system names, contacts and risk information";
+    public Instant lastUpdated = Instant.now();
+    public String portfolio = "SPAN-R";
+    public String criticality = "low";
+    public String investmentState = "evergreen";
+    public String businessOwner = null;
+    public String serviceOwner = "Service Owner";
+    public String technicalOwner = "Techy Owner";
+    public String productOwner = null;
+    public String informationAssetOwner = null;
+    public String developedBy = "Developers";
+    public String supportedBy = "All";
+    public List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
+    public List<SR_Risk> risks = some_risks();
+
+    public List<SR_Risk> some_risks() {
+        List<SR_Risk> risks = new ArrayList() {
+            {
+                add(new SR_Risk("change", "low", "Designed to be easy to change"));
+            }
+        };
+
+        return risks;
+    }
+
+    public SR_System build() {
+        return new SR_System(secureRandom.nextInt(), name, description, lastUpdated, portfolio, criticality,
+                investmentState, businessOwner, serviceOwner, technicalOwner, productOwner,
+                informationAssetOwner, developedBy, supportedBy, aliases, risks);
+    }
+
+    public SR_SystemBuilder withLastUpdated(Instant lastUpdated) {
+        this.lastUpdated = lastUpdated;
+        return this;
+    }
+
+    public SR_SystemBuilder withName(String name) {
+        this.name = name;
+        return this;
+    }
+}

@@ -1,0 +1,150 @@
+:root {
+  --red: #d62728;
+  --risk-colour-high: #d62728;
+  --risk-colour-mediumHigh: #ff7f0e;
+  --risk-colour-medium: #F9C12C;
+  --risk-colour-mediumLow: #BCBD21;
+  --risk-colour-low: #2ca02c;
+  --risk-colour-unknown: #7f7f7f;
+  --blue: #007385;
+}
+
+div.topMargin {
+  margin-top: 20px;
+}
+
+div.topMarginBig {
+  margin-top: 40px;
+}
+
+div.bottomMargin {
+  margin-bottom: 20px;
+}
+
+.centerContent {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.highlight {
+  background-color: var(--blue);
+  color: white;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.badge {
+  color: white;
+  font-weight: bold;
+  padding: 3px;
+  padding-right: 4px;
+  padding-left: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
+.blue {
+  background-color: var(--blue);
+}
+
+rect {
+  transition: all 0.2s ease-in;
+}
+
+.notApplicableRisk {
+  color: var(--risk-colour-blue);
+}
+rect.notApplicableRisk {
+  fill: var(--risk-colour-blue);
+}
+.notApplicableRiskBackground {
+  background-color: var(--blue);
+  color: white;
+}
+
+.unknownRisk {
+  color: var(--risk-colour-unknown);
+}
+rect.unknownRisk {
+  fill: var(--risk-colour-unknown);
+}
+.unknownRiskBackground {
+  background-color: var(--risk-colour-unknown);
+  color: white;
+}
+
+.lowRisk{
+  color: var(--risk-colour-low);
+}
+rect.lowRisk{
+  fill: var(--risk-colour-low);
+}
+.lowRiskBackground {
+  background-color: var(--risk-colour-low);
+  color: white;
+}
+
+.mediumLowRisk{
+  color: var(--risk-colour-mediumLow);
+}
+rect.mediumLowRisk{
+  fill: var(--risk-colour-mediumLow);
+}
+.mediumLowRiskBackground {
+  background-color: var(--risk-colour-mediumLow);
+  color: white;
+}
+
+.mediumRisk{
+  color: var(--risk-colour-medium);
+}
+rect.mediumRisk{
+  fill: var(--risk-colour-medium);
+}
+.mediumRiskBackground {
+  background-color: var(--risk-colour-medium);
+  color: white;
+}
+
+.mediumHighRisk{
+  color: var(--risk-colour-mediumHigh);
+}
+rect.mediumHighRisk{
+  fill: var(--risk-colour-mediumHigh);
+}
+.mediumHighRiskBackground {
+  background-color: var(--risk-colour-mediumHigh);
+  color: white;
+}
+
+.highRisk {
+  color: var(--risk-colour-high);
+}
+rect.highRisk{
+  fill: var(--risk-colour-high);
+}
+.highRiskBackground {
+  background-color: var(--risk-colour-high);
+  color: white;
+}
+
+rect.blue1 {
+  fill: #eff3ff;
+}
+
+rect.blue2 {
+  fill: #bdd7e7;
+}
+
+rect.blue3 {
+  fill: #6baed6;
+}
+
+rect.blue4 {
+  fill: #3182bd;
+}
+
+rect.blue5 {
+  fill: #08519c;
+}

@@ -1,0 +1,50 @@
+.contact {
+    cursor: default;
+}
+
+.editMe {
+    background-color: wheat;
+    border-radius: 6px;
+    padding: 6px;
+    padding-right: 7px;
+    border-color: black;
+    border-style: dashed;
+    border-width: 1px;
+}
+
+.editBox {
+    margin-left: 12px;
+}
+
+.editIcon{
+    padding-bottom: 0;
+    padding-left: 10px;
+}
+
+.editIcon :hover{
+    padding-bottom: 0;
+    padding-left: 5px;
+    color: black;
+    cursor: pointer;
+}
+
+.checkIcon {
+    color: green;
+    padding-bottom: 0;
+    padding-left: 5px;
+}
+
+.checkIcon :hover{
+    cursor: pointer;
+    color: lightgreen;
+}
+
+.cancelIcon {
+    color: var(--red);
+    padding-bottom: 0;
+}
+
+.cancelIcon :hover{
+    cursor: pointer;
+    color: lightcoral;
+}

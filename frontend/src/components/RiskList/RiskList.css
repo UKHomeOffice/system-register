@@ -1,0 +1,28 @@
+.prompt {
+  margin-right: 10px;
+  min-width: 500px;
+  padding-left: 20px;
+}
+
+.riskList {
+}
+
+.riskList tr:hover {
+  background-color: wheat;
+  border-radius: 5px;
+}
+
+.riskList tr {
+  cursor: pointer;
+  padding: 6px;
+  margin-left: -6px;
+  margin-top: 6px;
+}
+
+.riskList a {
+  display:inline-block;
+  text-decoration: none;
+  color: black;
+  width:100%;
+  height:100%;
+}

@@ -1,0 +1,9 @@
+node_modules
+dist
+.vscode
+.DS_Store
+.idea
+.npmrc
+
+#backend
+**/META-INF/resources

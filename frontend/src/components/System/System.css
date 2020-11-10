@@ -1,0 +1,33 @@
+.systemDetails > ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+.systemDetails{
+    line-height: 1.5;
+}
+
+.riskContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.riskSummary {
+  background-color: #FAFAFA;
+  padding: 20px;
+  margin-top: 20px;
+  width: 400px;
+  word-wrap: break-word;
+}
+
+.riskSummary > h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+
+}
+
+.riskSummary > p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
