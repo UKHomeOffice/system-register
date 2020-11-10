@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SystemCard /> matches snapshot 1`] = `
+<div
+  className="systemCard topMargin"
+>
+  <a
+    href="/system/undefined"
+    onClick={[Function]}
+  >
+    <strong>
+      System X
+    </strong>
+    <small>
+       (Portfolio: 
+      Portfolio Y
+      , 
+      <span>
+        Last Updated: 
+        February 2020
+      </span>
+      )
+    </small>
+    <div
+      style={
+        Object {
+          "marginTop": "3px",
+        }
+      }
+    >
+      <small>
+        No Description
+      </small>
+    </div>
+  </a>
+</div>
+`;

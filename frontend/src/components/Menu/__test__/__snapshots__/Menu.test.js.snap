@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Menu /> matches snapshot 1`] = `
+<div
+  className="Menu"
+>
+  <ul>
+    <li>
+      <a
+        aria-current="page"
+        className="selected"
+        href="/"
+        onClick={[Function]}
+        style={Object {}}
+      >
+        System Register
+      </a>
+    </li>
+    <li>
+      <a
+        aria-current={null}
+        href="/risk_dashboard"
+        onClick={[Function]}
+      >
+        Risk Dashboard
+      </a>
+    </li>
+    <li>
+      <a
+        aria-current={null}
+        href="/about"
+        onClick={[Function]}
+      >
+        About
+      </a>
+    </li>
+    <li>
+      <a
+        aria-current={null}
+        href="/contact"
+        onClick={[Function]}
+      >
+        Contact
+      </a>
+    </li>
+  </ul>
+</div>
+`;

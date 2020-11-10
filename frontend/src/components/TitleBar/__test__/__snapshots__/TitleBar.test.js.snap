@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Title /> matches snapshot 1`] = `
+<div
+  className="title bottomMargin"
+  data-testid="title-bar-div"
+>
+  <h2
+    className="title"
+  >
+    System Register
+  </h2>
+  <div
+    className="auth"
+  >
+    <button
+      className="login"
+      href=""
+      onClick={[Function]}
+    >
+      Login
+    </button>
+  </div>
+</div>
+`;

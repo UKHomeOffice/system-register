@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SystemList /> matches snapshot 1`] = `
+<div
+  className="centerContent"
+>
+  <div
+    className="topMarginBig"
+  >
+    <strong>
+      Number of systems identified: 
+    </strong>
+    3
+  </div>
+  <div
+    className="bottomMargin topMarginBig"
+  >
+    <div
+      className="MuiFormControl-root MuiTextField-root"
+    >
+      <label
+        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+        data-shrink={false}
+        htmlFor="search"
+        id="search-label"
+      >
+        search
+      </label>
+      <div
+        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+        onClick={[Function]}
+      >
+        <input
+          aria-invalid={false}
+          autoFocus={false}
+          className="MuiInputBase-input MuiInput-input"
+          disabled={false}
+          id="search"
+          onAnimationStart={[Function]}
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          required={false}
+          type="text"
+        />
+      </div>
+    </div>
+    <select
+      data-testid="select-portfolio"
+      onChange={[Function]}
+      value="all"
+    >
+      <option
+        value="Portfolio 1"
+      />
+      <option
+        value="Portfolio 2"
+      />
+      <option
+        value="Portfolio 3"
+      />
+    </select>
+  </div>
+  <div
+    className="topMarginBig"
+  >
+    <div
+      className="systemCard topMargin"
+    >
+      <a
+        href="/system/undefined"
+        onClick={[Function]}
+      >
+        <strong>
+          System 1
+        </strong>
+        <small>
+           (Portfolio: 
+          Portfolio 1
+          , 
+          <span>
+            Last Updated: 
+            <strong
+              className="highRisk"
+            >
+              Never
+            </strong>
+          </span>
+          )
+        </small>
+        <div
+          style={
+            Object {
+              "marginTop": "3px",
+            }
+          }
+        >
+          <small>
+            No Description
+          </small>
+        </div>
+      </a>
+    </div>
+    <div
+      className="systemCard topMargin"
+    >
+      <a
+        href="/system/undefined"
+        onClick={[Function]}
+      >
+        <strong>
+          System 3
+        </strong>
+        <small>
+           (Portfolio: 
+          Portfolio 2
+          , 
+          <span>
+            Last Updated: 
+            <strong
+              className="highRisk"
+            >
+              Never
+            </strong>
+          </span>
+          )
+        </small>
+        <div
+          style={
+            Object {
+              "marginTop": "3px",
+            }
+          }
+        >
+          <small>
+            No Description
+          </small>
+        </div>
+      </a>
+    </div>
+    <div
+      className="systemCard topMargin"
+    >
+      <a
+        href="/system/undefined"
+        onClick={[Function]}
+      >
+        <strong>
+          System 2
+        </strong>
+        <small>
+           (Portfolio: 
+          Portfolio 2
+          , 
+          <span>
+            Last Updated: 
+            <strong
+              className="highRisk"
+            >
+              Never
+            </strong>
+          </span>
+          )
+        </small>
+        <div
+          style={
+            Object {
+              "marginTop": "3px",
+            }
+          }
+        >
+          <small>
+            No Description
+          </small>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+`;
