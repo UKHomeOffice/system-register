@@ -1,4 +1,4 @@
-#System Register
+# System Register
 
 - What systems are in my organisation?
 - Where is the risk?
@@ -6,7 +6,7 @@
 
 Crowdsource systems and the risk they contain.
 
-##Development
+## Development
 
 There are 2 services, frontend (UI) and backend (API).
 
