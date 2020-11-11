@@ -1,19 +1,20 @@
 package uk.gov.digital.ho.systemregister.test.io.api;
 
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import uk.gov.digital.ho.systemregister.test.helpers.JSONFiles;
+import uk.gov.digital.ho.systemregister.test.helpers.KeycloakServer;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.hasItems;
 
-@Testcontainers
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
+@QuarkusTestResource(KeycloakServer.class)
 public class SystemsResourceTest {
     private static final Logger LOG = Logger.getLogger(SystemsResourceTest.class);
     JSONFiles resource = new JSONFiles();
