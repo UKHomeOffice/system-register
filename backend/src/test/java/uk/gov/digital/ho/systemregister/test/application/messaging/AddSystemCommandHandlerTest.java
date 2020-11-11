@@ -1,9 +1,9 @@
 package uk.gov.digital.ho.systemregister.test.application.messaging;
 
 import com.google.common.eventbus.Subscribe;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
 import uk.gov.digital.ho.systemregister.application.messaging.AuthoredMessage;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
@@ -28,7 +28,7 @@ public class AddSystemCommandHandlerTest {
     SR_EventBus eventBus = new SR_EventBus();
     List<AuthoredMessage> recievedEvents = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         eventStore = new FakeEventStore();
         recievedEvents.clear();

@@ -1,7 +1,8 @@
 package uk.gov.digital.ho.systemregister.test.io.api;
 
 import java.time.Instant;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;

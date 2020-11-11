@@ -1,18 +1,11 @@
 package uk.gov.digital.ho.systemregister.test.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.jboss.logging.Logger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.util.AES;
 import uk.gov.digital.ho.systemregister.util.EncryptionError;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AESTest {
     private static final Logger LOG = Logger.getLogger(AESTest.class);
