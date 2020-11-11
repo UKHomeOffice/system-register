@@ -1,25 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Title /> matches snapshot 1`] = `
-<div
-  className="title bottomMargin"
-  data-testid="title-bar-div"
->
-  <h2
-    className="title"
-  >
-    System Register
-  </h2>
+Array [
   <div
-    className="auth"
+    className="sc-bdfBwQ iBYTrY"
+    color="#ffffff"
+    data-testid="title-bar-div"
   >
-    <button
-      className="login"
-      href=""
-      onClick={[Function]}
+    <div
+      className="sc-gsTCUz heEpZ"
     >
-      Login
-    </button>
-  </div>
-</div>
+      <div
+        className="sc-eCssSg hMcpmq"
+      >
+        <div
+          className="sc-hKgILt klPTWy"
+        >
+          
+        </div>
+      </div>
+      <div
+        className="sc-jSgupP bPwDQU"
+      >
+        <div
+          className="sc-bqyKva eoKSDV"
+        >
+          System Register
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="sc-dlfnbm ivQkZE"
+  />,
+]
 `;

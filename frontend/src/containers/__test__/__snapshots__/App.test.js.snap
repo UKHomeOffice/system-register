@@ -3,26 +3,36 @@
 exports[`<App /> matches snapshot 1`] = `
 Array [
   <div
-    className="title bottomMargin"
+    className="sc-bdfBwQ iBYTrY"
+    color="#ffffff"
     data-testid="title-bar-div"
   >
-    <h2
-      className="title"
-    >
-      System Register
-    </h2>
     <div
-      className="auth"
+      className="sc-gsTCUz heEpZ"
     >
-      <button
-        className="login"
-        href=""
-        onClick={[Function]}
+      <div
+        className="sc-eCssSg hMcpmq"
       >
-        Login
-      </button>
+        <div
+          className="sc-hKgILt klPTWy"
+        >
+          
+        </div>
+      </div>
+      <div
+        className="sc-jSgupP bPwDQU"
+      >
+        <div
+          className="sc-bqyKva eoKSDV"
+        >
+          System Register
+        </div>
+      </div>
     </div>
   </div>,
+  <div
+    className="sc-dlfnbm ivQkZE"
+  />,
   <div
     className="Menu"
   >
