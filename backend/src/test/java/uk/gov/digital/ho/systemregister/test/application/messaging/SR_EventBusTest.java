@@ -1,6 +1,6 @@
 //package uk.gov.digital.ho.systemregister.test.application.messaging;
 //
-//import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 //import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
 //import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 //import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;

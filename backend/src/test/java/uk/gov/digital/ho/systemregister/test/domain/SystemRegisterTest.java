@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.AddSystemResult;

@@ -1,16 +1,15 @@
 package uk.gov.digital.ho.systemregister.test.application.eventsourcing.aggregates;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
-import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
+import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
+import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CurrentSystemRegisterStateTest {
     IEventStore fakeEventStore = new FakeEventStore();

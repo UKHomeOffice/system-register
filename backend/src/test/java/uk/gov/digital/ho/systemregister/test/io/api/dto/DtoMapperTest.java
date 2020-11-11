@@ -1,6 +1,6 @@
 package uk.gov.digital.ho.systemregister.test.io.api.dto;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
