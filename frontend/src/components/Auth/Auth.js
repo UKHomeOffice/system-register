@@ -1,6 +1,6 @@
 import React from 'react'
 import { useKeycloak } from '@react-keycloak/web';
-import './Auth.css'
+import Button from '@govuk-react/button';
 
 const Auth = () => {
     const [keycloak] = useKeycloak();
@@ -16,14 +16,14 @@ const Auth = () => {
         if (keycloak?.authenticated) {
             return (
                 <>
-                    Welcome {keycloak.tokenParsed.preferred_username} <button className="logout" onClick={logout}>Logout</button>
+                    Welcome {keycloak.tokenParsed.preferred_username} <Button buttonColour="#d4351c" onClick={logout}>Logout</Button>
                 </>
             )
         }
         else {
             return (
                 <>
-                    <button href="" className="login" onClick={login}>Login</button>
+                    <Button onClick={login}>Sign in</Button>
                 </>
             )
         }
