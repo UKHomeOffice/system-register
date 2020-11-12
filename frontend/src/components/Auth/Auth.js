@@ -1,6 +1,8 @@
 import React from 'react'
-import { useKeycloak } from '@react-keycloak/web';
-import Button from '@govuk-react/button';
+import { useKeycloak } from '@react-keycloak/web'
+import Button from '@govuk-react/button'
+import './Auth.css'
+
 
 const Auth = () => {
     const [keycloak] = useKeycloak();
@@ -10,13 +12,14 @@ const Auth = () => {
     }
 
     const logout = () => keycloak.logout().then(() => localStorage.removeItem("bearer-token"))
-    const login = () => keycloak.login().catch(e => console.error("AUth error: " + e))
+    const login = () => keycloak.login().catch(e => console.error("Auth error: " + e))
 
     const renderAuthStatus = () => {
         if (keycloak?.authenticated) {
             return (
                 <>
-                    Welcome {keycloak.tokenParsed.preferred_username} <Button buttonColour="#d4351c" onClick={logout}>Logout</Button>
+                   <span className="auth-welcome-message">Welcome {keycloak.tokenParsed.preferred_username}</span>
+                    <Button buttonColour="#d4351c" onClick={logout}>Sign out</Button>
                 </>
             )
         }
