@@ -34,6 +34,19 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": -10
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "index.js"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
