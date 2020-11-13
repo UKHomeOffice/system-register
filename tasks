@@ -35,7 +35,7 @@ do
         cd $frontend_dir
         yarn install
         yarn audit
-        yarn test
+        yarn test --watchAll=false
         yarn run build
         cd $project_dir
         ;;

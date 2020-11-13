@@ -1,8 +1,8 @@
 .Menu{
     background-color: #F8F8F8;
     min-width: 100%;
-    border-top: 10px solid #1d70b8;
-    margin-top: -20px;
+    /* border-top: 10px solid #1d70b8;
+    margin-top: -20px; */
 }
 
 .Menu li{

@@ -13,9 +13,6 @@ const OFFSET_Y = 120
 //todo since refactoring out, needs tests can take some tests from PortfolioHeatmap
 const SystemsHeatmapVis = (props) => {
     // eslint-disable-next-line
-    if(props.systems.length === 0){
-        return null
-    }
     useEffect(() => renderChart(props.systems, props.panelHeight, props.root, props.cellSelectedCallback), [])
     useEffect(() => switchView(props.view), [props.view])
 
@@ -30,6 +27,7 @@ function switchView(view) {
 }
 
 function renderChart(systems, panelHeight, root, cellSelectedCallback) {
+    if(systems.length === 0) return
     const data = transformData(systems, root)
     const riskLenses = systems[systems.length -1].risks.map(r => r.name)
     const height = (data.length * panelHeight) + OFFSET_Y
