@@ -32,7 +32,10 @@ public class SystemDTOBuilder {
     }
 
     public SystemDTOBuilder withName(String name) {
-        sys.name = name;
+        sys = new SystemDTO(
+                name, sys.description, sys.portfolio, sys.criticality, sys.investmentState, sys.businessOwner,
+                sys.serviceOwner, sys.technicalOwner, sys.productOwner, sys.informationAssetOwner, sys.developedBy,
+                sys.supportedBy, sys.aliases, sys.risks);
         return this;
     }
 

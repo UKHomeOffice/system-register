@@ -1,34 +1,42 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
+import java.beans.ConstructorProperties;
+import java.util.Collections;
 import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
 
+import static java.util.Collections.unmodifiableList;
+
 public class SystemDTO {
-    public String name;
-    public String description;
-    public String portfolio;
-    public String criticality;
+    public final String name;
+    public final String description;
+    public final String portfolio;
+    public final String criticality;
     @JsonbProperty("investment_state")
-    public String investmentState;
+    public final String investmentState;
     @JsonbProperty("business_owner")
-    public String businessOwner;
+    public final String businessOwner;
     @JsonbProperty("service_owner")
-    public String serviceOwner;
+    public final String serviceOwner;
     @JsonbProperty("tech_owner")
-    public String technicalOwner;
+    public final String technicalOwner;
     @JsonbProperty("product_owner")
-    public String productOwner;
+    public final String productOwner;
     @JsonbProperty("information_asset_owner")
-    public String informationAssetOwner;
+    public final String informationAssetOwner;
     @JsonbProperty("developed_by")
-    public String developedBy;
+    public final String developedBy;
     @JsonbProperty("supported_by")
-    public String supportedBy;
-    public List<String> aliases;
-    public List<RiskDTO> risks;
+    public final String supportedBy;
+    public final List<String> aliases;
+    public final List<RiskDTO> risks;
 
-    public SystemDTO() {}
-
+    @ConstructorProperties({
+            "name", "description", "portfolio", "criticality", "investment_state", "business_owner", "service_owner",
+            "tech_owner", "product_owner", "information_asset_owner", "developed_by", "supported_by", "aliases",
+            "risks",
+    })
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public SystemDTO(String name, String description,
                      String portfolio, String criticality,
                      String investmentState,
@@ -53,7 +61,7 @@ public class SystemDTO {
         this.informationAssetOwner = informationAssetOwner;
         this.developedBy = developedBy;
         this.supportedBy = supportedBy;
-        this.aliases = aliases;
-        this.risks = risks;
+        this.aliases = unmodifiableList(aliases);
+        this.risks = unmodifiableList(risks);
     }
 }
