@@ -13,6 +13,9 @@ const OFFSET_Y = 120
 //todo since refactoring out, needs tests can take some tests from PortfolioHeatmap
 const SystemsHeatmapVis = (props) => {
     // eslint-disable-next-line
+    if(props.systems.length === 0){
+        return null
+    }
     useEffect(() => renderChart(props.systems, props.panelHeight, props.root, props.cellSelectedCallback), [])
     useEffect(() => switchView(props.view), [props.view])
 

@@ -15,7 +15,9 @@ import config from '../config/config';
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
     state = {
-        register: dummyData
+        register: {
+            "systems": []
+        }
     }
 
     componentDidMount() {
@@ -23,6 +25,7 @@ class App extends React.Component {
         axios.get(`${config.api.url}/systems`)
             .then(res => {
                 if (this._isMounted) {
+                    console.log("Got system data")
                     this.setState({register: res.data});
                 }
             })
@@ -48,11 +51,11 @@ class App extends React.Component {
                             </Route>
                             <Route exact path="/system/:id" render={({match}) => {
                                 return <System
-                                    system={this.state.register.systems.find(s => s.id.toString() === match.params.id)}/>
+                                    system={this.state.register?.systems.find(s => s.id.toString() === match.params.id)}/>
                             }}>
                             </Route>
                             <Route exact path="/risk_dashboard">
-                                <PortfolioHeatmap systems={this.state.register.systems}/>
+                                <PortfolioHeatmap systems={this.state.register?.systems}/>
                             </Route>
                             {/* test system not found */}
                             {/* 404*/}

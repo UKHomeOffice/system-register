@@ -52,7 +52,7 @@ const RiskList = (props) => {
             || scoreCriticality(b.criticality) - scoreCriticality(a.criticality))
         //todo test ordering
     }
-    const riskTypes = props.systems[0].risks
+    const riskTypes = props.systems[0]?.risks
 
     return (
         <div className="riskList">

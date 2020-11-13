@@ -8,7 +8,7 @@ import SystemCard from "../SystemCard/SystemCard"
 
 //todo make stateless, all components stateless all, state should be in the containers only
 const SystemList = props => {
-    const systems = props.register.systems
+    const systems = props.register?.systems
     const [visibleSystems, setVisibleSystems] = useState(systems)
     const [selectedPortfolio, setSelectedPortfolio] = useState('all')
     const [searchString, setSearchString] = useState('')
