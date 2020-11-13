@@ -19,15 +19,21 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         axios.get(`${config.api.url}/systems`)
             .then(res => {
-                this.setState({register: res.data});
+                if (this._isMounted) {
+                    this.setState({register: res.data});
+                }
             })
             .catch(e => {
                 console.error("Error calling api, displaying dummy data!: " + e)
             })
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     render() {
         return (
@@ -41,7 +47,6 @@ class App extends React.Component {
                                 <SystemList register={this.state.register}/>
                             </Route>
                             <Route exact path="/system/:id" render={({match}) => {
-                                console.log(this.state.register)
                                 return <System
                                     system={this.state.register.systems.find(s => s.id.toString() === match.params.id)}/>
                             }}>
