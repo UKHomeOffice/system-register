@@ -1,9 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
-import java.time.Instant;
 import java.util.List;
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbProperty;
 
 public class SystemDTO {
@@ -30,17 +27,18 @@ public class SystemDTO {
     public List<String> aliases;
     public List<RiskDTO> risks;
 
-    @JsonbCreator
+    public SystemDTO() {}
+
     public SystemDTO(String name, String description,
                      String portfolio, String criticality,
-                     @JsonbProperty("investment_state") String investmentState,
-                     @JsonbProperty("business_owner") String businessOwner,
-                     @JsonbProperty("service_owner") String serviceOwner,
-                     @JsonbProperty("tech_owner") String technicalOwner,
-                     @JsonbProperty("product_owner") String productOwner,
-                     @JsonbProperty("information_asset_owner") String informationAssetOwner,
-                     @JsonbProperty("developed_by") String developedBy,
-                     @JsonbProperty("supported_by") String supportedBy,
+                     String investmentState,
+                     String businessOwner,
+                     String serviceOwner,
+                     String technicalOwner,
+                     String productOwner,
+                     String informationAssetOwner,
+                     String developedBy,
+                     String supportedBy,
                      List<String> aliases,
                      List<RiskDTO> risks) {
         this.name = name;
