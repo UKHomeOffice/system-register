@@ -30,7 +30,7 @@ public class SystemsResourceTest {
     public void AddSystem() {
         var cmd = resource.getAddSystemCommandJson();
         given().header("Content-Type", "application/json").body(cmd).when().post("/api/systems")
-                .then().assertThat().statusCode(200);
+                .then().assertThat().statusCode(201);
         given().when().get("/api/systems").then().statusCode(200).body("systems.name",
                 hasItems("Newly added system"));
     }
@@ -42,9 +42,9 @@ public class SystemsResourceTest {
         var cmd2 = resource.getAnotherAddSystemCommandJson();
 
         given().header("Content-Type", "application/json").body(cmd1).when().post("/api/systems")
-                .then().assertThat().statusCode(200);
+                .then().assertThat().statusCode(201);
         given().header("Content-Type", "application/json").body(cmd2).when().post("/api/systems")
-                .then().assertThat().statusCode(200);
+                .then().assertThat().statusCode(201);
 
         given().when().get("/api/systems").then().statusCode(200).body("systems.name",
                 hasItems("Newly added system", "Yet another system"));
