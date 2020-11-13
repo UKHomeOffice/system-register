@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import UserEvents from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 import Auth from '../Auth'
 import { useKeycloak } from '@react-keycloak/web'
 
@@ -22,7 +22,7 @@ describe('<Auth />', () => {
 
         const { getByText } = render(<MemoryRouter><Auth /></MemoryRouter>)
         const element = getByText('Sign in')
-        UserEvents.click(element)
+        userEvent.click(element)
 
         expect(login).toBeCalled();
     })
@@ -59,13 +59,13 @@ describe('<Auth />', () => {
             expect(token).toBe('bearer-token');
         })
 
-        it('clears the bearer token on signing out', () => {
+        it('clears the bearer token on signing out', async () => {
             const { getByRole } = render(<MemoryRouter><Auth /></MemoryRouter>)
             const signOutButton = getByRole('button', { name: 'Sign out' });
 
-            UserEvents.click(signOutButton);
+            userEvent.click(signOutButton);
 
-            waitFor(() => {
+            await waitFor(() => {
                 const token = localStorage.getItem('bearer-token');
                 expect(token).toBeNull();
             });
