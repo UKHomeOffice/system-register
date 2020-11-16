@@ -7,6 +7,7 @@
   --risk-colour-low: #2ca02c;
   --risk-colour-unknown: #7f7f7f;
   --blue: #007385;
+  --black: #0b0c0c;
 }
 
 div.topMargin {
@@ -22,7 +23,7 @@ div.bottomMargin {
 }
 
 .centerContent {
-  max-width: 940px;
+  max-width: 960px;
   margin-left: auto;
   margin-right: auto;
 }
