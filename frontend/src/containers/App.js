@@ -1,5 +1,4 @@
 import React from 'react'
-import Main from '@govuk-react/main';
 import './App.css';
 import SystemList from '../components/SystemList/SystemList'
 import TitleBar from '../components/TitleBar/TitleBar'

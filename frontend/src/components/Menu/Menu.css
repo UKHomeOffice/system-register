@@ -24,19 +24,25 @@
     color: #1E70B8;
 }
 
-.Menu a:focus {
+.Menu a:focus-visible {
     text-decoration: none;
     text-decoration-color: transparent;
-}
-
-.Menu a:active {
-    background-color: #FFDD02;
+    outline: none;
+    background-color: var(--yellow);
     border-bottom: 5px solid var(--black);
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 .Menu a:hover{
     text-decoration: underline;
+}
+
+.Menu a:active {
+    text-decoration: none;
+    outline: none;
+    background-color: var(--yellow);
+    border-bottom: 5px solid var(--black);
+    padding-bottom: 0;
 }
 
 .Menu a.selected:after{
