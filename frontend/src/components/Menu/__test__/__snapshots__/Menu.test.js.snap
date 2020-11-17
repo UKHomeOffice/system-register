@@ -29,6 +29,13 @@ exports[`<Menu /> matches snapshot 1`] = `
     </li>
     <li>
       <a
+        href="http://localhost/api/systems"
+      >
+        API
+      </a>
+    </li>
+    <li>
+      <a
         aria-current={null}
         href="/about"
         onClick={[Function]}
