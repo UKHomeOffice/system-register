@@ -43,24 +43,28 @@ class App extends React.Component {
         return (
             <KeycloakProvider keycloak={keycloak}>
                 <BrowserRouter>
-                    <TitleBar />
-                    <Banner phase="in development">
-                        This is a new service - your <AnchorLink href="/contact">feedback</AnchorLink> will help us to improve it.
+                    <header>
+                        <TitleBar />
+                        <Banner phase="in development">
+                            This is a new service - your <AnchorLink href="/contact">feedback</AnchorLink> will help us to improve it.
                     </Banner>
+                    </header>
                     <Menu />
-                    <Switch>
-                        <Route exact path="/">
-                            <SystemList register={this.state.register} />
-                        </Route>
-                        <Route exact path="/system/:id" render={({ match }) => {
-                            return <System
-                                system={this.state.register?.systems.find(s => s.id.toString() === match.params.id)} />
-                        }}>
-                        </Route>
-                        <Route exact path="/risk_dashboard">
-                            <PortfolioHeatmap systems={this.state.register?.systems} />
-                        </Route>
-                    </Switch>
+                    <main>
+                        <Switch>
+                            <Route exact path="/">
+                                <SystemList register={this.state.register} />
+                            </Route>
+                            <Route exact path="/system/:id" render={({ match }) => {
+                                return <System
+                                    system={this.state.register?.systems.find(s => s.id.toString() === match.params.id)} />
+                            }}>
+                            </Route>
+                            <Route exact path="/risk_dashboard">
+                                <PortfolioHeatmap systems={this.state.register?.systems} />
+                            </Route>
+                        </Switch>
+                    </main>
                 </BrowserRouter>
             </KeycloakProvider>
         );

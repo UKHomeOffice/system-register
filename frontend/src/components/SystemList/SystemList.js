@@ -17,7 +17,7 @@ const SystemList = props => {
     const filter = () => {
         setVisibleSystems(
             systems?.filter((s) => matchesPortfolio(s, selectedPortfolio))
-                    .filter((s) => matchesSearch(s, searchString))
+                .filter((s) => matchesSearch(s, searchString))
         )
     }
 
@@ -25,6 +25,7 @@ const SystemList = props => {
 
     return (
         <div className="centerContent">
+            <h1>System search</h1>
             <div className="topMarginBig">
                 <strong>Number of systems identified: </strong>{systems?.length}
             </div>

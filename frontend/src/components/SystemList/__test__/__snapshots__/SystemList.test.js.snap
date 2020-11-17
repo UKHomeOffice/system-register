@@ -4,6 +4,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
 <div
   className="centerContent"
 >
+  <h1>
+    System search
+  </h1>
   <div
     className="topMarginBig"
   >

@@ -19,7 +19,7 @@ const Auth = () => {
             return (
                 <>
                    <span className="auth-welcome-message">Welcome {keycloak.tokenParsed.preferred_username}</span>
-                    <Button buttonColour="#d4351c" onClick={logout}>Sign out</Button>
+                    <Button onClick={logout}>Sign out</Button>
                 </>
             )
         }
