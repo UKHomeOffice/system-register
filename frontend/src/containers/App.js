@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css';
 import SystemList from '../components/SystemList/SystemList'
 import TitleBar from '../components/TitleBar/TitleBar'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
 import System from '../components/System/System'
 import Menu from '../components/Menu/Menu'
 import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
@@ -45,7 +45,7 @@ class App extends React.Component {
                     <header>
                         <TitleBar />
                         <Banner phase="in development">
-                            This is a new service - your <AnchorLink href="/contact">feedback</AnchorLink> will help us to improve it.
+                            This is a new service - your <Link tabindex="-1" to="/contact"><AnchorLink href="/contact">feedback</AnchorLink></Link> will help us to improve it.
                     </Banner>
                     </header>
                     <Menu />
