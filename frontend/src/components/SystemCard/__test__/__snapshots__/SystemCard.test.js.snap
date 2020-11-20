@@ -16,7 +16,7 @@ exports[`<SystemCard /> matches snapshot 1`] = `
       Portfolio Y
       , 
       <span>
-        Last Updated: 
+        Last modified: 
         February 2020
       </span>
       )

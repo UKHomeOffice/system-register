@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import { sumKnownRisk } from '../../utilities/riskCalculator';
 import { styleRiskBackground, styleRiskScoreBackground } from '../../utilities/styleRisk';
 import scoreCriticality from '../../utilities/scoreCriticality';
+import toUpper from "../../utilities/toUpper";
 
 const useStyles = makeStyles({
     head: {
@@ -97,11 +98,11 @@ const RiskList = (props) => {
 // //TODO: Re use the following 
 const NOT_APPLICABLE = 'not_applicable'
 function formatLevel(level) {
-    if (!level) return "Unknown"
+    if (!level) return "UKNOWN"
     if (level === NOT_APPLICABLE) {
-        return 'n/a'
+        return 'N/A'
     }
-    return toTitle(level)
+    return toUpper(level)
 }
 
 export default RiskList

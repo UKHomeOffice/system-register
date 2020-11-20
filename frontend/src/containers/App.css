@@ -1,154 +1,185 @@
 :root {
-  --red: #d62728;
-  --risk-colour-high: #d62728;
-  --risk-colour-mediumHigh: #ff7f0e;
-  --risk-colour-medium: #F9C12C;
-  --risk-colour-mediumLow: #BCBD21;
-  --risk-colour-low: #2ca02c;
-  --risk-colour-unknown: #7f7f7f;
-  --blue: #007385;
-  --black: #0b0c0c;
-  --yellow: #ffdd00;
+    --red: #d62728;
+    --blue: #007385;
+    --black: #0b0c0c;
+    --yellow: #ffdd00;
+    --badge-red-background: #f6d7d2;
+    --badge-red-font: #942514;
+    --badge-pink-background: #f7d7e6;
+    --badge-pink-font: #80224d;
+    --badge-purple-background: #dbd5e9;
+    --badge-purple-font: #3d2375;
+    --badge-orange-background: #fcd6c3;
+    --badge-orange-font: #6e3619;
+    --badge-green-background: #cce2d8;
+    --badge-green-font: #005a30;
+    --badge-grey-background: #eeefef;
+    --badge-grey-font: #383f43;
+    --badge-blue-background: #d2e2f1;
+    --badge-blue-font: #144e81;
+    --badge-turquoise-background: #bfe3e0;
+    --badge-turquoise-font: #10403c;
+    --risk-colour-high: #d62728;
+    --risk-colour-mediumHigh: #ff7f0e;
+    --risk-colour-medium: #F9C12C;
+    --risk-colour-mediumLow: #BCBD21;
+    --risk-colour-low: #2ca02c;
+    --risk-colour-unknown: #7f7f7f;
 }
 
 div.topMargin {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 div.topMarginBig {
-  margin-top: 40px;
+    margin-top: 40px;
 }
 
 div.bottomMargin {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .centerContent {
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .highlight {
-  background-color: var(--blue);
-  color: white;
-  border-radius: 5px;
-  padding: 4px;
+    background-color: var(--blue);
+    color: white;
+    border-radius: 5px;
+    padding: 4px;
 }
 
 .badge {
-  color: white;
-  font-weight: bold;
-  padding: 3px;
-  padding-right: 4px;
-  padding-left: 4px;
-  border-radius: 4px;
-  margin-right: 4px;
+    color: white;
+    font-weight: bold;
+    padding-top: 6px;
+    padding-bottom: 3px;
+    padding-right: 4px;
+    padding-left: 4px;
+    margin-right: 4px;
+    font-size: 14px;
 }
 
 .blue {
-  background-color: var(--blue);
+    background-color: var(--blue);
 }
 
 rect {
-  transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
 }
 
 .notApplicableRisk {
-  color: var(--risk-colour-blue);
+    color: var(--badge-grey-font);
 }
+
 rect.notApplicableRisk {
-  fill: var(--risk-colour-blue);
+    fill: var(--badge-grey-background);
 }
+
 .notApplicableRiskBackground {
-  background-color: var(--blue);
-  color: white;
+    background-color: var(--blue);
+    color: white;
 }
 
 .unknownRisk {
-  color: var(--risk-colour-unknown);
+    color: var(--risk-colour-unknown);
 }
+
 rect.unknownRisk {
-  fill: var(--risk-colour-unknown);
+    fill: var(--risk-colour-unknown);
 }
+
 .unknownRiskBackground {
-  background-color: var(--risk-colour-unknown);
-  color: white;
+    background-color: var(--risk-colour-unknown);
+    color: white;
 }
 
-.lowRisk{
-  color: var(--risk-colour-low);
+.lowRisk {
+    color: var(--risk-colour-low);
 }
-rect.lowRisk{
-  fill: var(--risk-colour-low);
+
+rect.lowRisk {
+    fill: var(--risk-colour-low);
 }
+
 .lowRiskBackground {
-  background-color: var(--risk-colour-low);
-  color: white;
+    background-color: var(--risk-colour-low);
+    color: white;
 }
 
-.mediumLowRisk{
-  color: var(--risk-colour-mediumLow);
+.mediumLowRisk {
+    color: var(--risk-colour-mediumLow);
 }
-rect.mediumLowRisk{
-  fill: var(--risk-colour-mediumLow);
+
+rect.mediumLowRisk {
+    fill: var(--risk-colour-mediumLow);
 }
+
 .mediumLowRiskBackground {
-  background-color: var(--risk-colour-mediumLow);
-  color: white;
+    background-color: var(--risk-colour-mediumLow);
+    color: white;
 }
 
-.mediumRisk{
-  color: var(--risk-colour-medium);
+.mediumRisk {
+    color: var(--risk-colour-medium);
 }
-rect.mediumRisk{
-  fill: var(--risk-colour-medium);
+
+rect.mediumRisk {
+    fill: var(--risk-colour-medium);
 }
+
 .mediumRiskBackground {
-  background-color: var(--risk-colour-medium);
-  color: white;
+    background-color: var(--risk-colour-medium);
+    color: white;
 }
 
-.mediumHighRisk{
-  color: var(--risk-colour-mediumHigh);
+.mediumHighRisk {
+    color: var(--risk-colour-mediumHigh);
 }
-rect.mediumHighRisk{
-  fill: var(--risk-colour-mediumHigh);
+
+rect.mediumHighRisk {
+    fill: var(--risk-colour-mediumHigh);
 }
+
 .mediumHighRiskBackground {
-  background-color: var(--risk-colour-mediumHigh);
-  color: white;
+    background-color: var(--risk-colour-mediumHigh);
+    color: white;
 }
 
 .highRisk {
-  color: var(--risk-colour-high);
+    color: var(--risk-colour-high);
 }
-rect.highRisk{
-  fill: var(--risk-colour-high);
+
+rect.highRisk {
+    fill: var(--risk-colour-high);
 }
+
 .highRiskBackground {
-  background-color: var(--risk-colour-high);
-  color: white;
+    background-color: var(--risk-colour-high);
+    color: white;
 }
 
 rect.blue1 {
-  fill: #eff3ff;
+    fill: #eff3ff;
 }
 
 rect.blue2 {
-  fill: #bdd7e7;
+    fill: #bdd7e7;
 }
 
 rect.blue3 {
-  fill: #6baed6;
+    fill: #6baed6;
 }
 
 rect.blue4 {
-  fill: #3182bd;
+    fill: #3182bd;
 }
 
 rect.blue5 {
-  fill: #08519c;
+    fill: #08519c;
 }
 
 a.gds-link:active {

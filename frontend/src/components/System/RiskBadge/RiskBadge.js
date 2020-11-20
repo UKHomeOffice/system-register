@@ -1,38 +1,37 @@
 import React from 'react'
 import './RiskBadge.css'
-import toTitle from '../../../utilities/toTitle'
+import toUpper from "../../../utilities/toUpper";
 
 const NOT_APPLICABLE = 'not_applicable' //todo maybe centralise
 
 const RiskBadge = (props) => {
-  const prefix = props.hideLabel ? "": "Risk: "
-    let riskClass = "unkownRiskBackground"
+    let riskClass;
     switch (props.level) {
         case 'high':
-            riskClass = 'highRiskBackground'
+            riskClass = 'highRisk'
             break;
         case 'medium':
-            riskClass = 'mediumRiskBackground'
+            riskClass = 'mediumRisk'
             break;
         case 'low':
-            riskClass = 'lowRiskBackground'
+            riskClass = 'lowRisk'
             break;
         case NOT_APPLICABLE:
-            riskClass = 'noRiskBackground'
+            riskClass = 'noRisk'
             break;
         default:
-            riskClass = 'unknownRiskBackground'
+            riskClass = 'unknownRisk'
     }
 
-    return <span className={`badge ${riskClass}`}>{prefix}{formatLevel(props.level)}</span>
+    return <span data-testid={`risk-risk-badge-${props.level}`} className={`badge ${riskClass}`}>{formatLevel(props.level)}</span>
 }
 
 function formatLevel(level) {
-    if (!level) return "Unknown"
+    if (!level) return "UNKNOWN"
     if (level === NOT_APPLICABLE) {
-        return 'n/a'
+        return 'N/A'
     }
-    return toTitle(level)
+    return toUpper(level)
 }
 
 export default RiskBadge

@@ -10,14 +10,14 @@ const RiskDetails = (props) => {
     <div className='riskSummary'>
       <h4>{toTitle(props.risk.name)}</h4>
       <RiskBadge level={props.risk.level} />
-      {renderRationale(props.risk.level, props.risk.rationale)}
+      {renderRationale(props.risk.level, props.risk.rationale, props.risk.name)}
     </div>
   )
 }
 
-function renderRationale(level, rationale) {
+function renderRationale(level, rationale, name) {
   if (level !== NOT_APPLICABLE) {
-    return <p>Rationale: <KeyInfo info={rationale} /></p>
+    return <p data-testid={`risk-rationale-${name}`}>Rationale: <KeyInfo info={rationale} /></p>
   }
 }
 

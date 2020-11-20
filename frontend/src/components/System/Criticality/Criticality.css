@@ -1,19 +1,24 @@
 .criticalityHigh {
-    background-color: #D9241E;
+    background-color: var(--badge-pink-background);
+    color: var(--badge-pink-font);
 }
 
 .criticalityMedium {
-    background-color: #FF7F00;
+    background-color: var(--badge-orange-background);
+    color: var(--badge-orange-font);
 }
   
 .criticalityLow {
-    background-color: #26A122;
+    background-color: var(--badge-green-background);
+    color: var(--badge-green-font);
 }
 
 .criticalityUnknown {
-    background-color: #7F7F7F;
+    background-color: var(--badge-grey-background);
+    color: var(--badge-grey-font);
 }
 
 .criticalityCNI{
-   background-color: #C65911; 
+   background-color: var(--badge-red-background);
+   color: var(--badge-red-font);
 }

@@ -7,62 +7,57 @@ afterEach(cleanup)
 describe('<Criticality />', () => {
     it('makes CNI criticality look super important', () => {
         const { getByText } = render(<Criticality level="cni" />)
-        const element = getByText('Criticality CNI')
+        const element = getByText('CNI')
         toLookSuperImportant(element)
     });
 
     it('makes high criticality look important', () => {
         const { getByText } = render(<Criticality level="high" />)
-        const element = getByText('Criticality High')
+        const element = getByText('HIGH')
         toLookImportant(element)
     });
 
     it('makes medium criticality look sort of important', () => {
         const { getByText } = render(<Criticality level="medium" />)
-        const element = getByText('Criticality Medium')
+        const element = getByText('MEDIUM')
         toLookSortOfImportant(element)
     });
 
     it('makes low criticality look unimportant', () => {
         const { getByText } = render(<Criticality level="low" />)
-        const element = getByText('Criticality Low')
+        const element = getByText('LOW')
         toLookUnimportant(element)
     });
 
     it('makes unknown criticality look mysterious', () => {
         const { getByText } = render(<Criticality level="unknown" />)
-        const element = getByText('Criticality Unknown')
+        const element = getByText('UNKNOWN')
         toLookMysterious(element)
     });
 
-    it('hides label', () => {
-        const { getByText } = render(<Criticality level="low" hideLabel={true} />)
-        const element = getByText('Low')
-        expect(element).toBeInTheDocument()
-    });
 })
 
 function toLookSuperImportant(element) {
-    const html = `<span class="badge criticalityCNI">Criticality CNI</span>`
+    const html = `<span class="badge criticalityCNI">CNI</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookImportant(element) {
-    const html = `<span class="badge criticalityHigh">Criticality High</span>`
+    const html = `<span class="badge criticalityHigh">HIGH</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookSortOfImportant(element) {
-    const html = `<span class="badge criticalityMedium">Criticality Medium</span>`
+    const html = `<span class="badge criticalityMedium">MEDIUM</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookUnimportant(element) {
-    const html = `<span class="badge criticalityLow">Criticality Low</span>`
+    const html = `<span class="badge criticalityLow">LOW</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookMysterious(element) {
-    const html = `<span class="badge criticalityUnknown">Criticality Unknown</span>`
+    const html = `<span class="badge criticalityUnknown">UNKNOWN</span>`
     expect(element).toContainHTML(html)
 }

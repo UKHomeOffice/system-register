@@ -82,7 +82,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 1
           , 
           <span>
-            Last Updated: 
+            Last modified: 
             <strong
               className="highRisk"
             >
@@ -119,7 +119,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 2
           , 
           <span>
-            Last Updated: 
+            Last modified: 
             <strong
               className="highRisk"
             >
@@ -156,7 +156,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 2
           , 
           <span>
-            Last Updated: 
+            Last modified: 
             <strong
               className="highRisk"
             >

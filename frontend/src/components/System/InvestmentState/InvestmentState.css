@@ -1,23 +1,29 @@
 .investEvergreen {
-    background-color: #26A122;
+    background-color: var(--badge-green-background);
+    color: var(--badge-green-font);
 }
 
 .invest {
-    background-color: #BDBE00;
+    background-color: var(--badge-turquoise-background);
+    color: var(--badge-turquoise-font);
 }
   
 .investMaintain {
-    background-color: #00BED1;
+    background-color: var(--badge-blue-background);
+    color: var(--badge-blue-font);
 }
 
 .investSunset {
-    background-color: #FF7F00;
+    background-color: var(--badge-orange-background);
+    color: var(--badge-orange-font);
 }
 
 .investDecommissioned{
-    background-color: #7F7F7F; 
+    background-color: var(--badge-grey-background);
+    color: var(--badge-grey-font);
 }
 
 .investmentUnknown{
-    background-color: #7F7F7F;
+    background-color: var(--badge-grey-background);
+    color: var(--badge-grey-font);
 }

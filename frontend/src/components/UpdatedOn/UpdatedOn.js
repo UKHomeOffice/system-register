@@ -9,6 +9,6 @@ const formatDate = (str) => {
     return <strong className="highRisk">Never</strong>
 }
 
-const UpdatedOn = (props) => <span>Last Updated: {formatDate(props.date)}</span>
+const UpdatedOn = (props) => <span>Last modified: {formatDate(props.date)}</span>
 
 export default UpdatedOn

@@ -22,7 +22,7 @@ set_local_environment_variables() {
     export REACT_APP_KEYCLOAK_URL=http://localhost:8081/auth/
     export REACT_APP_KEYCLOAK_REALM=local-realm
     export REACT_APP_KEYCLOAK_CLIENT_ID=system-register
-    export REACT_APP_API_URL=http://localhost:8080
+#    export REACT_APP_API_URL=http://localhost:8080/api
 }
 
 for command in "$@"

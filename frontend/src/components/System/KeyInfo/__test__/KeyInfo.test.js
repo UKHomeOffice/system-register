@@ -13,18 +13,18 @@ describe('<KeyInfo />', () => {
 
     it('renders empty value as Unknown', () => {
         const { getByText } = render(<KeyInfo info="" />)
-        const element = getByText('Unknown')
-        toLookMysterious(element, 'Unknown')
+        const element = getByText('UNKNOWN')
+        toLookMysterious(element, 'UNKNOWN')
     });
 
     it('renders undefined value as Unknown', () => {
         const { getByText } = render(<KeyInfo info={undefined} />)
-        const element = getByText('Unknown')
-        toLookMysterious(element, 'Unknown')
+        const element = getByText('UNKNOWN')
+        toLookMysterious(element, 'UNKNOWN')
     });
 })
 
 function toLookMysterious(element, str) {
-    const html = `<strong class="highRisk">${str}</strong>`
+    const html = `<strong class="unknownKeyInfo">${str}</strong>`
     expect(element).toContainHTML(html)
 }

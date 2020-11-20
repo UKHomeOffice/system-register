@@ -13,12 +13,18 @@ const test_risk_known = {
 const test_risk_unknown = {
   name: 'change',
   level: null,
-  rationale: null
+  rationale: 'Irrational'
 }
 
 const test_risk_not_applicable = {
   name: 'sunset',
   level: 'not_applicable',
+  rationale: null
+}
+
+const test_rationale_unknown = {
+  name: 'apple pie',
+  level: 'medium',
   rationale: null
 }
 
@@ -32,19 +38,19 @@ describe('<RiskDetails />', () => {
   
   it('renders level when value is known', () => {
       const { getByText } = render(<RiskDetails risk={test_risk_known} />)
-      const element = getByText('Risk: Low')
+      const element = getByText('LOW')
       expect(element).toBeInTheDocument()
   });
 
   it('renders level when value is not known', () => {
       const { getByText } = render(<RiskDetails risk={test_risk_unknown} />)
-      const element = getByText('Risk: Unknown')
+      const element = getByText('UNKNOWN')
       expect(element).toBeInTheDocument()
   });
 
   it('renders level when value is not applicable', () => {
       const { getByText } = render(<RiskDetails risk={test_risk_not_applicable} />)
-      const element = getByText('Risk: n/a')
+      const element = getByText('N/A')
       expect(element).toBeInTheDocument()
   });
 
@@ -55,9 +61,9 @@ describe('<RiskDetails />', () => {
   });
 
   it('renders rationale when value is not known', () => {
-      const { getByText } = render(<RiskDetails risk={test_risk_unknown} />)
+      const { getByText } = render(<RiskDetails risk={test_rationale_unknown} />)
       const element = getByText(/Rationale:/)
-      expect(element).toContainHTML(`Rationale: <strong class="highRisk">Unknown</strong>`)
+      expect(element).toContainHTML(`Rationale: <strong class="unknownKeyInfo">UNKNOWN</strong>`)
   });
 
   it('renders rationale when value is not applicable', () => {
