@@ -45,7 +45,7 @@ class App extends React.Component {
                     <header>
                         <TitleBar />
                         <Banner phase="in development">
-                            This is a new service - your <Link tabindex="-1" to="/contact"><AnchorLink href="/contact">feedback</AnchorLink></Link> will help us to improve it.
+                            This is a new service - your <Link className="gds-link" to="/contact">feedback</Link> will help us to improve it.
                     </Banner>
                     </header>
                     <Menu />
