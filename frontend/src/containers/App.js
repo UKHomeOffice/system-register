@@ -8,10 +8,8 @@ import Menu from '../components/Menu/Menu'
 import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
 import { KeycloakProvider } from '@react-keycloak/web'
 import keycloak from '../utilities/keycloak'
-import axios from 'axios'
-import config from '../config/config'
 import Banner from '../components/Banner/Banner'
-import AnchorLink from '@govuk-react/link'
+import api from '../services/api';
 
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
@@ -23,14 +21,11 @@ class App extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        axios.get(`${config.api.url}/systems`)
-            .then(res => {
+        api.getAllSystems()
+            .then((register) => {
                 if (this._isMounted) {
-                    this.setState({ register: res.data });
+                    this.setState({ register: register })
                 }
-            })
-            .catch(e => {
-                console.error("Error calling api, displaying dummy data!: " + e)
             })
     }
 
@@ -55,12 +50,11 @@ class App extends React.Component {
                                 <SystemList register={this.state.register} />
                             </Route>
                             <Route exact path="/system/:id" render={({ match }) => {
-                                return <System
-                                    system={this.state.register?.systems.find(s => s.id.toString() === match.params.id)} />
+                                return <System />
                             }}>
                             </Route>
                             <Route exact path="/risk_dashboard">
-                                <PortfolioHeatmap systems={this.state.register?.systems} />
+                                <PortfolioHeatmap />
                             </Route>
                         </Switch>
                     </main>
