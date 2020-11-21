@@ -9,8 +9,6 @@ const api = {
     }
 }
 
-export default api
-
 async function getAllSystems() {
     const register = localStorage.getItem('register');
     if (register === null) {
@@ -20,3 +18,5 @@ async function getAllSystems() {
     }
     return JSON.parse(register);
 }
+
+export default api
