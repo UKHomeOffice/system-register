@@ -29,7 +29,7 @@ exports[`<Menu /> matches snapshot 1`] = `
     </li>
     <li>
       <a
-        href="http://localhost:8080/api/systems"
+        href="http://localhost/api/systems"
       >
         API
       </a>

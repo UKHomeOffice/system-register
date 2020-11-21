@@ -1,7 +1,10 @@
 import React from 'react'
-import {cleanup, render} from '@testing-library/react'
-import {screen} from '@testing-library/dom'
+import { cleanup, render } from '@testing-library/react'
+import { screen } from '@testing-library/dom'
 import System from '../System'
+import { MemoryRouter, Route } from 'react-router-dom'
+
+//TODO mock api and remove props parameter from <System /> component
 
 const test_system = {
     id: 444,
@@ -70,7 +73,10 @@ afterEach(cleanup)
 
 describe('<System />', () => {
     describe('when the data is known', () => {
-        beforeEach(() => setup(test_system))
+
+        beforeEach(() => {
+            setup(test_system)
+        })
 
         describe('System section', () => {
             it('renders system name', () => {
@@ -445,10 +451,14 @@ describe('<System />', () => {
         })
 
     })
-
 });
 
 function setup(test_data) {
-    const {getByText} = render(<System system={test_data}/>)
+    const { getByText } = render(
+        <MemoryRouter initialEntries={['system/1']}>
+            <Route path='system/:id'>
+                <System system={test_data} />
+            </Route>
+        </MemoryRouter>)
     _getByText = getByText
 }

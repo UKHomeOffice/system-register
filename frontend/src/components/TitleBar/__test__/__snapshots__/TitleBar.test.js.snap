@@ -3,7 +3,7 @@
 exports[`<Title /> matches snapshot 1`] = `
 Array [
   <div
-    className="sc-dlfnbm jyNBfj"
+    className="sc-dlfnbm jyNBfj top-nav"
     color="#ffffff"
     data-testid="title-bar-div"
   >
@@ -31,61 +31,26 @@ Array [
             System Register
           </div>
         </div>
-        <div
-          className="sc-fodVxV IRIqZ"
-        >
-          <label
-            className="sc-kEjbxe fqovvm"
-            htmlFor="govuk-react-menu-button"
-            onClick={[Function]}
-          >
-            <div
-              className="sc-iqHYGH gMUmWh"
-            >
-              Menu
-            </div>
-            <div
-              className="sc-crrsfI TjxmG"
-              open={false}
-            />
-          </label>
-        </div>
-        <input
-          checked={false}
-          className="sc-fFubgz lovoAX"
-          id="govuk-react-menu-button"
-          type="checkbox"
-        />
-        <ul
-          className="sc-pFZIQ fVOZJE"
-          id="govuk-react-menu"
-          open={false}
-        >
-          <li
-            className="sc-jrAGrp YDjxx"
-          >
-            <div
-              className="title-bar-login"
-            >
-              <div
-                className="auth"
-              >
-                <button
-                  className="sc-bdfBwQ gTInJb"
-                  disabled={false}
-                  onClick={[Function]}
-                >
-                  Sign in
-                </button>
-              </div>
-            </div>
-          </li>
-        </ul>
       </div>
     </div>
   </div>,
   <div
     className="sc-eCssSg JwqYF"
   />,
+  <div
+    className="title-bar-login"
+  >
+    <div
+      className="auth"
+    >
+      <button
+        className="sc-bdfBwQ gTInJb"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Sign in
+      </button>
+    </div>
+  </div>,
 ]
 `;

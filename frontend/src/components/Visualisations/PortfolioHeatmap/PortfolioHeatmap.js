@@ -11,10 +11,12 @@ import { Tooltip } from '@material-ui/core'
 import toTitle from '../../../utilities/toTitle'
 import api from '../../../services/api'
 
-const PortfolioHeatmap = () => {
+//TODO mock api and remove props parameter from <PortfolioHeatmap /> component
+
+const PortfolioHeatmap = (props) => {
     const HO_ROOT = ''
     const PORTFOLIO_ROOT = 'portfolio'
-    let [systems, setSystems] = useState([])
+    let [systems, setSystems] = useState(props.systems)
     useEffect(() => {
         const fetchData = async () => {
             const sys = await api.getAllSystems()
@@ -49,7 +51,7 @@ const PortfolioHeatmap = () => {
     Blue = more coverage, White = less coverage.`
 
     let vis = <p>Loading visualisation...</p>
-    if (systems.length > 0) {
+    if (systems?.length > 0) {
         vis = <>
             <div className="centerContent">
                 <h2>Aggregated risk by portfolio</h2>

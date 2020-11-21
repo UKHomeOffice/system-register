@@ -54,7 +54,7 @@ class App extends React.Component {
                             }}>
                             </Route>
                             <Route exact path="/risk_dashboard">
-                                <PortfolioHeatmap />
+                                <PortfolioHeatmap systems={this.state.register.systems} />
                             </Route>
                         </Switch>
                     </main>

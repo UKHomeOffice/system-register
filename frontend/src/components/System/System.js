@@ -9,15 +9,15 @@ import { GridCol, GridRow } from "govuk-react";
 import UpdatedOn from "../UpdatedOn/UpdatedOn";
 import api from '../../services/api';
 
-const System = () => {
+const System = (props) => {
   let { id } = useParams();
-  let [system, setSystem] = useState(undefined)
+  let [system, setSystem] = useState(props.system)
   useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id))
     fetchData()
   }, [id]);
 
-  let systemData = <p>loading system data...</p>
+let systemData = <p>loading system data...</p>
   if (system) {
     systemData =
       <>
