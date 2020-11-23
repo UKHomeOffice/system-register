@@ -27,6 +27,32 @@
             "technicalOwner": "Home Office",
             "id": 1,
             "lastUpdated": "2020-10-09T16:04:36.211144Z"
+        },
+        {
+            "aliases": [
+                "testing more entries"
+            ],
+            "businessOwner": null,
+            "criticality": "high",
+            "description": "I'm a cute new system",
+            "developedBy": "Home Office",
+            "informationAssetOwner": null,
+            "investmentState": "sunset",
+            "name": "Our second system",
+            "portfolio": "SPAN-R",
+            "productOwner": null,
+            "risks": [
+                {
+                    "level": "medium",
+                    "name": "scorpion",
+                    "rationale": "Designed to sting"
+                }
+            ],
+            "serviceOwner": "Home Office",
+            "supportedBy": "All",
+            "technicalOwner": "Fun Office",
+            "id": 2,
+            "lastUpdated": "2020-10-09T16:04:36.211144Z"
         }
     ],
     "timestamp": "2020-10-09T16:04:36.227867Z"

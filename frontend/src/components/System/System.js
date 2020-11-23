@@ -6,7 +6,7 @@ import RiskDetails from './RiskDetails/RiskDetails'
 import Criticality from './Criticality/Criticality'
 import InvestmentState from './InvestmentState/InvestmentState'
 import { GridCol, GridRow } from "govuk-react";
-import UpdatedOn from "../UpdatedOn/UpdatedOn";
+import ModifiedOn from "../ModifiedOn/ModifiedOn";
 import api from '../../services/api';
 
 const System = (props) => {
@@ -23,7 +23,7 @@ let systemData = <p>loading system data...</p>
       <>
         <div className="contentBlock">
           <h1>{system.name}</h1>
-          <p data-testid="system-last-modified"><UpdatedOn date={system.last_updated} /></p>
+          <p data-testid="system-last-modified"><ModifiedOn date={system.last_updated} /></p>
           <h2>Description</h2>
           <p data-testid="system-description" ><KeyInfo info={system.description} /></p>
         </div>

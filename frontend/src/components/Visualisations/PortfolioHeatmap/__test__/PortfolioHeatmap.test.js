@@ -82,6 +82,7 @@ const test_data = [
 
 describe('<PortfolioHeatmap />', () => {
     describe('showing risk', () => {
+        //TODO: mock api to resolve issues
         it('renders title', () => {
             const { getByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
             const element = getByText('Aggregated risk by portfolio')
