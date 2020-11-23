@@ -33,7 +33,7 @@ let systemData = <p>loading system data...</p>
             <GridCol setWidth="one-quarter">
               <p>Aliases</p>
               <p>Department</p>
-              <p>Criticality</p>
+              <p>Criticality assessment</p>
               <p>Investment state</p>
               <p>Developed by</p>
               <p>Supported by</p>

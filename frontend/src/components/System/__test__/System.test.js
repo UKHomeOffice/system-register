@@ -126,8 +126,8 @@ describe('<System />', () => {
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Criticality entry in table', () => {
-                const element = _getByText('Criticality')
+            it('renders Criticality assessment entry in table', () => {
+                const element = _getByText('Criticality assessment')
                 expect(element).toBeInTheDocument()
             })
 
@@ -314,8 +314,8 @@ describe('<System />', () => {
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Criticality entry in table', () => {
-                const element = _getByText('Criticality')
+            it('renders Criticality assessment entry in table', () => {
+                const element = _getByText('Criticality assessment')
                 expect(element).toBeInTheDocument()
             })
 
