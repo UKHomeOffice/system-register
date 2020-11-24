@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-fourteen",
+    "test": "NODE_ICU_DATA=node_modules/full-icu react-scripts test --env=jest-environment-jsdom-fourteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
-    "msw": "^0.21.3"
+    "msw": "^0.21.3",
+    "full-icu": "^1.3.1"
   }
 }

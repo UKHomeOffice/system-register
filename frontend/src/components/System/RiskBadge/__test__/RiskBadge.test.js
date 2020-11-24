@@ -38,27 +38,27 @@ describe('<RiskBadge />', () => {
 })
 
 function toLookRisky(element) {
-    const html = `<span data-testid="risk-risk-badge-high" class="badge highRisk">HIGH</span>`
+    const html = `<span class="badge highRisk">HIGH</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookMediumRisky(element) {
-    const html = `<span data-testid="risk-risk-badge-medium" class="badge mediumRisk">MEDIUM</span>`
+    const html = `<span class="badge mediumRisk">MEDIUM</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookLowRisky(element) {
-    const html = `<span data-testid="risk-risk-badge-low" class="badge lowRisk">LOW</span>`
+    const html = `<span class="badge lowRisk">LOW</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookFine(element) {
-    const html = `<span data-testid="risk-risk-badge-not_applicable" class="badge noRisk">N/A</span>`
+    const html = `<span class="badge noRisk">N/A</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookMysterious(element) {
-    const html = `<span data-testid="risk-risk-badge-unknown" class="badge unknownRisk">UNKNOWN</span>`
+    const html = `<span class="badge unknownRisk">UNKNOWN</span>`
     expect(element).toContainHTML(html)
 }
 

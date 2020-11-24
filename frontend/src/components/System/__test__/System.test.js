@@ -428,28 +428,11 @@ describe('<System />', () => {
                 expect(element).toBeInTheDocument();
             })
 
-            it("displays risk name", () => {
-                const element = _getByText("Roadmap");
-                expect(element).toBeInTheDocument();
-            })
-
-            //TODO: Maybe look at this test again
-            it("has correct risk tag", () => {
-                const element = screen.getAllByTestId('risk-risk-badge-null');
-                expect(element[0]).toHaveTextContent("UNKNOWN");
-            })
-
-            it("has Rationale section", () => {
-                const element = screen.getByTestId('risk-container');
-                expect(element).toHaveTextContent("Rationale:");
-            })
-
-            it('populates Rationale section correctly', () => {
-                const element = screen.getByTestId('risk-rationale-roadmap');
-                expect(element).toHaveTextContent("UNKNOWN");
+            it("renders the details of each risk", () => {
+                const risks = screen.getAllByTestId('risk-details');
+                expect(risks).toHaveLength(2);
             })
         })
-
     })
 });
 

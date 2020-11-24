@@ -7,7 +7,7 @@ const NOT_APPLICABLE = 'not_applicable'
 
 const RiskDetails = (props) => {
   return (
-    <div className='riskSummary'>
+    <div data-testid="risk-details" className='riskSummary'>
       <h3>{toTitle(props.risk.name)}</h3>
       <RiskBadge level={props.risk.level} />
       {renderRationale(props.risk.level, props.risk.rationale, props.risk.name)}

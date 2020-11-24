@@ -23,7 +23,7 @@ const RiskBadge = (props) => {
             riskClass = 'unknownRisk'
     }
 
-    return <span data-testid={`risk-risk-badge-${props.level}`} className={`badge ${riskClass}`}>{formatLevel(props.level)}</span>
+    return <span className={`badge ${riskClass}`}>{formatLevel(props.level)}</span>
 }
 
 function formatLevel(level) {
