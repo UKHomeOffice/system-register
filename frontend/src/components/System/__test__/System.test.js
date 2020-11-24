@@ -4,7 +4,11 @@ import { screen } from '@testing-library/dom'
 import System from '../System'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-//TODO mock api and remove props parameter from <System /> component
+import api from '../../../services/api';
+
+jest.mock('../../../services/api', () => ({
+    getSystem: jest.fn(),
+}))
 
 const test_system = {
     id: 444,
@@ -68,195 +72,228 @@ const test_unknown_system = {
     ]
 }
 
-let _getByText = undefined
-afterEach(cleanup)
-
 describe('<System />', () => {
-    describe('when the data is known', () => {
+    afterEach(cleanup)
 
+    describe('when the data is known', () => {
         beforeEach(() => {
-            setup(test_system)
+            api.getSystem.mockResolvedValue(test_system);
         })
 
         describe('System section', () => {
-            it('renders system name', () => {
-                const element = _getByText('System X')
+            it('renders system name', async () => {
+                setup();
+                const element = await screen.findByText('System X')
                 expect(element).toBeInTheDocument()
             });
 
-            it('displays correct modified on', () => {
-                const element = _getByText('Last modified: 13 February 2020')
+            it('displays correct modified on', async () => {
+                setup();
+                const element = await screen.findByText('Last modified: 13 February 2020')
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders description section', () => {
-                const element = _getByText('Description')
+            it('renders description section', async () => {
+                setup();
+                const element = await screen.findByText('Description')
                 expect(element).toBeInTheDocument()
             });
 
-            it('populates description section correctly', () => {
-                const element = _getByText('The description')
+            it('populates description section correctly', async () => {
+                setup();
+                const element = await screen.findByText('The description')
                 expect(element).toBeInTheDocument()
             });
         })
 
         describe('About section', () => {
-            it('renders About section', () => {
-                const element = _getByText('About')
+            it('renders About section', async () => {
+                setup();
+                const element = await screen.findByText('About')
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders Aliases entry in table', () => {
-                const element = _getByText('Aliases')
+            it('renders Aliases entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Aliases')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Aliases entry in table', () => {
-                const element = _getByText('sys X, project Jupiter')
+            it('renders correct Aliases entry in table', async () => {
+                setup();
+                const element = await screen.findByText('sys X, project Jupiter')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Department entry in table', () => {
-                const element = _getByText('Department')
+            it('renders Department entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Department')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Department entry in table', () => {
-                const element = _getByText('Department of Fig and Indie')
+            it('renders correct Department entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Department of Fig and Indie')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Criticality assessment entry in table', () => {
-                const element = _getByText('Criticality assessment')
+            it('renders Criticality assessment entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Criticality assessment')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Criticality entry in table', () => {
-                const element = _getByText('HIGH')
+            it('renders correct Criticality entry in table', async () => {
+                setup();
+                const element = await screen.findByText('HIGH')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Investment state entry in table', () => {
-                const element = _getByText('Investment state')
+            it('renders Investment state entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Investment state')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Investment state entry in table', () => {
-                const element = _getByText('EVERGREEN')
+            it('renders correct Investment state entry in table', async () => {
+                setup();
+                const element = await screen.findByText('EVERGREEN')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Developed by entry in table', () => {
-                const element = _getByText('Developed by')
+            it('renders Developed by entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Developed by')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Developed by entry in table', () => {
-                const element = _getByText("Dev Team")
+            it('renders correct Developed by entry in table', async () => {
+                setup();
+                const element = await screen.findByText("Dev Team")
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Supported by entry in table', () => {
-                const element = _getByText('Supported by')
+            it('renders Supported by entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Supported by')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Supported by entry in table', () => {
-                const element = _getByText("Support Team")
+            it('renders correct Supported by entry in table', async () => {
+                setup();
+                const element = await screen.findByText("Support Team")
                 expect(element).toBeInTheDocument()
             })
         })
 
         describe('Contacts section', () => {
-            it('renders Contacts section', () => {
-                const element = _getByText('Contacts')
+            it('renders Contacts section', async () => {
+                setup();
+                const element = await screen.findByText('Contacts')
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders System register owner entry in table', () => {
-                const element = _getByText('System register owner')
+            it('renders System register owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('System register owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct System register owner entry in table', () => {
-                const element = _getByText('I own the register')
+            it('renders correct System register owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('I own the register')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Business owner entry in table', () => {
-                const element = _getByText('Business owner')
+            it('renders Business owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Business owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Business owner entry in table', () => {
-                const element = _getByText("I own the business")
+            it('renders correct Business owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText("I own the business")
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Technical owner entry in table', () => {
-                const element = _getByText('Technical owner')
+            it('renders Technical owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Technical owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Technical owner entry in table', () => {
-                const element = _getByText("I own the tech")
+            it('renders correct Technical owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText("I own the tech")
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Service owner entry in table', () => {
-                const element = _getByText('Service owner')
+            it('renders Service owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Service owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Service owner entry in table', () => {
-                const element = _getByText("I own the service")
+            it('renders correct Service owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText("I own the service")
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Product owner entry in table', () => {
-                const element = _getByText('Product owner')
+            it('renders Product owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Product owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Product owner entry in table', () => {
-                const element = _getByText("I own the product")
+            it('renders correct Product owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText("I own the product")
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders Information asset owner entry in table', () => {
-                const element = _getByText('Information asset owner')
+            it('renders Information asset owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Information asset owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it('renders correct Information asset owner entry in table', () => {
-                const element = _getByText("I own the data")
+            it('renders correct Information asset owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText("I own the data")
                 expect(element).toBeInTheDocument()
             })
         })
 
         describe('Risk section', () => {
-            it("renders Risk section", () => {
-                const element = _getByText("Risk");
+            it("renders Risk section", async () => {
+                setup();
+                const element = await screen.findByText("Risk");
                 expect(element).toBeInTheDocument();
             })
 
-            it("displays risk name", () => {
-                const element = _getByText("Roadmap");
+            it("displays risk name", async () => {
+                setup();
+                const element = await screen.findByText("Roadmap");
                 expect(element).toBeInTheDocument();
             })
 
-            it("displays risk tag", () => {
-                const element = _getByText("MEDIUM");
+            it("displays risk tag", async () => {
+                setup();
+                const element = await screen.findByText("MEDIUM");
                 expect(element).toBeInTheDocument();
             })
 
-            it("has Rationale section", () => {
-                const element = screen.getByTestId('risk-container');
+            it("has Rationale section", async () => {
+                setup();
+                const element = await screen.findByTestId('risk-container');
                 expect(element).toHaveTextContent("Rationale:")
             })
 
-            it("populates Rationale section correctly", () => {
-                const element = screen.getByTestId('risk-container');
+            it("populates Rationale section correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('risk-container');
                 expect(element).toHaveTextContent("there is no plan")
             })
         })
@@ -264,184 +301,217 @@ describe('<System />', () => {
     })
 
     describe('when the data is unknown', () => {
-        beforeEach(() => setup(test_unknown_system))
+        beforeEach(() => {
+            api.getSystem.mockResolvedValue(test_unknown_system);
+        })
 
         describe('System section', () => {
-            it('renders system name', () => {
-                const element = _getByText('System X')
+            it('renders system name', async () => {
+                setup();
+                const element = await screen.findByText('System X')
                 expect(element).toBeInTheDocument()
             });
 
-            it('displays correct modified on', () => {
-                const element = screen.getByTestId("system-last-modified")
+            it('displays correct modified on', async () => {
+                setup();
+                const element = await screen.findByTestId("system-last-modified")
                 expect(element).toHaveTextContent("Never")
             });
 
-            it('renders description section', () => {
-                const element = _getByText("Description")
+            it('renders description section', async () => {
+                setup();
+                const element = await screen.findByText("Description")
                 expect(element).toBeInTheDocument()
             });
 
-            it('populates description section correctly', () => {
-                const element = screen.getByTestId("system-description")
+            it('populates description section correctly', async () => {
+                setup();
+                const element = await screen.findByTestId("system-description")
                 expect(element).toHaveTextContent("UNKNOWN")
             });
         })
 
         describe('About section', () => {
-            it('renders About section', () => {
-                const element = _getByText('About')
+            it('renders About section', async () => {
+                setup();
+                const element = await screen.findByText('About')
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders Aliases entry in table', () => {
-                const element = _getByText('Aliases')
+            it('renders Aliases entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Aliases')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Aliases correctly", () => {
-                const element = screen.getByTestId('about-aliases');
+            it("populates Aliases correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-aliases');
                 expect(element).toHaveTextContent("None")
             })
 
-            it('renders Department entry in table', () => {
-                const element = _getByText('Department')
+            it('renders Department entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Department')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Department correctly", () => {
-                const element = screen.getByTestId('about-department');
+            it("populates Department correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-department');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Criticality assessment entry in table', () => {
-                const element = _getByText('Criticality assessment')
+            it('renders Criticality assessment entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Criticality assessment')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Criticality correctly", () => {
-                const element = screen.getByTestId('about-criticality');
+            it("populates Criticality correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-criticality');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Investment state entry in table', () => {
-                const element = _getByText('Investment state')
+            it('renders Investment state entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Investment state')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Investment state correctly", () => {
-                const element = screen.getByTestId('about-investment-state');
+            it("populates Investment state correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-investment-state');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Developed by entry in table', () => {
-                const element = _getByText('Developed by')
+            it('renders Developed by entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Developed by')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Developed by correctly", () => {
-                const element = screen.getByTestId('about-developed-by');
+            it("populates Developed by correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-developed-by');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Supported by entry in table', () => {
-                const element = _getByText('Supported by')
+            it('renders Supported by entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Supported by')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Supported by correctly", () => {
-                const element = screen.getByTestId('about-supported-by');
+            it("populates Supported by correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('about-supported-by');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
         })
 
         describe('Contacts section', () => {
-            it('renders Contacts section', () => {
-                const element = _getByText('Contacts')
+            it('renders Contacts section', async () => {
+                setup();
+                const element = await screen.findByText('Contacts')
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders System register owner entry in table', () => {
-                const element = _getByText('System register owner')
+            it('renders System register owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('System register owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates System register owner correctly", () => {
-                const element = screen.getByTestId('contacts-system-register-owner');
+            it("populates System register owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-system-register-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Business owner entry in table', () => {
-                const element = _getByText('Business owner')
+            it('renders Business owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Business owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Business owner correctly", () => {
-                const element = screen.getByTestId('contacts-business-owner');
+            it("populates Business owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-business-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Technical owner entry in table', () => {
-                const element = _getByText('Technical owner')
+            it('renders Technical owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Technical owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Technical owner correctly", () => {
-                const element = screen.getByTestId('contacts-technical-owner');
+            it("populates Technical owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-technical-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Service owner entry in table', () => {
-                const element = _getByText('Service owner')
+            it('renders Service owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Service owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Service owner correctly", () => {
-                const element = screen.getByTestId('contacts-service-owner');
+            it("populates Service owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-service-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Product owner entry in table', () => {
-                const element = _getByText('Product owner')
+            it('renders Product owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Product owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Product owner correctly", () => {
-                const element = screen.getByTestId('contacts-product-owner');
+            it("populates Product owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-product-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
 
-            it('renders Information asset owner entry in table', () => {
-                const element = _getByText('Information asset owner')
+            it('renders Information asset owner entry in table', async () => {
+                setup();
+                const element = await screen.findByText('Information asset owner')
                 expect(element).toBeInTheDocument()
             })
 
-            it("populates Information asset owner correctly", () => {
-                const element = screen.getByTestId('contacts-information-asset-owner');
+            it("populates Information asset owner correctly", async () => {
+                setup();
+                const element = await screen.findByTestId('contacts-information-asset-owner');
                 expect(element).toHaveTextContent("UNKNOWN")
             })
         })
 
         describe('Risk section', () => {
-            it("renders Risk section", () => {
-                const element = _getByText("Risk");
+            it("renders Risk section", async () => {
+                setup();
+                const element = await screen.findByText("Risk");
                 expect(element).toBeInTheDocument();
             })
 
-            it("renders the details of each risk", () => {
-                const risks = screen.getAllByTestId('risk-details');
+            it("renders the details of each risk", async () => {
+                setup();
+                const risks = await screen.findAllByTestId('risk-details');
                 expect(risks).toHaveLength(2);
             })
         })
     })
 });
 
-function setup(test_data) {
-    const { getByText } = render(
-        <MemoryRouter initialEntries={['system/1']}>
-            <Route path='system/:id'>
-                <System system={test_data} />
-            </Route>
-        </MemoryRouter>)
-    _getByText = getByText
+function setup() {
+    render(
+      <MemoryRouter initialEntries={['system/1']}>
+          <Route path='system/:id'>
+              <System />
+          </Route>
+      </MemoryRouter>)
 }

@@ -9,9 +9,9 @@ import { GridCol, GridRow } from "govuk-react";
 import ModifiedOn from "../ModifiedOn/ModifiedOn";
 import api from '../../services/api';
 
-const System = (props) => {
+const System = () => {
   let { id } = useParams();
-  let [system, setSystem] = useState(props.system)
+  let [system, setSystem] = useState(null)
   useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id))
     fetchData()
