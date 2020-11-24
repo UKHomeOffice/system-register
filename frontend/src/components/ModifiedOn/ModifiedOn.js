@@ -9,6 +9,6 @@ const formatDate = (str) => {
     return <strong className="highRisk">Never</strong>
 }
 
-const ModifiedOn = (props) => <span>Last modified: {formatDate(props.date)}</span>
+const ModifiedOn = (props) => <span data-testid='modified-on'>Last modified: {formatDate(props.date)}</span>
 
 export default ModifiedOn

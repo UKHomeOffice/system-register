@@ -81,7 +81,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
            (Portfolio: 
           Portfolio 1
           , 
-          <span>
+          <span
+            data-testid="modified-on"
+          >
             Last modified: 
             <strong
               className="highRisk"
@@ -118,7 +120,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
            (Portfolio: 
           Portfolio 2
           , 
-          <span>
+          <span
+            data-testid="modified-on"
+          >
             Last modified: 
             <strong
               className="highRisk"
@@ -155,7 +159,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
            (Portfolio: 
           Portfolio 2
           , 
-          <span>
+          <span
+            data-testid="modified-on"
+          >
             Last modified: 
             <strong
               className="highRisk"
