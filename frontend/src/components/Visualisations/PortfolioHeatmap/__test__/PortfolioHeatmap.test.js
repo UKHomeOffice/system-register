@@ -3,6 +3,12 @@ import { render, fireEvent } from '@testing-library/react'
 import PortfolioHeatmap from '../PortfolioHeatmap'
 import { BrowserRouter } from 'react-router-dom'
 
+import api from "../../../../services/api";
+
+jest.mock("../../../../services/api", () => ({
+    getAllSystems: jest.fn(),
+}));
+
 const test_data = [
     {
         id: 44,
@@ -81,105 +87,108 @@ const test_data = [
 ]
 
 describe('<PortfolioHeatmap />', () => {
+    beforeEach(() => {
+        api.getAllSystems.mockResolvedValue({ systems: test_data });
+    });
+
     describe('showing risk', () => {
-        //TODO: mock api to resolve issues
-        it('renders title', () => {
-            const { getByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByText('Aggregated risk by portfolio')
+        it('renders title', async () => {
+            const { findByText } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByText('Aggregated risk by portfolio')
             expect(element).toBeInTheDocument()
         });
 
-        it('shows high risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-No risk no reward")
+        it('shows high risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-No risk no reward")
             expect(element).toHaveClass("highRisk")
         });
 
-        it('shows low risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Serentiy")
+        it('shows low risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Serentiy")
             expect(element).toHaveClass("lowRisk")
         });
 
-        it('shows medium risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-sunset-Average Joes")
+        it('shows medium risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-sunset-Average Joes")
             expect(element).toHaveClass("mediumRisk")
         });
 
-        it('shows medium low risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Average Joes")
+        it('shows medium low risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Average Joes")
             expect(element).toHaveClass("mediumRisk")
         });
 
-        it('shows medium high risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-sunset-No risk no reward")
+        it('shows medium high risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-sunset-No risk no reward")
             expect(element).toHaveClass("mediumHighRisk")
         });
 
-        it('shows unknown risk as high risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-sunset-Department of mystery")
+        it('shows unknown risk as high risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-sunset-Department of mystery")
             expect(element).toHaveClass("unknownRisk")
         });
 
-        it('shows not_applicable risk as low risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-tech_stack-Department of mystery")
+        it('shows not_applicable risk as low risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-tech_stack-Department of mystery")
             expect(element).toHaveClass("lowRisk")
         });
 
-        it('shows undefined risk as unknown risk', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Department of mystery")
+        it('shows undefined risk as unknown risk', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Department of mystery")
             expect(element).toHaveClass("unknownRisk")
         });
 
-        it('includes unknown risks when unknown risk radio selected', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Department of mystery")
-            const radioElement = getByTestId('radioUnknownRisk')
+        it('includes unknown risks when unknown risk radio selected', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Department of mystery")
+            const radioElement = await findByTestId('radioUnknownRisk')
             fireEvent.click(radioElement)
             expect(element).toHaveClass("highRisk")
         });
 
-        it('includes audit coverage when coverage radio selected', () => {
-            const { getByTestId } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Department of mystery")
-            const radioElement = getByTestId('radioCoverage')
+        it('includes audit coverage when coverage radio selected', async () => {
+            const { findByTestId } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Department of mystery")
+            const radioElement = await findByTestId('radioCoverage')
             fireEvent.click(radioElement)
             expect(element).toHaveClass("blue1")
         });
     })
 
     describe('risk details section', () => {
-        it('displays all systems when no cell selected', () => {
-            const { getByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const expected = getByText('Riskinator 6000')
+        it('displays all systems when no cell selected', async () => {
+            const { findByText } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const expected = await findByText('Riskinator 6000')
             expect(expected).toBeInTheDocument()
         })
 
-        it('displays systems associated with selected cell', () => {
-            const { getByTestId, getByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Department of mystery")
+        it('displays systems associated with selected cell', async () => {
+            const { findByTestId, findByText } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Department of mystery")
             fireEvent.click(element)
-            const expectedSystem = getByText(/Mysterion/)
+            const expectedSystem = await findByText(/Mysterion/)
             expect(expectedSystem).toBeInTheDocument()
         })
 
-        it('does not display systems not associated with selected cell', () => {
-            const { getByTestId, queryByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Department of mystery")
+        it('does not display systems not associated with selected cell', async () => {
+            const { findByTestId, queryByText } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Department of mystery")
             fireEvent.click(element)
             const expectedSystem = queryByText("VaporWare 3000")
             expect(expectedSystem).not.toBeInTheDocument()
         })
 
-        it('orders systems from highest risk to lowest risk', () => {
-            const { getByTestId, queryAllByText } = render(<BrowserRouter><PortfolioHeatmap systems={test_data} /></BrowserRouter>)
-            const element = getByTestId("riskSquare-roadmap-Average Joes")
+        it('orders systems from highest risk to lowest risk', async () => {
+            const { findByTestId, queryAllByText } = render(<BrowserRouter><PortfolioHeatmap /></BrowserRouter>)
+            const element = await findByTestId("riskSquare-roadmap-Average Joes")
             fireEvent.click(element)
             const systems = queryAllByText(/Systemio Budgeto/)
             expect(systems[0]).toHaveTextContent("Systemio Budgeto v2")
