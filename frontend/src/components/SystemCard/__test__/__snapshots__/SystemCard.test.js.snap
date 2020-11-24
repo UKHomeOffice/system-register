@@ -19,7 +19,7 @@ exports[`<SystemCard /> matches snapshot 1`] = `
         data-testid="modified-on"
       >
         Last modified: 
-        February 2020
+        13 February 2020
       </span>
       )
     </small>

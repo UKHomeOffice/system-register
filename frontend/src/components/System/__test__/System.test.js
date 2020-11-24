@@ -85,7 +85,7 @@ describe('<System />', () => {
             });
 
             it('displays correct modified on', () => {
-                const element = _getByText('Last modified: February 2020')
+                const element = _getByText('Last modified: 13 February 2020')
                 expect(element).toBeInTheDocument()
             });
 

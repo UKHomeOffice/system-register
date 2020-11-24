@@ -2,8 +2,8 @@ import React from 'react'
 
 const formatDate = (str) => {
     if (str) {
-        const options = { year: 'numeric', month: 'long' }
-        return new Date(str).toLocaleDateString('en-US', options)
+        const options = { year: 'numeric', month: 'long', day: 'numeric' }
+        return new Date(str).toLocaleDateString('en-GB', options)
     }
 
     return <strong className="highRisk">Never</strong>
