@@ -19,8 +19,10 @@ const PortfolioHeatmap = () => {
         const fetchData = async () => {
             const sys = await api.getAllSystems()
             setSystems(sys.systems)
+            // noinspection JSCheckFunctionSignatures: false positive
             setSelectedCell((prev) => ({ ...prev, systems: sys.systems }));
         }
+        // noinspection JSIgnoredPromiseFromCall: call can have async side effect
         fetchData()
     }, []);
     const [selectedView, setView] = useState('knownRisk')
