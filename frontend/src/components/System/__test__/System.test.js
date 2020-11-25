@@ -40,11 +40,11 @@ const test_system = {
             "rationale": "Really good tech"
         }
     ]
-}
+};
 
 const test_unknown_system = {
     id: 444,
-    name: "System X",
+    name: "System Y",
     aliases: [],
     criticality: "",
     investment_state: "",
@@ -70,7 +70,7 @@ const test_unknown_system = {
             "rationale": null
         }
     ]
-}
+};
 
 describe('<System />', () => {
     afterEach(cleanup)
@@ -78,33 +78,28 @@ describe('<System />', () => {
     describe('when the data is known', () => {
         beforeEach(() => {
             api.getSystem.mockResolvedValue(test_system);
-        })
+        });
 
         describe('System section', () => {
             it('renders system name', async () => {
                 setup();
-                const element = await screen.findByText('System X')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByText('System X');
+                expect(element).toBeInTheDocument();
             });
 
             it('displays correct modified on', async () => {
                 setup();
-                const element = await screen.findByText('Last modified: 13 February 2020')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByText('Last modified: 13 February 2020');
+                expect(element).toBeInTheDocument();
             });
 
-            it('renders description section', async () => {
+            it('renders Description section', async () => {
                 setup();
-                const element = await screen.findByText('Description')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "Description"});
+                expect(element).toBeInTheDocument();
             });
 
-            it('populates description section correctly', async () => {
-                setup();
-                const element = await screen.findByText('The description')
-                expect(element).toBeInTheDocument()
-            });
-        })
+        });
 
         describe('About section', () => {
             it('renders About section', async () => {
@@ -269,36 +264,29 @@ describe('<System />', () => {
         describe('Risk section', () => {
             it("renders Risk section", async () => {
                 setup();
-                const element = await screen.findByText("Risk");
+                const element = await screen.findByRole("heading", {name: "Risk"});
                 expect(element).toBeInTheDocument();
-            })
+            });
 
-            it("displays risk name", async () => {
+            it("displays correct risk names", async () => {
                 setup();
-                const element = await screen.findByText("Roadmap");
-                expect(element).toBeInTheDocument();
-            })
+                const roadmap = await screen.findByText("Roadmap");
+                const techStack = await screen.findByText("Tech Stack");
 
-            it("displays risk tag", async () => {
-                setup();
-                const element = await screen.findByText("MEDIUM");
-                expect(element).toBeInTheDocument();
-            })
+                expect(roadmap).toBeInTheDocument();
+                expect(techStack).toBeInTheDocument();
+            });
 
-            it("has Rationale section", async () => {
+            it("renders the details of each risk", async () => {
                 setup();
-                const element = await screen.findByTestId('risk-container');
-                expect(element).toHaveTextContent("Rationale:")
-            })
+                const risks = await screen.findAllByTestId('risk-details');
+                expect(risks).toHaveLength(2);
+            });
 
-            it("populates Rationale section correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('risk-container');
-                expect(element).toHaveTextContent("there is no plan")
-            })
+
         })
 
-    })
+    });
 
     describe('when the data is unknown', () => {
         beforeEach(() => {
@@ -308,7 +296,7 @@ describe('<System />', () => {
         describe('System section', () => {
             it('renders system name', async () => {
                 setup();
-                const element = await screen.findByText('System X')
+                const element = await screen.findByText('System Y')
                 expect(element).toBeInTheDocument()
             });
 
@@ -318,18 +306,12 @@ describe('<System />', () => {
                 expect(element).toHaveTextContent("Never")
             });
 
-            it('renders description section', async () => {
+            it('renders Description section', async () => {
                 setup();
-                const element = await screen.findByText("Description")
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "Description"});
+                expect(element).toBeInTheDocument();
             });
-
-            it('populates description section correctly', async () => {
-                setup();
-                const element = await screen.findByTestId("system-description")
-                expect(element).toHaveTextContent("UNKNOWN")
-            });
-        })
+        });
 
         describe('About section', () => {
             it('renders About section', async () => {
@@ -494,15 +476,24 @@ describe('<System />', () => {
         describe('Risk section', () => {
             it("renders Risk section", async () => {
                 setup();
-                const element = await screen.findByText("Risk");
+                const element = await screen.findByRole("heading", {name: "Risk"});
                 expect(element).toBeInTheDocument();
-            })
+            });
+
+            it("displays correct risk names", async () => {
+                setup();
+                const roadmap = await screen.findByText("Roadmap");
+                const techStack = await screen.findByText("Change");
+
+                expect(roadmap).toBeInTheDocument();
+                expect(techStack).toBeInTheDocument();
+            });
 
             it("renders the details of each risk", async () => {
                 setup();
                 const risks = await screen.findAllByTestId('risk-details');
                 expect(risks).toHaveLength(2);
-            })
+            });
         })
     })
 });
