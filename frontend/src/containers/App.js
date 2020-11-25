@@ -50,9 +50,7 @@ class App extends React.Component {
                                 <SystemList register={this.state.register} />
                             </Route>
                             <Route exact path="/system/:id" component={System} />
-                            <Route exact path="/risk_dashboard">
-                                <PortfolioHeatmap systems={this.state.register.systems} />
-                            </Route>
+                            <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                         </Switch>
                     </main>
                 </BrowserRouter>
