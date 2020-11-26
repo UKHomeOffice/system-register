@@ -30,7 +30,7 @@ let systemData = <p>loading system data...</p>
         <div className="contentBlock">
           <h2>About</h2>
           <GridRow>
-            <GridCol setWidth="one-quarter">
+            <GridCol data-testid="about-column1" setWidth="one-quarter">
               <p>Aliases</p>
               <p>Department</p>
               <p>Criticality assessment</p>
@@ -38,13 +38,13 @@ let systemData = <p>loading system data...</p>
               <p>Developed by</p>
               <p>Supported by</p>
             </GridCol>
-            <GridCol setWidth="one-half">
-              <p data-testid="about-aliases">{renderAliases(system.aliases)}</p>
-              <p data-testid="about-department"><KeyInfo info={system.department} /></p>
-              <p data-testid="about-criticality"><Criticality level={system.criticality} /> </p>
-              <p data-testid="about-investment-state"><InvestmentState state={system.investment_state} /></p>
-              <p data-testid="about-developed-by"><KeyInfo info={system.developed_by} /></p>
-              <p data-testid="about-supported-by"><KeyInfo info={system.supported_by} /></p>
+            <GridCol data-testid="about-column2" setWidth="one-half">
+              <p>{renderAliases(system.aliases)}</p>
+              <p><KeyInfo info={system.department} /></p>
+              <p><Criticality level={system.criticality} /></p>
+              <p><InvestmentState state={system.investment_state} /></p>
+              <p><KeyInfo info={system.developed_by} /></p>
+              <p><KeyInfo info={system.supported_by} /></p>
             </GridCol>
           </GridRow>
         </div>

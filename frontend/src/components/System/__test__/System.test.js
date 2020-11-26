@@ -108,78 +108,30 @@ describe('<System />', () => {
                 expect(element).toBeInTheDocument()
             });
 
-            it('renders Aliases entry in table', async () => {
+            it('renders first column correclty', async () => {
                 setup();
-                const element = await screen.findByText('Aliases')
-                expect(element).toBeInTheDocument()
-            })
+                const column = await screen.findByTestId("about-column1");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("Aliases");
+                expect(entries[1].textContent).toEqual("Department");
+                expect(entries[2].textContent).toEqual("Criticality assessment");
+                expect(entries[3].textContent).toEqual("Investment state");
+                expect(entries[4].textContent).toEqual("Developed by");
+                expect(entries[5].textContent).toEqual("Supported by");
+            });
 
-            it('renders correct Aliases entry in table', async () => {
+            it('renders correct entries in the second column of About table', async () => {
                 setup();
-                const element = await screen.findByText('sys X, project Jupiter')
-                expect(element).toBeInTheDocument()
+                const column = await screen.findByTestId("about-column2");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("sys X, project Jupiter");
+                expect(entries[1].textContent).toEqual("Department of Fig and Indie");
+                expect(entries[2].textContent).toEqual("HIGH");
+                expect(entries[3].textContent).toEqual("EVERGREEN");
+                expect(entries[4].textContent).toEqual("Dev Team");
+                expect(entries[5].textContent).toEqual("Support Team");
             })
-
-            it('renders Department entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Department')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Department entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Department of Fig and Indie')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Criticality assessment entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Criticality assessment')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Criticality entry in table', async () => {
-                setup();
-                const element = await screen.findByText('HIGH')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Investment state entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Investment state')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Investment state entry in table', async () => {
-                setup();
-                const element = await screen.findByText('EVERGREEN')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Developed by entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Developed by')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Developed by entry in table', async () => {
-                setup();
-                const element = await screen.findByText("Dev Team")
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Supported by entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Supported by')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Supported by entry in table', async () => {
-                setup();
-                const element = await screen.findByText("Support Team")
-                expect(element).toBeInTheDocument()
-            })
-        })
+      });
 
         describe('Contacts section', () => {
             it('renders Contacts section', async () => {
@@ -314,83 +266,36 @@ describe('<System />', () => {
         });
 
         describe('About section', () => {
-            it('renders About section', async () => {
+            it('renders About section ', async () => {
                 setup();
-                const element = await screen.findByText('About')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "About"});
+                expect(element).toBeInTheDocument();
             });
 
-            it('renders Aliases entry in table', async () => {
+            it('renders first column correclty', async () => {
                 setup();
-                const element = await screen.findByText('Aliases')
-                expect(element).toBeInTheDocument()
+                const column = await screen.findByTestId("about-column1");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("Aliases");
+                expect(entries[1].textContent).toEqual("Department");
+                expect(entries[2].textContent).toEqual("Criticality assessment");
+                expect(entries[3].textContent).toEqual("Investment state");
+                expect(entries[4].textContent).toEqual("Developed by");
+                expect(entries[5].textContent).toEqual("Supported by");
+            });
+
+            it('renders correct entries in the second column of About table', async () => {
+                setup();
+                const column = await screen.findByTestId("about-column2");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("None");
+                expect(entries[1].textContent).toEqual("UNKNOWN");
+                expect(entries[2].textContent).toEqual("UNKNOWN");
+                expect(entries[3].textContent).toEqual("INVESTMENT UNKNOWN");
+                expect(entries[4].textContent).toEqual("UNKNOWN");
+                expect(entries[5].textContent).toEqual("UNKNOWN");
             })
 
-            it("populates Aliases correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-aliases');
-                expect(element).toHaveTextContent("None")
-            })
-
-            it('renders Department entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Department')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Department correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-department');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Criticality assessment entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Criticality assessment')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Criticality correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-criticality');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Investment state entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Investment state')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Investment state correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-investment-state');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Developed by entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Developed by')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Developed by correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-developed-by');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Supported by entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Supported by')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Supported by correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('about-supported-by');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
         })
 
         describe('Contacts section', () => {
