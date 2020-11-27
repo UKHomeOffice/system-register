@@ -1,15 +1,21 @@
 package uk.gov.digital.ho.systemregister.test.io.database;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import javax.inject.Inject;
-
+import io.agroal.api.AgroalDataSource;
+import io.quarkus.test.junit.QuarkusTest;
 import org.jboss.logging.Logger;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import io.quarkus.test.junit.QuarkusTest;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 import uk.gov.digital.ho.systemregister.io.database.PostgresEventStore;
+import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.inject.Inject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
@@ -18,6 +24,18 @@ public class PostgresEventStoreTest {
 
     @Inject
     PostgresEventStore eventStore;
+
+    @Inject
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    AgroalDataSource dataSource;
+
+    @BeforeEach
+    void cleanUpEventStore() throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute("TRUNCATE eventstore.snapshots, eventstore.events;");
+        }
+    }
 
     @Test
     public void getSnapshot_Empty() {
