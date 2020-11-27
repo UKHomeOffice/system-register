@@ -243,7 +243,7 @@ describe('<System />', () => {
     describe('when the data is unknown', () => {
         beforeEach(() => {
             api.getSystem.mockResolvedValue(test_unknown_system);
-        })
+        });
 
         describe('System section', () => {
             it('renders system name', async () => {

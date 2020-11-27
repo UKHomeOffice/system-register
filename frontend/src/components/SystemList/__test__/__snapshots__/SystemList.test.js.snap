@@ -85,11 +85,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
             data-testid="modified-on"
           >
             Last modified: 
-            <strong
-              className="highRisk"
-            >
+            <span>
               Never
-            </strong>
+            </span>
           </span>
           )
         </small>
@@ -124,11 +122,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
             data-testid="modified-on"
           >
             Last modified: 
-            <strong
-              className="highRisk"
-            >
+            <span>
               Never
-            </strong>
+            </span>
           </span>
           )
         </small>
@@ -163,11 +159,9 @@ exports[`<SystemList /> matches snapshot 1`] = `
             data-testid="modified-on"
           >
             Last modified: 
-            <strong
-              className="highRisk"
-            >
+            <span>
               Never
-            </strong>
+            </span>
           </span>
           )
         </small>
