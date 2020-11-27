@@ -1,7 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
 import java.beans.ConstructorProperties;
-import java.util.Collections;
 import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
 
