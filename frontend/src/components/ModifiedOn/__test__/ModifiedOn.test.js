@@ -19,7 +19,7 @@ describe('<ModifiedOn />', () => {
     it('renders <strong /> with "Never" text, when no date is supplied', async() =>{
         const { getByTestId } = render(<ModifiedOn date={noDate}/>);
         const element = await getByTestId('modified-on');
-        const expected = `<span data-testid="modified-on">Last modified: <strong class="highRisk">Never</strong></span>`;
+        const expected = `<span data-testid="modified-on">Last modified: <span>Never</span></span>`;
         expect(element).toContainHTML(expected)
     })
 })

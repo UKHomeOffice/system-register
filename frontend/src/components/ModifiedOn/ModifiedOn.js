@@ -6,7 +6,7 @@ const formatDate = (str) => {
         return new Date(str).toLocaleDateString('en-GB', options)
     }
 
-    return <strong className="highRisk">Never</strong>
+    return <span>Never</span>
 }
 
 const ModifiedOn = (props) => <span data-testid='modified-on'>Last modified: {formatDate(props.date)}</span>
