@@ -51,7 +51,7 @@ let systemData = <p>loading system data...</p>
         <div className="contentBlock">
           <h2>Contacts</h2>
           <GridRow>
-            <GridCol setWidth="one-quarter">
+            <GridCol data-testid="contacts-column1" setWidth="one-quarter">
               <p>System register owner</p>
               <p>Business owner</p>
               <p>Technical owner</p>
@@ -59,13 +59,13 @@ let systemData = <p>loading system data...</p>
               <p>Product owner</p>
               <p>Information asset owner</p>
             </GridCol>
-            <GridCol setWidth="one-half">
-              <p data-testid="contacts-system-register-owner"><KeyInfo info={system.system_register_owner} /></p>
-              <p data-testid="contacts-business-owner"><KeyInfo info={system.business_owner} /></p>
-              <p data-testid="contacts-technical-owner"><KeyInfo info={system.technical_owner} /></p>
-              <p data-testid="contacts-service-owner"><KeyInfo info={system.service_owner} /></p>
-              <p data-testid="contacts-product-owner"><KeyInfo info={system.product_owner} /></p>
-              <p data-testid="contacts-information-asset-owner"><KeyInfo info={system.information_asset_owner} /></p>
+            <GridCol data-testid="contacts-column2" setWidth="one-half">
+              <p><KeyInfo info={system.system_register_owner} /></p>
+              <p><KeyInfo info={system.business_owner} /></p>
+              <p><KeyInfo info={system.technical_owner} /></p>
+              <p><KeyInfo info={system.service_owner} /></p>
+              <p><KeyInfo info={system.product_owner} /></p>
+              <p><KeyInfo info={system.information_asset_owner} /></p>
             </GridCol>
           </GridRow>
         </div>

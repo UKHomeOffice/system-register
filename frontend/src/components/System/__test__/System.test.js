@@ -104,8 +104,8 @@ describe('<System />', () => {
         describe('About section', () => {
             it('renders About section', async () => {
                 setup();
-                const element = await screen.findByText('About')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "About"});
+                expect(element).toBeInTheDocument();
             });
 
             it('renders first column correclty', async () => {
@@ -136,82 +136,34 @@ describe('<System />', () => {
         describe('Contacts section', () => {
             it('renders Contacts section', async () => {
                 setup();
-                const element = await screen.findByText('Contacts')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "Contacts"});
+                expect(element).toBeInTheDocument();
             });
 
-            it('renders System register owner entry in table', async () => {
+            it('renders first column correclty', async () => {
                 setup();
-                const element = await screen.findByText('System register owner')
-                expect(element).toBeInTheDocument()
-            })
+                const column = await screen.findByTestId("contacts-column1");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("System register owner");
+                expect(entries[1].textContent).toEqual("Business owner");
+                expect(entries[2].textContent).toEqual("Technical owner");
+                expect(entries[3].textContent).toEqual("Service owner");
+                expect(entries[4].textContent).toEqual("Product owner");
+                expect(entries[5].textContent).toEqual("Information asset owner");
+            });
 
-            it('renders correct System register owner entry in table', async () => {
+            it('renders correct entries in the second column of About table', async () => {
                 setup();
-                const element = await screen.findByText('I own the register')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Business owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Business owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Business owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText("I own the business")
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Technical owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Technical owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Technical owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText("I own the tech")
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Service owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Service owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Service owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText("I own the service")
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Product owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Product owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Product owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText("I own the product")
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders Information asset owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Information asset owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it('renders correct Information asset owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText("I own the data")
-                expect(element).toBeInTheDocument()
-            })
-        })
+                const column = await screen.findByTestId("contacts-column2");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("I own the register");
+                expect(entries[1].textContent).toEqual("I own the business");
+                expect(entries[2].textContent).toEqual("I own the tech");
+                expect(entries[3].textContent).toEqual("I own the service");
+                expect(entries[4].textContent).toEqual("I own the product");
+                expect(entries[5].textContent).toEqual("I own the data");
+            });
+        });
 
         describe('Risk section', () => {
             it("renders Risk section", async () => {
@@ -234,9 +186,7 @@ describe('<System />', () => {
                 const risks = await screen.findAllByTestId('risk-details');
                 expect(risks).toHaveLength(2);
             });
-
-
-        })
+        });
 
     });
 
@@ -296,86 +246,38 @@ describe('<System />', () => {
                 expect(entries[5].textContent).toEqual("UNKNOWN");
             })
 
-        })
+        });
 
         describe('Contacts section', () => {
             it('renders Contacts section', async () => {
                 setup();
-                const element = await screen.findByText('Contacts')
-                expect(element).toBeInTheDocument()
+                const element = await screen.findByRole("heading", {name: "Contacts"});
+                expect(element).toBeInTheDocument();
             });
 
-            it('renders System register owner entry in table', async () => {
+            it('renders first column correclty', async () => {
                 setup();
-                const element = await screen.findByText('System register owner')
-                expect(element).toBeInTheDocument()
-            })
+                const column = await screen.findByTestId("contacts-column1");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("System register owner");
+                expect(entries[1].textContent).toEqual("Business owner");
+                expect(entries[2].textContent).toEqual("Technical owner");
+                expect(entries[3].textContent).toEqual("Service owner");
+                expect(entries[4].textContent).toEqual("Product owner");
+                expect(entries[5].textContent).toEqual("Information asset owner");
+            });
 
-            it("populates System register owner correctly", async () => {
+            it('renders correct entries in the second column of About table', async () => {
                 setup();
-                const element = await screen.findByTestId('contacts-system-register-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Business owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Business owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Business owner correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('contacts-business-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Technical owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Technical owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Technical owner correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('contacts-technical-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Service owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Service owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Service owner correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('contacts-service-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Product owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Product owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Product owner correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('contacts-product-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
-
-            it('renders Information asset owner entry in table', async () => {
-                setup();
-                const element = await screen.findByText('Information asset owner')
-                expect(element).toBeInTheDocument()
-            })
-
-            it("populates Information asset owner correctly", async () => {
-                setup();
-                const element = await screen.findByTestId('contacts-information-asset-owner');
-                expect(element).toHaveTextContent("UNKNOWN")
-            })
+                const column = await screen.findByTestId("contacts-column2");
+                const entries = column.childNodes;
+                expect(entries[0].textContent).toEqual("UNKNOWN");
+                expect(entries[1].textContent).toEqual("UNKNOWN");
+                expect(entries[2].textContent).toEqual("UNKNOWN");
+                expect(entries[3].textContent).toEqual("UNKNOWN");
+                expect(entries[4].textContent).toEqual("UNKNOWN");
+                expect(entries[5].textContent).toEqual("UNKNOWN");
+            });
         })
 
         describe('Risk section', () => {
