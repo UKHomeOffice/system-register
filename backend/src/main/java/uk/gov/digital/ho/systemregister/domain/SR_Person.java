@@ -1,30 +1,14 @@
 package uk.gov.digital.ho.systemregister.domain;
 
-import java.util.Objects;
+import java.beans.ConstructorProperties;
 
-public class SR_Person {//todo I want to make all these immutable but cant because they need to be serialisable, help
-    public String name;
+public class SR_Person {
+    public final String name;
 
-    public SR_Person() {}
-
+    @ConstructorProperties("name")
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public SR_Person(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof SR_Person)) {
-            return false;
-        }
-        SR_Person sR_Person = (SR_Person) o;
-        return Objects.equals(name, sR_Person.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name);
     }
 
     @Override
@@ -33,6 +17,6 @@ public class SR_Person {//todo I want to make all these immutable but cant becau
     }
 
     public boolean isValid() {
-        return name.isBlank() == false;
+        return !name.isBlank();
     }
 }

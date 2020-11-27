@@ -1,5 +1,6 @@
 package uk.gov.digital.ho.systemregister.application.messaging.events;
 
+import java.beans.ConstructorProperties;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class SystemAddedEvent extends SR_Event {
     public SystemAddedEvent() {
     }
 
+    @ConstructorProperties({"system", "author"})
     public SystemAddedEvent(SR_System system, SR_Person author) {
         this.timestamp = Instant.now();
         this.author = author;
