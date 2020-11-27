@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.AddSystemResult;
-import uk.gov.digital.ho.systemregister.domain.CHANGE;
+import uk.gov.digital.ho.systemregister.domain.Change;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
@@ -30,11 +30,11 @@ public final class AddSystemCommandHandler {
         List<SR_System> systems = currentRegisterState.getSystems().systems;
         SystemRegister systemRegister = new SystemRegister(systems);
         AddSystemResult result = systemRegister.addSystem(cmd.systemData);
-        if (result.result == CHANGE.ADDED) {
+        if (result.result == Change.ADDED) {
             SystemAddedEvent event = new SystemAddedEvent(result.system, cmd.author);
             eventBus.publish(event);
         }
-        if (result.result == CHANGE.DUPLICATE) {
+        if (result.result == Change.DUPLICATE) {
             LOG.warn("Attempted to add a duplicate system: " + cmd.systemData.name);
         }
     }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.AddSystemResult;
-import uk.gov.digital.ho.systemregister.domain.CHANGE;
+import uk.gov.digital.ho.systemregister.domain.Change;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
@@ -25,7 +25,7 @@ public class SystemRegisterTest {
 
         AddSystemResult actual = systemRegister.addSystem(cmd.systemData);
 
-        assertEquals(CHANGE.ADDED, actual.result);
+        assertEquals(Change.ADDED, actual.result);
         assertTrue(actual.system.lastUpdated.compareTo(cmd.timestamp) > 0);
         util.expectSystemToBeCorrect(cmd, actual.system);
     }
@@ -39,7 +39,7 @@ public class SystemRegisterTest {
 
         AddSystemResult actual = systemRegister.addSystem(cmd_1.systemData);
 
-        assertEquals(CHANGE.DUPLICATE, actual.result);
+        assertEquals(Change.DUPLICATE, actual.result);
         assertEquals(seedSystem.id, actual.system.id);
     }
 
@@ -53,7 +53,7 @@ public class SystemRegisterTest {
 
         AddSystemResult actual = systemRegister.addSystem(cmd_1.systemData);
 
-        assertEquals(CHANGE.ADDED, actual.result);
+        assertEquals(Change.ADDED, actual.result);
         assertNotEquals(seedSystem.id, actual.system.id);
     }
 
