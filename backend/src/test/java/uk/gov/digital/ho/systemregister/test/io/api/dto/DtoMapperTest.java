@@ -26,15 +26,6 @@ public class DtoMapperTest extends TestDataUtil {
     }
 
     @Test
-    public void mapAddSystemCommand_NeverBeenUpdated() {
-        AddSystemCommandDTO dto = new AddSystemCommandDTO(a_system_dto.build());
-        AddSystemCommand result = DtoMapper.map(dto, expectedAuthor, timestamp);
-
-        expectMetaDataToBeCorrect(expectedAuthor, authorUsername, result);
-        expectSystemToBeCorrect(result, a_system_dto.build());
-    }
-
-    @Test
     public void mapSnapshot() {
         Snapshot snapshot = new SnapshotBuilder().build();
 
