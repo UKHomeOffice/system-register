@@ -1,4 +1,4 @@
-package uk.gov.digital.ho.systemregister.io.database.dao;
+package uk.gov.digital.ho.systemregister.io.database.dao.v1;
 
 import java.beans.ConstructorProperties;
 

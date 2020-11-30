@@ -3,6 +3,8 @@ package uk.gov.digital.ho.systemregister.io.database;
 import io.agroal.api.AgroalDataSource;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
+import uk.gov.digital.ho.systemregister.io.database.mappers.DAOMapper;
 import uk.gov.digital.ho.systemregister.util.AES;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -40,6 +42,10 @@ public class PostgresEventStore implements IEventStore {
     @Inject
     AgroalDataSource dataSource;
 
+    @Inject()
+    @Named("v1")
+    DAOMapper<SystemAddedEvent> daoMapper;
+
     Jsonb jsonb = JsonbBuilder.create();
 
     @Override
@@ -72,6 +78,7 @@ public class PostgresEventStore implements IEventStore {
 
     @Override
     public void save(SR_Event evt) {
+//        var dao = daoMapper.map(evt);
         writeEvent(evt);
     }
 

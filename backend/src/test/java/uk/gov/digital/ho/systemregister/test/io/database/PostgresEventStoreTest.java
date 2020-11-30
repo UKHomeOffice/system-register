@@ -7,6 +7,7 @@ import org.jboss.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.database.PostgresEventStore;
 import uk.gov.digital.ho.systemregister.test.helpers.KeycloakServer;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
@@ -14,8 +15,10 @@ import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBu
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javax.inject.Inject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -77,7 +80,14 @@ public class PostgresEventStoreTest {
         var actual = eventStore.getEvents();
 
         assertTrue(actual.isPresent());
-        assertEquals(1, actual.get().size());
-        assertEquals(expected, actual.get().get(0));
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void canReadV1SystemAddedEvent() {
+        //insert pre-captured domain.SystemAddedEvent into db directly
+        //eventstore.getEvents()
+        //are all good and as expected
     }
 }
