@@ -5,13 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import static io.restassured.RestAssured.get;
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsBytes;
 
 @QuarkusTest
 @Testcontainers
@@ -42,14 +38,5 @@ public class FrontendResourceTest {
         byte[] retrievedData = get("/robots.txt").asByteArray();
 
         assertThat(retrievedData).containsExactly(staticResource);
-    }
-
-    private byte[] getResourceAsBytes(String resource) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try (InputStream stream = classLoader.getResourceAsStream(resource)) {
-            return toByteArray(requireNonNull(stream));
-        } catch (IOException e) {
-            throw new AssertionError("unable to load resource: " + resource, e);
-        }
     }
 }
