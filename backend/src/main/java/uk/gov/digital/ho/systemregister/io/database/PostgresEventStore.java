@@ -82,7 +82,7 @@ public class PostgresEventStore implements IEventStore {
     @Override
     public void save(SR_Event evt) {
         // TODO: Persist DAO instead of domain object
-        var dao = daoMapper.map(evt);
+        var dao = daoMapper.mapToDao(evt);
         writeEvent(evt);
     }
 

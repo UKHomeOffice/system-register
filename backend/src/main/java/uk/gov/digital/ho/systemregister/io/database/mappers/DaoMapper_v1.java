@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 @Named("v1")
 public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
     @Override
-    public SystemAddedEventDAO_v1 map(SR_Event evt) {
+    public SystemAddedEventDAO_v1 mapToDao(SR_Event evt) {
         if (!(evt instanceof SystemAddedEvent)) {
             throw new UnsupportedOperationException(
                     "Event type is not supported: " + evt.getClass().getName());

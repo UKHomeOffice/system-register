@@ -25,7 +25,7 @@ public class DaoMapper_v1Test {
     void mapsSystemAddedEventToDao() {
         SystemAddedEvent evt = new SystemAddedEventBuilder().build();
 
-        var actual = mapper.map(evt);
+        var actual = mapper.mapToDao(evt);
 
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(evt);
@@ -35,7 +35,7 @@ public class DaoMapper_v1Test {
     void rejectsEventsOtherThanSystemAdded() {
         var event = new SR_Event(new SR_Person("user"), Instant.now());
 
-        assertThatThrownBy(() -> mapper.map(event))
+        assertThatThrownBy(() -> mapper.mapToDao(event))
                 .isInstanceOf(UnsupportedOperationException.class)
                 .hasMessageMatching(".*not supported: .*\\.SR_Event$");
     }
