@@ -1,26 +1,29 @@
 package uk.gov.digital.ho.systemregister.io.database;
 
 import io.agroal.api.AgroalDataSource;
-import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
-import uk.gov.digital.ho.systemregister.io.database.mappers.DAOMapper;
-import uk.gov.digital.ho.systemregister.util.AES;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
+import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper;
+import uk.gov.digital.ho.systemregister.util.AES;
 import uk.gov.digital.ho.systemregister.util.EncryptionError;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import java.sql.*;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 @Named("postgres")
@@ -42,9 +45,9 @@ public class PostgresEventStore implements IEventStore {
     @Inject
     AgroalDataSource dataSource;
 
-    @Inject()
+    @Inject
     @Named("v1")
-    DAOMapper<SystemAddedEvent> daoMapper;
+    DaoMapper<? extends BaseDao> daoMapper;
 
     Jsonb jsonb = JsonbBuilder.create();
 
@@ -78,14 +81,15 @@ public class PostgresEventStore implements IEventStore {
 
     @Override
     public void save(SR_Event evt) {
-//        var dao = daoMapper.map(evt);
+        // TODO: Persist DAO instead of domain object
+        var dao = daoMapper.map(evt);
         writeEvent(evt);
     }
 
     private Optional<Integer> writeSnapshot(Snapshot object) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement(SQL_WRITE_SNAPSHOT);) {
+                     connection.prepareStatement(SQL_WRITE_SNAPSHOT)) {
             String className = object.getClass().getName();
             byte[] encryptedData = serialise(object);
             preparedStatement.setString(1, className);
@@ -101,7 +105,7 @@ public class PostgresEventStore implements IEventStore {
     private <T extends SR_Event> Optional<Integer> writeEvent(T object) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement(SQL_WRITE_EVENT);) {
+                     connection.prepareStatement(SQL_WRITE_EVENT)) {
             String className = object.getClass().getName();
             byte[] encryptedData = serialise(object);
             preparedStatement.setTimestamp(1, Timestamp.from(object.timestamp));
@@ -125,7 +129,7 @@ public class PostgresEventStore implements IEventStore {
     private <T> Optional<List<T>> readSnapshots(String sql) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery();) {
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             return transformResponse(resultSet);
         } catch (Exception e) {
             LOG.error("Massive database failure: ", e);
@@ -133,10 +137,9 @@ public class PostgresEventStore implements IEventStore {
         }
     }
 
-    private <T extends SR_Event> Optional<List<T>> readEvents(String sql, Instant timestamp) {
+    private <T> Optional<List<T>> readEvents(String sql, Instant timestamp) {
         try (Connection connection = dataSource.getConnection();
-
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setTimestamp(1, Timestamp.from(timestamp));
             ResultSet resultSet = preparedStatement.executeQuery();
             return transformResponse(resultSet);

@@ -1,7 +1,8 @@
 package uk.gov.digital.ho.systemregister.io.database.mappers;
 
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 
-public interface DAOMapper<T> {
+public interface DaoMapper<T extends BaseDao> {
     T map(SR_Event evt);
 }
