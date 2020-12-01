@@ -1,15 +1,17 @@
 package uk.gov.digital.ho.systemregister.test.helpers.builders;
 
+import uk.gov.digital.ho.systemregister.domain.SR_Risk;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
+
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import uk.gov.digital.ho.systemregister.domain.SR_Risk;
-import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 public class SR_SystemBuilder {
     SecureRandom secureRandom = new SecureRandom();
+    private int id = secureRandom.nextInt();
     public String name = "System Register";
     public String description = "Central source of system names, contacts and risk information";
     public Instant lastUpdated = Instant.now();
@@ -37,9 +39,14 @@ public class SR_SystemBuilder {
     }
 
     public SR_System build() {
-        return new SR_System(secureRandom.nextInt(), name, description, lastUpdated, portfolio, criticality,
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality,
                 investmentState, businessOwner, serviceOwner, technicalOwner, productOwner,
                 informationAssetOwner, developedBy, supportedBy, aliases, risks);
+    }
+
+    public SR_SystemBuilder withId(int id) {
+        this.id = id;
+        return this;
     }
 
     public SR_SystemBuilder withLastUpdated(Instant lastUpdated) {

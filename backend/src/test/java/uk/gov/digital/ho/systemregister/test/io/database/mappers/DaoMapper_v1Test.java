@@ -9,16 +9,18 @@ import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper_v1;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
 import java.time.Instant;
+import javax.json.bind.JsonbBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 public class DaoMapper_v1Test {
     private DaoMapper_v1 mapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new DaoMapper_v1();
+        mapper = new DaoMapper_v1(JsonbBuilder.create());
     }
 
     @Test
@@ -38,5 +40,37 @@ public class DaoMapper_v1Test {
         assertThatThrownBy(() -> mapper.mapToDao(event))
                 .isInstanceOf(UnsupportedOperationException.class)
                 .hasMessageMatching(".*not supported: .*\\.SR_Event$");
+    }
+
+    @Test
+    void mapsDaoToSystemAddedEvent() {
+        SystemAddedEvent expectedEvent = new SystemAddedEventBuilder()
+                .withId(123)
+                .withSystemCalled("system")
+                .withTimeStamp(Instant.parse("2020-10-09T08:07:06.050Z"))
+                .withLastUpdated(Instant.parse("2020-10-09T08:07:05.000Z"))
+                .build();
+        String json = getResourceAsString("dao/v1/system-added-event.json");
+
+        SR_Event event = mapper.mapToDomain(json);
+
+        assertThat(event).usingRecursiveComparison()
+                .isEqualTo(expectedEvent);
+    }
+
+    @Test
+    void mapsSerialisedDomainObjectToSystemAddedEvent() {
+        SystemAddedEvent expectedEvent = new SystemAddedEventBuilder()
+                .withId(123)
+                .withSystemCalled("system")
+                .withTimeStamp(Instant.parse("2020-10-09T08:07:06.050Z"))
+                .withLastUpdated(Instant.parse("2020-10-09T08:07:05.000Z"))
+                .build();
+        String json = getResourceAsString("dao/v1/system-added-event.json");
+
+        SR_Event event = mapper.mapToDomain(json);
+
+        assertThat(event).usingRecursiveComparison()
+                .isEqualTo(expectedEvent);
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.database.dao.v1;
 
+import java.beans.ConstructorProperties;
 import java.time.Instant;
 import java.util.List;
 
@@ -21,6 +22,12 @@ public class SystemDAO_v1 {
     public final List<String> aliases;
     public final List<RiskDAO_v1> risks;
 
+    @ConstructorProperties({
+            "id", "lastUpdated", "name", "description", "portfolio", "criticality", "investmentState", "businessOwner",
+            "serviceOwner", "technicalOwner", "productOwner", "informationAssetOwner", "developedBy", "supportedBy",
+            "aliases", "risks",
+    })
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public SystemDAO_v1(int id, Instant lastUpdated, String name, String description, String portfolio,
                         String criticality, String investmentState, String businessOwner, String serviceOwner,
                         String technicalOwner, String productOwner, String informationAssetOwner, String developedBy,

@@ -1,13 +1,11 @@
 package uk.gov.digital.ho.systemregister.application.messaging.events;
 
-import java.beans.ConstructorProperties;
-import java.time.Instant;
-import java.util.Objects;
-
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.json.bind.annotation.JsonbCreator;
+import java.beans.ConstructorProperties;
+import java.time.Instant;
+import java.util.Objects;
 
 public class SystemAddedEvent extends SR_Event {
     public SR_System system;
@@ -17,9 +15,13 @@ public class SystemAddedEvent extends SR_Event {
 
     @ConstructorProperties({"system", "author"})
     public SystemAddedEvent(SR_System system, SR_Person author) {
-        this.timestamp = Instant.now();
-        this.author = author;
+        this(system, author, Instant.now());
+    }
+
+    public SystemAddedEvent(SR_System system, SR_Person author, Instant timestamp) {
         this.system = system;
+        this.author = author;
+        this.timestamp = timestamp;
     }
 
     @Override

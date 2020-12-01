@@ -1,0 +1,34 @@
+{
+  "system": {
+    "id": 123,
+    "lastUpdated": "2020-10-09T08:07:05.000Z",
+    "name": "system",
+    "description": "Central source of system names, contacts and risk information",
+    "portfolio": "SPAN-R",
+    "criticality": "low",
+    "investmentState": "evergreen",
+    "businessOwner": null,
+    "serviceOwner": "Service Owner",
+    "technicalOwner": "Techy Owner",
+    "productOwner": null,
+    "informationAssetOwner": null,
+    "developedBy": "Developers",
+    "supportedBy": "All",
+    "aliases": [
+      "systems register",
+      "systems audit",
+      "system audit"
+    ],
+    "risks": [
+      {
+        "name": "change",
+        "level": "low",
+        "rationale": "Designed to be easy to change"
+      }
+    ]
+  },
+  "timestamp": "2020-10-09T08:07:06.050Z",
+  "author": {
+    "name": "Corey logan"
+  }
+}

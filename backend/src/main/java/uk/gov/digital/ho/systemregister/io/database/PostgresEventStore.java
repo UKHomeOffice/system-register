@@ -24,6 +24,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+
+import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
 @Named("postgres")
@@ -49,7 +52,7 @@ public class PostgresEventStore implements IEventStore {
     @Named("v1")
     DaoMapper<? extends BaseDao> daoMapper;
 
-    Jsonb jsonb = JsonbBuilder.create();
+    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
 
     @Override
     public Optional<Snapshot> getSnapshot() {
@@ -81,9 +84,8 @@ public class PostgresEventStore implements IEventStore {
 
     @Override
     public void save(SR_Event evt) {
-        // TODO: Persist DAO instead of domain object
         var dao = daoMapper.mapToDao(evt);
-        writeEvent(evt);
+        writeEvent(dao);
     }
 
     private Optional<Integer> writeSnapshot(Snapshot object) {
@@ -102,7 +104,7 @@ public class PostgresEventStore implements IEventStore {
         }
     }
 
-    private <T extends SR_Event> Optional<Integer> writeEvent(T object) {
+    private <T extends BaseDao> Optional<Integer> writeEvent(T object) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement(SQL_WRITE_EVENT)) {
@@ -122,42 +124,48 @@ public class PostgresEventStore implements IEventStore {
 
     private byte[] serialise(Object object) throws EncryptionError {
         var json = jsonb.toJson(object);
-        var encryptedData = AES.encrypt(json, encryptionKey);
-        return encryptedData;
+        return AES.encrypt(json, encryptionKey);
     }
 
     private <T> Optional<List<T>> readSnapshots(String sql) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            return transformResponse(resultSet);
+            Optional<List<EncodedData>> encodedData = transformResponse(resultSet);
+            return encodedData.map(
+                    data -> data.stream()
+                            .map(datum -> (T) jsonb.fromJson(datum.data, datum.type))
+                            .collect(toList()));
         } catch (Exception e) {
             LOG.error("Massive database failure: ", e);
             return Optional.empty();
         }
     }
 
-    private <T> Optional<List<T>> readEvents(String sql, Instant timestamp) {
+    private <T extends SR_Event> Optional<List<T>> readEvents(String sql, Instant timestamp) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setTimestamp(1, Timestamp.from(timestamp));
             ResultSet resultSet = preparedStatement.executeQuery();
-            return transformResponse(resultSet);
+            Optional<List<EncodedData>> encodedData = transformResponse(resultSet);
+            return encodedData.map(
+                    data -> data.stream()
+                            .map(this::<T>toDomainObject)
+                            .collect(toList()));
         } catch (Exception e) {
             LOG.error("Massive database failure: ", e);
             return Optional.empty();
         }
     }
 
-    private <T> Optional<List<T>> transformResponse(ResultSet resultSet) throws SQLException {
-        List<T> results = new ArrayList<>();
+    private Optional<List<EncodedData>> transformResponse(ResultSet resultSet) throws SQLException {
+        List<EncodedData> results = new ArrayList<>();
         while (resultSet.next()) {
             try {
                 byte[] objectData = resultSet.getBytes("object_data");
                 String objectType = resultSet.getString("object_type");
                 String decrypted = AES.decrypt(objectData, encryptionKey);
-                T deserialised = (T) jsonb.fromJson(decrypted, Class.forName(objectType));
-                results.add(deserialised);
+                results.add(EncodedData.from(Class.forName(objectType), decrypted));
             } catch (Exception | EncryptionError e) {
                 LOG.error("Error deserialising from db: " + e);
                 return Optional.empty();
@@ -165,5 +173,29 @@ public class PostgresEventStore implements IEventStore {
         }
         if (results.isEmpty()) return Optional.empty();
         return Optional.of(results);
+    }
+
+    private <T extends SR_Event> T toDomainObject(EncodedData datum) {
+        var mapper = findMapperFor(datum.type);
+        return mapper.mapToDomain(datum.data);
+    }
+
+    private DaoMapper<? extends BaseDao> findMapperFor(Class<?> type) {
+        return daoMapper;
+    }
+
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    private static class EncodedData {
+        final Class<?> type;
+        final String data;
+
+        EncodedData(Class<?> type, String data) {
+            this.type = type;
+            this.data = data;
+        }
+
+        private static EncodedData from(Class<?> type, String data) {
+            return new EncodedData(type, data);
+        }
     }
 }
