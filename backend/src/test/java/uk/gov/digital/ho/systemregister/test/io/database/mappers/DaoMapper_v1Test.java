@@ -32,6 +32,7 @@ public class DaoMapper_v1Test {
         assertThat(actual).usingRecursiveComparison()
                 .ignoringFields("author")
                 .isEqualTo(evt);
+        assertThat(actual.author).hasFieldOrPropertyWithValue("name", "Corey logan");
     }
 
     @Test
