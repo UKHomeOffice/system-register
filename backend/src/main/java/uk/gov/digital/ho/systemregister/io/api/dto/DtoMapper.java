@@ -1,14 +1,14 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class DtoMapper {
     private DtoMapper() {
@@ -16,7 +16,7 @@ public final class DtoMapper {
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, String authorName,
                                        Instant timestamp) {
-        return new AddSystemCommand(new SR_Person(authorName), timestamp, cmd.system.name,
+        return new AddSystemCommand(new SR_Person(authorName, null, null, null), timestamp, cmd.system.name,
                 cmd.system.description, cmd.system.portfolio,
                 cmd.system.criticality, cmd.system.investmentState, cmd.system.businessOwner, cmd.system.serviceOwner,
                 cmd.system.technicalOwner, cmd.system.productOwner, cmd.system.informationAssetOwner,

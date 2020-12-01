@@ -10,10 +10,10 @@ import uk.gov.digital.ho.systemregister.io.database.dao.v1.RiskDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemDAO_v1;
 
-import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -71,7 +71,7 @@ public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
     }
 
     private PersonDAO_v1 toAuthorDao(SR_Person author) {
-        return new PersonDAO_v1(author.name);
+        return new PersonDAO_v1(author.username);
     }
 
     private SR_System fromSystemDao(SystemDAO_v1 system) {
@@ -98,6 +98,6 @@ public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
     }
 
     private SR_Person fromAuthorDao(PersonDAO_v1 author) {
-        return new SR_Person(author.name);
+        return new SR_Person(author.name, null, null, null);
     }
 }

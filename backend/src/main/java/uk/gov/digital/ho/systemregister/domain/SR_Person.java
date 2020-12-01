@@ -3,20 +3,31 @@ package uk.gov.digital.ho.systemregister.domain;
 import java.beans.ConstructorProperties;
 
 public class SR_Person {
-    public final String name;
+    public final String username;
+    public final String firstName;
+    public final String surname;
+    public final String email;
 
-    @ConstructorProperties("name")
+    @ConstructorProperties({"username", "firstName", "surname", "email"})
     @SuppressWarnings("CdiInjectionPointsInspection")
-    public SR_Person(String name) {
-        this.name = name;
+    public SR_Person(String username, String firstName, String surname, String email) {
+        this.username = username;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return "{" + " name='" + name + "'" + "}";
+        return "SR_Person{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     public boolean isValid() {
-        return !name.isBlank();
+        return !username.isBlank();
     }
 }

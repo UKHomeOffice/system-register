@@ -8,8 +8,8 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper_v1;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
-import java.time.Instant;
 import javax.json.bind.JsonbBuilder;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,12 +30,13 @@ public class DaoMapper_v1Test {
         var actual = mapper.mapToDao(evt);
 
         assertThat(actual).usingRecursiveComparison()
+                .ignoringFields("author")
                 .isEqualTo(evt);
     }
 
     @Test
     void rejectsEventsOtherThanSystemAdded() {
-        var event = new SR_Event(new SR_Person("user"), Instant.now());
+        var event = new SR_Event(new SR_Person("user", null,null,null), Instant.now());
 
         assertThatThrownBy(() -> mapper.mapToDao(event))
                 .isInstanceOf(UnsupportedOperationException.class)

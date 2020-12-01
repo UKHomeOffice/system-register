@@ -7,7 +7,7 @@ import java.time.Instant;
 
 public class SystemAddedEventBuilder {
     private Instant timeStamp = Instant.now();
-    private final SR_Person author = new SR_Person("Corey logan");
+    private final SR_Person author = new SR_Person("Corey logan", null, null, null);
     private final SR_SystemBuilder systemBuilder = new SR_SystemBuilder();
 
     public SystemAddedEvent build() {

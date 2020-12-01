@@ -1,17 +1,18 @@
 package uk.gov.digital.ho.systemregister.test.helpers.builders;
 
+import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.domain.SR_Person;
+import uk.gov.digital.ho.systemregister.domain.SR_Risk;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
-import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 
 public class AddSystemCommandBuilder {
 
-    SR_Person author = new SR_Person("Corey Logan");
+    SR_Person author = new SR_Person("Corey Logan", null, null, null);
     public Instant timeStamp = Instant.now();
     public String name = "System XYZ";
     public String description = "An example system description...";

@@ -91,6 +91,6 @@ public class TestDataUtil {
 
     protected void expectMetaDataToBeCorrect(String expectedAuthor, String authorUsername,
                                              AddSystemCommand result) {
-        assertEquals(expectedAuthor, result.author.name);
+        assertEquals(expectedAuthor, result.author.username);
     }
 }
