@@ -1,7 +1,7 @@
 import React from 'react'
 import './SystemCard.css'
 import { Link } from 'react-router-dom'
-import ModifiedOn from '../ModifiedDetails/ModifiedDetails'
+import ModifiedDetails from '../ModifiedDetails/ModifiedDetails'
 
 const trimDescription = (str) => {
     if (!str) {
@@ -20,7 +20,7 @@ const SystemCard = (props) => {
             {/* todo tests */}
             <Link to={`/system/${id}`}>
                 <strong>{name}</strong>
-                <small> (Portfolio: {portfolio}, <ModifiedOn date={last_updated} />)
+                <small> (Portfolio: {portfolio}, <ModifiedDetails date={last_updated.timestamp} author_name={last_updated.author_name} />)
                 </small>
                 <div style={{ marginTop: "3px" }}>
                     <small>{trimDescription(description)}</small>

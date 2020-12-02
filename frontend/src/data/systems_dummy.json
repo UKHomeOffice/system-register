@@ -26,7 +26,10 @@
             "supportedBy": "All",
             "technicalOwner": "Home Office",
             "id": 1,
-            "lastUpdated": "2020-10-09T16:04:36.211144Z"
+            "last_updated": {
+                "timestamp": "2020-11-18T11:22:50.326570Z",
+                "author_name": "Betty Franklin"
+            }
         },
         {
             "aliases": [
@@ -52,7 +55,10 @@
             "supportedBy": "All",
             "technicalOwner": "Fun Office",
             "id": 2,
-            "lastUpdated": "2020-10-09T16:04:36.211144Z"
+            "last_updated": {
+                "timestamp": "2020-11-18T11:22:50.326570Z",
+                "author_name": "Betty Franklin"
+            }
         }
     ],
     "timestamp": "2020-10-09T16:04:36.227867Z"

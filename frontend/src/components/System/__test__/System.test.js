@@ -19,7 +19,10 @@ const test_system = {
     investment_state: "evergreen",
     description: "The description",
     portfolio: 'Portfolio Y',
-    last_updated: '2020-02-13T11:01:01',
+    last_updated: {
+        timestamp: '2020-02-13T11:01:01',
+        author_name: "Betty Franklin",
+    },
     system_register_owner: "I own the register",
     business_owner: "I own the business",
     service_owner: "I own the service",
@@ -50,7 +53,10 @@ const test_unknown_system = {
     investment_state: "",
     description: "",
     portfolio: '',
-    last_updated: '',
+    last_updated: {
+        timestamp: "",
+        author_name: "",
+    },
     business_owner: "",
     service_owner: "",
     technical_owner: "",
@@ -89,7 +95,7 @@ describe('<System />', () => {
 
             it('displays correct modified on', async () => {
                 setup();
-                const element = await screen.findByText('Last modified: 13 February 2020');
+                const element = await screen.findByText('Last modified: 13 February 2020 by Betty Franklin');
                 expect(element).toBeInTheDocument();
             });
 
@@ -222,7 +228,7 @@ describe('<System />', () => {
                 expect(element).toBeInTheDocument();
             });
 
-            it('renders first column correclty', async () => {
+            it('renders first column correctly', async () => {
                 setup();
                 const column = await screen.findByTestId("about-column1");
                 const entries = column.childNodes;

@@ -1,4 +1,6 @@
 import React from 'react'
+import './ModifiedDetails.css'
+
 
 const formatDate = (str) => {
     if (str) {
@@ -9,6 +11,10 @@ const formatDate = (str) => {
     return <span>Never</span>
 }
 
-const ModifiedOn = (props) => <span data-testid='modified-on'>Last modified: {formatDate(props.date)}</span>
+const formatAuthor = (str) => {
+    return str? " by " + str : "";
+}
 
-export default ModifiedOn
+const ModifiedDetails = (props) => <span className="message" data-testid='modified-on'>Last modified: {formatDate(props.date)}{formatAuthor(props.author_name)}</span>
+
+export default ModifiedDetails
