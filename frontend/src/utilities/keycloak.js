@@ -6,6 +6,7 @@ const keycloakConfig = {
     realm: config.keycloak.realm,
     clientId: config.keycloak.clientId
 }
+
 const keycloak = new Keycloak(keycloakConfig);
 
 export default keycloak

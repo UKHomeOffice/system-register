@@ -7,13 +7,15 @@ import System from '../components/System/System'
 import Menu from '../components/Menu/Menu'
 import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
 import { KeycloakProvider } from '@react-keycloak/web'
-import keycloak from '../utilities/keycloak'
 import Banner from '../components/Banner/Banner'
 import api from '../services/api';
+import config from '../config/config';
+import Keycloak from 'keycloak-js'
 
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
     state = {
+        keycloak: undefined,
         register: {
             "systems": []
         }
@@ -21,10 +23,28 @@ class App extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
+        config.getKeycloakConfig()
+            .then((c) => {
+                const keycloakConfig = {
+                    url: c.url,
+                    realm: c.realm,
+                    clientId: c.clientId
+                }
+                this.setState(
+                    {
+                        keycloak: new Keycloak(keycloakConfig),
+                        register: this.state.register
+                    })
+            }).catch((e) => console.error(e))
+
         api.getAllSystems()
             .then((register) => {
                 if (this._isMounted) {
-                    this.setState({ register: register })
+                    this.setState(
+                        {
+                            keycloak: this.state.keycloak,
+                            register: register
+                        })
                 }
             })
     }
@@ -34,28 +54,33 @@ class App extends React.Component {
     }
 
     render() {
-        return (
-            <KeycloakProvider keycloak={keycloak}>
-                <BrowserRouter>
-                    <header>
-                        <TitleBar />
-                        <Banner phase="in development">
-                            This is a new service - your <Link className="gds-link" to="/contact">feedback</Link> will help us to improve it.
+        if (this.state.keycloak) {
+            return (
+                <KeycloakProvider keycloak={this.state.keycloak}>
+                    <BrowserRouter>
+                        <header>
+                            <TitleBar />
+                            <Banner phase="in development">
+                                This is a new service - your <Link className="gds-link" to="/contact">feedback</Link> will help us to improve it.
                     </Banner>
-                    </header>
-                    <Menu />
-                    <main>
-                        <Switch>
-                            <Route exact path="/">
-                                <SystemList register={this.state.register} />
-                            </Route>
-                            <Route exact path="/system/:id" component={System} />
-                            <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
-                        </Switch>
-                    </main>
-                </BrowserRouter>
-            </KeycloakProvider>
-        );
+                        </header>
+                        <Menu />
+                        <main>
+                            <Switch>
+                                <Route exact path="/">
+                                    <SystemList register={this.state.register} />
+                                </Route>
+                                <Route exact path="/system/:id" component={System} />
+                                <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
+                            </Switch>
+                        </main>
+                    </BrowserRouter>
+                </KeycloakProvider>
+            );
+        }
+        else {
+            return <main><p data-testid="auth-initialising-msg">Initialing authentication...</p></main>
+        }
     }
 }
 

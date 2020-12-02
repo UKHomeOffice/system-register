@@ -1,7 +1,7 @@
 import React from 'react';
 import App from '../App';
 import { Router } from 'react-router-dom'
-import { render, waitFor } from '@testing-library/react'
+import { render, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { rest } from "msw";
@@ -15,6 +15,16 @@ const server = setupServer(
       ctx.status(200),
       ctx.json(data)
     );
+  }),
+  rest.get("/config/keycloak", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        host: "http://localhost:8081/auth/",
+        realm: "local-realm",
+        clientId: "system-register",
+      })
+    );
   })
 );
 
@@ -27,11 +37,12 @@ describe("<App />", () => {
 
   it('renders system from the API', async () => {
     const history = createMemoryHistory()
-    const { findByText } = render(
+    const { findByText, getByTestId } = render(
       <Router history={history}>
         <App />
       </Router>
     )
+    await waitForElementToBeRemoved(getByTestId(/auth-initialising-msg/))
 
     expect(await findByText('System Register', { selector: '.systemCard *' })).toBeInTheDocument();
   })
@@ -39,12 +50,12 @@ describe("<App />", () => {
   describe("routing", () => {
     it('navigates to the risk dashboard', async () => {
       const history = createMemoryHistory();
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
         <Router history={history}>
           <App />
         </Router>
       )
-
+      await waitForElementToBeRemoved(getByTestId(/auth-initialising-msg/))
       userEvent.click(getByText(/Risk Dashboard/i))
 
       await waitFor(() => {
