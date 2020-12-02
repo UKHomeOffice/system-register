@@ -37,7 +37,7 @@ describe('<InvestmentState />', () => {
 
     it('makes unknown investment state look mysterious', () => {
         const { getByText } = render(<InvestmentState state="unknown" />)
-        const element = getByText('INVESTMENT UNKNOWN')
+        const element = getByText('UNKNOWN')
         toLookMysterious(element)
     });
 })
@@ -68,6 +68,6 @@ function toLookLikeItsBeenDecommissioned(element) {
 }
 
 function toLookMysterious(element) {
-    const html = `<span class="badge investmentUnknown">INVESTMENT UNKNOWN</span>`
+    const html = `<span class="badge investmentUnknown">UNKNOWN</span>`
     expect(element).toContainHTML(html)
 }

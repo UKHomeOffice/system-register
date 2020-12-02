@@ -241,7 +241,7 @@ describe('<System />', () => {
                 expect(entries[0].textContent).toEqual("None");
                 expect(entries[1].textContent).toEqual("UNKNOWN");
                 expect(entries[2].textContent).toEqual("UNKNOWN");
-                expect(entries[3].textContent).toEqual("INVESTMENT UNKNOWN");
+                expect(entries[3].textContent).toEqual("UNKNOWN");
                 expect(entries[4].textContent).toEqual("UNKNOWN");
                 expect(entries[5].textContent).toEqual("UNKNOWN");
             })
