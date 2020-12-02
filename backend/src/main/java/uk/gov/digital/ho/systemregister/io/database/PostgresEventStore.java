@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
@@ -51,6 +52,9 @@ public class PostgresEventStore implements IEventStore {
     @Inject
     @Named("v1")
     DaoMapper<? extends BaseDao> daoMapper;
+
+    @Inject
+    Instance<DaoMapper<? extends BaseDao>> mappers;
 
     Jsonb jsonb = JsonbBuilder.create();
 
@@ -181,7 +185,10 @@ public class PostgresEventStore implements IEventStore {
     }
 
     private DaoMapper<? extends BaseDao> findMapperFor(Class<?> type) {
-        return daoMapper;
+        return mappers.stream()
+                .filter(mapper -> mapper.supports(type))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("no mapper for type: " + type.getName()));
     }
 
     @SuppressWarnings("CdiInjectionPointsInspection")

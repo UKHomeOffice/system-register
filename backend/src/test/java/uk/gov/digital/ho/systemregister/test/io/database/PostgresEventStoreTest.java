@@ -120,6 +120,41 @@ public class PostgresEventStoreTest {
                         .isEqualTo(List.of(expectedEvent)));
     }
 
+    @Test
+    public void canReadNewerSystemAddedEvents() {
+        var expectedEvent = aSystemAddedEvent()
+                .withAuthor(aPerson()
+                        .withUsername("user")
+                        .withFirstName("forename")
+                        .withSurname("surname")
+                        .withEmail("email"))
+                .withTimeStamp("2020-10-09T08:07:06.050Z")
+                .withSystem(aSystem()
+                        .withId(1234)
+                        .withName("system")
+                        .withAliases("systems register", "systems audit", "system audit")
+                        .withDescription("Central source of system names, contacts and risk information")
+                        .withDevelopedBy("Developers")
+                        .withRisks(aLowRisk()
+                                .withName("change")
+                                .withRationale("Designed to be easy to change"))
+                        .withLastUpdated("2020-10-09T08:07:05.000Z")
+                        .withTechnicalOwner("Techy Owner")
+                        .withServiceOwner("Service Owner")
+                        .withSupportedBy("All"))
+                .build();
+        insertEvent(
+                1,
+                "uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2",
+                getResourceAsString("dao/v2/encrypted-system-added-event.txt"));
+
+        var maybeEvents = eventStore.getEvents();
+
+        assertThat(maybeEvents).hasValueSatisfying(events ->
+                assertThat(events).usingRecursiveComparison()
+                        .isEqualTo(List.of(expectedEvent)));
+    }
+
     @SuppressWarnings("SameParameterValue")
     private void insertEvent(int id, String type, String data) {
         try (

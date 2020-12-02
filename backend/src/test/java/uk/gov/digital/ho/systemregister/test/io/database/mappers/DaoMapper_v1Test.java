@@ -2,10 +2,16 @@ package uk.gov.digital.ho.systemregister.test.io.database.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
+import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
+import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v1;
+import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2;
 import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper_v1;
+import uk.gov.digital.ho.systemregister.io.database.mappers.SystemAddedDaoMapper_v2;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
 import javax.json.bind.JsonbBuilder;
@@ -21,6 +27,22 @@ public class DaoMapper_v1Test {
     @BeforeEach
     void setUp() {
         mapper = new DaoMapper_v1(JsonbBuilder.create());
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {SystemAddedEventDAO_v1.class, SystemAddedEvent.class})
+    void supportsV1SystemAddedEvents(Class<?> type) {
+        boolean supported = mapper.supports(type);
+
+        assertThat(supported).isTrue();
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {SystemAddedEventDAO_v2.class, BaseDao.class})
+    void doesNotSupportOtherTypes(Class<?> type) {
+        boolean supported = mapper.supports(type);
+
+        assertThat(supported).isFalse();
     }
 
     @Test

@@ -11,6 +11,7 @@ import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemDAO_v1;
 
 import java.util.List;
+import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
@@ -20,6 +21,8 @@ import static java.util.stream.Collectors.toList;
 @ApplicationScoped
 @Named("v1")
 public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
+    private static final Set<Class<?>> SUPPORTED_TYPES = Set.of(SystemAddedEvent.class, SystemAddedEventDAO_v1.class);
+
     private final Jsonb jsonb;
 
     public DaoMapper_v1(Jsonb jsonb) {
@@ -45,6 +48,11 @@ public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
     public <R extends SR_Event> R mapToDomain(String data) {
         SystemAddedEventDAO_v1 event = jsonb.fromJson(data, SystemAddedEventDAO_v1.class);
         return (R) new SystemAddedEvent(fromSystemDao(event.system), fromAuthorDao(event.author), event.timestamp);
+    }
+
+    @Override
+    public boolean supports(Class<?> type) {
+        return SUPPORTED_TYPES.contains(type);
     }
 
     private SystemDAO_v1 toSystemDao(SR_System system) {

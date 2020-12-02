@@ -7,4 +7,6 @@ public interface DaoMapper<T extends BaseDao> {
     T mapToDao(SR_Event evt);
 
     <R extends SR_Event> R mapToDomain(String data);
+
+    boolean supports(Class<?> type);
 }
