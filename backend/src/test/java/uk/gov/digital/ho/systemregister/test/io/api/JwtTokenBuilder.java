@@ -34,7 +34,7 @@ public class JwtTokenBuilder {
     }
 
     public JwtTokenBuilder withUsername(String username) {
-        this.username = username;
+        this.test_username = username;
         return this;
     }
 
@@ -51,10 +51,10 @@ public class JwtTokenBuilder {
                 .claim("realm_access", Map.of("roles", List.of("offline_access", "uma_authorization")))
                 .claim("resource_access", Map.of("account", Map.of("roles", List.of("manage-account", "view-profile"))))
                 .claim("scope", "openid profile email")
-                .claim("preferred_username", username)
+                .claim("preferred_username", test_username)
                 .claim("given_name", firstName)
                 .claim("family_name", surname)
-                .claim("email", username + "@example.com")
+                .claim("email", test_username + "@example.com")
                 .signWith(signingKey, signatureAlgorithm);
 
         return builder.compact();
