@@ -8,27 +8,28 @@
 /*}*/
 
 .riskContainer {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
 }
 
 .riskSummary {
-  background-color: #FAFAFA;
-  padding: 20px;
-  width: 400px;
-  word-wrap: break-word;
+    background-color: #FAFAFA;
+    padding: 20px;
+    width: 400px;
+    word-wrap: break-word;
+    margin-bottom: 32px;
 }
 
 .riskSummary > h4 {
-  margin-top: 0;
-  margin-bottom: 16px;
+    margin-top: 0;
+    margin-bottom: 16px;
 
 }
 
 .riskSummary > p {
-  margin-top: 16px;
-  margin-bottom: 10px;
+    margin-top: 16px;
+    margin-bottom: 10px;
 }
 
 .contentBlock {
@@ -36,6 +37,7 @@
     font-family: Helvetica, sans-serif;
     border-bottom: solid 1px rgb(191, 193, 195);
 }
+
 .contentBlock > h2 {
     font-size: 24px;
     margin-top: 24px;
@@ -47,6 +49,7 @@
     margin-bottom: 0;
     margin-top: 32px;
 }
+
 .contentBlock > p {
     font-size: 16px;
     margin-top: 8px;
