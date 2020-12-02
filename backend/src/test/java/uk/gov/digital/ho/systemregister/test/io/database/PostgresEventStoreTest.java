@@ -1,15 +1,11 @@
 package uk.gov.digital.ho.systemregister.test.io.database;
 
 import io.agroal.api.AgroalDataSource;
-import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import org.jboss.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.database.PostgresEventStore;
-import uk.gov.digital.ho.systemregister.test.helpers.KeycloakServer;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
 import java.sql.Connection;
@@ -24,10 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
-@QuarkusTestResource(KeycloakServer.class)
 public class PostgresEventStoreTest {
-    private static final Logger LOG = Logger.getLogger(PostgresEventStoreTest.class);
-
     @Inject
     PostgresEventStore eventStore;
 

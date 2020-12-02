@@ -3,14 +3,12 @@ package uk.gov.digital.ho.systemregister.test.io.api;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static io.restassured.RestAssured.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsBytes;
 
 @QuarkusTest
-@Testcontainers
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 public class FrontendResourceTest {
     @Test
