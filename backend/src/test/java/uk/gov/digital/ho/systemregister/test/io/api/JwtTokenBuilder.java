@@ -14,7 +14,7 @@ import static io.jsonwebtoken.security.Keys.secretKeyFor;
 public class JwtTokenBuilder {
     private String firstName = "FirstName";
     private String surname = "Surname";
-    private String username = "Corey";
+    private String test_username = "Corey";
 
     private JwtTokenBuilder() {
     }
