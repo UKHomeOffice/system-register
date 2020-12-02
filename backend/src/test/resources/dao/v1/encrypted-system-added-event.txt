@@ -1,4 +1,3 @@
-uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent
 ELysaOnbi2UC0cz0OkUCibDRkL6Kd5cKH5T9SCkVztTZu0sg941VG9tZVHjjoPksmAwjZgqOrUZu
 KO58W/OGP/zHlu1+xUCr5SObTBa9k/zP4Qf2i2oTgFjjzy5tNoqenu+jUgOhz2OvNdQy2HG/iWML
 2PdNUvQh76l/hDQ99zlWqKblfUR1egTPBEaVicOGcB++0Wd3Vv8JkdBnGWzyLbFhQiHVNGMU0Paq

@@ -10,10 +10,10 @@ import uk.gov.digital.ho.systemregister.io.database.dao.v1.RiskDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemDAO_v1;
 
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
-import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
