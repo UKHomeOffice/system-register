@@ -52,7 +52,7 @@ public class PostgresEventStore implements IEventStore {
     @Named("v1")
     DaoMapper<? extends BaseDao> daoMapper;
 
-    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
+    Jsonb jsonb = JsonbBuilder.create();
 
     @Override
     public Optional<Snapshot> getSnapshot() {
