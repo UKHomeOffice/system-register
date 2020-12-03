@@ -7,9 +7,10 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
-import uk.gov.digital.ho.systemregister.io.api.dto.SnapshotDTO;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;
@@ -40,9 +41,9 @@ public class SystemRegisterResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public SnapshotDTO systems() {
-        var snapshot = new CurrentSystemRegisterState(eventStore).getSystems();
-        return DtoMapper.map(snapshot);
+    public CurrentSystemStateDTO systems() {
+        var currentState = new CurrentSystemRegisterState(eventStore).getSystems();
+        return DtoMapper.map(currentState);
     }
 
     @GET
@@ -64,7 +65,8 @@ public class SystemRegisterResource {
         try {
             JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
             Instant timestamp = Instant.now();
-            AddSystemCommand command = DtoMapper.map(cmd, jwt.getName(), timestamp);
+            SR_Person author = DtoMapper.extractAuthor(jwt);
+            AddSystemCommand command = DtoMapper.map(cmd, author, timestamp);
             eventBus.publish(command);
         } catch (Exception e) {
             LOG.error(e);

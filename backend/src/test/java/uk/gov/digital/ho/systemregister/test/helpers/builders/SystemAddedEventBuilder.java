@@ -3,6 +3,7 @@ package uk.gov.digital.ho.systemregister.test.helpers.builders;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.test.io.database.SnapshotBuilder;
 
 import java.time.Instant;

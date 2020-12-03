@@ -50,7 +50,7 @@ public class PostgresEventStore implements IEventStore {
     AgroalDataSource dataSource;
 
     @Inject
-    @Named("v1")
+    @Named("v2")
     DaoMapper<? extends BaseDao> daoMapper;
 
     @Inject

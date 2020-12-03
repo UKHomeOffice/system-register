@@ -1,0 +1,26 @@
+{
+  "systems": [
+    {
+      "aliases": [
+        "new sys 1"
+      ],
+      "criticality": "low",
+      "description": "A test system for testing purposes",
+      "developed_by": "Home Office",
+      "investment_state": "evergreen",
+      "name": "Newly added system",
+      "portfolio": "SPAN-R",
+      "risks": [
+        {
+          "level": "low",
+          "name": "roadmap",
+          "rationale": "Meaningful data here"
+        }
+      ],
+      "id": 1,
+      "last_updated": {
+        "author_name": "Betty Franklin"
+      }
+    }
+  ]
+}

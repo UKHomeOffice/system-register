@@ -16,21 +16,21 @@ import static java.util.stream.Collectors.toList;
 public class SR_SystemBuilder {
     SecureRandom secureRandom = new SecureRandom();
     private int id = secureRandom.nextInt();
-    public String name = "System Register";
-    public String description = "Central source of system names, contacts and risk information";
-    public Instant lastUpdated = Instant.now();
-    public String portfolio = "SPAN-R";
-    public String criticality = "low";
-    public String investmentState = "evergreen";
-    public String businessOwner = null;
-    public String serviceOwner = "Service Owner";
-    public String technicalOwner = "Techy Owner";
-    public String productOwner = null;
-    public String informationAssetOwner = null;
-    public String developedBy = "Developers";
-    public String supportedBy = "All";
-    public List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
-    public List<SR_Risk> risks = some_risks();
+    private String name = "System Register";
+    private String description = "Central source of system names, contacts and risk information";
+    private Instant lastUpdated = Instant.now();
+    private String portfolio = "SPAN-R";
+    private String criticality = "low";
+    private String investmentState = "evergreen";
+    private String businessOwner = null;
+    private String serviceOwner = "Service Owner";
+    private String technicalOwner = "Techy Owner";
+    private String productOwner = null;
+    private String informationAssetOwner = null;
+    private String developedBy = "Developers";
+    private String supportedBy = "All";
+    private List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
+    private List<SR_Risk> risks = some_risks();
 
     public static SR_SystemBuilder aSystem() {
         return new SR_SystemBuilder();

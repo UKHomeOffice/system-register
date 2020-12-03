@@ -15,6 +15,10 @@ public class SnapshotBuilder {
 
   private Instant timestamp = Instant.now();
 
+  public static SnapshotBuilder aSnapshot() {
+    return new SnapshotBuilder();
+  }
+
   public Snapshot build() {
     return new Snapshot(systems, timestamp);
   }

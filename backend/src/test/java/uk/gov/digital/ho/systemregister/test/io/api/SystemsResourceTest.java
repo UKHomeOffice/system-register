@@ -1,25 +1,47 @@
 package uk.gov.digital.ho.systemregister.test.io.api;
 
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.security.TestSecurity;
-import org.junit.jupiter.api.Disabled;
+import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
 import uk.gov.digital.ho.systemregister.test.helpers.JSONFiles;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.inject.Inject;
+
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.digital.ho.systemregister.test.io.api.JwtTokenBuilder.aJwtToken;
+import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
 public class SystemsResourceTest {
     private final JSONFiles resource = new JSONFiles();
+
+    @Inject
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    AgroalDataSource dataSource;
+
+    @BeforeEach
+    void cleanUpEventStore() throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute("TRUNCATE eventstore.snapshots, eventstore.events;");
+        }
+    }
 
     @Test
     public void getSystems() {
@@ -28,38 +50,25 @@ public class SystemsResourceTest {
 
     @Test
     @TestSecurity
-    public void AddSystem() {
+    public void AddSystem() throws JSONException {
         String cmd = resource.getAddSystemCommandJson();
-        given().auth().oauth2(aJwtToken().build())
+        String expectedResponse = getResourceAsString("system-response.json");
+        given().auth().oauth2(
+                aJwtToken()
+                        .withFirstName("Betty")
+                        .withSurname("Franklin")
+                        .build())
                 .contentType(JSON)
                 .body(cmd)
                 .when().post("/api/systems")
                 .then().assertThat()
                 .statusCode(201);
 
-        get("/api/systems").then()
+        String json = get("/api/systems").then()
                 .statusCode(200)
-                .body("systems.name", hasItems("Newly added system"));
-    }
-
-    @Test
-    @Disabled("Try to get this working later")
-    @TestSecurity
-    public void AddSystem_RecordsAuthorsIdentity() {
-        var cmd = resource.getAddSystemCommandJson();
-        given().auth().oauth2(
-                aJwtToken()
-                        .withFirstName("Corey")
-                        .withSurname("Mcvities")
-                        .build())
-                .contentType(JSON)
-                .body(cmd)
-                .when().post("/api/systems")
-                .then().assertThat().statusCode(201);
-
-        get("/api/systems").then()
-                .statusCode(200)
-                .body("systems.last_updated_by", hasItems("Corey Mcvities"));
+                .and().extract()
+                .response().asString();
+        assertEquals(expectedResponse, json, false);
     }
 
     @Test

@@ -14,6 +14,7 @@ import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class AddSystemCommandHandler {
     static final Logger LOG = Logger.getLogger(AddSystemCommandHandler.class);
 
@@ -27,7 +28,7 @@ public final class AddSystemCommandHandler {
 
     @Subscribe
     public void handle(AddSystemCommand cmd) throws MissingAuthorException {
-        List<SR_System> systems = currentRegisterState.getSystems().systems;
+        List<SR_System> systems = currentRegisterState.getSystems().getSystems();
         SystemRegister systemRegister = new SystemRegister(systems);
         AddSystemResult result = systemRegister.addSystem(cmd.systemData);
         if (result.result == Change.ADDED) {
