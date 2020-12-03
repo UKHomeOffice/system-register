@@ -12,23 +12,25 @@ afterEach(cleanup);
 
 describe('<ModifiedDetails />', () => {
     it('renders <span /> with correctly formatted date and name', async () => {
-        const { getByTestId } = render(<ModifiedDetails date={testDate} author_name={name}/>);
-        const element = await getByTestId('modified-on');
-        const expected = `<span data-testid="modified-on">Last modified: 2 May 1991 by Betty Boop</span>`;
+        const element = await getElements(testDate, name);
+        const expected = `<span class="message" data-testid="modified-on">Last modified: 2 May 1991 by Betty Boop</span>`;
         expect(element).toContainHTML(expected)
     })
 
     it('renders <strong /> with "Never" text and no name, when no date and no name is supplied', async() =>{
-        const { getByTestId } = render(<ModifiedDetails date={noDate} author_name={noName}/> );
-        const element = await getByTestId('modified-on');
-        const expected = `<span data-testid="modified-on">Last modified: <span>Never</span></span>`;
+        const element = await getElements(noDate, noName);
+        const expected = `<span class="message" data-testid="modified-on">Last modified: <span>Never</span></span>`;
         expect(element).toContainHTML(expected)
     })
 
     it('renders <span /> with correctly formatted date but no name, if name not supplied', async () => {
-        const { getByTestId } = render(<ModifiedDetails date={testDate} author_name={noName}/>);
-        const element = await getByTestId('modified-on');
-        const expected = `<span data-testid="modified-on">Last modified: 2 May 1991</span>`;
+       const element = await getElements(testDate, noName);
+        const expected = `<span class="message" data-testid="modified-on">Last modified: 2 May 1991</span>`;
         expect(element).toContainHTML(expected)
     })
 })
+
+function getElements(date, authorName) {
+    const { getByTestId } = render(<ModifiedDetails date={date} author_name={authorName}/>);
+    return getByTestId('modified-on')
+}

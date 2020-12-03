@@ -16,6 +16,7 @@ exports[`<SystemCard /> matches snapshot 1`] = `
       Portfolio Y
       , 
       <span
+        className="message"
         data-testid="modified-on"
       >
         Last modified: 

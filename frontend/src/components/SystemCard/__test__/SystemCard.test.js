@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 const up_to_date_system = {
     name: "System X",
     portfolio: 'Portfolio Y',
-    last_updated: '2020-02-13T11:01:01'
+    last_updated: {timestamp: '2020-02-13T11:01:01'}
 }
 
 const never_updated_system = {
