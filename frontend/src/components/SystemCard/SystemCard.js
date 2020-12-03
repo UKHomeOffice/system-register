@@ -1,7 +1,7 @@
 import React from 'react'
 import './SystemCard.css'
 import { Link } from 'react-router-dom'
-import ModifiedOn from '../ModifiedOn/ModifiedOn'
+import ModifiedOn from '../ModifiedDetails/ModifiedDetails'
 
 const trimDescription = (str) => {
     if (!str) {

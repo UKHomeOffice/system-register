@@ -1,4 +1,4 @@
-import ModifiedOn from "../ModifiedOn";
+import ModifiedDetails from "../ModifiedDetails";
 import React from "react";
 import { cleanup, render } from '@testing-library/react'
 
@@ -8,16 +8,16 @@ const noDate = '';
 
 afterEach(cleanup);
 
-describe('<ModifiedOn />', () => {
+describe('<ModifiedDetails />', () => {
     it('renders <span /> with correctly formatted date', async () => {
-        const { getByTestId } = render(<ModifiedOn date={testDate}/>);
+        const { getByTestId } = render(<ModifiedDetails date={testDate}/>);
         const element = await getByTestId('modified-on');
         const expected = `<span data-testid="modified-on">Last modified: 2 May 1991</span>`;
         expect(element).toContainHTML(expected)
     })
 
     it('renders <strong /> with "Never" text, when no date is supplied', async() =>{
-        const { getByTestId } = render(<ModifiedOn date={noDate}/>);
+        const { getByTestId } = render(<ModifiedDetails date={noDate}/>);
         const element = await getByTestId('modified-on');
         const expected = `<span data-testid="modified-on">Last modified: <span>Never</span></span>`;
         expect(element).toContainHTML(expected)

@@ -6,7 +6,7 @@ import RiskDetails from './RiskDetails/RiskDetails'
 import Criticality from './Criticality/Criticality'
 import InvestmentState from './InvestmentState/InvestmentState'
 import { GridCol, GridRow } from "govuk-react";
-import ModifiedOn from "../ModifiedOn/ModifiedOn";
+import ModifiedOn from "../ModifiedDetails/ModifiedDetails";
 import api from '../../services/api';
 
 const System = () => {
