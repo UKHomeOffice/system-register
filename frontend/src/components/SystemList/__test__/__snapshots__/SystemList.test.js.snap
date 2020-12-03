@@ -82,6 +82,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 1
           , 
           <span
+            className="message"
             data-testid="modified-on"
           >
             Last modified: 
@@ -120,6 +121,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 2
           , 
           <span
+            className="message"
             data-testid="modified-on"
           >
             Last modified: 
@@ -158,6 +160,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           Portfolio 2
           , 
           <span
+            className="message"
             data-testid="modified-on"
           >
             Last modified: 

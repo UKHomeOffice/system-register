@@ -10,16 +10,19 @@ const test_data = {
             name: "System 1",
             portfolio: 'Portfolio 1',
             aliases: ['Alias A'],
+            last_updated: {}
         },
         {
             name: "System 3",
             portfolio: 'Portfolio 2',
             aliases: ['Alias B', 'Alias C'],
+            last_updated: {}
         },
         {
             name: "System 2",
             portfolio: 'Portfolio 2',
             aliases: [],
+            last_updated: {}
         }
     ]
 }
