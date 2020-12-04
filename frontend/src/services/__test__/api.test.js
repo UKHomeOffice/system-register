@@ -2,6 +2,7 @@ import api from '../api'
 import data from '../../data/systems_dummy.json';
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import System from "../../components/System/System";
 
 const server = setupServer(
     rest.get("/api/systems", (req, res, ctx) => {
@@ -20,12 +21,17 @@ describe("api", () => {
 
     afterEach(() => server.resetHandlers());
 
-    it('returns a list of systems', async () => {
+    it('returns a list of systems sorted by name', async () => {
         const listOfSystems =  api.getAllSystems();
         await expect(listOfSystems).resolves.toMatchObject({
-            systems: expect.arrayContaining([
-                expect.any(Object)
-            ])
+            systems: [
+                expect.objectContaining({
+                    name: "Our second system"
+                }),
+                expect.objectContaining({
+                    name: "System Register"
+                })
+            ]
         });
     })
 

@@ -8,7 +8,17 @@ const api = {
 
 async function getAllSystems() {
     const response = await axios.get(`${config.api.url}/systems`);
-    return response.data;
+    const sortedSystems = response.data.systems.sort((a, b) => {
+        const x = a.name.toUpperCase();
+        const y = b.name.toUpperCase();
+        if (x > y) {
+            return 1
+        } else if (x < y) {
+            return -1
+        }
+        return 0
+    })
+    return {...response.data, systems: sortedSystems};
 }
 
 async function getSystem(id) {
