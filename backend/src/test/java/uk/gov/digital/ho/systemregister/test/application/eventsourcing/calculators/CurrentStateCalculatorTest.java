@@ -56,7 +56,7 @@ public class CurrentStateCalculatorTest {
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
-                        Map.of(event.system, new UpdateMetadata(event.author, event.timestamp)),
+                        Map.of(event.system, new UpdateMetadata(event.author, event.system.lastUpdated)),
                         event.timestamp));
     }
 
@@ -78,7 +78,7 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(
                                 existingSystem, new UpdateMetadata(null, existingSystem.lastUpdated),
-                                event.system, new UpdateMetadata(event.author, event.timestamp)),
+                                event.system, new UpdateMetadata(event.author, event.system.lastUpdated)),
                         event.timestamp));
     }
 
@@ -101,8 +101,8 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(
                                 snapshotSystem, new UpdateMetadata(null, snapshotSystem.lastUpdated),
-                                earlyEvent.system, new UpdateMetadata(earlyEvent.author, earlyEvent.timestamp),
-                                lateEvent.system, new UpdateMetadata(lateEvent.author, lateEvent.timestamp)),
+                                earlyEvent.system, new UpdateMetadata(earlyEvent.author, earlyEvent.system.lastUpdated),
+                                lateEvent.system, new UpdateMetadata(lateEvent.author, lateEvent.system.lastUpdated)),
                         lateEvent.timestamp));
     }
 
@@ -125,8 +125,8 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(
                                 snapshotSystem, new UpdateMetadata(null, snapshotSystem.lastUpdated),
-                                earlyEvent.system, new UpdateMetadata(earlyEvent.author, earlyEvent.timestamp),
-                                lateEvent.system, new UpdateMetadata(lateEvent.author, lateEvent.timestamp)),
+                                earlyEvent.system, new UpdateMetadata(earlyEvent.author, earlyEvent.system.lastUpdated),
+                                lateEvent.system, new UpdateMetadata(lateEvent.author, lateEvent.system.lastUpdated)),
                         lateEvent.timestamp));
     }
 

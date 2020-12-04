@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public final class SR_System extends SystemData {// todo I want to make all these immutable but cant
-                                                 // because they need
-    // to be serialisable, help
+                                                 // because they need to be serialisable; help!
     public int id;
     public Instant lastUpdated;
 
@@ -14,9 +13,9 @@ public final class SR_System extends SystemData {// todo I want to make all thes
     }
 
     public SR_System(int id, String name, String description, Instant lastUpdated, String portfolio,
-            String criticality, String investmentState, String businessOwner, String serviceOwner,
-            String technicalOwner, String productOwner, String informationAssetOwner,
-            String developedBy, String supportedBy, List<String> aliases, List<SR_Risk> risks) {
+                     String criticality, String investmentState, String businessOwner, String serviceOwner,
+                     String technicalOwner, String productOwner, String informationAssetOwner,
+                     String developedBy, String supportedBy, List<String> aliases, List<SR_Risk> risks) {
         super(name, description, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy,
                 supportedBy, aliases, risks);

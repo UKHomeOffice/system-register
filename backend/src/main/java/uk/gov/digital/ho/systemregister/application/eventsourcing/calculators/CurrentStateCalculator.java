@@ -27,7 +27,7 @@ public class CurrentStateCalculator {
                 .filter(event -> event instanceof SystemAddedEvent)
                 .map(SystemAddedEvent.class::cast)
                 .forEach(event -> {
-                    updatesBySystem.put(event.system, new UpdateMetadata(event.author, event.timestamp));
+                    updatesBySystem.put(event.system, new UpdateMetadata(event.author, event.system.lastUpdated));
                     latestUpdate.set(event.timestamp);
                 });
 
