@@ -47,7 +47,7 @@ public class DaoMapper_v1 implements DaoMapper<SystemAddedEventDAO_v1> {
     @SuppressWarnings("unchecked")
     public <R extends SR_Event> R mapToDomain(String data) {
         SystemAddedEventDAO_v1 event = jsonb.fromJson(data, SystemAddedEventDAO_v1.class);
-        return (R) new SystemAddedEvent(fromSystemDao(event.system), fromAuthorDao(event.author), event.timestamp);
+        return (R) new SystemAddedEvent(fromSystemDao(event.system), fromAuthorDao(event.author), event.system.lastUpdated);
     }
 
     @Override
