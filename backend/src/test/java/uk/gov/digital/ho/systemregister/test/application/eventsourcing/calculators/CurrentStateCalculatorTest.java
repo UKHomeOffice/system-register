@@ -35,7 +35,7 @@ public class CurrentStateCalculatorTest {
                 .withTimestamp(snapshotTimestamp)
                 .build();
 
-        var state = calculator.crunch2(snapshot, List.of());
+        var state = calculator.crunch(snapshot, List.of());
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
@@ -52,7 +52,7 @@ public class CurrentStateCalculatorTest {
                 .withAuthor(aPerson())
                 .build();
 
-        var state = calculator.crunch2(Snapshot.empty(), List.of(event));
+        var state = calculator.crunch(Snapshot.empty(), List.of(event));
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
@@ -70,7 +70,7 @@ public class CurrentStateCalculatorTest {
                 .withAuthor(aPerson())
                 .build();
 
-        var state = calculator.crunch2(
+        var state = calculator.crunch(
                 snapshot,
                 List.of(event));
 
@@ -95,7 +95,7 @@ public class CurrentStateCalculatorTest {
                 .withTimeStamp(Instant.MAX)
                 .build();
 
-        var state = calculator.crunch2(snapshot, List.of(earlyEvent, lateEvent));
+        var state = calculator.crunch(snapshot, List.of(earlyEvent, lateEvent));
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
@@ -119,7 +119,7 @@ public class CurrentStateCalculatorTest {
                 .withTimeStamp(Instant.MAX)
                 .build();
 
-        var state = calculator.crunch2(snapshot, List.of(lateEvent, earlyEvent));
+        var state = calculator.crunch(snapshot, List.of(lateEvent, earlyEvent));
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
@@ -143,7 +143,7 @@ public class CurrentStateCalculatorTest {
                 .withTimeStamp(snapshot.timestamp)
                 .build();
 
-        var state = calculator.crunch2(snapshot, List.of(oldEvent, contemporaneousEvent));
+        var state = calculator.crunch(snapshot, List.of(oldEvent, contemporaneousEvent));
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(

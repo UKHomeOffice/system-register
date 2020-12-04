@@ -22,7 +22,7 @@ public class CurrentSystemRegisterState {
         var eventsSinceSnapshot = eventStore.getEvents(latestSnapshot.timestamp)
                 .orElse(List.of());
 
-        return calculator.crunch2(
+        return calculator.crunch(
                 latestSnapshot,
                 eventsSinceSnapshot);
     }
