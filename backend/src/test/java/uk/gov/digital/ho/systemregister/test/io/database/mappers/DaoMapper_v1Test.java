@@ -71,7 +71,7 @@ public class DaoMapper_v1Test {
         SystemAddedEvent expectedEvent = new SystemAddedEventBuilder()
                 .withId(123)
                 .withSystemCalled("system")
-                .withTimeStamp(Instant.parse("2020-10-09T08:07:05.000Z"))
+                .withTimeStamp(Instant.parse("2020-10-09T08:07:06.050Z"))
                 .withLastUpdated(Instant.parse("2020-10-09T08:07:05.000Z"))
                 .build();
         String json = getResourceAsString("dao/v1/system-added-event.json");

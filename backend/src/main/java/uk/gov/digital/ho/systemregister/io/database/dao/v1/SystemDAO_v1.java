@@ -5,7 +5,6 @@ import java.util.List;
 
 public class SystemDAO_v1 {
     public int id;
-    @Deprecated
     public Instant lastUpdated;
     public String name;
     public String description;

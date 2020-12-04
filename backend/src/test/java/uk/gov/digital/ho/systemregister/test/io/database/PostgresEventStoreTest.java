@@ -96,7 +96,7 @@ public class PostgresEventStoreTest {
     public void canReadOlderSystemAddedEvents(String objectType) {
         var expectedEvent = aSystemAddedEvent()
                 .withAuthor(aPerson().withUsername("corey"))
-                .withTimeStamp("2020-11-30T13:29:44.883847Z")
+                .withTimeStamp("2020-11-30T13:29:44.886532Z")
                 .withSystem(aSystem()
                         .withId(1)
                         .withName("Newly added system")
