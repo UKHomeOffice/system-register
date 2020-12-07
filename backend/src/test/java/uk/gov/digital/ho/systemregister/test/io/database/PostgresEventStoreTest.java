@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.io.database.PostgresEventStore;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder;
 
@@ -20,11 +21,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
+import static uk.gov.digital.ho.systemregister.test.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
@@ -86,6 +89,29 @@ public class PostgresEventStoreTest {
         assertTrue(actual.isPresent());
         assertThat(actual.get()).usingRecursiveComparison()
                 .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveProductOwnerUpdatedEvent() {
+        var expected = aProductOwnerUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+
+    @Test
+    public void throwsExceptionIfEventTypeNotSupportedWhenSaving() {
+        var event = new SR_Event(aPerson().build(), Instant.now());
+
+        assertThatThrownBy(() -> eventStore.save(event))
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessageMatching(".*not supported: .*\\.SR_Event$");
     }
 
     @ParameterizedTest

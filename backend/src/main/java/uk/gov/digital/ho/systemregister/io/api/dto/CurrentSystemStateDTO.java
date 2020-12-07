@@ -1,41 +1,5 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
-/*
-{
-    "systems": [
-        {
-            "aliases": [
-                "new sys 1"
-            ],
-            "criticality": "low",
-            "description": "A test system for testing purposes",
-            "developed_by": "Home Office",
-            "investment_state": "evergreen",
-            "name": "Riskinator 5000",
-            "portfolio": "SPAN-R",
-            "risks": [
-                {
-                    "level": "low",
-                    "name": "roadmap",
-                    "rationale": "Meaningful data here"
-                },
-                {
-                    "level": "high",
-                    "name": "explosion",
-                    "rationale": "RUN!!!"
-                }
-            ],
-            "id": 1,
-            "last_updated": {
-                "timestamp": "2020-11-18T11:22:50.326570Z",
-                "author_name": "Betty Franklin"
-            }
-        }
-    ],
-    "timestamp": "2020-11-18T11:22:50.327476Z"
-}
- */
-
 import java.time.Instant;
 import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;

@@ -1,0 +1,11 @@
+{
+  "id": 5678,
+  "productOwner": "Jasmine Levy",
+  "author": {
+    "email": "test@email.com",
+    "firstName": "Amy",
+    "surname":"Green",
+    "username": "amgreen"
+  },
+  "timestamp": "2020-03-07T02:09:00Z"
+}

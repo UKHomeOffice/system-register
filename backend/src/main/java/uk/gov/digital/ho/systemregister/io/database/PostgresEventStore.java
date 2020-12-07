@@ -4,9 +4,14 @@ import io.agroal.api.AgroalDataSource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
+import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
+import uk.gov.digital.ho.systemregister.io.database.dao.v1.ProductOwnerUpdatedEventDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper;
+import uk.gov.digital.ho.systemregister.io.database.mappers.ProductOwnerUpdatedEventDaoMapper_v1;
+import uk.gov.digital.ho.systemregister.io.database.mappers.SystemAddedDaoMapper_v2;
 import uk.gov.digital.ho.systemregister.util.AES;
 import uk.gov.digital.ho.systemregister.util.EncryptionError;
 
@@ -50,8 +55,10 @@ public class PostgresEventStore implements IEventStore {
     AgroalDataSource dataSource;
 
     @Inject
-    @Named("v2")
-    DaoMapper<? extends BaseDao> daoMapper;
+    SystemAddedDaoMapper_v2 systemAddedDaoMapper;
+
+    @Inject
+    ProductOwnerUpdatedEventDaoMapper_v1 productOwnerUpdatedDaoMapper;
 
     @Inject
     Instance<DaoMapper<? extends BaseDao>> mappers;
@@ -87,9 +94,25 @@ public class PostgresEventStore implements IEventStore {
     }
 
     @Override
-    public void save(SR_Event evt) {
-        var dao = daoMapper.mapToDao(evt);
+    public void save(SR_Event event) {
+        DaoMapper<? extends BaseDao> daoMapper = findDaoMapperFor(event);
+
+        var dao = daoMapper.mapToDao(event);
+
         writeEvent(dao);
+    }
+
+    private DaoMapper<? extends BaseDao> findDaoMapperFor(SR_Event event) {
+        DaoMapper<? extends BaseDao> daoMapper;
+
+        if(event instanceof SystemAddedEvent){
+            daoMapper = systemAddedDaoMapper;
+        } else if (event instanceof ProductOwnerUpdatedEvent){
+            daoMapper = productOwnerUpdatedDaoMapper;
+        } else {
+            throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName());
+        }
+        return daoMapper;
     }
 
     private Optional<Integer> writeSnapshot(Snapshot object) {

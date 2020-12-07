@@ -5,7 +5,6 @@ import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAdded
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2.Person;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2.Risk;
@@ -14,13 +13,11 @@ import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 import javax.json.bind.Jsonb;
 
 import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
-@Named("v2")
 public class SystemAddedDaoMapper_v2 implements DaoMapper<SystemAddedEventDAO_v2> {
     private static final Set<Class<?>> SUPPORTED_TYPES = Set.of(SystemAddedEventDAO_v2.class);
 
