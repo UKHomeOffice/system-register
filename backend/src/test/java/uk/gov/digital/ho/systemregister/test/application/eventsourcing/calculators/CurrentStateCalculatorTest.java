@@ -6,12 +6,17 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.mod
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SystemUpdater;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -149,5 +154,17 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(snapshotSystem, new UpdateMetadata(null, snapshotSystem.lastUpdated)),
                         snapshot.timestamp));
+    }
+
+    @Test
+    void updatesSystemWithNewState() {
+        var updatedSystem = aSystem().build();
+        var updater = mock(SystemUpdater.class);
+        when(updater.update(any())).thenReturn(updatedSystem);
+
+        SR_System system = calculator.applyUpdateToSystem(aSystem().build(), updater);
+
+        assertThat(system).usingRecursiveComparison()
+                .isEqualTo(updatedSystem);
     }
 }

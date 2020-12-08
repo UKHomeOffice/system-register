@@ -39,10 +39,13 @@ public class SystemRegisterResource {
     @Inject
     SR_EventBus eventBus;
 
+    @Inject
+    CurrentSystemRegisterState systemRegisterState;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CurrentSystemStateDTO systems() {
-        var currentState = new CurrentSystemRegisterState(eventStore).getSystems();
+        var currentState = systemRegisterState.getCurrentState();
         return DtoMapper.map(currentState);
     }
 

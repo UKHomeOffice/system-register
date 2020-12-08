@@ -1,19 +1,22 @@
 package uk.gov.digital.ho.systemregister.test.domain;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.junit.jupiter.api.Test;
-import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.AddSystemResult;
 import uk.gov.digital.ho.systemregister.domain.Change;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
+import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
 
 public class SystemRegisterTest {
     TestDataUtil util = new TestDataUtil();
@@ -45,9 +48,9 @@ public class SystemRegisterTest {
 
     @Test
     public void addSystem_not_empty_register() {
-        String exisitingSystemName = "exisitng system";
+        String existingSystemName = "existing system";
         String addedSystemName = "added system";
-        SR_System seedSystem = util.an_sr_system.withName(exisitingSystemName).build();
+        SR_System seedSystem = util.an_sr_system.withName(existingSystemName).build();
         SystemRegister systemRegister = new SystemRegister(Arrays.asList(seedSystem));
         AddSystemCommand cmd_1 = util.n_add_system_command.withName(addedSystemName).build();
 
@@ -68,12 +71,36 @@ public class SystemRegisterTest {
         systemRegister.addSystem(cmd_1.systemData);
         systemRegister.addSystem(cmd_2.systemData);
 
-        var actual = systemRegister.getAllSysytems();
+        var actual = systemRegister.getAllSystems();
 
-        assertEquals(2, actual.size());
-        assertEquals(actual.get(1).name, systemA);
-        assertEquals(actual.get(0).name, systemB);
+        assertThat(actual)
+                .extracting("name")
+                .containsExactlyInAnyOrder(systemA, systemB);
     }
 
-    // todo test to check copy copy lystem list , mutsation safe
+    @Test
+    void returnsExpectedSystem() {
+        SR_System system = aSystem()
+                .withId(789)
+                .build();
+        SystemRegister systemRegister = new SystemRegister(List.of(system));
+
+        var actual = systemRegister.getSystemById(789);
+
+        assertThat(actual).contains(system);
+    }
+
+    @Test
+    void returnsEmptyOptionalIfIdDoesNotExist() {
+        SR_System system = aSystem()
+                .withId(789)
+                .build();
+        SystemRegister systemRegister = new SystemRegister(List.of(system));
+
+        var actual = systemRegister.getSystemById(123);
+
+        assertThat(actual).isEmpty();
+    }
+
+    // todo test to check copy system list , mutation safe
 }

@@ -4,8 +4,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
-public final class SR_System extends SystemData {// todo I want to make all these immutable but cant
-                                                 // because they need to be serialisable; help!
+public final class SR_System extends SystemData {
+    // todo I want to make all these immutable but cant
+    //  because they need to be serialisable; help!
     public int id;
     public Instant lastUpdated;
 
@@ -21,6 +22,12 @@ public final class SR_System extends SystemData {// todo I want to make all thes
                 supportedBy, aliases, risks);
         this.id = id;
         this.lastUpdated = lastUpdated;
+    }
+
+    public SR_System withProductOwner(String productOwner) {
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
+                List.copyOf(aliases), List.copyOf(risks));
     }
 
     @Override
@@ -51,6 +58,4 @@ public final class SR_System extends SystemData {// todo I want to make all thes
                 + ", supportedBy='" + supportedBy + "'" + ", aliases='" + aliases + "'"
                 + ", risks='" + risks + "'" + "}";
     }
-
-
 }

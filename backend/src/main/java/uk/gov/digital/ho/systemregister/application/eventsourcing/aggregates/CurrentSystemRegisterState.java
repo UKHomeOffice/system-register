@@ -6,17 +6,20 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
+@ApplicationScoped
 public class CurrentSystemRegisterState {
     private final IEventStore eventStore;
+    private final CurrentStateCalculator calculator;
 
-    @SuppressWarnings("CdiInjectionPointsInspection")
-    public CurrentSystemRegisterState(IEventStore eventStore) {
+    public CurrentSystemRegisterState(@Named("postgres") IEventStore eventStore, CurrentStateCalculator calculator) {
         this.eventStore = eventStore;
+        this.calculator = calculator;
     }
 
-    public CurrentState getSystems() {
-        var calculator = new CurrentStateCalculator();
+    public CurrentState getCurrentState() {
         var latestSnapshot = eventStore.getSnapshot()
                 .orElse(Snapshot.empty());
         var eventsSinceSnapshot = eventStore.getEvents(latestSnapshot.timestamp)

@@ -28,7 +28,7 @@ public final class AddSystemCommandHandler {
 
     @Subscribe
     public void handle(AddSystemCommand cmd) throws MissingAuthorException {
-        List<SR_System> systems = currentRegisterState.getSystems().getSystems();
+        List<SR_System> systems = currentRegisterState.getCurrentState().getSystems();
         SystemRegister systemRegister = new SystemRegister(systems);
         AddSystemResult result = systemRegister.addSystem(cmd.systemData);
         if (result.result == Change.ADDED) {

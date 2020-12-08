@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
 
@@ -19,12 +20,12 @@ public class CurrentSystemRegisterStateTest {
 
     @BeforeEach
     void setUp() {
-        systemRegisterState = new CurrentSystemRegisterState(fakeEventStore);
+        systemRegisterState = new CurrentSystemRegisterState(fakeEventStore, new CurrentStateCalculator());
     }
 
     @Test
     public void no_snapshot_no_events() {
-        var state = systemRegisterState.getSystems();
+        var state = systemRegisterState.getCurrentState();
 
         assertThat(state).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(Map.of(), EPOCH));
@@ -35,7 +36,7 @@ public class CurrentSystemRegisterStateTest {
         var event = aSystemAddedEvent().build();
         fakeEventStore.save(event);
 
-        var state = systemRegisterState.getSystems();
+        var state = systemRegisterState.getCurrentState();
 
         assertThat(state.getSystems())
                 .containsExactly(event.system);

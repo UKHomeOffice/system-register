@@ -1,21 +1,28 @@
 package uk.gov.digital.ho.systemregister.domain;
 
 import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 public class SystemRegister {
-    private final Dictionary<String, SR_System> systems;
+    private final Map<String, SR_System> systems;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public SystemRegister(List<SR_System> systems) {
-        this.systems = systems.stream().collect(Collectors.toMap(
-                s -> s.name, s -> s,
-                (u, v) -> {
-                    throw new IllegalStateException(
-                            String.format("Cannot have 2 values (%s, %s) for the same key", u, v)
-                    );
-                }, Hashtable::new
-        ));
+        this.systems = systems.stream()
+                .collect(toMap(
+                        system -> system.name,
+                        identity()));
+    }
+
+    public Optional<SR_System> getSystemById(int id) {
+        return systems.values().stream()
+                .filter(system -> system.id == id)
+                .findFirst();
     }
 
     public AddSystemResult addSystem(SystemData system) {
@@ -27,8 +34,8 @@ public class SystemRegister {
         return AddSystemResult.Added(newSystem);
     }
 
-    public List<SR_System> getAllSysytems() {
-        return Collections.list(systems.elements());
+    public List<SR_System> getAllSystems() {
+        return List.copyOf(systems.values());
     }
 
     private SR_System buildSystem(SystemData sys) {
@@ -39,9 +46,9 @@ public class SystemRegister {
     }
 
     private int getId() {
-        if (systems.size() == 0) {
-            return 1;
-        }
-        return Collections.list(systems.elements()).stream().map(s -> s.id).max(Integer::compare).get() + 1;
+        return systems.values().stream()
+                .mapToInt(s -> s.id)
+                .max()
+                .orElse(0) + 1;
     }
 }

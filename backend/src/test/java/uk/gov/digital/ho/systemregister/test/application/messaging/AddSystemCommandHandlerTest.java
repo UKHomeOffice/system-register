@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.AuthoredMessage;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
@@ -32,7 +33,7 @@ public class AddSystemCommandHandlerTest {
     public void setup() {
         eventStore = new FakeEventStore();
         recievedEvents.clear();
-        currentSystemRegisterState = new CurrentSystemRegisterState(eventStore);
+        currentSystemRegisterState = new CurrentSystemRegisterState(eventStore, new CurrentStateCalculator());
         eventBus.subscribe(new Object() {
             @Subscribe
             public void handle(AuthoredMessage evt) {

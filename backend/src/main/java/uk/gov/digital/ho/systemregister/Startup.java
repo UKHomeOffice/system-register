@@ -1,10 +1,5 @@
 package uk.gov.digital.ho.systemregister;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.jboss.logging.Logger;
@@ -14,9 +9,13 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Ad
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 @ApplicationScoped
 public class Startup {
-
     private static final Logger LOG = Logger.getLogger(Startup.class);
 
     @Inject
@@ -26,6 +25,8 @@ public class Startup {
     @Named("postgres")
     IEventStore eventStore;
 
+    @Inject
+    CurrentSystemRegisterState systemRegisterState;
 
     void onStart(@Observes StartupEvent ev) {
         LOG.info("Wiring up listeners...");
@@ -38,6 +39,6 @@ public class Startup {
 
     private void setupListeners() {
         eventBus.subscribe(new SystemAddedEventHandler(eventStore));
-        eventBus.subscribe(new AddSystemCommandHandler(eventBus, new CurrentSystemRegisterState(eventStore)));
+        eventBus.subscribe(new AddSystemCommandHandler(eventBus, systemRegisterState));
     }
 }

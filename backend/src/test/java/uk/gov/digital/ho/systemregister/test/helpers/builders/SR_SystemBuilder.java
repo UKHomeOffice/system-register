@@ -98,6 +98,11 @@ public class SR_SystemBuilder {
         return this;
     }
 
+    public SR_SystemBuilder withProductOwner(String productOwner) {
+        this.productOwner = productOwner;
+        return this;
+    }
+
     public SR_SystemBuilder withServiceOwner(String serviceOwner) {
         this.serviceOwner = serviceOwner;
         return this;
