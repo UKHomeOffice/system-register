@@ -9,6 +9,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.validation.Valid;
 
 @ApplicationScoped
 public class UpdateProductOwnerCommandHandler {
@@ -32,7 +33,7 @@ public class UpdateProductOwnerCommandHandler {
         }
     }
 
-    public Tuple2<SR_System, UpdateMetadata> handle(UpdateProductOwnerCommand command)
+    public Tuple2<SR_System, UpdateMetadata> handle(@Valid UpdateProductOwnerCommand command)
             throws NoSuchSystemException, CommandHasNoEffectException {
         SystemRegister systemRegister = new SystemRegister(systemRegisterState.getCurrentState().getSystems());
 

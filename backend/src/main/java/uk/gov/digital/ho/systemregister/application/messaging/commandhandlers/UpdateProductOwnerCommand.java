@@ -6,9 +6,14 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.time.Instant;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UpdateProductOwnerCommand {
     public final int id;
+    @NotBlank
+    @Size(min = 2)
     private final String productOwner;
     public final SR_Person author;
     public final Instant timestamp;
@@ -16,7 +21,7 @@ public class UpdateProductOwnerCommand {
     @SuppressWarnings("CdiInjectionPointsInspection")
     public UpdateProductOwnerCommand(int id, String productOwner, SR_Person author, Instant timestamp) {
         this.id = id;
-        this.productOwner = productOwner;
+        this.productOwner = productOwner == null ? null : productOwner.trim();
         this.author = author;
         this.timestamp = timestamp;
     }
