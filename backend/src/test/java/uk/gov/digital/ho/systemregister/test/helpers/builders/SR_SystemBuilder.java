@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -19,14 +18,14 @@ public class SR_SystemBuilder {
     private String name = "System Register";
     private String description = "Central source of system names, contacts and risk information";
     private Instant lastUpdated = Instant.now();
-    private String portfolio = "SPAN-R";
-    private String criticality = "low";
-    private String investmentState = "evergreen";
-    private String businessOwner = null;
+    private final String portfolio = "SPAN-R";
+    private final String criticality = "low";
+    private final String investmentState = "evergreen";
+    private final String businessOwner = null;
     private String serviceOwner = "Service Owner";
     private String technicalOwner = "Techy Owner";
     private String productOwner = null;
-    private String informationAssetOwner = null;
+    private final String informationAssetOwner = null;
     private String developedBy = "Developers";
     private String supportedBy = "All";
     private List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");

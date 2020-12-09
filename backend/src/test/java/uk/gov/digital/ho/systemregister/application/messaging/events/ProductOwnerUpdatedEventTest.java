@@ -5,7 +5,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.*;
+import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
 
 class ProductOwnerUpdatedEventTest {
 

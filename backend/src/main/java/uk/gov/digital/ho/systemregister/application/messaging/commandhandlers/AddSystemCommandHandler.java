@@ -2,8 +2,8 @@ package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
 import org.jboss.logging.Logger;
-import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;

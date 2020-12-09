@@ -5,21 +5,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.AuthoredMessage;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
-import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.AddSystemCommandBuilder;
-import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
+import uk.gov.digital.ho.systemregister.test.helpers.FakeEventStore;
+import uk.gov.digital.ho.systemregister.test.helpers.builders.AddSystemCommandBuilder;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddSystemCommandHandlerTest {
     AddSystemCommandBuilder addSystemCommandBuilder = new AddSystemCommandBuilder();
@@ -27,17 +28,17 @@ public class AddSystemCommandHandlerTest {
     CurrentSystemRegisterState currentSystemRegisterState;
 
     SR_EventBus eventBus = new SR_EventBus();
-    List<AuthoredMessage> recievedEvents = new ArrayList<>();
+    List<AuthoredMessage> receivedEvents = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
         eventStore = new FakeEventStore();
-        recievedEvents.clear();
+        receivedEvents.clear();
         currentSystemRegisterState = new CurrentSystemRegisterState(eventStore, new CurrentStateCalculator());
         eventBus.subscribe(new Object() {
             @Subscribe
             public void handle(AuthoredMessage evt) {
-                recievedEvents.add(evt);
+                receivedEvents.add(evt);
             }
         });
     }
@@ -49,9 +50,9 @@ public class AddSystemCommandHandlerTest {
 
         sut.handle(cmd);
 
-        assertEquals(1, recievedEvents.size());
-        assertEquals(SystemAddedEvent.class, recievedEvents.get(0).getClass());
-        Assertions.assertEquals(cmd.author, recievedEvents.get(0).author);
+        assertEquals(1, receivedEvents.size());
+        assertEquals(SystemAddedEvent.class, receivedEvents.get(0).getClass());
+        Assertions.assertEquals(cmd.author, receivedEvents.get(0).author);
     }
 
     @Test
@@ -61,10 +62,10 @@ public class AddSystemCommandHandlerTest {
 
         sut.handle(cmd);
 
-        assertEquals(1, recievedEvents.size());
-        assertEquals(SystemAddedEvent.class, recievedEvents.get(0).getClass());
-        Assertions.assertEquals(cmd.author, recievedEvents.get(0).author);
-        Assertions.assertEquals(cmd.systemData.name, ((SystemAddedEvent)recievedEvents.get(0)).system.name);
-        assertTrue(recievedEvents.get(0).timestamp.compareTo(Instant.MIN) > 0);
+        assertEquals(1, receivedEvents.size());
+        assertEquals(SystemAddedEvent.class, receivedEvents.get(0).getClass());
+        Assertions.assertEquals(cmd.author, receivedEvents.get(0).author);
+        Assertions.assertEquals(cmd.systemData.name, ((SystemAddedEvent) receivedEvents.get(0)).system.name);
+        assertTrue(receivedEvents.get(0).timestamp.compareTo(Instant.MIN) > 0);
     }
 }
