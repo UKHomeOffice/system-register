@@ -25,12 +25,20 @@ public class UpdateProductOwnerCommandHandler {
         this.calculator = calculator;
     }
 
+    private static void checkProductOwnerWillBeChanged(UpdateProductOwnerCommand command, SR_System system)
+            throws CommandHasNoEffectException {
+        if (!command.willUpdate(system)) {
+            throw new CommandHasNoEffectException("product owner is the same: " + system.productOwner);
+        }
+    }
+
     public Tuple2<SR_System, UpdateMetadata> handle(UpdateProductOwnerCommand command)
-            throws NoSuchSystemException {
+            throws NoSuchSystemException, CommandHasNoEffectException {
         SystemRegister systemRegister = new SystemRegister(systemRegisterState.getCurrentState().getSystems());
 
         SR_System system = systemRegister.getSystemById(command.id)
                 .orElseThrow(() -> new NoSuchSystemException(command.id));
+        checkProductOwnerWillBeChanged(command, system);
 
         var event = command.toEvent();
         eventHandler.handle(event);

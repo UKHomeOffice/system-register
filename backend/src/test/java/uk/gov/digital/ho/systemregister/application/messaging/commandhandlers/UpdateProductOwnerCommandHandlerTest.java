@@ -78,6 +78,18 @@ class UpdateProductOwnerCommandHandlerTest {
                 .hasMessageContaining("789");
     }
 
+    @Test
+    void raisesExceptionIfProductOwnerValueIsUnchanged() {
+        givenCurrentStateWithSystem(aSystem()
+                .withId(345)
+                .withProductOwner("original owner"));
+        var command = new UpdateProductOwnerCommand(345, "original owner", aPerson().build(), Instant.now());
+
+        assertThatThrownBy(() -> commandHandler.handle(command))
+                .isInstanceOf(CommandHasNoEffectException.class)
+                .hasMessageContaining("product owner is the same: original owner");
+    }
+
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {
         UpdateMetadata metadata = new UpdateMetadata(aPerson().withUsername("username1").build(), Instant.now());
 
