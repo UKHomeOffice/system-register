@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.time.Instant;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,7 +15,9 @@ public class UpdateProductOwnerCommand {
     @Size(min = 2)
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$")
     private final String productOwner;
+    @NotNull
     public final SR_Person author;
+    @NotNull
     public final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
