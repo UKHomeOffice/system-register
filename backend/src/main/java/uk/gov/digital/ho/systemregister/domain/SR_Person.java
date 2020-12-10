@@ -30,4 +30,10 @@ public class SR_Person {
     public boolean isValid() {
         return !username.isBlank();
     }
+
+    public String toAuthorName() {
+        return (this.firstName == null || this.surname == null)
+                ? null
+                : String.format("%s %s", this.firstName, this.surname);
+    }
 }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder;
 import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.RiskDTO;
 import uk.gov.digital.ho.systemregister.test.TestDataUtil;

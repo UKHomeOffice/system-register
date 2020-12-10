@@ -18,8 +18,8 @@ public final class DtoMapper {
     private DtoMapper() {
     }
 
-    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, SR_Person author, Instant timestamp) {
-        return new UpdateProductOwnerCommand(cmd.id, cmd.productOwner, author, timestamp);
+    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
     }
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
@@ -79,15 +79,10 @@ public final class DtoMapper {
     }
 
     private static CurrentSystemStateDTO.UpdateMetadata toUpdateMetadata(uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata metadata) {
+        String authorName = metadata.updatedBy == null ? null : metadata.updatedBy.toAuthorName();
         return new CurrentSystemStateDTO.UpdateMetadata(
                 metadata.updatedAt,
-                toAuthorName(metadata.updatedBy));
-    }
-
-    private static String toAuthorName(SR_Person person) {
-        return (person == null || person.firstName == null || person.surname == null)
-                ? null
-                : String.format("%s %s", person.firstName, person.surname);
+                authorName);
     }
 
     public static SR_Person extractAuthor(JsonWebToken token) {

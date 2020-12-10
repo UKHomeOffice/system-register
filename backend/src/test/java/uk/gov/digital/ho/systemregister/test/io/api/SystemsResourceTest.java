@@ -11,11 +11,10 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
 import uk.gov.digital.ho.systemregister.test.helpers.JSONFiles;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.inject.Inject;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -103,5 +102,37 @@ public class SystemsResourceTest {
                 .body("{}")
                 .when().post("/api/systems")
                 .then().assertThat().statusCode(401);
+    }
+
+    @Test
+    @TestSecurity
+    public void updatesProductOwner() throws JSONException {
+        String addSystemCommand = getResourceAsString("addSystemCommand.json");
+        String updateProductOwnerCommand = getResourceAsString("update-product-owner/updateProductOwnerCommand.json");
+        String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
+
+        given().auth().oauth2(
+                aJwtToken()
+                        .withFirstName("Figgy")
+                        .withSurname("Floofy")
+                        .build())
+                .contentType(JSON)
+                .body(addSystemCommand)
+                .when().post("/api/systems")
+                .then().assertThat()
+                .statusCode(201);
+
+        String actualResponse = given().auth().oauth2(
+                aJwtToken()
+                        .withFirstName("Basil")
+                        .withSurname("Barkley")
+                        .build())
+                .contentType(JSON)
+                .body(updateProductOwnerCommand)
+                .when().post("/api/systems/1/update-product-owner")
+                .then().assertThat()
+                .statusCode(200).and().extract().response().asString();
+
+        assertEquals(expectedResponse, actualResponse, false);
     }
 }
