@@ -14,6 +14,7 @@ public class UpdateProductOwnerCommand {
     public final int id;
     @NotBlank
     @Size(min = 2)
+    @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$")
     private final String productOwner;
     public final SR_Person author;
     public final Instant timestamp;

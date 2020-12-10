@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -44,6 +45,17 @@ class UpdateProductOwnerCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {" x", "x "})
     void extraneousSpacesDoNotCountTowardsTheMinimumCharacterCount(String productOwner) {
+        var command = new UpdateProductOwnerCommand(ID, productOwner, AUTHOR, TIMESTAMP);
+
+        var constraintViolations = validator.validate(command);
+
+        assertThat(constraintViolations).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"!", "£", "$", "%", "^", "*", "|", "<", ">", "~", "\"", "="})
+    void rejectsStringsContainingInvalidSpecialCharacters(String illegalCharacter) {
+        String productOwner = "name" + illegalCharacter;
         var command = new UpdateProductOwnerCommand(ID, productOwner, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
