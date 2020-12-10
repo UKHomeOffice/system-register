@@ -3,7 +3,9 @@ package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 
@@ -32,8 +34,8 @@ class UpdateProductOwnerCommandTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"a"})
-    @NullAndEmptySource
+    @ValueSource(strings = {"a", " "})
+    @EmptySource
     void productOwnerMustNotBeTooShort(String productOwner) {
         var command = new UpdateProductOwnerCommand(ID, productOwner, AUTHOR, TIMESTAMP);
 
@@ -61,5 +63,16 @@ class UpdateProductOwnerCommandTest {
         var constraintViolations = validator.validate(command);
 
         assertThat(constraintViolations).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"xy", "?-"})
+    @NullSource
+    void allowsProductOwnerStringToBeNullOrContainTwoOrMoreCharacters(String productOwner) {
+        var command = new UpdateProductOwnerCommand(ID, productOwner, AUTHOR, TIMESTAMP);
+
+        var constraintViolations = validator.validate(command);
+
+        assertThat(constraintViolations).isEmpty();
     }
 }

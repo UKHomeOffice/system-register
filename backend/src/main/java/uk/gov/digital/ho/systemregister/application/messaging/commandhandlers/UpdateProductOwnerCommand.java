@@ -6,13 +6,11 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.time.Instant;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UpdateProductOwnerCommand {
     public final int id;
-    @NotBlank
     @Size(min = 2)
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$")
     private final String productOwner;
