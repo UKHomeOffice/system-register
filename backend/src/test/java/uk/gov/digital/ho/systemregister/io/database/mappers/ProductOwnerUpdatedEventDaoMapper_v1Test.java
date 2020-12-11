@@ -9,14 +9,13 @@ import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.ProductOwnerUpdatedEventDAO_v1;
 
-import javax.json.bind.JsonbBuilder;
-
 import java.time.Instant;
+import javax.json.bind.JsonbBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
-import static uk.gov.digital.ho.systemregister.test.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 class ProductOwnerUpdatedEventDaoMapper_v1Test {

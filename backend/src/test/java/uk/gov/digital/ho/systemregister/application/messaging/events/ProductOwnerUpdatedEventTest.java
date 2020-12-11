@@ -2,10 +2,10 @@ package uk.gov.digital.ho.systemregister.application.messaging.events;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder;
+import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
 class ProductOwnerUpdatedEventTest {
 

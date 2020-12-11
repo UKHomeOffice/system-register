@@ -1,7 +1,7 @@
 package uk.gov.digital.ho.systemregister.profiles;
 
 import io.quarkus.test.junit.QuarkusTestProfile;
-import uk.gov.digital.ho.systemregister.test.helpers.MockAuthorizationServer;
+import uk.gov.digital.ho.systemregister.helpers.MockAuthorizationServer;
 
 import java.util.List;
 import java.util.Map;

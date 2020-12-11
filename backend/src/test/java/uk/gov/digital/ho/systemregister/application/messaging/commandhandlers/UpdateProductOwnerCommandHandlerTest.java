@@ -10,7 +10,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ProductOwnerUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder;
+import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import java.time.Instant;
 import java.util.Map;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
-import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
 // TODO: strip leading and trailing spaces
 class UpdateProductOwnerCommandHandlerTest {
