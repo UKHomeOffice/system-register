@@ -7,11 +7,8 @@ import java.beans.ConstructorProperties;
 import java.time.Instant;
 import java.util.Objects;
 
-public class SystemAddedEvent extends SR_Event {
+public class SystemAddedEvent extends SR_SystemEvent {
     public SR_System system;
-
-    public SystemAddedEvent() {
-    }
 
     @ConstructorProperties({"system", "author"})
     public SystemAddedEvent(SR_System system, SR_Person author) {
@@ -19,9 +16,26 @@ public class SystemAddedEvent extends SR_Event {
     }
 
     public SystemAddedEvent(SR_System system, SR_Person author, Instant timestamp) {
+        super(author, timestamp);
         this.system = system;
-        this.author = author;
-        this.timestamp = timestamp;
+    }
+
+    @Override
+    public int getSystemId() {
+        return system.id;
+    }
+
+    @Override
+    public Instant getUpdateTimestamp() {
+        return system.lastUpdated;
+    }
+
+    @Override
+    public SR_System update(SR_System system) {
+        if (system != null) {
+            throw new IllegalStateException(String.format("system '%s' already exists", system.name));
+        }
+        return this.system;
     }
 
     @Override
@@ -46,6 +60,4 @@ public class SystemAddedEvent extends SR_Event {
                 " system='" + system + "'" +
                 "}";
     }
-
-
 }

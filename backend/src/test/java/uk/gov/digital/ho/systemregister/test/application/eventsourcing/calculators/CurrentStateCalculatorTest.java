@@ -8,6 +8,8 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemUpdater;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
+import uk.gov.digital.ho.systemregister.test.helpers.builders.ProductOwnerUpdatedEventBuilder;
+import uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
+import static uk.gov.digital.ho.systemregister.test.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.test.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 import static uk.gov.digital.ho.systemregister.test.io.database.SnapshotBuilder.aSnapshot;
@@ -154,6 +157,32 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(snapshotSystem, new UpdateMetadata(null, snapshotSystem.lastUpdated)),
                         snapshot.timestamp));
+    }
+
+    @Test
+    void combinesDifferentEventTypesToChangeSystems() {
+        var snapshot = aSnapshot().build();
+        var templateSystem = aSystem().withId(123);
+        var initialEvent = aSystemAddedEvent()
+                .withId(123)
+                .withSystem(templateSystem.withProductOwner("initial owner"))
+                .build();
+        var productOwnerAuthor = aPerson().withUsername("editor");
+        var productOwnerUpdatedEvent = aProductOwnerUpdatedEvent()
+                .withId(123)
+                .withProductOwner("new owner")
+                .withAuthor(productOwnerAuthor)
+                .build();
+        var expectedSystem = templateSystem
+                .withProductOwner("new owner")
+                .build();
+
+        var updatedState = calculator.crunch(snapshot, List.of(initialEvent, productOwnerUpdatedEvent));
+
+        assertThat(updatedState).usingRecursiveComparison()
+                .isEqualTo(new CurrentState(
+                        Map.of(expectedSystem, new UpdateMetadata(productOwnerAuthor.build(), productOwnerUpdatedEvent.timestamp)),
+                        productOwnerUpdatedEvent.timestamp));
     }
 
     @Test

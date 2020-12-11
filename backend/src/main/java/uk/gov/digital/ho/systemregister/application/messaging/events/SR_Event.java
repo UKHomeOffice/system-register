@@ -15,4 +15,8 @@ public class SR_Event extends AuthoredMessage {
     public SR_Event(SR_Person author, Instant timestamp) {
         super(author, timestamp);
     }
+
+    public boolean isAfter(Instant timestamp) {
+        return this.timestamp.isAfter(timestamp);
+    }
 }
