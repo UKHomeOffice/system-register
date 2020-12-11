@@ -11,5 +11,6 @@ public abstract class SR_SystemEvent extends SR_Event implements SystemUpdater {
     }
 
     public abstract int getSystemId();
+
     public abstract Instant getUpdateTimestamp();
 }

@@ -11,10 +11,10 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
 import uk.gov.digital.ho.systemregister.test.helpers.JSONFiles;
 
-import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.inject.Inject;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;

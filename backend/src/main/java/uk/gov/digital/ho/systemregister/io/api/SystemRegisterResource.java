@@ -12,19 +12,28 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Up
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.io.api.dto.*;
+import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdateProductOwnerCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("api/systems")
 public class SystemRegisterResource {
@@ -57,8 +66,8 @@ public class SystemRegisterResource {
     public List<Object> events() {
         var events = eventStore.getEvents();
         return events.get().stream().map(e -> new Object() {
-            public String type = e.getClass().getSimpleName();
-            public SR_Event evt = e;
+            public final String type = e.getClass().getSimpleName();
+            public final SR_Event evt = e;
         }).collect(Collectors.toList());
     }
 

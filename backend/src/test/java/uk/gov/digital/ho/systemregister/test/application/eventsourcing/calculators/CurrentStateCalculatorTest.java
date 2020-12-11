@@ -8,8 +8,6 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemUpdater;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.ProductOwnerUpdatedEventBuilder;
-import uk.gov.digital.ho.systemregister.test.helpers.builders.SR_SystemBuilder;
 
 import java.time.Instant;
 import java.util.List;

@@ -1,17 +1,17 @@
 package uk.gov.digital.ho.systemregister.test.io.api.dto;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
-import uk.gov.digital.ho.systemregister.io.api.dto.RiskDTO;
-import uk.gov.digital.ho.systemregister.test.TestDataUtil;
-import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
+import uk.gov.digital.ho.systemregister.io.api.dto.RiskDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.SnapshotDTO;
+import uk.gov.digital.ho.systemregister.test.TestDataUtil;
 import uk.gov.digital.ho.systemregister.test.io.database.SnapshotBuilder;
 
 import java.time.Instant;
