@@ -1,95 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react'
+import {useParams} from "react-router-dom";
 import './System.css'
-import KeyInfo from './KeyInfo/KeyInfo'
-import RiskDetails from './RiskDetails/RiskDetails'
-import Criticality from './Criticality/Criticality'
-import InvestmentState from './InvestmentState/InvestmentState'
-import { GridCol, GridRow } from "govuk-react";
-import ModifiedDetails from "../ModifiedDetails/ModifiedDetails";
 import api from '../../services/api';
+import SystemView from "./SystemView/SystemView";
 
 const System = () => {
-  let { id } = useParams();
-  let [system, setSystem] = useState(null)
+  let {id} = useParams();
+  let [system, setSystem] = useState(null);
+
   useEffect(() => {
-    const fetchData = async () => setSystem(await api.getSystem(id))
-    fetchData()
-  }, [id]);
+      const fetchData = async () => setSystem(await api.getSystem(id));
+      fetchData()
+    },
+    [id]);
 
-let systemData = <p>loading system data...</p>
-  if (system) {
-    systemData =
-      <>
-        <div className="contentBlock">
-          <h1>{system.name}</h1>
-          <p data-testid="system-last-modified"><ModifiedDetails date={system.last_updated.timestamp} author_name={system.last_updated.author_name} /></p>
-          <h2>Description</h2>
-          <p data-testid="system-description" ><KeyInfo info={system.description} /></p>
-        </div>
-        <div className="contentBlock">
-          <h2>About</h2>
-          <GridRow>
-            <GridCol data-testid="about-column1" setWidth="one-quarter">
-              <p>Aliases</p>
-              <p>Department</p>
-              <p>Criticality assessment</p>
-              <p>Investment state</p>
-              <p>Developed by</p>
-              <p>Supported by</p>
-            </GridCol>
-            <GridCol data-testid="about-column2" setWidth="one-half">
-              <p>{renderAliases(system.aliases)}</p>
-              <p><KeyInfo info={system.department} /></p>
-              <p><Criticality level={system.criticality} /></p>
-              <p><InvestmentState state={system.investment_state} /></p>
-              <p><KeyInfo info={system.developed_by} /></p>
-              <p><KeyInfo info={system.supported_by} /></p>
-            </GridCol>
-          </GridRow>
-        </div>
-        <div className="contentBlock">
-          <h2>Contacts</h2>
-          <GridRow>
-            <GridCol data-testid="contacts-column1" setWidth="one-quarter">
-              <p>System register owner</p>
-              <p>Business owner</p>
-              <p>Technical owner</p>
-              <p>Service owner</p>
-              <p>Product owner</p>
-              <p>Information asset owner</p>
-            </GridCol>
-            <GridCol data-testid="contacts-column2" setWidth="one-half">
-              <p><KeyInfo info={system.system_register_owner} /></p>
-              <p><KeyInfo info={system.business_owner} /></p>
-              <p><KeyInfo info={system.technical_owner} /></p>
-              <p><KeyInfo info={system.service_owner} /></p>
-              <p><KeyInfo info={system.product_owner} /></p>
-              <p><KeyInfo info={system.information_asset_owner} /></p>
-            </GridCol>
-          </GridRow>
-        </div>
-        <h2>Risk</h2>
-        <div data-testid="risk-container" className="riskContainer">
-          {system.risks.map(risk => <RiskDetails key={risk.name} risk={risk} />)}
-        </div>
-      </>
-  }
-
-  return (
-    <div className="systemDetails centerContent">
-      {systemData}
-    </div>
-  )
-
-}
-
-function renderAliases(aliases) {
-  if (aliases.length > 0)
-    return aliases.join(', ')
-  else
-    return 'None'
-}
-
+  return (<SystemView system={system}/>)
+};
 
 export default System
