@@ -19,7 +19,7 @@ public class SR_SystemBuilder {
     private String description = "Central source of system names, contacts and risk information";
     private Instant lastUpdated = Instant.now();
     private final String portfolio = "SPAN-R";
-    private final String criticality = "low";
+    private String criticality = "low";
     private final String investmentState = "evergreen";
     private final String businessOwner = null;
     private String serviceOwner = "Service Owner";
@@ -109,6 +109,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withSupportedBy(String supportedBy) {
         this.supportedBy = supportedBy;
+        return this;
+    }
+
+    public SR_SystemBuilder withCriticality(String criticality) {
+        this.criticality = criticality;
         return this;
     }
 }

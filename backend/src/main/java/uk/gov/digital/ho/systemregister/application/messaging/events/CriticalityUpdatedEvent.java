@@ -9,6 +9,7 @@ public class CriticalityUpdatedEvent extends SR_SystemEvent {
     public final int id;
     public final String criticality;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public CriticalityUpdatedEvent(SR_Person author, Instant timestamp, int id, String criticality) {
         super(author, timestamp);
         this.id = id;
@@ -27,6 +28,6 @@ public class CriticalityUpdatedEvent extends SR_SystemEvent {
 
     @Override
     public SR_System update(SR_System system) {
-        return null;
+        return system.withCriticality(criticality);
     }
 }

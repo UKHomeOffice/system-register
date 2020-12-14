@@ -44,7 +44,7 @@ class CriticalityUpdatedEventDaoMapper_v1Test {
     }
 
     @Test
-    void rejectsEventsOtherThanProductOwnerUpdated() {
+    void rejectsEventsOtherThanCriticalityUpdated() {
         var event = new SR_Event(aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> mapper.mapToDao(event))

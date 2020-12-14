@@ -8,8 +8,8 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ProductOwnerUpdatedEventHandler;
-import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.CriticalityUpdatedEventHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import java.time.Instant;
@@ -17,60 +17,60 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
-class UpdateProductOwnerCommandHandlerTest {
+class UpdateCriticalityCommandHandlerTest {
     private final CurrentSystemRegisterState systemRegisterState = mock(CurrentSystemRegisterState.class);
-    private final ProductOwnerUpdatedEventHandler eventHandler = mock(ProductOwnerUpdatedEventHandler.class);
+    private final CriticalityUpdatedEventHandler eventHandler = mock(CriticalityUpdatedEventHandler.class);
 
-    private UpdateProductOwnerCommandHandler commandHandler;
+    private UpdateCriticalityCommandHandler commandHandler;
 
     @BeforeEach
     void setUp() {
-        commandHandler = new UpdateProductOwnerCommandHandler(
+        commandHandler = new UpdateCriticalityCommandHandler(
                 systemRegisterState,
-                eventHandler,
-                new CurrentStateCalculator());
+                 eventHandler,
+                new CurrentStateCalculator()
+        );
     }
 
+
     @Test
-    public void updatesProductOwnerValueIfSystemExistsWithDifferentValue() throws Exception {
+    public void updatesCriticalityValueIfSystemExistsWithDifferentValue() throws Exception {
         SR_SystemBuilder partialSystem = aSystem().withId(123);
-        givenCurrentStateWithSystem(partialSystem.withProductOwner("Reginald Humphries"));
+        givenCurrentStateWithSystem(partialSystem.withCriticality("unknown"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("username2").build();
-        var command = new UpdateProductOwnerCommand(
-                123,
-                "Betty Franklin",
+        var command = new UpdateCriticalityCommand(
                 expectedAuthor,
-                eventTimestamp);
+                eventTimestamp,
+                123,
+                "high");
 
         var updatedSystem = commandHandler.handle(command);
 
-        var eventCaptor = ArgumentCaptor.forClass(ProductOwnerUpdatedEvent.class);
+        var eventCaptor = ArgumentCaptor.forClass(CriticalityUpdatedEvent.class);
         verify(eventHandler).handle(eventCaptor.capture());
         assertThat(updatedSystem).usingRecursiveComparison()
                 .isEqualTo(Tuple2.of(
                         partialSystem
-                                .withProductOwner("Betty Franklin")
+                                .withCriticality("high")
                                 .build(),
                         new UpdateMetadata(expectedAuthor, eventTimestamp)));
         assertThat(eventCaptor.getValue()).usingRecursiveComparison()
-                .isEqualTo(new ProductOwnerUpdatedEvent(
-                        123,
-                        "Betty Franklin",
+                .isEqualTo(new CriticalityUpdatedEvent(
                         expectedAuthor,
-                        eventTimestamp));
+                        eventTimestamp,
+                        123,
+                        "high"));
     }
 
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateProductOwnerCommand(789, "owner", aPerson().build(), Instant.now());
+        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 789, "low");
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -78,15 +78,15 @@ class UpdateProductOwnerCommandHandlerTest {
     }
 
     @Test
-    void raisesExceptionIfProductOwnerValueIsUnchanged() {
+    void raisesExceptionIfCriticalityValueIsUnchanged() {
         givenCurrentStateWithSystem(aSystem()
                 .withId(345)
-                .withProductOwner("original owner"));
-        var command = new UpdateProductOwnerCommand(345, "original owner", aPerson().build(), Instant.now());
+                .withCriticality("low"));
+        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 345, "low");
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
-                .hasMessageContaining("product owner is the same: original owner");
+                .hasMessageContaining("criticality level is the same: low");
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {
