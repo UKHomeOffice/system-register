@@ -1,0 +1,11 @@
+{
+  "id": 9113,
+  "criticality": "high",
+  "author": {
+    "email": "test@email.com",
+    "firstName": "Charlie",
+    "surname":"Tuppence",
+    "username": "chartup"
+  },
+  "timestamp": "2020-09-17T15:09:00Z"
+}

@@ -29,6 +29,7 @@ import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.UpdateCriticalityCommandBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest
@@ -103,6 +104,19 @@ public class PostgresEventStoreTest {
                 .isEqualTo(List.of(expected));
     }
 
+    @Test
+    public void saveCriticalityUpdated() {
+        var expected = aCriticalityUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
 
     @Test
     public void throwsExceptionIfEventTypeNotSupportedWhenSaving() {
@@ -110,7 +124,7 @@ public class PostgresEventStoreTest {
 
         assertThatThrownBy(() -> eventStore.save(event))
                 .isInstanceOf(UnsupportedOperationException.class)
-                .hasMessageMatching(".*not supported: .*\\.SR_Event$");
+                .hasMessageMatching(".*not supported: .*\\.SR_Event Please implement a DAO Mapper for this event type$");
     }
 
     @ParameterizedTest

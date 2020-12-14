@@ -10,7 +10,7 @@ import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 
 public class ProductOwnerUpdatedEventBuilder {
     private int id = 1;
-    private String productOwner = "Barry White";
+    private String productOwner = "Barry Blue";
     private SR_Person author = aPerson().build();
     private Instant timestamp = Instant.now();
 
