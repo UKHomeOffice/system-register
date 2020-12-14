@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
+import SecureRoute from "../SecureRoute";
 import SystemView from "./SystemView/SystemView";
 import UpdateContacts from "./UpdateContacts";
 import api from '../../services/api';
@@ -20,9 +21,9 @@ function System() {
       <Route path={`${path}`} exact>
         <SystemView system={system} />
       </Route>
-      <Route path={`${path}/update-contacts`}>
+      <SecureRoute path={`${path}/update-contacts`}>
         <UpdateContacts system={system} />
-      </Route>
+      </SecureRoute>
     </Switch>
   );
 }

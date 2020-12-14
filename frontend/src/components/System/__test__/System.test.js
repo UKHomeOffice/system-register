@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
+import { useKeycloak } from "@react-keycloak/web";
 
 import System from '../System';
 import api from '../../../services/api';
@@ -8,6 +9,10 @@ import api from '../../../services/api';
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
 }));
+jest.mock("@react-keycloak/web", () => ({
+  useKeycloak: jest.fn(),
+}));
+
 
 const test_system = {
   name: "Test System",
@@ -30,6 +35,15 @@ describe('<System />', () => {
   });
 
   describe("when authorized", () => {
+    beforeEach(() => {
+      useKeycloak.mockReturnValue({
+        keycloak: {
+          authenticated: true,
+        },
+        initialized: true,
+      });
+    });
+
     it("shows an edit view for contacts", async () => {
       setup("1/update-contacts");
 
