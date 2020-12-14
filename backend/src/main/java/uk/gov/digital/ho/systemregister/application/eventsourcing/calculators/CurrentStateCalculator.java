@@ -19,7 +19,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-// TODO: Fold multiple event types over systems
 @ApplicationScoped
 public class CurrentStateCalculator {
     public CurrentState crunch(Snapshot snapshot, List<SR_Event> events) {
@@ -38,25 +37,6 @@ public class CurrentStateCalculator {
         }
 
         return theCurrentRegisterState(systemsById, registerLastUpdatedAt);
-
-//        var updatesBySystem = snapshot.systems
-//                .stream()
-//                .collect(toMap(
-//                        identity(),
-//                        system -> new UpdateMetadata(null, system.lastUpdated)));
-//        var latestUpdate = new AtomicReference<>(snapshot.timestamp);
-//
-//        events.stream()
-//                .sorted(comparing(event -> event.timestamp))
-//                .filter(event -> event.timestamp.isAfter(snapshot.timestamp))
-//                .filter(event -> event instanceof SystemAddedEvent)
-//                .map(SystemAddedEvent.class::cast)
-//                .forEach(event -> {
-//                    updatesBySystem.put(event.system, new UpdateMetadata(event.author, event.system.lastUpdated));
-//                    latestUpdate.set(event.timestamp);
-//                });
-//
-//        return new CurrentState(updatesBySystem, latestUpdate.get());
     }
 
     public SR_System applyUpdateToSystem(SR_System system, SystemUpdater updater) {
