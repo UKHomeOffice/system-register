@@ -22,18 +22,28 @@ describe('<System />', () => {
   });
 
   it('renders system view', async () => {
-    setup();
+    setup("1");
 
     const element = await screen.findByText('Test System');
 
     expect(element).toBeInTheDocument();
   });
+
+  describe("when authorized", () => {
+    it("shows an edit view for contacts", async () => {
+      setup("1/update-contacts");
+
+      const element = await screen.findByText('Test System');
+
+      expect(element).toBeInTheDocument();
+    });
+  });
 });
 
-function setup() {
+function setup(path) {
   render(
-    <MemoryRouter initialEntries={['system/1']}>
-      <Route path='system/:id' component={System} />
+    <MemoryRouter initialEntries={[`/system/${path}`]}>
+      <Route path='/system/:id' component={System} />
     </MemoryRouter>
   );
 }

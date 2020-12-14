@@ -70,7 +70,7 @@ class App extends React.Component {
                                 <Route exact path="/">
                                     <SystemList register={this.state.register} />
                                 </Route>
-                                <Route exact path="/system/:id" component={System} />
+                                <Route path="/system/:id" component={System} />
                                 <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                             </Switch>
                         </main>
