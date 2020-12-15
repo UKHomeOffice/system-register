@@ -56,7 +56,7 @@ class UpdateCriticalityCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {" high", "High "})
     void extraneousSpaceAreRemovedFromCriticalityValue(String criticalityWithSpaces) {
-        var command = new UpdateProductOwnerCommand(ID, criticalityWithSpaces, AUTHOR, TIMESTAMP);
+        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, criticalityWithSpaces);
 
         var constraintViolations = validator.validate(command);
 
