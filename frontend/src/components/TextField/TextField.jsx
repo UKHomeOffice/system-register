@@ -6,12 +6,19 @@ const undefinedIfNull = (value) => value !== null ? value : undefined;
 
 function TextField({ children, hint, name, inputClassName }) {
   return <Field name={name}>
-    {({ field: { value, ...fieldProps } }) => (
-      <InputField hint={hint}
-                  input={{ value: undefinedIfNull(value), className: inputClassName, ...fieldProps }}>
-        {children}
-      </InputField>
-    )}
+    {({ field: { value, ...fieldProps } }) => {
+      const inputProps = {
+        value: undefinedIfNull(value),
+        className: inputClassName,
+        ...fieldProps
+      };
+
+      return (
+        <InputField hint={hint} input={inputProps}>
+          {children}
+        </InputField>
+      );
+    }}
   </Field>;
 }
 
