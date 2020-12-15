@@ -4,6 +4,7 @@ import io.smallrye.mutiny.tuples.Tuple2;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ProductOwnerUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;

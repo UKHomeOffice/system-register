@@ -8,6 +8,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ProductOwnerUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;

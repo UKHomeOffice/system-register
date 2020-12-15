@@ -3,7 +3,8 @@ package uk.gov.digital.ho.systemregister.io.api.dto;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateProductOwnerCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
@@ -20,6 +21,10 @@ public final class DtoMapper {
 
     public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
+    }
+
+    public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
     }
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {

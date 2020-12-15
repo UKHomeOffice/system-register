@@ -7,16 +7,14 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.NoSuchSystemException;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateProductOwnerCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateCriticalityCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateProductOwnerCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
-import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
-import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
-import uk.gov.digital.ho.systemregister.io.api.dto.UpdateProductOwnerCommandDTO;
-import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.*;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;
@@ -52,6 +50,9 @@ public class SystemRegisterResource {
     @Inject
     UpdateProductOwnerCommandHandler updateProductOwnerCommandHandler;
 
+    @Inject
+    UpdateCriticalityCommandHandler updateCriticalityCommandHandler;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CurrentSystemStateDTO systems() {
@@ -75,15 +76,29 @@ public class SystemRegisterResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
-    @Path("/{system_id}/update-product-owner")
-    public UpdatedSystemDTO updateProductOwner(UpdateProductOwnerCommandDTO updateProductOwnerCommand,
+    @Path("/{system_id}/update-criticality")
+    public UpdatedSystemDTO updateCriticality(UpdateCriticalityCommandDTO cmd,
                                                @PathParam("system_id") int id,
                                                @Context SecurityContext securityContext)
             throws NoSuchSystemException, CommandHasNoEffectException {
-        JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
-        Instant timestamp = Instant.now();
-        SR_Person author = DtoMapper.extractAuthor(jwt);
-        UpdateProductOwnerCommand command = DtoMapper.map(updateProductOwnerCommand, id, author, timestamp);
+        SR_Person author = getAuthor(securityContext);
+        UpdateCriticalityCommand command = DtoMapper.map(cmd, id, author, Instant.now());
+        var updatedSystemAndMetadata = updateCriticalityCommandHandler.handle(command);
+
+        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
+    @Path("/{system_id}/update-product-owner")
+    public UpdatedSystemDTO updateProductOwner(UpdateProductOwnerCommandDTO cmd,
+                                               @PathParam("system_id") int id,
+                                               @Context SecurityContext securityContext)
+            throws NoSuchSystemException, CommandHasNoEffectException {
+        SR_Person author = getAuthor(securityContext);
+        UpdateProductOwnerCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateProductOwnerCommandHandler.handle(command);
 
         return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
@@ -94,15 +109,19 @@ public class SystemRegisterResource {
     @Authenticated
     public Response addSystem(AddSystemCommandDTO cmd, @Context SecurityContext securityContext) {
         try {
-            JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
-            Instant timestamp = Instant.now();
-            SR_Person author = DtoMapper.extractAuthor(jwt);
-            AddSystemCommand command = DtoMapper.map(cmd, author, timestamp);
+            SR_Person author = getAuthor(securityContext);
+            AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
             eventBus.publish(command);
         } catch (Exception e) {
             LOG.error(e);
             return Response.serverError().build();
         }
         return Response.status(201).build();
+    }
+
+    private SR_Person getAuthor(SecurityContext securityContext) {
+        JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
+        SR_Person author = DtoMapper.extractAuthor(jwt);
+        return author;
     }
 }

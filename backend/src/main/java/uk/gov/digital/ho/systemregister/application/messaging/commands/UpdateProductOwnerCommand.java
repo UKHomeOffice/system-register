@@ -1,4 +1,4 @@
-package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
+package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import com.google.common.base.Objects;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;

@@ -16,7 +16,7 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
-import static uk.gov.digital.ho.systemregister.helpers.builders.UpdateCriticalityCommandBuilder.aCriticalityUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 class CriticalityUpdatedEventDaoMapper_v1Test {

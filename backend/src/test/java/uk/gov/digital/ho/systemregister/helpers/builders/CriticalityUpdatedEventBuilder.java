@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.helpers.builders;
 
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder;
 
@@ -8,35 +9,36 @@ import java.time.Instant;
 
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 
-public class UpdateCriticalityCommandBuilder {
+public class CriticalityUpdatedEventBuilder {
     private int id = 1;
     private String criticality = "unknown";
     private SR_Person author = aPerson().build();
     private Instant timestamp = Instant.now();
 
-    public static UpdateCriticalityCommandBuilder anUpdateCriticalityCommand() {
-        return new UpdateCriticalityCommandBuilder();
+    public static CriticalityUpdatedEventBuilder aCriticalityUpdatedEvent() {
+        return new CriticalityUpdatedEventBuilder();
     }
 
-    public UpdateCriticalityCommandBuilder withId(int id) {
+    public CriticalityUpdatedEventBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public UpdateCriticalityCommandBuilder withCriticality(String criticality) {
+    public CriticalityUpdatedEventBuilder withCriticality(String criticality) {
         this.criticality = criticality;
         return this;
     }
 
-    public UpdateCriticalityCommandBuilder withAuthor(SR_PersonBuilder author) {
+    public CriticalityUpdatedEventBuilder withAuthor(SR_PersonBuilder author) {
         this.author = author.build();
         return this;
     }
 
-    public UpdateCriticalityCommandBuilder withTimestamp(Instant timestamp) {
+    public CriticalityUpdatedEventBuilder withTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
         return this;
     }
+
 
     public CriticalityUpdatedEvent build() {
         return new CriticalityUpdatedEvent(author, timestamp, id, criticality);

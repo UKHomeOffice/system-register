@@ -26,10 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
+import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
-import static uk.gov.digital.ho.systemregister.helpers.builders.UpdateCriticalityCommandBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest

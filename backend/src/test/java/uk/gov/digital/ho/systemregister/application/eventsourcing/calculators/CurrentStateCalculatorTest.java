@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
+import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -152,6 +153,32 @@ public class CurrentStateCalculatorTest {
                 .isEqualTo(new CurrentState(
                         Map.of(snapshotSystem, new UpdateMetadata(null, snapshotSystem.lastUpdated)),
                         snapshot.timestamp));
+    }
+
+    @Test
+    void canApplyUpdateCriticalityEvent() {
+        var snapshot = aSnapshot().build();
+        var templateSystem = aSystem().withId(123);
+        var initialEvent = aSystemAddedEvent()
+                .withId(123)
+                .withSystem(templateSystem.withCriticality("low"))
+                .build();
+        var author = aPerson().withUsername("editor");
+        var criticalityUpdatedEvent = aCriticalityUpdatedEvent()
+                .withId(123)
+                .withCriticality("high")
+                .withAuthor(author)
+                .build();
+        var expectedSystem = templateSystem
+                .withCriticality("high")
+                .build();
+
+        var updatedState = calculator.crunch(snapshot, List.of(initialEvent, criticalityUpdatedEvent));
+
+        assertThat(updatedState).usingRecursiveComparison()
+                .isEqualTo(new CurrentState(
+                        Map.of(expectedSystem, new UpdateMetadata(author.build(), criticalityUpdatedEvent.timestamp)),
+                        criticalityUpdatedEvent.timestamp));
     }
 
     @Test

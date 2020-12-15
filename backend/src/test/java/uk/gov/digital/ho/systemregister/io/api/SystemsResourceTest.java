@@ -135,4 +135,36 @@ public class SystemsResourceTest {
 
         assertEquals(expectedResponse, actualResponse, false);
     }
+
+    @Test
+    @TestSecurity
+    public void updatesCriticality() throws JSONException {
+        String addSystemCommand = getResourceAsString("addSystemCommand.json");
+        String updateProductOwnerCommand = getResourceAsString("update-criticality/updateCriticalityCommand.json");
+        String expectedResponse = getResourceAsString("update-criticality/updateCriticalityResponse.json");
+
+        given().auth().oauth2(
+                aJwtToken()
+                        .withFirstName("Figgy")
+                        .withSurname("Floofy")
+                        .build())
+                .contentType(JSON)
+                .body(addSystemCommand)
+                .when().post("/api/systems")
+                .then().assertThat()
+                .statusCode(201);
+
+        String actualResponse = given().auth().oauth2(
+                aJwtToken()
+                        .withFirstName("Basil")
+                        .withSurname("Barkley")
+                        .build())
+                .contentType(JSON)
+                .body(updateProductOwnerCommand)
+                .when().post("/api/systems/1/update-criticality")
+                .then().assertThat()
+                .statusCode(200).and().extract().response().asString();
+
+        assertEquals(expectedResponse, actualResponse, false);
+    }
 }
