@@ -1,8 +1,8 @@
-import api from '../api'
-import data from '../../data/systems_dummy.json';
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import System from "../../components/System/System";
+
+import api from '../api'
+import data from '../../data/systems_dummy.json';
 
 const server = setupServer(
     rest.get("/api/systems", (req, res, ctx) => {
@@ -12,7 +12,6 @@ const server = setupServer(
         );
     })
 );
-
 
 describe("api", () => {
     beforeAll(() => server.listen({onUnhandledRequest: "error"}));
@@ -43,6 +42,3 @@ describe("api", () => {
         });
     })
 });
-
-
-
