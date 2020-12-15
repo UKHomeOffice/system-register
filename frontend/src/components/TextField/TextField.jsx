@@ -2,13 +2,13 @@ import React from "react";
 import { Field } from "formik";
 import { InputField } from "govuk-react";
 
-const undefinedIfNull = (value) => value !== null ? value : undefined;
+const emptyIfUndefined = (value) => value != null ? value : "";
 
 function TextField({ children, hint, name, inputClassName }) {
   return <Field name={name}>
     {({ field: { value, ...fieldProps } }) => {
       const inputProps = {
-        value: undefinedIfNull(value),
+        value: emptyIfUndefined(value),
         className: inputClassName,
         ...fieldProps
       };
