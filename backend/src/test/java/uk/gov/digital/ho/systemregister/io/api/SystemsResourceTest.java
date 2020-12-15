@@ -50,44 +50,15 @@ public class SystemsResourceTest {
     @Test
     @TestSecurity
     public void AddSystem() throws JSONException {
-        String cmd = resource.getAddSystemCommandJson();
-        String expectedResponse = getResourceAsString("system-response.json");
-        given().auth().oauth2(
-                aJwtToken()
-                        .withFirstName("Betty")
-                        .withSurname("Franklin")
-                        .build())
-                .contentType(JSON)
-                .body(cmd)
-                .when().post("/api/systems")
-                .then().assertThat()
-                .statusCode(201);
-
-        String json = get("/api/systems").then()
-                .statusCode(200)
-                .and().extract()
-                .response().asString();
-        assertEquals(expectedResponse, json, false);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        checkAllSystemsResponse("add-system/system-response.json");
     }
 
     @Test
     @TestSecurity
     public void AddTwoSystems() {
-        var cmd1 = resource.getAddSystemCommandJson();
-        var cmd2 = resource.getAnotherAddSystemCommandJson();
-
-        given().auth().oauth2(aJwtToken().build())
-                .contentType(JSON)
-                .body(cmd1)
-                .when().post("/api/systems")
-                .then().assertThat()
-                .statusCode(201);
-        given().auth().oauth2(aJwtToken().build())
-                .contentType(JSON)
-                .body(cmd2)
-                .when().post("/api/systems")
-                .then().assertThat()
-                .statusCode(201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addAnotherSystemCommand.json", "/api/systems", 201);
 
         get("/api/systems").then()
                 .statusCode(200)
@@ -107,52 +78,40 @@ public class SystemsResourceTest {
     @Test
     @TestSecurity
     public void updatesProductOwner() throws JSONException {
-        String addSystemCommand = getResourceAsString("addSystemCommand.json");
-        String updateProductOwnerCommand = getResourceAsString("update-product-owner/updateProductOwnerCommand.json");
         String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
 
-        given().auth().oauth2(
-                aJwtToken()
-                        .withFirstName("Figgy")
-                        .withSurname("Floofy")
-                        .build())
-                .contentType(JSON)
-                .body(addSystemCommand)
-                .when().post("/api/systems")
-                .then().assertThat()
-                .statusCode(201);
-
-        String actualResponse = given().auth().oauth2(
-                aJwtToken()
-                        .withFirstName("Basil")
-                        .withSurname("Barkley")
-                        .build())
-                .contentType(JSON)
-                .body(updateProductOwnerCommand)
-                .when().post("/api/systems/1/update-product-owner")
-                .then().assertThat()
-                .statusCode(200).and().extract().response().asString();
+        String actualResponse = sendCommandToApi("update-product-owner/command.json", "/api/systems/1/update-product-owner", 200);
 
         assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-product-owner/expectedAllSystemsResponse.json");
     }
 
     @Test
     @TestSecurity
     public void updatesCriticality() throws JSONException {
-        String addSystemCommand = getResourceAsString("addSystemCommand.json");
-        String updateProductOwnerCommand = getResourceAsString("update-criticality/updateCriticalityCommand.json");
-        String expectedResponse = getResourceAsString("update-criticality/updateCriticalityResponse.json");
+        String expectedResponse = getResourceAsString("update-criticality/expectedResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
 
-        given().auth().oauth2(
-                aJwtToken()
-                        .withFirstName("Figgy")
-                        .withSurname("Floofy")
-                        .build())
-                .contentType(JSON)
-                .body(addSystemCommand)
-                .when().post("/api/systems")
-                .then().assertThat()
-                .statusCode(201);
+        String actualResponse = sendCommandToApi("update-criticality/command.json", "/api/systems/1/update-criticality", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
+    }
+
+    private void checkAllSystemsResponse(String pathToExpectedJson) throws JSONException {
+        String expectedAllSystemsResponse = getResourceAsString(pathToExpectedJson);
+
+        String actualAllSystems = get("/api/systems").then()
+                .statusCode(200)
+                .and().extract()
+                .response().asString();
+
+        assertEquals(expectedAllSystemsResponse, actualAllSystems, false);
+    }
+
+    private String sendCommandToApi(String pathToJson, String apiPath, int expectedStatusCode) {
+        String command = getResourceAsString(pathToJson);
 
         String actualResponse = given().auth().oauth2(
                 aJwtToken()
@@ -160,11 +119,11 @@ public class SystemsResourceTest {
                         .withSurname("Barkley")
                         .build())
                 .contentType(JSON)
-                .body(updateProductOwnerCommand)
-                .when().post("/api/systems/1/update-criticality")
+                .body(command)
+                .when().post(apiPath)
                 .then().assertThat()
-                .statusCode(200).and().extract().response().asString();
+                .statusCode(expectedStatusCode).and().extract().response().asString();
 
-        assertEquals(expectedResponse, actualResponse, false);
+        return actualResponse;
     }
 }
