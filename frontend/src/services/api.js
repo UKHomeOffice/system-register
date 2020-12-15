@@ -4,6 +4,7 @@ import config from '../config/config'
 const api = {
     getAllSystems,
     getSystem,
+    updateContacts,
 };
 
 async function getAllSystems() {
@@ -26,5 +27,16 @@ async function getSystem(id) {
     return register.systems.find(s => s.id.toString() === id);
 }
 
+async function updateContacts(id, data) {
+    const response = await axios.post(
+      `${config.api.url}/systems/${id}/update-product-owner`,
+      { product_owner: data.productOwner },
+      {
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+          }
+      });
+    return response.data;
+}
 
-export default api
+export default api;
