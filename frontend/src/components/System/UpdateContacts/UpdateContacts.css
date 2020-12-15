@@ -1,0 +1,22 @@
+.form-controls {
+    margin-top: 10px;
+}
+
+.secondary {
+    color: #505a5f;
+}
+
+.width-two-thirds {
+    width: 66.6% !important;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+h1 + p {
+    margin-top: 0.25rem;
+}
+
+button {
+    min-width: 10rem;
+}
