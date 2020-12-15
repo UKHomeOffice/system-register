@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 
 public class UpdateProductOwnerCommand {
     public final int id;
-    @Pattern(regexp = "[^\\S]", message = "Please provide a minimum of 3 characters")
+    @Pattern(regexp = "[^.]{2,}", message = "Please provide a minimum of 3 characters")
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
     private final String productOwner;
     @NotNull

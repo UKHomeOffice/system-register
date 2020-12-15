@@ -65,7 +65,7 @@ class UpdateProductOwnerCommandTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"xy", "?-"})
+    @ValueSource(strings = {"xy", "?-", "Name of person"})
     @NullSource
     void allowsProductOwnerStringToBeNullOrContainTwoOrMoreCharacters(String productOwner) {
         var command = new UpdateProductOwnerCommand(ID, productOwner, AUTHOR, TIMESTAMP);
