@@ -6,11 +6,13 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 
 public class UpdateCriticalityCommand {
     public final int id;
-    //TODO add validation so that this field can only have certain values (poss not needed if enum)
+    //TODO update to custom validator with dynamic values in default message
+    @Pattern(regexp = "high|low|medium|cni|unknown", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Criticality must be one of the following values: high, low, medium, cni, unknown")
     private final String criticality;
     @NotNull
     public final SR_Person author;
