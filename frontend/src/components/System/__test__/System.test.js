@@ -1,18 +1,20 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import user from "@testing-library/user-event";
 import { useKeycloak } from "@react-keycloak/web";
+import { render, screen, waitFor } from '@testing-library/react';
+import { createMemoryHistory } from "history";
+import { Route, Router } from 'react-router-dom';
 
 import System from '../System';
 import api from '../../../services/api';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
+  updateContacts: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
 }));
-
 
 const test_system = {
   name: "Test System",
@@ -27,7 +29,7 @@ describe('<System />', () => {
   });
 
   it('renders system view', async () => {
-    setup("1");
+    renderWithHistory("1");
 
     const element = await screen.findByText('Test System');
 
@@ -45,19 +47,56 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for contacts", async () => {
-      setup("1/update-contacts");
+      renderWithHistory("1/update-contacts");
 
       const element = await screen.findByText('Test System');
 
       expect(element).toBeInTheDocument();
     });
+
+    describe("editing contacts", () => {
+      it("returns to the system view after a successful update", async () => {
+        api.updateContacts.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
+        const history = createMemoryHistory({
+          initialEntries: ["/system/123/update-contacts"],
+          initialIndex: 0,
+        });
+        renderWithHistory(null, { history });
+        const productOwnerField = await screen.findByLabelText(/product owner/i);
+        const saveButton = screen.getByRole("button", { name: /save/i });
+
+        // noinspection ES6MissingAwait: there is no typing delay
+        user.type(productOwnerField, "updated owner");
+        user.click(saveButton);
+
+        await waitFor(() => {
+          expect(api.updateContacts).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              productOwner: "updated owner",
+            })
+          );
+
+          expect(history).toHaveProperty("index", 1);
+          expect(history).toHaveProperty(
+            "location.pathname",
+            "/system/123"
+          );
+        });
+      });
+    });
   });
 });
 
-function setup(path) {
-  render(
-    <MemoryRouter initialEntries={[`/system/${path}`]}>
+function renderWithHistory(path, context = {}) {
+  const { history } = {
+    history: createMemoryHistory({ initialEntries: [`/system/${path}`] }),
+    ...context,
+  };
+
+  return render(
+    <Router history={history}>
       <Route path='/system/:id' component={System} />
-    </MemoryRouter>
+    </Router>
   );
 }
