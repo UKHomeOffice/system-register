@@ -1,0 +1,10 @@
+{
+  "id": 789,
+  "author": {
+    "email": "user@example.com",
+    "firstName": "Amy",
+    "surname":"Green",
+    "username": "amgreen"
+  },
+  "timestamp": "2020-03-07T02:09:00Z"
+}

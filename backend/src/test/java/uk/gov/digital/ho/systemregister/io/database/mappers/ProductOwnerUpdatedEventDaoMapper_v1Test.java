@@ -19,9 +19,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpda
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 class ProductOwnerUpdatedEventDaoMapper_v1Test {
-
     private ProductOwnerUpdatedEventDaoMapper_v1 mapper;
-
 
     @BeforeEach
     void setUp() {
@@ -74,15 +72,35 @@ class ProductOwnerUpdatedEventDaoMapper_v1Test {
                 .withId(5678)
                 .withProductOwner("Jasmine Levy")
                 .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
-                .withAuthor(
-                        aPerson()
-                                .withEmail("test@email.com")
-                                .withFirstName("Amy")
-                                .withSurname("Green")
-                                .withUsername("amgreen"))
+                .withAuthor(aPerson()
+                        .withEmail("test@email.com")
+                        .withFirstName("Amy")
+                        .withSurname("Green")
+                        .withUsername("amgreen"))
                 .build();
 
         String json = getResourceAsString("dao/v1/product-owner-updated-event.json");
+
+        SR_Event event = mapper.mapToDomain(json);
+
+        assertThat(event).usingRecursiveComparison()
+                .isEqualTo(expectedEvent);
+    }
+
+    @Test
+    void mapsUnknownOwnerToProductOwnerUpdatedEvent() {
+        ProductOwnerUpdatedEvent expectedEvent = aProductOwnerUpdatedEvent()
+                .withId(789)
+                .withProductOwner(null)
+                .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
+                .withAuthor(aPerson()
+                        .withEmail("user@example.com")
+                        .withFirstName("Amy")
+                        .withSurname("Green")
+                        .withUsername("amgreen"))
+                .build();
+
+        String json = getResourceAsString("dao/v1/unknown-product-owner-updated-event.json");
 
         SR_Event event = mapper.mapToDomain(json);
 
