@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
-import { Field, Form, Formik } from "formik";
-import { Button, Radio } from "govuk-react";
+import { Form, Formik } from "formik";
+import { Button } from "govuk-react";
+import Radio from "../../Radio"
 
 import "./UpdateAbout.css";
 
@@ -25,20 +26,24 @@ function UpdateAbout({ system, onSubmit }) {
             }}
             onSubmit={handleSubmit}
           >
-            {({ values }) => (
-              <Form>
-                <div className="radioGroup">
-                  <label><Field type="radio" name="criticality" value="unknown" />Unknown</label>
-                  <label><Field type="radio" name="criticality" value="low" />Low</label>
-                  <label><Field type="radio" name="criticality" value="medium" />Medium</label>
-                  <label><Field type="radio" name="criticality" value="high" />High</label>
-                  <label><Field type="radio" name="criticality" value="cni" />CNI</label>
-                </div>
-                <div className="form-controls">
-                  <Button type="submit">Save</Button>
-                </div>
-              </Form>
-            )}
+            <Form>
+              {
+                [
+                  { value: "unknown", label: "Unknown" },
+                  { value: "low", label: "Low" },
+                  { value: "medium", label: "Medium" },
+                  { value: "high", label: "High" },
+                  { value: "cni", label: "CNI" }
+                ].map(v => {
+                  return (
+                    <Radio name="criticality" key={v.value} value={v.value}>{v.label}</Radio>
+                  )
+                })
+              }
+              <div className="form-controls">
+                <Button type="submit">Save</Button>
+              </div>
+            </Form>
           </Formik>
         </>
       ) : (
