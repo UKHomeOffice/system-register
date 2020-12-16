@@ -10,7 +10,7 @@ import api from '../../../services/api';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
-  updateContacts: jest.fn(),
+  updateProductOwner: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -56,7 +56,7 @@ describe('<System />', () => {
 
     describe("editing contacts", () => {
       it("returns to the system view after a successful update", async () => {
-        api.updateContacts.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
+        api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
         const history = createMemoryHistory({
           initialEntries: ["/system/123/update-contacts"],
           initialIndex: 0,
@@ -70,7 +70,7 @@ describe('<System />', () => {
         user.click(saveButton);
 
         await waitFor(() => {
-          expect(api.updateContacts).toBeCalledWith(
+          expect(api.updateProductOwner).toBeCalledWith(
             "123",
             expect.objectContaining({
               productOwner: "updated owner",

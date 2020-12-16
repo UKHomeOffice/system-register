@@ -4,7 +4,7 @@ import config from '../config/config'
 const api = {
   getAllSystems,
   getSystem,
-  updateContacts,
+  updateProductOwner,
 };
 
 async function getAllSystems() {
@@ -27,7 +27,7 @@ async function getSystem(id) {
   return register.systems.find(s => s.id.toString() === id);
 }
 
-async function updateContacts(id, data) {
+async function updateProductOwner(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-product-owner`,
     { product_owner: data.productOwner },

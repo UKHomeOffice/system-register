@@ -42,8 +42,8 @@ describe("api", () => {
     });
   })
 
-  describe("update contacts", () => {
-    it("sends changed contacts to the API", async () => {
+  describe("update product owner", () => {
+    it("sends changed owner to the API", async () => {
       server.use(
         rest.post("/api/systems/345/update-product-owner", (req, res, ctx) => {
           const { product_owner: productOwner } = req.body;
@@ -59,7 +59,7 @@ describe("api", () => {
         })
       );
 
-      const pendingSystem = api.updateContacts(345, {
+      const pendingSystem = api.updateProductOwner(345, {
         productOwner: "old owner"
       });
 
