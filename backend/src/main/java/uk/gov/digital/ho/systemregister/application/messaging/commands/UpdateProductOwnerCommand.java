@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 
 public class UpdateProductOwnerCommand {
     public final int id;
-    @Pattern(regexp = "[^.]{2,}", message = "Please provide a minimum of 3 characters")
+    @Size(min = 2, message = "The contact name must not be incomplete. Please enter a full contact name or leave blank if you do not know it.")
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
     private final String productOwner;
     @NotNull
