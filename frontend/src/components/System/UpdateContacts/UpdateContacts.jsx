@@ -10,8 +10,10 @@ const ownersOf = (system) => ({
 });
 
 function UpdateContacts({ system, onSubmit }) {
-  const handleSubmit = useCallback(async (values) => {
-    await onSubmit(values);
+  const handleSubmit = useCallback(async ({ productOwner }) => {
+    await onSubmit({
+      productOwner: productOwner.trim(),
+    });
   }, [onSubmit]);
 
   return (

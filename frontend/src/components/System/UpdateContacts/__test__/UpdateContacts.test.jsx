@@ -38,4 +38,18 @@ describe("UpdateContacts", () => {
       productOwner: "new owner",
     }));
   });
+
+  it("trims values before calling the submission handler", async () => {
+    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    const productOwnerField = screen.getByLabelText(/product owner/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(productOwnerField, "  owner with extra spaces  ");
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({
+      productOwner: "owner with extra spaces",
+    }));
+  });
 });
