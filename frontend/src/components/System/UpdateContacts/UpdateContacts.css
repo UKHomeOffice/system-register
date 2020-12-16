@@ -19,4 +19,11 @@ h1 + p {
 
 button {
     min-width: 10rem;
+    margin-left: 10px;
 }
+
+button:first-child {
+    margin-left: 0;
+}
+
+

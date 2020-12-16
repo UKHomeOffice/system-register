@@ -28,13 +28,17 @@ function System() {
     history.push(url);
   }, [id, history, url]);
 
+  const handleCancelUpdateContacts = useCallback(() => {
+    history.push(url);
+  }, [history, url]);
+
   return (
     <Switch>
       <Route path={`${path}`} exact>
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} />
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancelUpdateContacts} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} />

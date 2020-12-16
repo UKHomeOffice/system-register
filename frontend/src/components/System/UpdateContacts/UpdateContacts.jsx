@@ -9,12 +9,13 @@ const ownersOf = (system) => ({
   productOwner: system.product_owner,
 });
 
-function UpdateContacts({ system, onSubmit }) {
+function UpdateContacts({ system, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async ({ productOwner }) => {
     await onSubmit({
       productOwner: productOwner.trim(),
     });
   }, [onSubmit]);
+  const handleCancel = () => {onCancel()};
 
   return (
     <div className="centerContent">
@@ -43,6 +44,7 @@ function UpdateContacts({ system, onSubmit }) {
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
+                <Button type="button" onClick={handleCancel} buttonColour="#f3f2f1" buttonTextColour="#0b0c0c">Cancel</Button>
               </div>
             </Form>
           </Formik>

@@ -84,6 +84,23 @@ describe('<System />', () => {
           );
         });
       });
+
+      it("returns to system view on cancel", async () => {
+        const history = createMemoryHistory({
+          initialEntries: ["/system/123/update-contacts"],
+          initialIndex: 0,
+        });
+        renderWithHistory(null, { history });
+        const cancelButton = await screen.findByRole("button", { name: /cancel/i });
+
+        user.click(cancelButton);
+
+        expect(history).toHaveProperty("index", 1);
+        expect(history).toHaveProperty(
+            "location.pathname",
+            "/system/123"
+        );
+      })
     });
   });
 });
