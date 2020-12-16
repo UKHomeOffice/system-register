@@ -36,6 +36,7 @@ function UpdateContacts({ system, onSubmit }) {
                 name="productOwner"
                 hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
+                placeholder="Unknown"
               >
                 Product owner
               </TextField>

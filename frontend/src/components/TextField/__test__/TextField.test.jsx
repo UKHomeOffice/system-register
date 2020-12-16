@@ -11,6 +11,12 @@ describe("TextField", () => {
     expect(screen.getByLabelText(/label text/)).toBeInTheDocument();
   });
 
+  it("displays placeholder text if provided", () => {
+    renderWithFormik(<TextField placeholder="Unknown" />);
+
+    expect(screen.getByPlaceholderText("Unknown")).toBeInTheDocument();
+  });
+
   describe("field value", () => {
     it("initialises the field with existing values", () => {
       renderWithFormik(<TextField name="field-name" />, { "field-name": "value" });
@@ -41,6 +47,8 @@ describe("TextField", () => {
     });
   });
 });
+
+
 
 function renderWithFormik(component, values = {}) {
   return render(
