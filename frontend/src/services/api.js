@@ -7,6 +7,8 @@ const api = {
   updateProductOwner,
 };
 
+const nullIfEmpty = (value) => value !== "" ? value : null;
+
 async function getAllSystems() {
   const response = await axios.get(`${config.api.url}/systems`);
   const sortedSystems = response.data.systems.sort((a, b) => {
@@ -30,7 +32,7 @@ async function getSystem(id) {
 async function updateProductOwner(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-product-owner`,
-    { product_owner: data.productOwner },
+    { product_owner: nullIfEmpty(data.productOwner) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,

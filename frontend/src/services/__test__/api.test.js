@@ -65,5 +65,24 @@ describe("api", () => {
 
       await expect(pendingSystem).resolves.toMatchObject(data);
     });
+
+    it("removes the product owner when no value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/234/update-product-owner", (req, res, ctx) => {
+          const { product_owner: productOwner } = req.body;
+          if (productOwner !== null) {
+            console.error("New product owner does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateProductOwner(234, {
+        productOwner: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
   });
 });
