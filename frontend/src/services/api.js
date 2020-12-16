@@ -5,6 +5,7 @@ const api = {
   getAllSystems,
   getSystem,
   updateProductOwner,
+  updateCriticality
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -33,6 +34,19 @@ async function updateProductOwner(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-product-owner`,
     { product_owner: nullIfEmpty(data.productOwner) },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      }
+    });
+  return response.data;
+}
+
+async function updateCriticality(id, data) {
+  console.log(id, data)
+  const response = await axios.post(
+    `${config.api.url}/systems/${id}/update-criticality`,
+    { criticality: nullIfEmpty(data.criticality) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,

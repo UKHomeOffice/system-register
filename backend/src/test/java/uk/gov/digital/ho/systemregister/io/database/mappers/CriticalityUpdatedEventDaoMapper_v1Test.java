@@ -90,4 +90,5 @@ class CriticalityUpdatedEventDaoMapper_v1Test {
                 .isEqualTo(expectedEvent);
     }
 
+//    TODO I dont think null criticality works
 }

@@ -62,5 +62,4 @@ class UpdateCriticalityCommandTest {
 
         assertThat(constraintViolations).isEmpty();
     }
-
 }
