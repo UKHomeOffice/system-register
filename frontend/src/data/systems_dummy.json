@@ -6,15 +6,15 @@
                 "systems audit",
                 "system audit"
             ],
-            "businessOwner": null,
+            "business_owner": null,
             "criticality": "low",
             "description": "Central source of system names, contacts and risk information",
-            "developedBy": "Home Office",
-            "informationAssetOwner": null,
-            "investmentState": "evergreen",
+            "developed_by": "Home Office",
+            "information_asset_owner": null,
+            "investment_state": "evergreen",
             "name": "System Register",
             "portfolio": "SPAN-R",
-            "productOwner": null,
+            "product_owner": null,
             "risks": [
                 {
                     "level": "low",
@@ -22,9 +22,9 @@
                     "rationale": "Designed to be easy to change"
                 }
             ],
-            "serviceOwner": "Home Office",
-            "supportedBy": "All",
-            "technicalOwner": "Home Office",
+            "service_owner": "Home Office",
+            "supported_by": "All",
+            "technical_owner": "Home Office",
             "id": 1,
             "last_updated": {
                 "timestamp": "2020-11-18T11:22:50.326570Z",
@@ -35,15 +35,15 @@
             "aliases": [
                 "testing more entries"
             ],
-            "businessOwner": null,
+            "business_owner": null,
             "criticality": "high",
             "description": "I'm a cute new system",
-            "developedBy": "Home Office",
-            "informationAssetOwner": null,
-            "investmentState": "sunset",
+            "developed_by": "Home Office",
+            "information_asset_owner": null,
+            "investment_state": "sunset",
             "name": "Our second system",
             "portfolio": "SPAN-R",
-            "productOwner": null,
+            "product_owner": null,
             "risks": [
                 {
                     "level": "medium",
@@ -51,9 +51,9 @@
                     "rationale": "Designed to sting"
                 }
             ],
-            "serviceOwner": "Home Office",
-            "supportedBy": "All",
-            "technicalOwner": "Fun Office",
+            "service_owner": "Home Office",
+            "supported_by": "All",
+            "technical_owner": "Fun Office",
             "id": 2,
             "last_updated": {
                 "timestamp": "2020-11-18T11:22:50.326570Z",
