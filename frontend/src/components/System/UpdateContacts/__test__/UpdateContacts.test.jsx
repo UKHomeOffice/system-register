@@ -52,4 +52,15 @@ describe("UpdateContacts", () => {
       productOwner: "owner with extra spaces",
     }));
   });
+
+  it("calls cancel handler", () => {
+    const cancelHandler = jest.fn();
+    render(<UpdateContacts system={{ product_owner: null }} onCancel={cancelHandler} />);
+    const cancelButton = screen.getByRole("button", {name: /cancel/i});
+
+    user.click(cancelButton);
+
+    expect(cancelHandler).toBeCalled();
+  })
+
 });

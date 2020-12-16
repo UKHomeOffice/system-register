@@ -4,12 +4,13 @@ import { InputField } from "govuk-react";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 
-function TextField({ children, hint, name, inputClassName }) {
+function TextField({ children, hint, name, inputClassName, placeholder }) {
   return <Field name={name}>
     {({ field: { value, ...fieldProps } }) => {
       const inputProps = {
         value: emptyIfUndefined(value),
         className: inputClassName,
+        placeholder,
         ...fieldProps
       };
 
