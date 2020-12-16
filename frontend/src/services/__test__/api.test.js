@@ -85,4 +85,29 @@ describe("api", () => {
       await expect(pendingSystem).resolves.not.toBeNull();
     });
   });
+
+  describe("update criticality", () => {
+    it("sends changed criticality to the API", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-criticality", (req, res, ctx) => {
+          const { criticality: criticality } = req.body;
+          if (criticality !== "high") {
+            console.error("New criticlaity does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateCriticality(345, {
+        criticality: "high"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+  });
 });

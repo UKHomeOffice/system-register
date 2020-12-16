@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
 import { Field, Form, Formik } from "formik";
-import { Button } from "govuk-react";
+import { Button, Radio } from "govuk-react";
 
 import "./UpdateAbout.css";
 
 function UpdateAbout({ system, onSubmit }) {
   const handleSubmit = useCallback(async (values) => {
-    console.log(values)
     await onSubmit(values);
   }, [onSubmit]);
 

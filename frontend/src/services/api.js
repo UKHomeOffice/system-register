@@ -43,7 +43,6 @@ async function updateProductOwner(id, data) {
 }
 
 async function updateCriticality(id, data) {
-  console.log(id, data)
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-criticality`,
     { criticality: nullIfEmpty(data.criticality) },
