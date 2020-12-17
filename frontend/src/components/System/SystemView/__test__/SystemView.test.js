@@ -1,6 +1,9 @@
-import {screen} from "@testing-library/dom";
-import {render} from '@testing-library/react'
+import { screen } from "@testing-library/dom";
+import { render } from '@testing-library/react'
 import React from "react";
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
+
 import SystemView from "../SystemView";
 
 const test_system = {
@@ -88,7 +91,7 @@ describe("<SystemView>", () => {
 
       it('renders Description section', async () => {
         setup(test_system);
-        const element = await screen.findByRole("heading", {name: "Description"});
+        const element = await screen.findByRole("heading", { name: "Description" });
         expect(element).toBeInTheDocument();
       });
     })
@@ -96,8 +99,15 @@ describe("<SystemView>", () => {
     describe('About section', () => {
       it('renders About section', async () => {
         setup(test_system);
-        const element = await screen.findByRole("heading", {name: "About"});
+        const element = await screen.findByRole("heading", { name: "About" });
         expect(element).toBeInTheDocument();
+      });
+
+      it('renders Change link', async () => {
+        setup(test_system);
+        const element = await screen.getByTestId("about-change-link");
+        expect(element).toBeInTheDocument();
+        expect(element).toHaveAttribute("href", '//update-about') //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
       it('renders first column correclty', async () => {
@@ -128,7 +138,7 @@ describe("<SystemView>", () => {
     describe('Contacts section', () => {
       it('renders Contacts section', async () => {
         setup(test_system);
-        const element = await screen.findByRole("heading", {name: "Contacts"});
+        const element = await screen.findByRole("heading", { name: "Contacts" });
         expect(element).toBeInTheDocument();
       });
 
@@ -160,7 +170,7 @@ describe("<SystemView>", () => {
     describe('Risk section', () => {
       it("renders Risk section", async () => {
         setup(test_system);
-        const element = await screen.findByRole("heading", {name: "Risk"});
+        const element = await screen.findByRole("heading", { name: "Risk" });
         expect(element).toBeInTheDocument();
       });
 
@@ -197,7 +207,7 @@ describe("<SystemView>", () => {
 
       it('renders Description section', async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", {name: "Description"});
+        const element = await screen.findByRole("heading", { name: "Description" });
         expect(element).toBeInTheDocument();
       });
     });
@@ -205,7 +215,7 @@ describe("<SystemView>", () => {
     describe('About section', () => {
       it('renders About section ', async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", {name: "About"});
+        const element = await screen.findByRole("heading", { name: "About" });
         expect(element).toBeInTheDocument();
       });
 
@@ -238,7 +248,7 @@ describe("<SystemView>", () => {
     describe('Contacts section', () => {
       it('renders Contacts section', async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", {name: "Contacts"});
+        const element = await screen.findByRole("heading", { name: "Contacts" });
         expect(element).toBeInTheDocument();
       });
 
@@ -270,14 +280,14 @@ describe("<SystemView>", () => {
     describe('Risk section', () => {
       it("renders Risk section", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", {name: "Risk"});
+        const element = await screen.findByRole("heading", { name: "Risk" });
         expect(element).toBeInTheDocument();
       });
 
       it("displays correct risk names", async () => {
         setup(test_unknown_system);
         const roadmap = await screen.findByText("Roadmap");
-        const techStack = await screen.findByText("Change");
+        const techStack = await screen.findByRole("heading", { name: "Change" });
 
         expect(roadmap).toBeInTheDocument();
         expect(techStack).toBeInTheDocument();
@@ -293,5 +303,6 @@ describe("<SystemView>", () => {
 });
 
 function setup(system) {
-  render(<SystemView system={system}/>)
+  const history = createMemoryHistory();
+  render(<Router history={history}><SystemView system={system} /></Router>)
 }

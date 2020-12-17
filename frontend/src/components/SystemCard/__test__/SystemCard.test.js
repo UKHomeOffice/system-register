@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, getByLabelText } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import SystemCard from '../SystemCard'
 import renderer from 'react-test-renderer'
 import { BrowserRouter } from 'react-router-dom'

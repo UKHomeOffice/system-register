@@ -28,7 +28,7 @@ function System() {
     history.push(url);
   }, [id, history, url]);
 
-  const handleCancelUpdateContacts = useCallback(() => {
+  const handleCancel = useCallback(() => {
     history.push(url);
   }, [history, url]);
 
@@ -38,10 +38,10 @@ function System() {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancelUpdateContacts} />
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
-        <UpdateAbout system={system} onSubmit={handleUpdateAbout} />
+        <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
       </SecureRoute>
     </Switch>
   );

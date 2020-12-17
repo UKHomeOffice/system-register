@@ -5,11 +5,15 @@ import Radio from "../../Radio"
 
 import "./UpdateAbout.css";
 
-function UpdateAbout({ system, onSubmit }) {
+function UpdateAbout({ system, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
+    if(values.criticality === system.criticality) { //TODO when we have multiple commands might be better to have some kind of change log which is read by a command mapper, meaning if nothing changed, defualt is no commands
+      handleCancel();
+    }
     await onSubmit(values);
   }, [onSubmit]);
 
+  const handleCancel = () => { onCancel() };
   return (
     <div className="centerContent">
       {system ? (
@@ -42,6 +46,7 @@ function UpdateAbout({ system, onSubmit }) {
               }
               <div className="form-controls">
                 <Button type="submit">Save</Button>
+                <Button type="button" onClick={handleCancel} buttonColour="#f3f2f1" buttonTextColour="#0b0c0c">Cancel</Button>
               </div>
             </Form>
           </Formik>
