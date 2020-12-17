@@ -47,6 +47,7 @@ const SystemView = ({ system }) => {
           </div>
           <div className="contentBlock">
             <h2>Contacts</h2>
+            <Link data-testid="contacts-change-link" className="gds-link change-link" to={window.location.pathname + `/update-contacts`}>Change</Link>
             <GridRow>
               <GridCol data-testid="contacts-column1" setWidth="one-quarter">
                 <p>System register owner</p>

@@ -7,8 +7,9 @@ import "./UpdateAbout.css";
 
 function UpdateAbout({ system, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
-    values.criticality === system?.criticality ? onCancel() :  await onSubmit(values);
-  }, [onSubmit, system?.criticality, onCancel]);
+    const anythingChanged = values.criticality === system?.criticality
+    anythingChanged ? onCancel() : await onSubmit(values);
+  }, [onSubmit, system, onCancel]);
 
   const handleCancel = () => { onCancel() };
   return (
@@ -20,6 +21,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
             You can currently change the criticality only.
             We are working to make other fields editable.
           </p>
+          <h2>What is the criticality of the system?</h2>
 
           <Formik
             initialValues={{
@@ -30,11 +32,11 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
             <Form>
               {
                 [
-                  { value: "unknown", label: "Unknown" },
                   { value: "low", label: "Low" },
                   { value: "medium", label: "Medium" },
                   { value: "high", label: "High" },
-                  { value: "cni", label: "CNI" }
+                  { value: "cni", label: "CNI" },
+                  { value: "unknown", label: "Unknown" },
                 ].map(v => {
                   return (
                     <Radio name="criticality" key={v.value} value={v.value}>{v.label}</Radio>

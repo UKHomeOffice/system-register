@@ -103,11 +103,19 @@ describe("<SystemView>", () => {
         expect(element).toBeInTheDocument();
       });
 
-      it('renders Change link', async () => {
+      it('renders Change link for about section', async () => {
         setup(test_system);
         const element = await screen.getByTestId("about-change-link");
         expect(element).toBeInTheDocument();
         expect(element).toHaveAttribute("href", '//update-about') //TODO discuss with team if better way to do relative path with react-router-dom
+      });
+
+
+      it('renders Change link for contacts section', async () => {
+        setup(test_system);
+        const element = await screen.getByTestId("contacts-change-link");
+        expect(element).toBeInTheDocument();
+        expect(element).toHaveAttribute("href", '//update-contacts') //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
       it('renders first column correclty', async () => {

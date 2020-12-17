@@ -8,10 +8,11 @@ input {
 }
 
 .form-controls {
-    margin-top: 10px;
+    margin-top: 44px;
 }
 
 .secondary {
+    margin-bottom: 11px;
     color: #505a5f;
 }
 
@@ -20,7 +21,8 @@ input {
 }
 
 h1 {
-    margin-bottom: 0;
+    font-size: 36px;
+    margin-bottom: 8px;
 }
 h1 + p {
     margin-top: 0.25rem;

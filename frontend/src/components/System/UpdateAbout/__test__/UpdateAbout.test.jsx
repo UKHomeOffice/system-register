@@ -16,7 +16,7 @@ describe("UpdateAbout", () => {
   it("displays the name of the system", () => {
     render(<UpdateAbout system={{ name: 'system name' }} onSubmit={submitHandler} />);
 
-    expect(screen.getByRole("heading")).toHaveTextContent("system name");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("system name");
   });
 
   it("displays a loading message if data is unavailable", () => {
