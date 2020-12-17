@@ -1,9 +1,9 @@
 import React from 'react';
 import user from "@testing-library/user-event";
-import { useKeycloak } from "@react-keycloak/web";
-import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryHistory } from "history";
-import { Route, Router } from 'react-router-dom';
+import {useKeycloak} from "@react-keycloak/web";
+import {render, screen, waitFor} from '@testing-library/react';
+import {createMemoryHistory} from "history";
+import {Route, Router} from 'react-router-dom';
 
 import System from '../System';
 import api from '../../../services/api';
@@ -25,6 +25,7 @@ const test_system = {
 
 describe('<System />', () => {
   beforeEach(() => {
+    jest.resetAllMocks();
     api.getSystem.mockResolvedValue(test_system);
   });
 
@@ -56,14 +57,14 @@ describe('<System />', () => {
 
     describe("editing contacts", () => {
       it("returns to the system view after a successful update", async () => {
-        api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
+        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
         const history = createMemoryHistory({
           initialEntries: ["/system/123/update-contacts"],
           initialIndex: 0,
         });
-        renderWithHistory(null, { history });
+        renderWithHistory(null, {history});
         const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const saveButton = screen.getByRole("button", { name: /save/i });
+        const saveButton = screen.getByRole("button", {name: /save/i});
 
         // noinspection ES6MissingAwait: there is no typing delay
         user.type(productOwnerField, "updated owner");
@@ -90,30 +91,51 @@ describe('<System />', () => {
           initialEntries: ["/system/123/update-contacts"],
           initialIndex: 0,
         });
-        renderWithHistory(null, { history });
-        const cancelButton = await screen.findByRole("button", { name: /cancel/i });
+        renderWithHistory(null, {history});
+        const cancelButton = await screen.findByRole("button", {name: /cancel/i});
 
         user.click(cancelButton);
 
         expect(history).toHaveProperty("index", 1);
         expect(history).toHaveProperty(
+          "location.pathname",
+          "/system/123"
+        );
+      });
+
+      it("does not send a request if field values are unchanged", async () => {
+        const history = createMemoryHistory({
+          initialEntries: ["/system/123/update-contacts"],
+          initialIndex: 0,
+        });
+        renderWithHistory(null, {history});
+        await screen.findByText("Test System");
+        const saveButton = await  screen.findByRole("button", {name: /save/i});
+
+        user.click(saveButton);
+
+        await waitFor(() => {
+          expect(history).toHaveProperty("index", 1);
+          expect(history).toHaveProperty(
             "location.pathname",
             "/system/123"
-        );
-      })
+          );
+        });
+        expect(api.updateProductOwner).not.toBeCalled();
+      });
     });
   });
 });
 
 function renderWithHistory(path, context = {}) {
-  const { history } = {
-    history: createMemoryHistory({ initialEntries: [`/system/${path}`] }),
+  const {history} = {
+    history: createMemoryHistory({initialEntries: [`/system/${path}`]}),
     ...context,
   };
 
   return render(
     <Router history={history}>
-      <Route path='/system/:id' component={System} />
+      <Route path='/system/:id' component={System}/>
     </Router>
   );
 }
