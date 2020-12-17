@@ -7,11 +7,13 @@ import "./UpdateAbout.css";
 
 function UpdateAbout({ system, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
-    if(values.criticality === system.criticality) { //TODO when we have multiple commands might be better to have some kind of change log which is read by a command mapper, meaning if nothing changed, defualt is no commands
-      handleCancel();
+    if (values.criticality !== system.criticality) { //TODO when we have multiple commands might be better to have some kind of change log which is read by a command mapper, meaning if nothing changed, defualt is no commands
+      await onSubmit(values);
     }
-    await onSubmit(values);
-  }, [onSubmit]);
+    else{
+      onCancel()
+    }
+  }, [onSubmit, system?.criticality, onCancel]);
 
   const handleCancel = () => { onCancel() };
   return (
