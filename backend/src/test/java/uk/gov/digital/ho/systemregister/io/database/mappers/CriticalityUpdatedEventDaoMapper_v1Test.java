@@ -74,12 +74,11 @@ class CriticalityUpdatedEventDaoMapper_v1Test {
                 .withId(9113)
                 .withCriticality("high")
                 .withTimestamp(Instant.parse("2020-09-17T15:09:00Z"))
-                .withAuthor(
-                        aPerson()
-                                .withEmail("test@email.com")
-                                .withFirstName("Charlie")
-                                .withSurname("Tuppence")
-                                .withUsername("chartup"))
+                .withAuthor(aPerson()
+                        .withEmail("user@example.com")
+                        .withFirstName("test_FirstName")
+                        .withSurname("test_Surname")
+                        .withUsername("test_Username"))
                 .build();
 
         String json = getResourceAsString("dao/v1/criticality-updated-event.json");

@@ -73,10 +73,10 @@ class ProductOwnerUpdatedEventDaoMapper_v1Test {
                 .withProductOwner("Jasmine Levy")
                 .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
                 .withAuthor(aPerson()
-                        .withEmail("test@email.com")
-                        .withFirstName("Amy")
-                        .withSurname("Green")
-                        .withUsername("amgreen"))
+                        .withEmail("user@example.com")
+                        .withFirstName("test_FirstName")
+                        .withSurname("test_Surname")
+                        .withUsername("test_Username"))
                 .build();
 
         String json = getResourceAsString("dao/v1/product-owner-updated-event.json");
@@ -95,9 +95,9 @@ class ProductOwnerUpdatedEventDaoMapper_v1Test {
                 .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
                 .withAuthor(aPerson()
                         .withEmail("user@example.com")
-                        .withFirstName("Amy")
-                        .withSurname("Green")
-                        .withUsername("amgreen"))
+                        .withFirstName("test_FirstName")
+                        .withSurname("test_Surname")
+                        .withUsername("test_Username"))
                 .build();
 
         String json = getResourceAsString("dao/v1/unknown-product-owner-updated-event.json");
