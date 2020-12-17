@@ -53,6 +53,16 @@ describe("UpdateContacts", () => {
     }));
   });
 
+  it.each(["owner", null])
+  ("does not send unchanged values to the submission handler", async (value) => {
+    render(<UpdateContacts system={{ product_owner: value }} onSubmit={submitHandler} />);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+  });
+
   it("calls cancel handler", () => {
     const cancelHandler = jest.fn();
     render(<UpdateContacts system={{ product_owner: null }} onCancel={cancelHandler} />);
@@ -61,6 +71,5 @@ describe("UpdateContacts", () => {
     user.click(cancelButton);
 
     expect(cancelHandler).toBeCalled();
-  })
-
+  });
 });

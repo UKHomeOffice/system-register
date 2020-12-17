@@ -1,21 +1,29 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
+import { mapValues, omitBy } from "lodash-es";
 
 import TextField from "../../TextField";
 import "./UpdateContacts.css";
 
+const emptyIfUndefined = (value) => value != null ? value : "";
+
 const ownersOf = (system) => ({
-  productOwner: system.product_owner,
+  productOwner: emptyIfUndefined(system.product_owner),
 });
 
 function UpdateContacts({ system, onSubmit, onCancel }) {
-  const handleSubmit = useCallback(async ({ productOwner }) => {
-    await onSubmit({
-      productOwner: productOwner.trim(),
-    });
-  }, [onSubmit]);
-  const handleCancel = () => {onCancel()};
+  const handleSubmit = useCallback(async (values) => {
+    const initialOwners = ownersOf(system);
+    const changedOwners = omitBy(
+      mapValues(values, (value) => value.trim()),
+      (value, key) => value === initialOwners[key]);
+    await onSubmit(changedOwners);
+  }, [system, onSubmit]);
+
+  const handleCancel = () => {
+    onCancel();
+  };
 
   return (
     <div className="centerContent">
@@ -44,7 +52,14 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
-                <Button type="button" onClick={handleCancel} buttonColour="#f3f2f1" buttonTextColour="#0b0c0c">Cancel</Button>
+                <Button
+                  type="button"
+                  onClick={handleCancel}
+                  buttonColour="#f3f2f1"
+                  buttonTextColour="#0b0c0c"
+                >
+                  Cancel
+                </Button>
               </div>
             </Form>
           </Formik>
