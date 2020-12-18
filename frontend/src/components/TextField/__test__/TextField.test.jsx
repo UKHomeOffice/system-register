@@ -1,20 +1,34 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import user from "@testing-library/user-event";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
 import TextField from "../TextField";
 
 describe("TextField", () => {
   it("displays a label", () => {
-    renderWithFormik(<TextField>label text</TextField>);
+    renderWithFormik(<TextField name="field">label text</TextField>);
 
     expect(screen.getByLabelText(/label text/)).toBeInTheDocument();
   });
 
   it("displays placeholder text if provided", () => {
-    renderWithFormik(<TextField placeholder="Unknown" />);
+    renderWithFormik(<TextField name="field" placeholder="Unknown" />);
 
     expect(screen.getByPlaceholderText("Unknown")).toBeInTheDocument();
+  });
+
+  it("shows an error message if the value is invalid", async () => {
+    renderWithFormik(<TextField name="field" validate={() => "error message"} />, { field: "" });
+    const field = screen.getByRole("textbox");
+
+    // noinspection ES6MissingAwait: not using typing delay
+    user.type(field, "invalid value");
+    fireEvent.blur(field);
+
+    await waitFor(() => {
+      expect(screen.getByText("error message")).toBeInTheDocument();
+    });
   });
 
   describe("field value", () => {
@@ -34,21 +48,19 @@ describe("TextField", () => {
 
   describe("hint text", () => {
     it("displays value when available", () => {
-      renderWithFormik(<TextField hint="some hints" />)
+      renderWithFormik(<TextField name="field" hint="some hints" />)
 
       expect(screen.getByText("some hints")).toBeInTheDocument();
     });
 
     it.each([null, undefined])
     ("omits the hint when not provided", (hint) => {
-      renderWithFormik(<TextField hint={hint} />)
+      renderWithFormik(<TextField name="field" hint={hint} />)
 
       expect(screen.queryByText(`${hint}`)).not.toBeInTheDocument();
     });
   });
 });
-
-
 
 function renderWithFormik(component, values = {}) {
   return render(

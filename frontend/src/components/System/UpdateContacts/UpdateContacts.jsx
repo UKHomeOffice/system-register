@@ -4,6 +4,7 @@ import { Button } from "govuk-react";
 import { mapValues, omitBy } from "lodash-es";
 
 import TextField from "../../TextField";
+import validateContact from "./validators";
 import "./UpdateContacts.css";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
@@ -46,6 +47,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
                 hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
                 placeholder="Unknown"
+                validate={validateContact}
               >
                 Product owner
               </TextField>

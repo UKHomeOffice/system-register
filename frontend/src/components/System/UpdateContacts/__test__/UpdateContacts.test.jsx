@@ -72,4 +72,16 @@ describe("UpdateContacts", () => {
 
     expect(cancelHandler).toBeCalled();
   });
+
+  it("validates contacts before submission", async () => {
+    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    const productOwnerField = screen.getByLabelText(/product owner/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(productOwnerField, "$");
+    user.click(saveButton);
+
+    expect(await screen.findByText(/must not use the following special characters/i)).toBeInTheDocument();
+  });
 });
