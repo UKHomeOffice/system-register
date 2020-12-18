@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -41,9 +42,31 @@ class ConstraintViolationExceptionMapperTest {
                 .containsEntry("field", "reason-message");
     }
 
+    @Test
+    void discardsAdditionalErrorMessagesForTheSameField() {
+        Set<ConstraintViolation<MultipleMessageBean>> violations = VALIDATOR.validate(new MultipleMessageBean());
+        ConstraintViolationException exception = new ConstraintViolationException(null, violations);
+
+        Response response = mapper.toResponse(exception);
+
+        assertThat(response)
+                .extracting(Response::getStatusInfo)
+                .isEqualTo(BAD_REQUEST);
+        assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
+                .extracting("errors", map(String.class, String.class))
+                .containsEntry("field", "not null");
+    }
+
     @SuppressWarnings("unused")
     private static class Bean {
         @NotNull(message = "reason-message")
         private Object field;
+    }
+
+    @SuppressWarnings("unused")
+    private static class MultipleMessageBean {
+        @NotBlank(message = "not blank")
+        @NotNull(message = "not null")
+        private String field;
     }
 }

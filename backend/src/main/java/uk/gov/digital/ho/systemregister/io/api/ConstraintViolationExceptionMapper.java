@@ -31,7 +31,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
     public Response toResponse(ConstraintViolationException exception) {
         Map<String, String> errors = exception.getConstraintViolations()
                 .stream()
-                .collect(toMap(FIELD_NAME, ConstraintViolation::getMessage));
+                .collect(toMap(FIELD_NAME, ConstraintViolation::getMessage, (lhs, rhs) -> lhs));
         return Response.status(BAD_REQUEST).entity(Map.of("errors", errors)).build();
     }
 }
