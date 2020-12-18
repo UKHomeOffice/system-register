@@ -54,7 +54,8 @@ class ConstraintViolationExceptionMapperTest {
                 .isEqualTo(BAD_REQUEST);
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .extracting("errors", map(String.class, String.class))
-                .containsEntry("field", "not null");
+                .hasEntrySatisfying("field", value ->
+                        assertThat(value).matches("not (blank|null)"));
     }
 
     @SuppressWarnings("unused")
