@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '../config/config'
+import ValidationError from "./validationError";
 
 const api = {
   getAllSystems,
@@ -37,8 +38,12 @@ async function updateProductOwner(id, data) {
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      }
+      },
+      validateStatus: status => status < 500,
     });
+  if (response.status === 400) {
+    throw new ValidationError(response.data.errors);
+  }
   return response.data;
 }
 

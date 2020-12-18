@@ -1,6 +1,7 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
+import ValidationError from "../validationError";
 import api from '../api'
 import data from '../../data/systems_dummy.json';
 
@@ -83,6 +84,29 @@ describe("api", () => {
       });
 
       await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-product-owner", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              productOwner: "invalid owner",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateProductOwner(345, {
+        productOwner: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          productOwner: "invalid owner",
+        }));
     });
   });
 

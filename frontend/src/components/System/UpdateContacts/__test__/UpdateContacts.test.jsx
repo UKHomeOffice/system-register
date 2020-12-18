@@ -3,6 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import UpdateContacts from "../UpdateContacts";
+import ValidationError from "../../../../services/validationError";
 
 describe("UpdateContacts", () => {
   const submitHandler = jest.fn();
@@ -95,5 +96,17 @@ describe("UpdateContacts", () => {
     user.click(saveButton);
 
     expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
+  });
+
+  it("shows validation errors returned from the API", async () => {
+    submitHandler.mockRejectedValue(new ValidationError({
+      productOwner: "validation error",
+    }));
+    render(<UpdateContacts system={{ product_owner: "owner" }} onSubmit={submitHandler} />);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(saveButton);
+
+    expect(await screen.findByText(/validation error/i, {selector: "a"})).toBeInTheDocument();
   });
 });

@@ -7,6 +7,7 @@ import TextField from "../../TextField";
 import validateContact from "./validators";
 import "./UpdateContacts.css";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import ValidationError from "../../../services/validationError";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 
@@ -15,12 +16,18 @@ const ownersOf = (system) => ({
 });
 
 function UpdateContacts({system, onSubmit, onCancel}) {
-  const handleSubmit = useCallback(async (values) => {
+  const handleSubmit = useCallback(async (values, formik) => {
     const initialOwners = ownersOf(system);
     const changedOwners = omitBy(
       mapValues(values, (value) => value.trim()),
       (value, key) => value === initialOwners[key]);
-    await onSubmit(changedOwners);
+    try {
+      await onSubmit(changedOwners);
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        formik.setErrors(e.errors);
+      }
+    }
   }, [system, onSubmit]);
 
   const handleCancel = () => {

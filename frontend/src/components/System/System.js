@@ -19,8 +19,8 @@ function System() {
   }, [id]);
 
   const handleUpdateContacts = useCallback(async (data) => {
-    if ("productOwner" in data){
-    setSystem(await api.updateProductOwner(id, data));
+    if ("productOwner" in data) {
+      setSystem(await api.updateProductOwner(id, data));
     }
     history.push(url);
   }, [id, history, url]);
