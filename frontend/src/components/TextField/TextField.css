@@ -11,3 +11,7 @@
     border: 0 !important;
     white-space: nowrap !important;
 }
+
+.text-field label span:first-child {
+    font-weight: bold;
+}

@@ -23,9 +23,11 @@ function TextField({ children, hint, name, placeholder, validate, inputClassName
       );
 
       return (
-        <InputField hint={hint} input={inputProps} meta={{ error, touched }}>
-          {children}
-        </InputField>
+        <span className="text-field">
+          <InputField hint={hint} input={inputProps} meta={{ error, touched }}>
+            {children}
+          </InputField>
+        </span>
       );
     }}
   </Field>;
