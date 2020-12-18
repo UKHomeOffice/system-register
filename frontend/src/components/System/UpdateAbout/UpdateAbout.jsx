@@ -18,7 +18,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
         <>
           <h1>{system.name}</h1>
           <p className="secondary">
-            You can currently change the criticality only.
+            You can currently change only criticality.
             We are working to make other fields editable.
           </p>
           <h2>What is the criticality of the system?</h2>

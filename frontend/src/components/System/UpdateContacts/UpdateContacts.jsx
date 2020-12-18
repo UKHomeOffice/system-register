@@ -32,7 +32,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
         <>
           <h1>{system.name}</h1>
           <p className="secondary">
-            You can currently change the product owner information only.
+            You can currently change only product owner information.
             We are working to make other fields editable.
           </p>
 
