@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import { Form, Formik } from "formik";
-import { Button } from "govuk-react";
-import { mapValues, omitBy } from "lodash-es";
+import React, {useCallback} from "react";
+import {Form, Formik} from "formik";
+import {Button} from "govuk-react";
+import {mapValues, omitBy} from "lodash-es";
 
 import TextField from "../../TextField";
 import validateContact from "./validators";
@@ -13,7 +13,7 @@ const ownersOf = (system) => ({
   productOwner: emptyIfUndefined(system.product_owner),
 });
 
-function UpdateContacts({ system, onSubmit, onCancel }) {
+function UpdateContacts({system, onSubmit, onCancel}) {
   const handleSubmit = useCallback(async (values) => {
     const initialOwners = ownersOf(system);
     const changedOwners = omitBy(
@@ -29,18 +29,18 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
   return (
     <div className="centerContent">
       {system ? (
-        <>
-          <h1>{system.name}</h1>
-          <p className="secondary">
-            You can currently change only product owner information.
-            We are working to make other fields editable.
-          </p>
+        <Formik
+          initialValues={ownersOf(system)}
+          validateOnChange={false}
+          onSubmit={handleSubmit}
+        >
+          <>
+            <h1>{system.name}</h1>
+            <p className="secondary">
+              You can currently change only product owner information.
+              We are working to make other fields editable.
+            </p>
 
-          <Formik
-            initialValues={ownersOf(system)}
-            validateOnChange={false}
-            onSubmit={handleSubmit}
-          >
             <Form>
               <TextField
                 name="productOwner"
@@ -64,8 +64,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
                 </Button>
               </div>
             </Form>
-          </Formik>
-        </>
+          </>
+        </Formik>
       ) : (
         <p>Loading system data...</p>
       )}

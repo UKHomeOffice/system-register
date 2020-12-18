@@ -24,7 +24,7 @@ const SystemView = ({ system }) => {
           </div>
           <div className="contentBlock">
             <h2>About</h2>
-            <Link data-testid="about-change-link" className="gds-link change-link" to={window.location.pathname + `/update-about`}>Change</Link>
+            <Link data-testid="about-change-link" className="gds-link change-link" to={window.location.pathname + `/update-about`}>Update</Link>
             {/* TODO discuss with team if better way to do relative path with react-router-dom */}
             <GridRow>
               <GridCol data-testid="about-column1" setWidth="one-quarter">
@@ -47,7 +47,7 @@ const SystemView = ({ system }) => {
           </div>
           <div className="contentBlock">
             <h2>Contacts</h2>
-            <Link data-testid="contacts-change-link" className="gds-link change-link" to={window.location.pathname + `/update-contacts`}>Change</Link>
+            <Link data-testid="contacts-change-link" className="gds-link change-link" to={window.location.pathname + `/update-contacts`}>Update</Link>
             <GridRow>
               <GridCol data-testid="contacts-column1" setWidth="one-quarter">
                 <p>System register owner</p>
