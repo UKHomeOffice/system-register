@@ -82,6 +82,18 @@ describe("UpdateContacts", () => {
     user.type(productOwnerField, "$");
     user.click(saveButton);
 
-    expect(await screen.findByText(/must not use the following special characters/i)).toBeInTheDocument();
+    expect(await screen.findByText(/must not use the following special characters/i, {selector: "label *"})).toBeInTheDocument();
+  });
+
+  it("shows an error summary containing all error details", async () => {
+    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    const productOwnerField = screen.getByLabelText(/product owner/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(productOwnerField, "$");
+    user.click(saveButton);
+
+    expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
   });
 });

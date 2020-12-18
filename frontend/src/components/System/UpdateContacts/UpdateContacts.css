@@ -11,8 +11,10 @@
 }
 
 h1 {
+    font-size: 36px;
     margin-bottom: 0;
 }
+
 h1 + p {
     margin-top: 0.25rem;
 }

@@ -79,7 +79,7 @@ class App extends React.Component {
             );
         }
         else {
-            return <main><p data-testid="auth-initialising-msg">Initialing authentication...</p></main>
+            return <main><p data-testid="auth-initialising-msg">Initialising authentication...</p></main>
         }
     }
 }

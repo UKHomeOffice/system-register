@@ -6,6 +6,7 @@ import {mapValues, omitBy} from "lodash-es";
 import TextField from "../../TextField";
 import validateContact from "./validators";
 import "./UpdateContacts.css";
+import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 
@@ -35,6 +36,7 @@ function UpdateContacts({system, onSubmit, onCancel}) {
           onSubmit={handleSubmit}
         >
           <>
+            <ErrorSummary />
             <h1>{system.name}</h1>
             <p className="secondary">
               You can currently change only product owner information.
