@@ -1,6 +1,7 @@
-import React from 'react'
 import { cleanup, render } from '@testing-library/react'
 import KeyInfo from '../KeyInfo'
+import React from 'react'
+
 
 afterEach(cleanup)
 

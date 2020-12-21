@@ -1,12 +1,3 @@
-/*.systemDetails > ul{*/
-/*    list-style: none;*/
-/*    padding-left: 0;*/
-/*}*/
-
-/*.systemDetails{*/
-/*    line-height: 1.5;*/
-/*}*/
-
 .riskContainer {
     display: flex;
     flex-flow: row wrap;
