@@ -99,6 +99,15 @@
     padding-bottom: 0;
 }
 
+.link:-moz-focusring {
+    text-decoration: none;
+    text-decoration-color: transparent;
+    outline: none;
+    background-color: var(--yellow);
+    border-bottom: 5px solid;
+    padding-bottom: 0;
+}
+
 .link:hover{
     text-decoration: underline;
 }
