@@ -17,10 +17,8 @@ const SRFooter = () => {
             </ul>
             <div>
               <img className="ogl" src={ogl} alt="OGL"/>
-              <span>All content is available under the
-                <a className="link"
-                   href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">
-                  Open Government Licence v3.0</a>, except where otherwise stated </span>
+              <span>All content is available under the <a className="link"
+                   href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>, except where otherwise stated </span>
             </div>
           </div>
           <div className="copyright">
