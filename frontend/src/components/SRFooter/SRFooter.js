@@ -1,6 +1,7 @@
 import React from "react";
 import "./SRFooter.css"
 import ogl from "./ogl-symbol.png"
+import config from "../../config/config";
 
 
 const SRFooter = () => {
@@ -12,12 +13,14 @@ const SRFooter = () => {
             <ul className="footer-list">
               <li><a className="link" href="/about">About</a></li>
               <li><a className="link" href="/contact">Contact</a></li>
-              <li><a className="link" href="/api/systems">API</a></li>
+              <li><a className="link" href={`${config.api.url}/systems`}>API</a></li>
             </ul>
             <div>
               <img className="ogl" src={ogl} alt="OGL"/>
-              <span>All content is available under the <a className="link"
-                                                          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>, except where otherwise stated </span>
+              <span>All content is available under the
+                <a className="link"
+                   href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">
+                  Open Government Licence v3.0</a>, except where otherwise stated </span>
             </div>
           </div>
           <div className="copyright">
