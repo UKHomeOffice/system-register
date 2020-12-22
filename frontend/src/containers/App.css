@@ -28,6 +28,15 @@
     --risk-colour-unknown: #7f7f7f;
 }
 
+.page {
+    position: relative;
+    min-height: 88vh;
+}
+
+.content-wrap {
+    padding-bottom: 20rem;
+}
+
 div.topMargin {
     margin-top: 20px;
 }
