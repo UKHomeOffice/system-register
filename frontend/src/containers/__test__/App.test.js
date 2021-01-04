@@ -63,5 +63,20 @@ describe("<App />", () => {
         expect(dashboard).toBeInTheDocument()
       })
     });
+
+    it("navigates to the About page", async () => {
+      const history = createMemoryHistory();
+      const { findByRole, findByText, getByTestId } = render(
+        <Router history={history}>
+          <App />
+        </Router>
+      );
+      await waitForElementToBeRemoved(getByTestId("auth-initialising-msg"))
+      const aboutLink = await findByText("About", { selector: "nav a" });
+
+      userEvent.click(aboutLink);
+
+      expect(await findByRole("heading", { level: 1 })).toHaveTextContent("About the System Register");
+    });
   })
 })
