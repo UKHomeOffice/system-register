@@ -7,9 +7,7 @@ const api = {
   getSystem,
   updateProductOwner,
   updateCriticality,
-  updateSystemName(id, data) {
-    return undefined;
-  }
+  updateSystemName,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -54,7 +52,7 @@ async function updateSystemName(id, data) {
   //return obj
   //create thin resource in backend with same data (to test validation)
   return {
-    name: "updated system name",
+    name: data.name,
     criticality: "unknown",
     last_updated: {},
     risks: [],
