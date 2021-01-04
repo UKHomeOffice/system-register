@@ -5,21 +5,35 @@ import {Button} from "govuk-react";
 import TextField from "../../TextField";
 import "./UpdateInfo.css";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import validateContact from "../UpdateContacts/validators";
+import ValidationError from "../../../services/validationError";
+import {mapValues, omitBy} from "lodash-es";
 
 function UpdateInfo({system, onSubmit, onCancel}) {
   const handleSubmit = useCallback(async (values, formik) => {
-   console.log("Arrrrghhhh")
+    const initialInfo = {name: system.name};
+    const changedInfo = omitBy(
+      mapValues(values, (value) => value.trim()),
+      (value, key) => value === initialInfo[key]);
+    try {
+      await onSubmit(changedInfo);
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        formik.setErrors(e.errors);
+      }
+    }
   }, [system, onSubmit]);
 
   const handleCancel = () => {
     onCancel();
   };
 
+
   return (
     <div className="centerContent">
       {system ? (
         <Formik
-          initialValues={system.name}
+          initialValues={{name: system.name}}
           validateOnChange={false}
           onSubmit={handleSubmit}
         >
@@ -32,10 +46,10 @@ function UpdateInfo({system, onSubmit, onCancel}) {
 
             <Form>
               <TextField
-                name="systemName"
+                name="name"
                 hint="Please enter the new system name"
                 inputClassName="width-two-thirds"
-                // validate={validateName}
+                validate={validateContact}
               >
                 System name
               </TextField>

@@ -12,6 +12,7 @@ jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
   updateProductOwner: jest.fn(),
   updateCriticality: jest.fn(),
+  updateSystemName: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -143,7 +144,7 @@ describe('<System />', () => {
             initialIndex: 0,
           });
           renderWithHistory(null, { history });
-          const systemNameField = await screen.findByLabelText(/system owner/i);
+          const systemNameField = await screen.findByLabelText(/system name/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
@@ -156,7 +157,7 @@ describe('<System />', () => {
               expect.objectContaining({
                 name: "updated system name",
               })
-            );
+            )});
 
             expect(history).toHaveProperty("index", 1);
             expect(history).toHaveProperty(
@@ -164,7 +165,6 @@ describe('<System />', () => {
               "/system/123"
             );
           });
-        });
       })
     })
 

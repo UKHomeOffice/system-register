@@ -32,7 +32,8 @@ function System() {
   }, [id, history, url]);
 
   const handleUpdateInfo = useCallback(async (data) => {
-    console.log("impliment meeeee!")
+    setSystem(await api.updateSystemName(id, data));
+    history.push(url);
   }, [id, history, url]);
 
   const handleCancel = useCallback(() => {
