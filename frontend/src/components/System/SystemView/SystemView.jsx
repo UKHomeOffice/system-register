@@ -6,7 +6,6 @@ import InvestmentState from "../InvestmentState/InvestmentState";
 import RiskDetails from "../RiskDetails/RiskDetails";
 import React from "react";
 import { Link } from 'react-router-dom'
-import SRFooter from "../../SRFooter/SRFooter";
 
 
 const SystemView = ({ system }) => {
@@ -16,6 +15,7 @@ const SystemView = ({ system }) => {
         (<>
           <div className="contentBlock">
             <h1>{system.name}</h1>
+            <Link data-testid="info-change-link" className="gds-link change-link" to={window.location.pathname + `/update-info`}>Update</Link>
             <p data-testid="system-last-modified">
               <ModifiedDetails date={system.last_updated.timestamp}
                 author_name={system.last_updated.author_name} />

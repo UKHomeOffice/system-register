@@ -7,6 +7,7 @@ import UpdateContacts from "./UpdateContacts";
 import api from '../../services/api';
 import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
+import UpdateInfo from './UpdateInfo';
 
 function System() {
   const { path, url, params: { id } } = useRouteMatch();
@@ -30,6 +31,10 @@ function System() {
     history.push(url);
   }, [id, history, url]);
 
+  const handleUpdateInfo = useCallback(async (data) => {
+    console.log("impliment meeeee!")
+  }, [id, history, url]);
+
   const handleCancel = useCallback(() => {
     history.push(url);
   }, [history, url]);
@@ -39,11 +44,14 @@ function System() {
       <Route path={`${path}`} exact>
         <SystemView system={system} />
       </Route>
-      <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+      <SecureRoute path={`${path}/update-info`}>
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-contacts`}>
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
       </SecureRoute>
     </Switch>
   );

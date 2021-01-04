@@ -94,6 +94,15 @@ describe("<SystemView>", () => {
         const element = await screen.findByRole("heading", { name: "Description" });
         expect(element).toBeInTheDocument();
       });
+
+      it('renders Change link for info section', async () => {
+        setup(test_system);
+        const element = await screen.getByTestId("info-change-link");
+        expect(element).toBeInTheDocument();
+        expect(element).toHaveAttribute("href", '//update-info') //TODO discuss with team if better way to do relative path with react-router-dom
+      });
+
+
     })
 
     describe('About section', () => {
