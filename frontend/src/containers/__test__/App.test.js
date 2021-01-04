@@ -78,5 +78,20 @@ describe("<App />", () => {
 
       expect(await findByRole("heading", { level: 1 })).toHaveTextContent("About the System Register");
     });
+
+    it("navigates to the Contact page", async () => {
+      const history = createMemoryHistory();
+      const { findByRole, findByText, getByTestId } = render(
+        <Router history={history}>
+          <App />
+        </Router>
+      );
+      await waitForElementToBeRemoved(getByTestId("auth-initialising-msg"))
+      const contactLink = await findByText("Contact", { selector: "nav a" });
+
+      userEvent.click(contactLink);
+
+      expect(await findByRole("heading", { level: 1 })).toHaveTextContent("Get in touch");
+    });
   })
 })

@@ -5,6 +5,7 @@ import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
 import About from '../components/About';
 import Banner from '../components/Banner/Banner';
+import Contact from '../components/Contact';
 import Menu from '../components/Menu/Menu';
 import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
 import SRFooter from "../components/SRFooter/SRFooter";
@@ -79,6 +80,7 @@ class App extends React.Component {
                   <Route path="/system/:id" component={System} />
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />
+                  <Route exact path="/contact" component={Contact} />
                 </Switch>
               </main>
               <SRFooter/>
