@@ -49,8 +49,7 @@ async function updateProductOwner(id, data) {
 }
 
 async function updateSystemName(id, data) {
-  //return obj
-  //create thin resource in backend with same data (to test validation)
+  //create thin resource in backend with same data
   return {
     name: data.name,
     criticality: "unknown",

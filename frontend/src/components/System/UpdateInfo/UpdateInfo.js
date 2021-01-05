@@ -1,13 +1,14 @@
 import React, {useCallback} from "react";
 import {Form, Formik} from "formik";
 import {Button} from "govuk-react";
-
 import TextField from "../../TextField";
 import "./UpdateInfo.css";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
-import validateContact from "../UpdateContacts/validators";
+import validateInfo from "../UpdateInfo/validators";
 import ValidationError from "../../../services/validationError";
 import {mapValues, omitBy} from "lodash-es";
+
+
 
 function UpdateInfo({system, onSubmit, onCancel}) {
   const handleSubmit = useCallback(async (values, formik) => {
@@ -49,7 +50,7 @@ function UpdateInfo({system, onSubmit, onCancel}) {
                 name="name"
                 hint="Please enter the new system name"
                 inputClassName="width-two-thirds"
-                validate={validateContact}
+                validate={validateInfo}
               >
                 System name
               </TextField>

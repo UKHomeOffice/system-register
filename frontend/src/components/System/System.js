@@ -12,11 +12,18 @@ import UpdateInfo from './UpdateInfo';
 function System() {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
+  const [systemNames, setSystemNames] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id));
     fetchData();
+    const allsystems = async () => await api.getAllSystems();
+    let systems;
+    allsystems().then(systems = (s) => s.name);
+
+    const fetchAllSystemNames = async () => setSystemNames();
+    fetchAllSystemNames();
   }, [id]);
 
   const handleUpdateContacts = useCallback(async (data) => {

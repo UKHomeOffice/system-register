@@ -1,26 +1,31 @@
-import validateContact, { containsForbiddenCharacters, isTooShort } from "../validators";
+import validateInfo, { containsForbiddenCharacters, isTooShort } from "../validators";
 
-describe("UpdateContacts validators", () => {
-  describe("validateContact", () => {
-    it("returns an error message if contact contains forbidden character", () => {
-      const result = validateContact("ca$h");
+describe("UpdateInfo validators", () => {
+  describe("validate system name", () => {
+    it("returns an error message if name contains forbidden character", () => {
+      const result = validateInfo("ca$h");
 
       expect(result).toContain("must not use the following special characters");
     });
 
-    it("returns an error message if contact is too short", () => {
-      const result = validateContact("n");
+    it("returns an error message if system name is too short", () => {
+      const result = validateInfo("n");
 
       expect(result).toContain("must not be incomplete");
     });
 
+    it("returns an error message if system name is empty", () => {
+      const result = validateInfo("");
+
+      expect(result).toContain("must not be incomplete");
+    })
+
     it("returns undefined for valid values", () => {
-      const result = validateContact("owner");
+      const result = validateInfo("valid system name");
 
       expect(result).toBeUndefined();
     });
   });
-
 
   describe("isTooShort", () => {
     it.each(["x", " x", "x "])
@@ -31,10 +36,10 @@ describe("UpdateContacts validators", () => {
     });
 
     it.each(["", " "])
-    ("permits empty values", (value) => {
+    ("does not permit empty values", (value) => {
       const isInvalid = isTooShort(value);
 
-      expect(isInvalid).toBeFalsy();
+      expect(isInvalid).toBeTruthy();
     });
 
     it.each(["ab", "abc"])
@@ -44,4 +49,5 @@ describe("UpdateContacts validators", () => {
       expect(isInvalid).toBeFalsy();
     });
   });
+
 });
