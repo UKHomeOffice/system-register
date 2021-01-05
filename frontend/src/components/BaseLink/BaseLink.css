@@ -1,0 +1,6 @@
+a.system-register-link:focus {
+    -webkit-box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    outline: 3px solid transparent;
+    text-decoration: none;
+}
