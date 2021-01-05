@@ -50,6 +50,12 @@ class App extends React.Component {
     })
   }
 
+  duplicateNameCallback(checkDuplicateNameFunction) {
+    const allSystemNames = this.systems.map(system => system.name)
+    checkDuplicateNameFunction(allSystemNames)
+  }
+
+
   componentWillUnmount() {
     this._isMounted = false;
   }
@@ -73,7 +79,9 @@ class App extends React.Component {
                 <Route exact path="/">
                   <SystemList register={this.state.register}/>
                 </Route>
-                <Route path="/system/:id" component={System}/>
+                <Route path="/system/:id">
+                  <System executeCheck={this.duplicateNameCallback}/>
+                </ Route>
                 <Route exact path="/risk_dashboard" component={PortfolioHeatmap}/>
               </Switch>
             </main>

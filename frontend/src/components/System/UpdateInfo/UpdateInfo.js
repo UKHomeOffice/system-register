@@ -8,8 +8,6 @@ import validateInfo from "../UpdateInfo/validators";
 import ValidationError from "../../../services/validationError";
 import {mapValues, omitBy} from "lodash-es";
 
-
-
 function UpdateInfo({system, onSubmit, onCancel}) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = {name: system.name};

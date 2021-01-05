@@ -9,21 +9,14 @@ import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 
-function System() {
+function System(props) {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
-  const [systemNames, setSystemNames] = useState(null);
   const history = useHistory();
 
-  useEffect(() => {
+  useEffect( () => {
     const fetchData = async () => setSystem(await api.getSystem(id));
     fetchData();
-    const allsystems = async () => await api.getAllSystems();
-    let systems;
-    allsystems().then(systems = (s) => s.name);
-
-    const fetchAllSystemNames = async () => setSystemNames();
-    fetchAllSystemNames();
   }, [id]);
 
   const handleUpdateContacts = useCallback(async (data) => {
@@ -53,7 +46,7 @@ function System() {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} />
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} executeCheck={props.executeCheck} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
