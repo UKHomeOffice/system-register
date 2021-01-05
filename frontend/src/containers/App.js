@@ -50,9 +50,9 @@ class App extends React.Component {
     })
   }
 
-  duplicateNameCallback(checkDuplicateNameFunction) {
-    const allSystemNames = this.systems.map(system => system.name)
-    checkDuplicateNameFunction(allSystemNames)
+  duplicateNameCallback = (name) => {
+    const allSystemNames = this.state.register.systems.map(system => system.name)
+    return allSystemNames.includes(name);
   }
 
 
