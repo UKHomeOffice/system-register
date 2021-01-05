@@ -21,7 +21,7 @@ describe("UpdateInfo validators", () => {
     })
 
     it("returns undefined for valid values", () => {
-      const result = validateInfo("valid system name");
+      const result = validateInfo("valid system name", (value) => false);
 
       expect(result).toBeUndefined();
     });

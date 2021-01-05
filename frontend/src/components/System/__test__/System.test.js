@@ -259,7 +259,9 @@ function renderWithHistory(path, context = {}) {
 
   return render(
     <Router history={history}>
-      <Route path='/system/:id' component={System} />
+      <Route path='/system/:id' >
+        <System executeCheck={() => false} />
+      </Route>
     </Router>
   );
 }
