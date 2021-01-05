@@ -7,13 +7,14 @@ import UpdateContacts from "./UpdateContacts";
 import api from '../../services/api';
 import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
+import UpdateInfo from './UpdateInfo';
 
-function System() {
+function System(props) {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
 
-  useEffect(() => {
+  useEffect( () => {
     const fetchData = async () => setSystem(await api.getSystem(id));
     fetchData();
   }, [id]);
@@ -30,6 +31,11 @@ function System() {
     history.push(url);
   }, [id, history, url]);
 
+  const handleUpdateInfo = useCallback(async (data) => {
+    setSystem(await api.updateSystemName(id, data));
+    history.push(url);
+  }, [id, history, url]);
+
   const handleCancel = useCallback(() => {
     history.push(url);
   }, [history, url]);
@@ -39,11 +45,14 @@ function System() {
       <Route path={`${path}`} exact>
         <SystemView system={system} />
       </Route>
-      <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+      <SecureRoute path={`${path}/update-info`}>
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} executeCheck={props.executeCheck} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-contacts`}>
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
       </SecureRoute>
     </Switch>
   );

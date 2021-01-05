@@ -6,7 +6,8 @@ const api = {
   getAllSystems,
   getSystem,
   updateProductOwner,
-  updateCriticality
+  updateCriticality,
+  updateSystemName,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -23,7 +24,7 @@ async function getAllSystems() {
     }
     return 0
   })
-  return { ...response.data, systems: sortedSystems };
+  return {...response.data, systems: sortedSystems};
 }
 
 async function getSystem(id) {
@@ -34,7 +35,7 @@ async function getSystem(id) {
 async function updateProductOwner(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-product-owner`,
-    { product_owner: nullIfEmpty(data.productOwner) },
+    {product_owner: nullIfEmpty(data.productOwner)},
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
@@ -47,10 +48,21 @@ async function updateProductOwner(id, data) {
   return response.data;
 }
 
+async function updateSystemName(id, data) {
+  //create thin resource in backend with same data
+  return {
+    name: data.name,
+    criticality: "unknown",
+    last_updated: {},
+    risks: [],
+    aliases: [],
+  }
+}
+
 async function updateCriticality(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-criticality`,
-    { criticality: nullIfEmpty(data.criticality) },
+    {criticality: nullIfEmpty(data.criticality)},
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
