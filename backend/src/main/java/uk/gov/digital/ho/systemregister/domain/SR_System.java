@@ -30,6 +30,12 @@ public final class SR_System extends SystemData {
                 List.copyOf(aliases), List.copyOf(risks));
     }
 
+    public SR_System withName(String name) {
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
+                List.copyOf(aliases), List.copyOf(risks));
+    }
+
     public SR_System withCriticality(String criticality) {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,

@@ -5,13 +5,11 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.NoSuchSystemException;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateCriticalityCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.*;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateProductOwnerCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.api.dto.*;
@@ -53,6 +51,9 @@ public class SystemRegisterResource {
     @Inject
     UpdateCriticalityCommandHandler updateCriticalityCommandHandler;
 
+    @Inject
+    UpdateSystemNameCommandHandler updateSystemNameCommandHandler;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CurrentSystemStateDTO systems() {
@@ -70,6 +71,22 @@ public class SystemRegisterResource {
             public final String type = e.getClass().getSimpleName();
             public final SR_Event evt = e;
         }).collect(Collectors.toList());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
+    @Path("/{system_id}/update-name")
+    public UpdatedSystemDTO updateCriticality(UpdateSystemNameCommandDTO cmd,
+                                              @PathParam("system_id") int id,
+                                              @Context SecurityContext securityContext)
+            throws NoSuchSystemException, CommandHasNoEffectException {
+        SR_Person author = getAuthor(securityContext);
+        UpdateSystemNameCommand command = DtoMapper.map(cmd, id, author, Instant.now());
+        var updatedSystemAndMetadata = updateSystemNameCommandHandler.handle(command);
+
+        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
     }
 
     @POST
