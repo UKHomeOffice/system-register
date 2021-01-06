@@ -147,6 +147,7 @@ describe('<System />', () => {
           const systemNameField = await screen.findByLabelText(/system name/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
+          user.clear(systemNameField);
           // noinspection ES6MissingAwait: there is no typing delay
           user.type(systemNameField, "updated system name");
           user.click(saveButton);

@@ -31,6 +31,7 @@ describe("UpdateInfo", () => {
     const systemNameField = screen.getByLabelText(/system name/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    user.clear(systemNameField);
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(systemNameField, "new system name");
     user.click(saveButton);
@@ -45,6 +46,7 @@ describe("UpdateInfo", () => {
     const systemNameField = screen.getByLabelText(/system name/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    user.clear(systemNameField);
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(systemNameField, "    new system name with spaces ");
     user.click(saveButton);
@@ -76,12 +78,11 @@ describe("UpdateInfo", () => {
 
   it("validates name before submission", async () => {
     render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
-
-    const productOwnerField = screen.getByLabelText(/system name/i);
+    const systemNameField = screen.getByLabelText(/system name/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "$");
+    user.type(systemNameField, "$");
     user.click(saveButton);
 
     expect(await screen.findByText(/must not use the following special characters/i, { selector: "label *" })).toBeInTheDocument();

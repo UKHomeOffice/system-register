@@ -31,6 +31,7 @@ describe("UpdateContacts", () => {
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    user.clear(productOwnerField);
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "new owner");
     user.click(saveButton);
