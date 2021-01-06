@@ -4,7 +4,7 @@ function isTooShort(value) {
   return value?.trim().length <= 1;
 }
 
-function validateInfo(value, duplicateCheckCallback) {
+function validateInfo(value, duplicateCheckCallback) { //todo Team review
   if (containsForbiddenCharacters(value)) {
     return "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =";
   } else if (isTooShort(value)) {

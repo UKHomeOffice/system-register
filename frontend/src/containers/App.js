@@ -50,12 +50,11 @@ class App extends React.Component {
     })
   }
 
-  duplicateNameCallback = (name) => {
+  duplicateNameCallback = (name) => { //todo Team review
     name = name.toLowerCase();
     const allSystemNames = this.state.register.systems.map(system => system.name.toLowerCase())
     return allSystemNames.includes(name);
   }
-
 
   componentWillUnmount() {
     this._isMounted = false;
