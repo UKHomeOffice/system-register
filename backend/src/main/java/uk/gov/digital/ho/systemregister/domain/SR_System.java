@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public final class SR_System extends SystemData {
-    // todo I want to make all these immutable but cant
+     // todo I want to make all these immutable but cant
     //  because they need to be serialisable; help!
     public int id;
     public Instant lastUpdated;
@@ -24,13 +24,13 @@ public final class SR_System extends SystemData {
         this.lastUpdated = lastUpdated;
     }
 
-    public SR_System withProductOwner(String productOwner) {
-        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+    public SR_System withName(String systemName) {
+        return new SR_System(id, systemName, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
                 List.copyOf(aliases), List.copyOf(risks));
     }
 
-    public SR_System withName(String name) {
+    public SR_System withProductOwner(String productOwner) {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
                 List.copyOf(aliases), List.copyOf(risks));

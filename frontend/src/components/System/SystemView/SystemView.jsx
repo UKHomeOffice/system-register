@@ -7,7 +7,6 @@ import RiskDetails from "../RiskDetails/RiskDetails";
 import React from "react";
 import { Link } from 'react-router-dom'
 
-
 const SystemView = ({ system }) => {
   return (
     <div className="systemDetails centerContent">

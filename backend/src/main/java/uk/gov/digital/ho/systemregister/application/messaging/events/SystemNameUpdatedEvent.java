@@ -1,5 +1,4 @@
-package uk.gov.digital.ho.systemregister.application.messaging.events;
-
+uk.gov.digital.ho.systemregister.application.messaging.events;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 

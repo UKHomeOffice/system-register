@@ -25,7 +25,6 @@
 
 .contentBlock {
     color: var(--black);
-    font-family: Helvetica, sans-serif;
     border-bottom: solid 1px rgb(191, 193, 195);
 }
 
