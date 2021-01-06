@@ -1,4 +1,4 @@
-package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
+package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;

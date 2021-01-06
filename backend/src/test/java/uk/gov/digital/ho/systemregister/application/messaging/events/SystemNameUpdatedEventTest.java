@@ -24,4 +24,6 @@ class SystemNameUpdatedEventTest {
                         .withName("updated system name")
                         .build());
     }
+
+
 }

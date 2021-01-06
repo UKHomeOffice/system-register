@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.time.Instant;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -13,7 +14,9 @@ import javax.validation.constraints.Size;
 public class UpdateSystemNameCommand {
     public final int id;
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "The contact name must not be incomplete. Please enter a full contact name or leave blank if you do not know it.")
+    @Size(min = 2, message = "The system name must not be incomplete.")
+    @NotNull
+    @NotEmpty
     private final String name;
     @NotNull
     public final SR_Person author;
