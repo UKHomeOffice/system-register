@@ -14,7 +14,7 @@ function System(props) {
   const [system, setSystem] = useState(null);
   const history = useHistory();
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id));
     fetchData();
   }, [id]);
@@ -32,7 +32,9 @@ function System(props) {
   }, [id, history, url]);
 
   const handleUpdateInfo = useCallback(async (data) => {
-    setSystem(await api.updateSystemName(id, data));
+    if ("name" in data) {
+      setSystem(await api.updateSystemName(id, data));
+    }
     history.push(url);
   }, [id, history, url]);
 
