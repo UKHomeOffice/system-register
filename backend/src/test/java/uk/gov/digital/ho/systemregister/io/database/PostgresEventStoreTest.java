@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder;
+import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdat
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest
@@ -105,7 +107,7 @@ public class PostgresEventStoreTest {
     }
 
     @Test
-    public void saveCriticalityUpdated() {
+    public void saveCriticalityUpdatedEvent() {
         var expected = aCriticalityUpdatedEvent()
                 .build();
         eventStore.save(expected);
@@ -117,6 +119,18 @@ public class PostgresEventStoreTest {
                 .isEqualTo(List.of(expected));
     }
 
+    @Test
+    public void saveSystemNameUpdatedEvent() {
+        var expected = aSystemNameUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+//        assertThat(actual.get()).usingRecursiveComparison()
+//                .isEqualTo(List.of(expected));
+    }
 
     @Test
     public void throwsExceptionIfEventTypeNotSupportedWhenSaving() {

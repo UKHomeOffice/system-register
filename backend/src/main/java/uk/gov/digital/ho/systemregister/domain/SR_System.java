@@ -24,6 +24,11 @@ public final class SR_System extends SystemData {
         this.lastUpdated = lastUpdated;
     }
 
+    public SR_System withName(String systemName) {
+        return new SR_System(id, systemName, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
+                List.copyOf(aliases), List.copyOf(risks));
+    }
     public SR_System withProductOwner(String productOwner) {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,

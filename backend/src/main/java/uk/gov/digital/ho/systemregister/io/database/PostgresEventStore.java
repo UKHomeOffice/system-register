@@ -4,15 +4,9 @@ import io.agroal.api.AgroalDataSource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
-import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.events.*;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
-import uk.gov.digital.ho.systemregister.io.database.mappers.CriticalityUpdatedEventDaoMapper_v1;
-import uk.gov.digital.ho.systemregister.io.database.mappers.DaoMapper;
-import uk.gov.digital.ho.systemregister.io.database.mappers.ProductOwnerUpdatedEventDaoMapper_v1;
-import uk.gov.digital.ho.systemregister.io.database.mappers.SystemAddedDaoMapper_v2;
+import uk.gov.digital.ho.systemregister.io.database.mappers.*;
 import uk.gov.digital.ho.systemregister.util.AES;
 import uk.gov.digital.ho.systemregister.util.EncryptionError;
 
@@ -57,6 +51,9 @@ public class PostgresEventStore implements IEventStore {
 
     @Inject
     SystemAddedDaoMapper_v2 systemAddedDaoMapper;
+
+    @Inject
+    SystemNameUpdatedEventDaoMapper_v1 systemNameUpdatedDaoMapper;
 
     @Inject
     ProductOwnerUpdatedEventDaoMapper_v1 productOwnerUpdatedDaoMapper;
@@ -111,10 +108,12 @@ public class PostgresEventStore implements IEventStore {
 
         if(event instanceof SystemAddedEvent){
             daoMapper = systemAddedDaoMapper;
-        } else if (event instanceof ProductOwnerUpdatedEvent){
-            daoMapper = productOwnerUpdatedDaoMapper;
+        } else if (event instanceof SystemNameUpdatedEvent){
+            daoMapper = systemNameUpdatedDaoMapper;
         } else if (event instanceof CriticalityUpdatedEvent){
             daoMapper = criticalityUpdatedEventDaoMapper;
+        } else if (event instanceof ProductOwnerUpdatedEvent){
+            daoMapper = productOwnerUpdatedDaoMapper;
         } else {
             throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + " Please implement a DAO Mapper for this event type");
         }
