@@ -157,37 +157,38 @@ describe('<System />', () => {
               expect.objectContaining({
                 name: "updated system name",
               })
-            )});
+            );
+          });
 
+          expect(history).toHaveProperty("index", 1);
+          expect(history).toHaveProperty(
+            "location.pathname",
+            "/system/123"
+          );
+        });
+
+        it("does not send a request if field values are unchanged", async () => {
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-info"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, { history });
+          await screen.findByText("Test System");
+          const saveButton = await screen.findByRole("button", { name: /save/i });
+
+          user.click(saveButton);
+
+          await waitFor(() => {
             expect(history).toHaveProperty("index", 1);
             expect(history).toHaveProperty(
               "location.pathname",
               "/system/123"
             );
           });
-
-          it("does not send a request if field values are unchanged", async () => {
-            const history = createMemoryHistory({
-              initialEntries: ["/system/123/update-info"],
-              initialIndex: 0,
-            });
-            renderWithHistory(null, { history });
-            await screen.findByText("Test System");
-            const saveButton = await screen.findByRole("button", { name: /save/i });
-    
-            user.click(saveButton);
-    
-            await waitFor(() => {
-              expect(history).toHaveProperty("index", 1);
-              expect(history).toHaveProperty(
-                "location.pathname",
-                "/system/123"
-              );
-            });
-            expect(api.updateSystemName).not.toBeCalled();
-          });
-      })
-    })
+          expect(api.updateSystemName).not.toBeCalled();
+        });
+      });
+    });
 
     describe("editing about", () => {
       describe("criticality", () => {
@@ -247,7 +248,7 @@ describe('<System />', () => {
           });
           expect(api.updateCriticality).not.toBeCalled();
         });
-      })
+      });
     });
   });
 });
@@ -280,7 +281,7 @@ function renderWithHistory(path, context = {}) {
 
   return render(
     <Router history={history}>
-      <Route path='/system/:id' >
+      <Route path='/system/:id'>
         <System executeCheck={() => false} />
       </Route>
     </Router>

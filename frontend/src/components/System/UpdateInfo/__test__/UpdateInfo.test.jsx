@@ -67,7 +67,7 @@ describe("UpdateInfo", () => {
   it("calls cancel handler", () => {
     const cancelHandler = jest.fn();
     render(<UpdateInfo system={{ name: null }} onCancel={cancelHandler} executeCheck={() => false} />);
-    const cancelButton = screen.getByRole("button", {name: /cancel/i});
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
 
     user.click(cancelButton);
 
@@ -84,7 +84,7 @@ describe("UpdateInfo", () => {
     user.type(productOwnerField, "$");
     user.click(saveButton);
 
-    expect(await screen.findByText(/must not use the following special characters/i, {selector: "label *"})).toBeInTheDocument();
+    expect(await screen.findByText(/must not use the following special characters/i, { selector: "label *" })).toBeInTheDocument();
   });
 
   it("shows an error summary containing all error details", async () => {
@@ -96,7 +96,7 @@ describe("UpdateInfo", () => {
     user.type(systemNameField, "$");
     user.click(saveButton);
 
-    expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
+    expect(await screen.findByText(/must not use the following special characters/i, { selector: "a" })).toBeInTheDocument();
   });
 
   it("shows validation errors returned from the API", async () => {
@@ -108,6 +108,6 @@ describe("UpdateInfo", () => {
 
     user.click(saveButton);
 
-    expect(await screen.findByText(/validation error/i, {selector: "a"})).toBeInTheDocument();
+    expect(await screen.findByText(/validation error/i, { selector: "a" })).toBeInTheDocument();
   });
 });
