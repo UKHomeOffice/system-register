@@ -49,14 +49,19 @@ async function updateProductOwner(id, data) {
 }
 
 async function updateSystemName(id, data) {
-  //create thin resource in backend with same data
-  return {
-    name: data.name,
-    criticality: "unknown",
-    last_updated: {},
-    risks: [],
-    aliases: [],
+  const response = await axios.post(
+    `${config.api.url}/systems/${id}/update-name`,
+    { name: nullIfEmpty(data.name) },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      },
+      validateStatus: status => status < 500,
+    });
+  if (response.status === 400) {
+    throw new ValidationError(response.data.errors);
   }
+  return response.data;
 }
 
 async function updateCriticality(id, data) {

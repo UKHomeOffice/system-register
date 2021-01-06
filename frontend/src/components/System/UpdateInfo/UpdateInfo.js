@@ -27,7 +27,6 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
         onCancel();
     };
 
-
     return (
         <div className="centerContent">
             {system ? (
@@ -48,7 +47,7 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
                                 name="name"
                                 hint="Please enter the new system name"
                                 inputClassName="width-two-thirds"
-                                validate={(value) => { return validateInfo(value, executeCheck) }}
+                                validate={(value) => { return validateInfo(value, executeCheck, system.name) }}
                             >
                                 System name
               </TextField>

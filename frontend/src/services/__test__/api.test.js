@@ -134,4 +134,52 @@ describe("api", () => {
       await expect(pendingSystem).resolves.toMatchObject(data);
     });
   });
+
+  describe("update system name", () => {
+    it("sends changed owner to the API", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-name", (req, res, ctx) => {
+          const { name: newName } = req.body;
+          if (newName !== "new name") {
+            console.error("System name does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSystemName(345, {
+        name: "new name"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-name", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              name: "invalid system name",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateSystemName(345, {
+        name: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          name: "invalid system name",
+        }));
+    });
+  });
 });

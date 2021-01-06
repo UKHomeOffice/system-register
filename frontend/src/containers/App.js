@@ -60,7 +60,6 @@ class App extends React.Component {
     return allSystemNames.includes(name);
   }
 
-
   componentWillUnmount() {
     this._isMounted = false;
   }

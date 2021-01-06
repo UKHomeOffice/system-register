@@ -18,7 +18,19 @@ describe("UpdateInfo validators", () => {
       const result = validateInfo("");
 
       expect(result).toContain("must not be incomplete");
-    })
+    });
+
+    it("returns error if system name already exists", () => {
+      const result = validateInfo("I exisT", (v) => true);
+
+      expect(result).toContain("There is already a system called");
+    });
+
+    it("does not return error if system name already exists, but system name has not been changed", () => {
+      const result = validateInfo("I exisT", (v) => true, "I exisT");
+
+      expect(result).toBeUndefined();
+    });
 
     it("returns undefined for valid values", () => {
       const result = validateInfo("valid system name", (value) => false);
@@ -29,25 +41,25 @@ describe("UpdateInfo validators", () => {
 
   describe("isTooShort", () => {
     it.each(["x", " x", "x "])
-    ("rejects single character values", (value) => {
-      const isInvalid = isTooShort(value);
+      ("rejects single character values", (value) => {
+        const isInvalid = isTooShort(value);
 
-      expect(isInvalid).toBeTruthy();
-    });
+        expect(isInvalid).toBeTruthy();
+      });
 
     it.each(["", " "])
-    ("does not permit empty values", (value) => {
-      const isInvalid = isTooShort(value);
+      ("does not permit empty values", (value) => {
+        const isInvalid = isTooShort(value);
 
-      expect(isInvalid).toBeTruthy();
-    });
+        expect(isInvalid).toBeTruthy();
+      });
 
     it.each(["ab", "abc"])
-    ("permits values longer than a single character", (value) => {
-      const isInvalid = isTooShort(value);
+      ("permits values longer than a single character", (value) => {
+        const isInvalid = isTooShort(value);
 
-      expect(isInvalid).toBeFalsy();
-    });
+        expect(isInvalid).toBeFalsy();
+      });
   });
 
 });

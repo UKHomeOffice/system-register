@@ -99,6 +99,18 @@ public class SystemsResourceTest {
         checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
     }
 
+    @Test
+    @TestSecurity
+    public void updatesSystemName() throws JSONException {
+        String expectedResponse = getResourceAsString("update-name/expectedResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+
+        String actualResponse = sendCommandToApi("update-name/command.json", "/api/systems/1/update-name", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-name/expectedAllSystemsResponse.json");
+    }
+
     private void checkAllSystemsResponse(String pathToExpectedJson) throws JSONException {
         String expectedAllSystemsResponse = getResourceAsString(pathToExpectedJson);
 

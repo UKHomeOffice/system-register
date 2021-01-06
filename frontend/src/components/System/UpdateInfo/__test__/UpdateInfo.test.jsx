@@ -3,7 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import UpdateInfo from "../UpdateInfo";
-// import ValidationError from "../../../../services/validationError";
+import ValidationError from "../../../../services/validationError";
 
 describe("UpdateInfo", () => {
   const submitHandler = jest.fn();
@@ -20,93 +20,94 @@ describe("UpdateInfo", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("system name");
   });
 
-  // it("displays a loading message if data is unavailable", () => {
-  //   render(<UpdateContacts system={null} onSubmit={submitHandler} />);
+  it("displays a loading message if data is unavailable", () => {
+    render(<UpdateInfo system={null} onSubmit={submitHandler} />);
 
-  //   expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
-  // });
+    expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
+  });
 
-  // it("calls submission handler with updated contacts", async () => {
-  //   render(<UpdateContacts system={{ product_owner: "existing owner" }} onSubmit={submitHandler} />);
-  //   const productOwnerField = screen.getByLabelText(/product owner/i);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+  it("calls submission handler with updated name", async () => {
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   // noinspection ES6MissingAwait: there is no typing delay
-  //   user.type(productOwnerField, "new owner");
-  //   user.click(saveButton);
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(systemNameField, "new system name");
+    user.click(saveButton);
 
-  //   await waitFor(() => expect(submitHandler).toBeCalledWith({
-  //     productOwner: "new owner",
-  //   }));
-  // });
+    await waitFor(() => expect(submitHandler).toBeCalledWith({
+      name: "new system name",
+    }));
+  });
 
-  // it("trims values before calling the submission handler", async () => {
-  //   render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
-  //   const productOwnerField = screen.getByLabelText(/product owner/i);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+  it("trims values before calling the submission handler", async () => {
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   // noinspection ES6MissingAwait: there is no typing delay
-  //   user.type(productOwnerField, "  owner with extra spaces  ");
-  //   user.click(saveButton);
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(systemNameField, "    new system name with spaces ");
+    user.click(saveButton);
 
-  //   await waitFor(() => expect(submitHandler).toBeCalledWith({
-  //     productOwner: "owner with extra spaces",
-  //   }));
-  // });
+    await waitFor(() => expect(submitHandler).toBeCalledWith({
+      name: "new system name with spaces",
+    }));
+  });
 
-  // it.each(["owner", null])
-  // ("does not send unchanged values to the submission handler", async (value) => {
-  //   render(<UpdateContacts system={{ product_owner: value }} onSubmit={submitHandler} />);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+  it.each(["system name", null])
+  ("does not send unchanged values to the submission handler", async (value) => {
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   user.click(saveButton);
+    user.click(saveButton);
 
-  //   await waitFor(() => expect(submitHandler).toBeCalledWith({}));
-  // });
+    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+  });
 
-  // it("calls cancel handler", () => {
-  //   const cancelHandler = jest.fn();
-  //   render(<UpdateContacts system={{ product_owner: null }} onCancel={cancelHandler} />);
-  //   const cancelButton = screen.getByRole("button", {name: /cancel/i});
+  it("calls cancel handler", () => {
+    const cancelHandler = jest.fn();
+    render(<UpdateInfo system={{ name: null }} onCancel={cancelHandler} executeCheck={() => false} />);
+    const cancelButton = screen.getByRole("button", {name: /cancel/i});
 
-  //   user.click(cancelButton);
+    user.click(cancelButton);
 
-  //   expect(cancelHandler).toBeCalled();
-  // });
+    expect(cancelHandler).toBeCalled();
+  });
 
-  // it("validates contacts before submission", async () => {
-  //   render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
-  //   const productOwnerField = screen.getByLabelText(/product owner/i);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+  it("validates name before submission", async () => {
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
 
-  //   // noinspection ES6MissingAwait: there is no typing delay
-  //   user.type(productOwnerField, "$");
-  //   user.click(saveButton);
+    const productOwnerField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   expect(await screen.findByText(/must not use the following special characters/i, {selector: "label *"})).toBeInTheDocument();
-  // });
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(productOwnerField, "$");
+    user.click(saveButton);
 
-  // it("shows an error summary containing all error details", async () => {
-  //   render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
-  //   const productOwnerField = screen.getByLabelText(/product owner/i);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+    expect(await screen.findByText(/must not use the following special characters/i, {selector: "label *"})).toBeInTheDocument();
+  });
 
-  //   // noinspection ES6MissingAwait: there is no typing delay
-  //   user.type(productOwnerField, "$");
-  //   user.click(saveButton);
+  it("shows an error summary containing all error details", async () => {
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
-  // });
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(systemNameField, "$");
+    user.click(saveButton);
 
-  // it("shows validation errors returned from the API", async () => {
-  //   submitHandler.mockRejectedValue(new ValidationError({
-  //     productOwner: "validation error",
-  //   }));
-  //   render(<UpdateContacts system={{ product_owner: "owner" }} onSubmit={submitHandler} />);
-  //   const saveButton = screen.getByRole("button", { name: /save/i });
+    expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
+  });
 
-  //   user.click(saveButton);
+  it("shows validation errors returned from the API", async () => {
+    submitHandler.mockRejectedValue(new ValidationError({
+      name: "validation error",
+    }));
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} executeCheck={() => false} />);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
-  //   expect(await screen.findByText(/validation error/i, {selector: "a"})).toBeInTheDocument();
-  // });
+    user.click(saveButton);
+
+    expect(await screen.findByText(/validation error/i, {selector: "a"})).toBeInTheDocument();
+  });
 });

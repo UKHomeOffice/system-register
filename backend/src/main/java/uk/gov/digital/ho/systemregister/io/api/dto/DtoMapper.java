@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
@@ -25,6 +26,10 @@ public final class DtoMapper {
 
     public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
+    }
+
+    public static UpdateSystemNameCommand map(UpdateSystemNameCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateSystemNameCommand(id, cmd.name, author, timestamp);
     }
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {

@@ -165,6 +165,27 @@ describe('<System />', () => {
               "/system/123"
             );
           });
+
+          it("does not send a request if field values are unchanged", async () => {
+            const history = createMemoryHistory({
+              initialEntries: ["/system/123/update-info"],
+              initialIndex: 0,
+            });
+            renderWithHistory(null, { history });
+            await screen.findByText("Test System");
+            const saveButton = await screen.findByRole("button", { name: /save/i });
+    
+            user.click(saveButton);
+    
+            await waitFor(() => {
+              expect(history).toHaveProperty("index", 1);
+              expect(history).toHaveProperty(
+                "location.pathname",
+                "/system/123"
+              );
+            });
+            expect(api.updateSystemName).not.toBeCalled();
+          });
       })
     })
 
