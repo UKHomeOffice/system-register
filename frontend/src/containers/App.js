@@ -85,7 +85,7 @@ class App extends React.Component {
                   </Route>
                   <Route path="/system/:id">
                     <System executeCheck={this.duplicateNameCallback}/>
-                  </ Route>
+                  </Route>
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />
                   <Route exact path="/contact" component={Contact} />

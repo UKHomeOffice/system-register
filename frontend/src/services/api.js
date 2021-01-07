@@ -8,6 +8,7 @@ const api = {
   updateProductOwner,
   updateCriticality,
   updateSystemName,
+  updateSystemDescription,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -52,6 +53,22 @@ async function updateSystemName(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-name`,
     { name: nullIfEmpty(data.name) },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      },
+      validateStatus: status => status < 500,
+    });
+  if (response.status === 400) {
+    throw new ValidationError(response.data.errors);
+  }
+  return response.data;
+}
+
+async function updateSystemDescription(id, data) {
+  const response = await axios.post(
+    `${config.api.url}/systems/${id}/update-description`,
+    { description: nullIfEmpty(data.description) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,

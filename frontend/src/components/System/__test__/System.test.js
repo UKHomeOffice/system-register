@@ -13,6 +13,7 @@ jest.mock('../../../services/api', () => ({
   updateProductOwner: jest.fn(),
   updateCriticality: jest.fn(),
   updateSystemName: jest.fn(),
+  updateSystemDescription: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -20,6 +21,7 @@ jest.mock("@react-keycloak/web", () => ({
 
 const test_system = {
   name: "Test System",
+  description: "The description",
   criticality: "unknown",
   last_updated: {},
   risks: [],
@@ -132,11 +134,11 @@ describe('<System />', () => {
     });
 
     describe("editing system info", () => {
-      describe("system name", () => {
-        it("returns to system view on cancel", async () => {
-          await checkCancelButton("update-info");
-        });
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-info");
+      });
 
+      describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
           api.updateSystemName.mockResolvedValue({ ...test_system, name: "updated system name" });
           const history = createMemoryHistory({
@@ -187,6 +189,60 @@ describe('<System />', () => {
             );
           });
           expect(api.updateSystemName).not.toBeCalled();
+        });
+      });
+
+      describe("system description", () => {
+        it("returns to the system view after a successful update", async () => {
+          api.updateSystemDescription.mockResolvedValue({ ...test_system, description: "system description" });
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-info"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, { history });
+          const systemDescriptionField = await screen.findByLabelText(/system description/i);
+          const saveButton = screen.getByRole("button", { name: /save/i });
+
+          user.clear(systemDescriptionField);
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.type(systemDescriptionField, "updated system description");
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(api.updateSystemDescription).toBeCalledWith(
+              "123",
+              expect.objectContaining({
+                description: "updated system description",
+              })
+            );
+          });
+
+          expect(history).toHaveProperty("index", 1);
+          expect(history).toHaveProperty(
+            "location.pathname",
+            "/system/123"
+          );
+        });
+
+        it("does not send a request if field values are unchanged", async () => {
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-info"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, { history });
+          await screen.findByText("Test System");
+          const saveButton = await screen.findByRole("button", { name: /save/i });
+
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(history).toHaveProperty("index", 1);
+            expect(history).toHaveProperty(
+              "location.pathname",
+              "/system/123"
+            );
+          });
+          expect(api.updateSystemDescription).not.toBeCalled();
         });
       });
     });
@@ -283,7 +339,7 @@ function renderWithHistory(path, context = {}) {
   return render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System executeCheck={() => false} />
+        <System executeCheck={() => false} withDescription />
       </Route>
     </Router>
   );

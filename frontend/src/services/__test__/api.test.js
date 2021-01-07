@@ -182,4 +182,72 @@ describe("api", () => {
         }));
     });
   });
+
+  describe("update system description", () => {
+    it("sends changed description to the API", async () => {
+      server.use(
+        rest.post("/api/systems/456/update-description", (req, res, ctx) => {
+          const { description } = req.body;
+          if (description !== "new description") {
+            console.error("New description does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSystemDescription(456, {
+        description: "new description"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the description when an empty value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/234/update-description", (req, res, ctx) => {
+          const { description } = req.body;
+          if (description !== null) {
+            console.error("Expected description does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSystemDescription(234, {
+        description: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-description", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              description: "invalid description",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateSystemDescription(345, {
+        description: "x"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          description: "invalid description",
+        })
+      );
+    });
+  });
 });

@@ -35,6 +35,9 @@ function System(props) {
     if ("name" in data) {
       setSystem(await api.updateSystemName(id, data));
     }
+    if ("description" in data) {
+      setSystem(await api.updateSystemDescription(id, data));
+    }
     history.push(url);
   }, [id, history, url]);
 
@@ -48,7 +51,7 @@ function System(props) {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} executeCheck={props.executeCheck} />
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} executeCheck={props.executeCheck} withDescription={props.withDescription || false} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
