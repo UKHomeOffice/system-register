@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
-import { Button, TextArea } from "govuk-react";
+import { Button } from "govuk-react";
 import { mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";

@@ -1,14 +1,14 @@
-.text-field {
+.text-area {
     display: inline-block;
     margin-top: 25px;
     width: 100%;
 }
 
-.text-field label span:first-child {
+.text-area label span:first-child {
     font-weight: bold;
 }
 
-.text-field .visually-hidden {
+.text-area .visually-hidden {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
