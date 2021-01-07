@@ -28,6 +28,6 @@ button:first-child {
     margin-left: 0;
 }
 
-p {
+.secondary {
     font-size: 24px;
 }
