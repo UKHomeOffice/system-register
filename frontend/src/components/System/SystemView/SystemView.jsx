@@ -6,6 +6,7 @@ import InvestmentState from "../InvestmentState/InvestmentState";
 import RiskDetails from "../RiskDetails/RiskDetails";
 import React from "react";
 import { Link } from 'react-router-dom'
+import './SystemView.css'
 
 const SystemView = ({ system }) => {
   return (
