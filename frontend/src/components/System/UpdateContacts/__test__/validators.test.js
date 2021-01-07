@@ -1,4 +1,4 @@
-import validateContact, { containsForbiddenCharacters, isTooShort } from "../validators";
+import validateContact from "../validators";
 
 describe("UpdateContacts validators", () => {
   describe("validateContact", () => {
@@ -18,30 +18,6 @@ describe("UpdateContacts validators", () => {
       const result = validateContact("owner");
 
       expect(result).toBeUndefined();
-    });
-  });
-
-
-  describe("isTooShort", () => {
-    it.each(["x", " x", "x "])
-    ("rejects single character values", (value) => {
-      const isInvalid = isTooShort(value);
-
-      expect(isInvalid).toBeTruthy();
-    });
-
-    it.each(["", " "])
-    ("permits empty values", (value) => {
-      const isInvalid = isTooShort(value);
-
-      expect(isInvalid).toBeFalsy();
-    });
-
-    it.each(["ab", "abc"])
-    ("permits values longer than a single character", (value) => {
-      const isInvalid = isTooShort(value);
-
-      expect(isInvalid).toBeFalsy();
     });
   });
 });

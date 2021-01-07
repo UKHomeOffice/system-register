@@ -1,12 +1,4 @@
-import { containsForbiddenCharacters } from "../../../utilities/sharedValidators";
-
-function isTooShort(value) {
-  return value?.trim().length === 1;
-}
-
-function isEmpty(value) {
-  return value?.trim().length === 0;
-}
+import { containsForbiddenCharacters, isEmpty, isTooShort } from "../../../utilities/sharedValidators";
 
 function validateName(value, duplicateCheckCallback, initialValue) { //todo Team review
   if (initialValue === value) return;
@@ -25,4 +17,4 @@ function validateDescription(value) {
   }
 }
 
-export { validateName, validateDescription, isTooShort, isEmpty };
+export { validateName, validateDescription };

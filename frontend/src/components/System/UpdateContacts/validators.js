@@ -1,8 +1,4 @@
-import {containsForbiddenCharacters} from "../../../utilities/sharedValidators";
-
-function isTooShort(value) {
-  return value.trim().length === 1;
-}
+import { containsForbiddenCharacters, isTooShort } from "../../../utilities/sharedValidators";
 
 function validateContact(value) {
   if (containsForbiddenCharacters(value)) {
@@ -13,4 +9,3 @@ function validateContact(value) {
 }
 
 export default validateContact;
-export { containsForbiddenCharacters, isTooShort };
