@@ -47,7 +47,8 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck, withDescription 
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary />
+            <ErrorSummary order={["name", "description"]} />
+
             <h1>{system.name}</h1>
             <p className="secondary">
               You can change the name of the system and its description
