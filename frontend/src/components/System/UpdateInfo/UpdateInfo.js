@@ -4,18 +4,27 @@ import { Button } from "govuk-react";
 import { mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
-import validateInfo from "../UpdateInfo/validators";
+import { validateName, validateDescription } from "./validators";
 
 import "./UpdateInfo.css";
 
-function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
+const emptyIfUndefined = (value) => value != null ? value : "";
+
+const infoAbout = (system) => ({
+  name: emptyIfUndefined(system.name),
+  description: emptyIfUndefined(system.description),
+});
+
+function UpdateInfo({ system, onSubmit, onCancel, executeCheck, withDescription = false }) {
   const handleSubmit = useCallback(async (values, formik) => {
-    const initialInfo = { name: system.name };
+    const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
       mapValues(values, (value) => value.trim()),
       (value, key) => value === initialInfo[key]);
+
     try {
       await onSubmit(changedInfo);
     } catch (e) {
@@ -33,7 +42,7 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
     <div className="centerContent">
       {system ? (
         <Formik
-          initialValues={{ name: system.name }}
+          initialValues={infoAbout(system)}
           validateOnChange={false}
           onSubmit={handleSubmit}
         >
@@ -41,7 +50,7 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
             <ErrorSummary />
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can change the name of the system
+              You can change the name of the system and its description
             </p>
 
             <Form>
@@ -50,11 +59,20 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck }) {
                 hint="Please enter the new system name"
                 inputClassName="width-two-thirds"
                 validate={(value) => {
-                  return validateInfo(value, executeCheck, system.name)
+                  return validateName(value, executeCheck, emptyIfUndefined(system.name))
                 }}
               >
                 System name
               </TextField>
+
+              {withDescription && <Textarea
+                name="description"
+                hint="Please provide a brief summary description of the system"
+                inputClassName="width-two-thirds"
+                validate={validateDescription}
+              >
+                System description
+              </Textarea>}
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
