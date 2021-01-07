@@ -11,13 +11,13 @@ describe("UpdateInfo validators", () => {
     it("returns an error message if system name is too short", () => {
       const result = validateName("n");
 
-      expect(result).toContain("must not be incomplete");
+      expect(result).toContain("You must enter a complete system name");
     });
 
     it("returns an error message if system name is empty", () => {
       const result = validateName("");
 
-      expect(result).toContain("must not be incomplete");
+      expect(result).toContain("You must enter a system name");
     });
 
     it("returns error if system name already exists", () => {

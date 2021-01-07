@@ -14,9 +14,9 @@ import javax.validation.constraints.Size;
 public class UpdateSystemNameCommand {
     public final int id;
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "The system name must not be incomplete.")
-    @NotNull
-    @NotEmpty
+    @Size(min = 2, message = "You must enter a complete system name.")
+    @NotNull(message = "You must enter a system name")
+    @NotEmpty(message = "You must enter a system name")
     public final String name;
     @NotNull
     public final SR_Person author;
