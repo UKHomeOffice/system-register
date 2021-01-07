@@ -17,7 +17,7 @@ public class UpdateSystemNameCommand {
     @Size(min = 2, message = "The system name must not be incomplete.")
     @NotNull
     @NotEmpty
-    private final String name;
+    public final String name;
     @NotNull
     public final SR_Person author;
     @NotNull

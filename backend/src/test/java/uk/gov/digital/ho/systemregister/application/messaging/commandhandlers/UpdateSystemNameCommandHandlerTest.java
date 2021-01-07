@@ -11,9 +11,13 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Up
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemNameUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,6 +71,18 @@ class UpdateSystemNameCommandHandlerTest {
     }
 
     @Test
+    public void raisesExceptionIfSystemWithSameNameAlreadyExists() {
+        givenCurrentStateWithSystems(
+                aSystem().withId(123).withName("existing system").build(),
+                aSystem().withId(456).withName("system to be updated").build());
+        var command = new UpdateSystemNameCommand(456, "existing system", aPerson().build(), Instant.now());
+
+        assertThatThrownBy(() -> commandHandler.handle(command))
+                .isInstanceOf(SystemNameNotUniqueException.class)
+                .hasMessageContaining("existing system");
+    }
+
+    @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
         var command = new UpdateSystemNameCommand(789, "system 1", aPerson().build(), Instant.now());
@@ -95,5 +111,16 @@ class UpdateSystemNameCommandHandlerTest {
                 .thenReturn(new CurrentState(
                         Map.of(systemBuilder.build(), metadata),
                         Instant.now()));
+    }
+
+    private void givenCurrentStateWithSystems(SR_System... existing_systems) {
+        UpdateMetadata metadata = new UpdateMetadata(aPerson().withUsername("username1").build(), Instant.now());
+
+        Map<SR_System, UpdateMetadata> sysMap = new HashMap<SR_System, UpdateMetadata>();
+        for (SR_System sys : existing_systems) {
+            sysMap.put(sys, metadata);
+        }
+        when(systemRegisterState.getCurrentState())
+                .thenReturn(new CurrentState(sysMap, Instant.now()));
     }
 }

@@ -16,6 +16,7 @@ import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 import javax.enterprise.context.ApplicationScoped;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.function.Predicate;
 
 @ApplicationScoped
 public class UpdateSystemNameCommandHandler {
@@ -40,12 +41,14 @@ public class UpdateSystemNameCommandHandler {
     }
 
     public Tuple2<SR_System, UpdateMetadata> handle(@Valid UpdateSystemNameCommand command)
-            throws NoSuchSystemException, CommandHasNoEffectException {
+            throws NoSuchSystemException, CommandHasNoEffectException, SystemNameNotUniqueException {
         SystemRegister systemRegister = new SystemRegister(systemRegisterState.getCurrentState().getSystems());
 
         SR_System system = systemRegister.getSystemById(command.id)
                 .orElseThrow(() -> new NoSuchSystemException(command.id));
         checkSystemNameWillBeChanged(command, system);
+
+        checkForDupicateSystemName(command, systemRegister);
 
         var event = command.toEvent();
         eventHandler.handle(event);
@@ -53,5 +56,14 @@ public class UpdateSystemNameCommandHandler {
         return Tuple2.of(
                 calculator.applyUpdateToSystem(system, event),
                 new UpdateMetadata(command.author, command.timestamp));
+    }
+
+    private void checkForDupicateSystemName(UpdateSystemNameCommand command, SystemRegister systemRegister) throws SystemNameNotUniqueException {
+        if (systemRegister.getAllSystems().stream()
+                .filter((s) -> s.id != command.id)
+                .map(s -> s.name)
+                .anyMatch(Predicate.isEqual(command.name))) {
+            throw new SystemNameNotUniqueException("A system called " + command.name + " already exists");
+        }
     }
 }
