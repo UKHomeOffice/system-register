@@ -15,6 +15,10 @@
     height: 10rem;
 }
 
+.crest {
+    padding-bottom: 5px;
+}
+
 .meta-flex {
     display: flex;
     margin-right: -15px;

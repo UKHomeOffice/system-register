@@ -28,9 +28,12 @@ const test_system = {
   aliases: [],
 };
 
+var dirtyCallback = jest.fn();
+
 describe('<System />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    dirtyCallback = jest.fn();
     api.getSystem.mockResolvedValue(test_system);
   });
 
@@ -77,6 +80,22 @@ describe('<System />', () => {
     });
 
     describe("editing contacts", () => {
+      it("calls dirtyCallback when updates", async () => {
+        api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
+        const history = createMemoryHistory({ initialEntries: ["/system/123/update-contacts"], initialIndex: 0 });
+        renderWithHistory(null, { history });
+        const productOwnerField = await screen.findByLabelText(/product owner/i);
+        const saveButton = screen.getByRole("button", { name: /save/i });
+
+        // noinspection ES6MissingAwait: there is no typing delay
+        user.type(productOwnerField, "updated owner");
+        user.click(saveButton);
+
+        await waitFor(() => {
+          expect(dirtyCallback).toBeCalled();
+        });
+      });
+
       it("returns to the system view after a successful update", async () => {
         api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
         const history = createMemoryHistory({
@@ -130,6 +149,7 @@ describe('<System />', () => {
           );
         });
         expect(api.updateProductOwner).not.toBeCalled();
+        expect(dirtyCallback).not.toBeCalled();
       });
     });
 
@@ -155,6 +175,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
+            expect(dirtyCallback).toBeCalled();
             expect(api.updateSystemName).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -189,6 +210,7 @@ describe('<System />', () => {
             );
           });
           expect(api.updateSystemName).not.toBeCalled();
+          expect(dirtyCallback).not.toBeCalled();
         });
       });
 
@@ -209,6 +231,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
+            expect(dirtyCallback).toBeCalled();
             expect(api.updateSystemDescription).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -243,6 +266,7 @@ describe('<System />', () => {
             );
           });
           expect(api.updateSystemDescription).not.toBeCalled();
+          expect(dirtyCallback).not.toBeCalled();
         });
       });
     });
@@ -268,6 +292,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
+            expect(dirtyCallback).toBeCalled();
             expect(api.updateCriticality).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -303,6 +328,7 @@ describe('<System />', () => {
               "/system/123"
             );
           });
+          expect(dirtyCallback).not.toBeCalled();
           expect(api.updateCriticality).not.toBeCalled();
         });
       });
@@ -339,7 +365,7 @@ function renderWithHistory(path, context = {}) {
   return render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System executeCheck={() => false} withDescription />
+        <System executeCheck={() => false} withDescription dirtyCallback={dirtyCallback} />
       </Route>
     </Router>
   );

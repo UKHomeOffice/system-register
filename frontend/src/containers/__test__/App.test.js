@@ -47,6 +47,10 @@ describe("<App />", () => {
     expect(await findByText('System Register', { selector: '.systemCard *' })).toBeInTheDocument();
   })
 
+  it("re-renders from api when a system calls back to notify its been updated", () => {
+    
+  })
+
   describe("routing", () => {
     it('navigates to the risk dashboard', async () => {
       const history = createMemoryHistory();

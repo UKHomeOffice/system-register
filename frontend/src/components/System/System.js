@@ -10,6 +10,7 @@ import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 
 function System(props) {
+  const { dirtyCallback } = props;
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
@@ -19,27 +20,32 @@ function System(props) {
     fetchData();
   }, [id]);
 
+  const updateSystem = useCallback((newSysData) => {
+    setSystem(newSysData)
+    dirtyCallback()
+  }, [dirtyCallback])
+
   const handleUpdateContacts = useCallback(async (data) => {
     if ("productOwner" in data) {
-      setSystem(await api.updateProductOwner(id, data));
+      updateSystem(await api.updateProductOwner(id, data));
     }
     history.push(url);
-  }, [id, history, url]);
+  }, [id, history, url, updateSystem]);
 
   const handleUpdateAbout = useCallback(async (data) => {
-    setSystem(await api.updateCriticality(id, data));
+    updateSystem(await api.updateCriticality(id, data));
     history.push(url);
-  }, [id, history, url]);
+  }, [id, history, url, updateSystem]);
 
   const handleUpdateInfo = useCallback(async (data) => {
     if ("name" in data) {
-      setSystem(await api.updateSystemName(id, data));
+      updateSystem(await api.updateSystemName(id, data));
     }
     if ("description" in data) {
-      setSystem(await api.updateSystemDescription(id, data));
+      updateSystem(await api.updateSystemDescription(id, data));
     }
     history.push(url);
-  }, [id, history, url]);
+  }, [id, history, url, updateSystem]);
 
   const handleCancel = useCallback(() => {
     history.push(url);

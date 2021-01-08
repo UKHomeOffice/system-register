@@ -26,6 +26,17 @@ class App extends React.Component {
     }
   }
 
+  loadSystems = async () => api.getAllSystems()
+    .then((register) => {
+      if (this._isMounted) {
+        this.setState(
+          {
+            keycloak: this.state.keycloak,
+            register: register
+          });
+      }
+    });
+
   componentDidMount() {
     this._isMounted = true;
     config.getKeycloakConfig()
@@ -42,16 +53,7 @@ class App extends React.Component {
           })
       }).catch((e) => console.error(e))
 
-    api.getAllSystems()
-      .then((register) => {
-        if (this._isMounted) {
-          this.setState(
-            {
-              keycloak: this.state.keycloak,
-              register: register
-            })
-        }
-      })
+    this.loadSystems()
   }
 
   duplicateNameCallback = (name) => {
@@ -84,14 +86,14 @@ class App extends React.Component {
                     <SystemList register={this.state.register} />
                   </Route>
                   <Route path="/system/:id">
-                    <System executeCheck={this.duplicateNameCallback}/>
+                    <System executeCheck={this.duplicateNameCallback} dirtyCallback={this.loadSystems} />
                   </Route>
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />
                   <Route exact path="/contact" component={Contact} />
                 </Switch>
               </main>
-              <SRFooter/>
+              <SRFooter />
             </div>
           </BrowserRouter>
         </KeycloakProvider>
