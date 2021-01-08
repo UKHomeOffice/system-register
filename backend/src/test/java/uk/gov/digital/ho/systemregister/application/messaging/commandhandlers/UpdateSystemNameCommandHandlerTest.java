@@ -71,7 +71,7 @@ class UpdateSystemNameCommandHandlerTest {
     @Test
     public void raisesExceptionIfSystemWithSameNameAlreadyExists() {
         givenCurrentStateWithSystems(
-                aSystem().withId(123).withName("existing system").build(),
+                aSystem().withId(123).withName("existing SYSTEM").build(),
                 aSystem().withId(456).withName("system to be updated").build());
         var command = new UpdateSystemNameCommand(456, "existing system", aPerson().build(), Instant.now());
 

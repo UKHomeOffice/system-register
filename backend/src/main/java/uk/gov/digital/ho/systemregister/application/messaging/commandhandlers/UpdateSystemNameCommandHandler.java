@@ -38,9 +38,9 @@ public class UpdateSystemNameCommandHandler {
     private void checkForDuplicateSystemName(UpdateSystemNameCommand command, SystemRegister systemRegister) throws SystemNameNotUniqueException {
         if (systemRegister.getAllSystems().stream()
                 .filter((s) -> s.id != command.id)
-                .map(s -> s.name)
-                .anyMatch(Predicate.isEqual(command.name))) {
-            throw new SystemNameNotUniqueException("A system called " + command.name + " already exists");
+                .map(s -> s.name.toLowerCase())
+                .anyMatch(Predicate.isEqual(command.name.toLowerCase()))) {
+            throw new SystemNameNotUniqueException(command.name);
         }
     }
 
