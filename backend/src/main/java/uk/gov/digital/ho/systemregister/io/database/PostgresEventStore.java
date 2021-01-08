@@ -115,7 +115,7 @@ public class PostgresEventStore implements IEventStore {
         } else if (event instanceof ProductOwnerUpdatedEvent){
             daoMapper = productOwnerUpdatedDaoMapper;
         } else {
-            throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + " Please implement a DAO Mapper for this event type");
+            throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + ". Please implement a DAO Mapper for this event type");
         }
         return daoMapper;
     }

@@ -138,7 +138,7 @@ public class PostgresEventStoreTest {
 
         assertThatThrownBy(() -> eventStore.save(event))
                 .isInstanceOf(UnsupportedOperationException.class)
-                .hasMessageMatching(".*not supported: .*\\.SR_Event Please implement a DAO Mapper for this event type$");
+                .hasMessageMatching(".*not supported: .*\\.SR_Event. Please implement a DAO Mapper for this event type$");
     }
 
     @ParameterizedTest
