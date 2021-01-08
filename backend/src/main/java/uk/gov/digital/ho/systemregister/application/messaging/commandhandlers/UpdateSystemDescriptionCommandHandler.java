@@ -9,8 +9,10 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Syst
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.Valid;
 
+@ApplicationScoped
 public class UpdateSystemDescriptionCommandHandler {
     private final CurrentSystemRegisterState systemRegisterState;
     private final SystemDescriptionUpdatedEventHandler eventHandler;
