@@ -30,6 +30,6 @@ class SystemNameNotUniqueMapperTest {
                 .isEqualTo(BAD_REQUEST);
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .extracting("errors", map(String.class, String.class))
-                .containsEntry("name", "A system named x already exists");
+                .containsEntry("name", "There is already a system called x");
     }
 }
