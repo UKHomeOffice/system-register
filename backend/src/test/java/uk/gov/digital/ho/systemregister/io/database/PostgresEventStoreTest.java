@@ -128,8 +128,8 @@ public class PostgresEventStoreTest {
         var actual = eventStore.getEvents();
 
         assertTrue(actual.isPresent());
-//        assertThat(actual.get()).usingRecursiveComparison()
-//                .isEqualTo(List.of(expected));
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
     }
 
     @Test
