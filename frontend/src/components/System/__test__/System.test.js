@@ -28,12 +28,11 @@ const test_system = {
   aliases: [],
 };
 
-var dirtyCallback = jest.fn();
+const changeHandler = jest.fn();
 
 describe('<System />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    dirtyCallback = jest.fn();
     api.getSystem.mockResolvedValue(test_system);
   });
 
@@ -92,7 +91,7 @@ describe('<System />', () => {
         user.click(saveButton);
 
         await waitFor(() => {
-          expect(dirtyCallback).toBeCalled();
+          expect(changeHandler).toBeCalled();
         });
       });
 
@@ -149,7 +148,7 @@ describe('<System />', () => {
           );
         });
         expect(api.updateProductOwner).not.toBeCalled();
-        expect(dirtyCallback).not.toBeCalled();
+        expect(changeHandler).not.toBeCalled();
       });
     });
 
@@ -175,7 +174,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
-            expect(dirtyCallback).toBeCalled();
+            expect(changeHandler).toBeCalled();
             expect(api.updateSystemName).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -210,7 +209,7 @@ describe('<System />', () => {
             );
           });
           expect(api.updateSystemName).not.toBeCalled();
-          expect(dirtyCallback).not.toBeCalled();
+          expect(changeHandler).not.toBeCalled();
         });
       });
 
@@ -231,7 +230,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
-            expect(dirtyCallback).toBeCalled();
+            expect(changeHandler).toBeCalled();
             expect(api.updateSystemDescription).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -266,7 +265,7 @@ describe('<System />', () => {
             );
           });
           expect(api.updateSystemDescription).not.toBeCalled();
-          expect(dirtyCallback).not.toBeCalled();
+          expect(changeHandler).not.toBeCalled();
         });
       });
     });
@@ -292,7 +291,7 @@ describe('<System />', () => {
           user.click(saveButton);
 
           await waitFor(() => {
-            expect(dirtyCallback).toBeCalled();
+            expect(changeHandler).toBeCalled();
             expect(api.updateCriticality).toBeCalledWith(
               "123",
               expect.objectContaining({
@@ -328,7 +327,7 @@ describe('<System />', () => {
               "/system/123"
             );
           });
-          expect(dirtyCallback).not.toBeCalled();
+          expect(changeHandler).not.toBeCalled();
           expect(api.updateCriticality).not.toBeCalled();
         });
       });
@@ -365,7 +364,7 @@ function renderWithHistory(path, context = {}) {
   return render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System executeCheck={() => false} withDescription dirtyCallback={dirtyCallback} />
+        <System onBeforeNameChange={() => false} withDescription onChange={changeHandler} />
       </Route>
     </Router>
   );

@@ -56,7 +56,7 @@ class App extends React.Component {
     this.loadSystems()
   }
 
-  duplicateNameCallback = (name) => {
+  checkForDuplicateNames = (name) => {
     name = name.toLowerCase();
     const allSystemNames = this.state.register.systems.map(system => system.name.toLowerCase())
     return allSystemNames.includes(name);
@@ -86,7 +86,7 @@ class App extends React.Component {
                     <SystemList register={this.state.register} />
                   </Route>
                   <Route path="/system/:id">
-                    <System executeCheck={this.duplicateNameCallback} dirtyCallback={this.loadSystems} />
+                    <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
                   </Route>
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />

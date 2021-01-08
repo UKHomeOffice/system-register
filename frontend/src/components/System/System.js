@@ -10,7 +10,7 @@ import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 
 function System(props) {
-  const { dirtyCallback } = props;
+  const { onChange, onBeforeNameChange } = props;
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
@@ -21,9 +21,9 @@ function System(props) {
   }, [id]);
 
   const updateSystem = useCallback((newSysData) => {
-    setSystem(newSysData)
-    dirtyCallback()
-  }, [dirtyCallback])
+    setSystem(newSysData);
+    onChange();
+  }, [onChange])
 
   const handleUpdateContacts = useCallback(async (data) => {
     if ("productOwner" in data) {
@@ -57,7 +57,7 @@ function System(props) {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} executeCheck={props.executeCheck} withDescription />
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} withDescription />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
