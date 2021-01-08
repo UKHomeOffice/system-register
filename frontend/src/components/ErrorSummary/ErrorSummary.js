@@ -1,23 +1,22 @@
 import React from "react";
 import GdsErrorSummary from "@govuk-react/error-summary";
 import { useFormikContext } from "formik";
-import { chain, indexOf } from "lodash-es";
+import { filter, flow, indexOf, map, sortBy } from "lodash-es";
 
 const handleErrorClick = (targetName) => {
   document.getElementsByName(targetName)[0].scrollIntoView();
 };
 
-const toErrorObjects = (text, fieldName) => ({ targetName: fieldName, text });
-const onlyFieldsThatWere = (touched) => ({ targetName }) => touched[targetName];
-const field = (order) => ({ targetName }) => indexOf(order, targetName);
+const mapToErrorObjects = (errors) => map(errors, (text, fieldName) => ({ targetName: fieldName, text }));
+const filterOnlyFieldsThatWereTouched = (touched) => (errors) => filter(errors, ({ targetName }) => touched[targetName]);
+const sortByFieldOrder = (order) => (errors) => sortBy(errors, ({ targetName }) => indexOf(order, targetName));
 
 function ErrorSummary({ order }) {
   const { errors: formErrors, touched } = useFormikContext();
-  const errors = chain(formErrors)
-    .map(toErrorObjects)
-    .filter(onlyFieldsThatWere(touched))
-    .sortBy(field(order))
-    .value();
+  const errors = flow(
+    mapToErrorObjects,
+    filterOnlyFieldsThatWereTouched(touched),
+    sortByFieldOrder(order))(formErrors);
 
   return errors.length !== 0
     ? <GdsErrorSummary onHandleErrorClick={handleErrorClick} errors={errors} />
