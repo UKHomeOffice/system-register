@@ -51,7 +51,7 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck, withDescription 
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can change the name of the system and its description
+              You can change the name of the system {withDescription && "and its description"}
             </p>
 
             <Form>
