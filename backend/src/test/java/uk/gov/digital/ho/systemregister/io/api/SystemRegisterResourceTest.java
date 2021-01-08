@@ -26,7 +26,7 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
-public class SystemsResourceTest {
+public class SystemRegisterResourceTest {
     @Inject
     @SuppressWarnings("CdiInjectionPointsInspection")
     AgroalDataSource dataSource;
