@@ -138,7 +138,6 @@ public class SystemRegisterResource {
 
     private SR_Person getAuthor(SecurityContext securityContext) {
         JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
-        SR_Person author = DtoMapper.extractAuthor(jwt);
-        return author;
+        return DtoMapper.extractAuthor(jwt);
     }
 }
