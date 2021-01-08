@@ -114,7 +114,7 @@ public class SystemsResourceTest {
         String expectedResponse = getResourceAsString("update-system-description/update-system-description-response.json");
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
 
-        String actualResponse = sendCommandToApi("update-system-description/command.json", "/api/systems/1/update-description", 200);
+        String actualResponse = sendCommandToApi("update-system-description/command.json", "/api/systems/1/update-system-description", 200);
 
         assertEquals(expectedResponse, actualResponse, false);
         checkAllSystemsResponse("update-system-description/all-systems-response.json");

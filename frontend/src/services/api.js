@@ -67,7 +67,7 @@ async function updateSystemName(id, data) {
 
 async function updateSystemDescription(id, data) {
   const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-description`,
+    `${config.api.url}/systems/${id}/update-system-description`,
     { description: nullIfEmpty(data.description) },
     {
       headers: {

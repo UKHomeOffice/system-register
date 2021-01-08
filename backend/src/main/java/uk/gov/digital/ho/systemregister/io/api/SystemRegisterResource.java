@@ -107,7 +107,7 @@ public class SystemRegisterResource {
     }
 
     @POST
-    @Path("/{system_id}/update-description")
+    @Path("/{system_id}/update-system-description")
     @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
