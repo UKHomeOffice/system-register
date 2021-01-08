@@ -78,9 +78,9 @@ public class SystemRegisterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
     @Path("/{system_id}/update-name")
-    public UpdatedSystemDTO updateCriticality(UpdateSystemNameCommandDTO cmd,
-                                              @PathParam("system_id") int id,
-                                              @Context SecurityContext securityContext)
+    public UpdatedSystemDTO updateSystemName(UpdateSystemNameCommandDTO cmd,
+                                             @PathParam("system_id") int id,
+                                             @Context SecurityContext securityContext)
             throws NoSuchSystemException, CommandHasNoEffectException, SystemNameNotUniqueException {
         SR_Person author = getAuthor(securityContext);
         UpdateSystemNameCommand command = DtoMapper.map(cmd, id, author, Instant.now());
