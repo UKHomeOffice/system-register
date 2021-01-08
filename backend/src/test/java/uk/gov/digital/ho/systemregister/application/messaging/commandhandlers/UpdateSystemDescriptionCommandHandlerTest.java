@@ -2,7 +2,6 @@ package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
 import io.smallrye.mutiny.tuples.Tuple2;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
@@ -14,8 +13,11 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Syst
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemDescriptionUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.Map;
+import javax.validation.Valid;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -89,6 +91,17 @@ class UpdateSystemDescriptionCommandHandlerTest {
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
                 .hasMessageContaining("system description is the same: description");
+    }
+
+    @Test
+    void validatesCommand() throws NoSuchMethodException {
+        Method handleMethod = commandHandler.getClass()
+                .getMethod("handle", UpdateSystemDescriptionCommand.class);
+        Parameter commandArgument = handleMethod.getParameters()[0];
+
+        boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
+
+        assertThat(hasValidAnnotation).isTrue();
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {
