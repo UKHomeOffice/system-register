@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GdsErrorSummary from "@govuk-react/error-summary";
 import { useFormikContext } from "formik";
-import { filter, flow, indexOf, map, sortBy } from "lodash-es";
+import { filter, flow, indexOf, isEqual, map, sortBy } from "lodash-es";
+
+import usePrevious from "../../utilities/usePrevious";
 
 const handleErrorClick = (targetName) => {
   document.getElementsByName(targetName)[0].scrollIntoView();
@@ -17,9 +19,16 @@ function ErrorSummary({ order }) {
     mapToErrorObjects,
     filterOnlyFieldsThatWereTouched(touched),
     sortByFieldOrder(order))(formErrors);
+  const prevErrors = usePrevious(errors);
+
+  useEffect(() => {
+    if ((errors.length !== 0) && !isEqual(errors, prevErrors)) {
+      document.getElementById("error-summary").focus();
+    }
+  }, [errors, prevErrors]);
 
   return errors.length !== 0
-    ? <GdsErrorSummary onHandleErrorClick={handleErrorClick} errors={errors} />
+    ? <GdsErrorSummary id="error-summary" onHandleErrorClick={handleErrorClick} errors={errors} />
     : null;
 }
 

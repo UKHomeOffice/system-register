@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
 import ErrorSummary from "../ErrorSummary";
@@ -48,7 +48,7 @@ describe("ErrorSummary", () => {
               initialTouched={{ first: true, second: true }}
               initialValues={{}}
               onSubmit={null}>
-        <ErrorSummary order={["second", "first"]}/>
+        <ErrorSummary order={["second", "first"]} />
       </Formik>
     );
 
@@ -56,4 +56,45 @@ describe("ErrorSummary", () => {
     expect(errors[0]).toHaveTextContent("second error");
     expect(errors[1]).toHaveTextContent("first error");
   });
+
+  describe("focus", () => {
+    it("receives focus when shown", async () => {
+      render(withFormik(<ErrorSummary />,
+        { field: "error" },
+        { field: true }));
+
+      await waitFor(() => {
+        const summary = document.getElementById("error-summary");
+
+        expect(summary).toHaveFocus();
+      });
+    });
+
+    it("does not move focus if errors have not changed", async () => {
+      const content = <>
+        <ErrorSummary />
+        <input name="field" />
+      </>;
+      const { rerender } = render(withFormik(content, { field: "text" }, { field: true }));
+      await waitFor(() => {
+        expect(document.getElementById("error-summary")).toHaveFocus();
+      });
+      screen.getByRole("textbox").focus();
+
+      rerender(withFormik(content));
+
+      await waitFor(() => expect(screen.getByRole("textbox")).toHaveFocus());
+      expect(document.getElementById("error-summary")).not.toHaveFocus();
+    });
+  });
 });
+
+function withFormik(component, errors = {}, touched = {}) {
+  return (
+    <Formik initialValues={{}} onSubmit={null}
+            initialErrors={errors} initialTouched={touched}
+    >
+      {component}
+    </Formik>
+  );
+}
