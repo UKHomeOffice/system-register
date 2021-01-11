@@ -17,14 +17,8 @@ div.systemCard {
     margin-top: 3px;
   }
 
-.card :focus-visible {
+ .systemCard a:focus, .systemCard a:active {
     outline: none;
     background-color: var(--yellow);
     border-bottom: 5px solid var(--black);
- }
-
-div.card :active {
-  outline: none;
-  background-color: var(--yellow);
-  border-bottom: 5px solid var(--black);
  }

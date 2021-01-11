@@ -2,7 +2,7 @@
 
 exports[`<SystemCard /> matches snapshot 1`] = `
 <div
-  className="systemCard card topMargin"
+  className="systemCard topMargin"
 >
   <a
     href="/system/undefined"

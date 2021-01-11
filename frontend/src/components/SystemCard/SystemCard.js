@@ -13,10 +13,10 @@ const trimDescription = (str) => {
     return str
 }
 
-const SystemCard = (props) => {
+const SystemCard = (props) => { //todo code review, extract to reusable styles "LINK" component
     const { id, name, portfolio, description, last_updated } = props.system
     return (
-        <div className="systemCard card topMargin">
+        <div className="systemCard topMargin">
             <Link to={`/system/${id}`}>
                 <strong>{name}</strong>
                 <small> (Portfolio: {portfolio}, <ModifiedDetails date={last_updated.timestamp} author_name={last_updated.author_name} />)
