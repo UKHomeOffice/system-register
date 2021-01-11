@@ -1,28 +1,28 @@
-.highRisk{
+.badge-highRisk{
     background-color: var(--badge-red-background);
     color: var(--badge-red-font);
     padding-top: 3px;
 }
 
-.mediumRisk{
+.badge-mediumRisk{
     background-color: var(--badge-orange-background);
     color: var(--badge-orange-font);
     padding-top: 3px;
 }
 
-.lowRisk{
+.badge-lowRisk{
     background-color: var(--badge-green-background);
     color: var(--badge-green-font);
     padding-top: 3px;
 }
 
-.unknownRisk{
+.badge-unknownRisk{
     background-color: var(--badge-grey-background);
     color: var(--badge-grey-font);
     padding-top: 3px;
 }
 
-.noRisk{
+.badge-noRisk{
     background-color: var(--badge-purple-background);
     color: var(--badge-purple-font);
     padding-top: 3px;

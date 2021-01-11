@@ -8,19 +8,19 @@ const RiskBadge = (props) => {
     let riskClass;
     switch (props.level) {
         case 'high':
-            riskClass = 'highRisk'
+            riskClass = 'badge-highRisk'
             break;
         case 'medium':
-            riskClass = 'mediumRisk'
+            riskClass = 'badge-mediumRisk'
             break;
         case 'low':
-            riskClass = 'lowRisk'
+            riskClass = 'badge-lowRisk'
             break;
         case NOT_APPLICABLE:
-            riskClass = 'noRisk'
+            riskClass = 'badge-noRisk'
             break;
         default:
-            riskClass = 'unknownRisk'
+            riskClass = 'badge-unknownRisk'
     }
 
     return <span className={`badge ${riskClass}`}>{formatLevel(props.level)}</span>

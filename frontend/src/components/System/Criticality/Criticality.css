@@ -1,24 +1,24 @@
-.criticalityHigh {
+.criticality-high {
     background-color: var(--badge-pink-background);
     color: var(--badge-pink-font);
 }
 
-.criticalityMedium {
+.criticality-medium {
     background-color: var(--badge-orange-background);
     color: var(--badge-orange-font);
 }
   
-.criticalityLow {
+.criticality-low {
     background-color: var(--badge-green-background);
     color: var(--badge-green-font);
 }
 
-.criticalityUnknown {
+.criticality-unknown {
     background-color: var(--badge-grey-background);
     color: var(--badge-grey-font);
 }
 
-.criticalityCNI{
+.criticality-cni{
    background-color: var(--badge-red-background);
    color: var(--badge-red-font);
 }
