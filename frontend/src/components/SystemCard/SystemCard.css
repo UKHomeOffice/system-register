@@ -1,8 +1,3 @@
-.systemCard:hover {
-    background-color: wheat;
-    border-radius: 5px;
-  }
-  
 div.systemCard {
     cursor: pointer;
     padding: 6px;
@@ -17,3 +12,19 @@ div.systemCard {
     width:100%;
     height:100%;
   }
+
+  .systemCard-description {
+    margin-top: 3px;
+  }
+
+.card :focus-visible {
+    outline: none;
+    background-color: var(--yellow);
+    border-bottom: 5px solid var(--black);
+ }
+
+div.card :active {
+  outline: none;
+  background-color: var(--yellow);
+  border-bottom: 5px solid var(--black);
+ }

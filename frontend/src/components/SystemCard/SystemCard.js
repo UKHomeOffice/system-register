@@ -16,13 +16,12 @@ const trimDescription = (str) => {
 const SystemCard = (props) => {
     const { id, name, portfolio, description, last_updated } = props.system
     return (
-        <div className="systemCard topMargin">
-            {/* todo tests */}
+        <div className="systemCard card topMargin">
             <Link to={`/system/${id}`}>
                 <strong>{name}</strong>
                 <small> (Portfolio: {portfolio}, <ModifiedDetails date={last_updated.timestamp} author_name={last_updated.author_name} />)
                 </small>
-                <div style={{ marginTop: "3px" }}>
+                <div>
                     <small>{trimDescription(description)}</small>
                 </div>
             </Link>

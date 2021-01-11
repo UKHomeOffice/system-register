@@ -38,26 +38,26 @@ describe('<Criticality />', () => {
 })
 
 function toLookSuperImportant(element) {
-    const html = `<span class="badge criticalityCNI">CNI</span>`
+    const html = `<span class="badge criticality-cni">CNI</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookImportant(element) {
-    const html = `<span class="badge criticalityHigh">HIGH</span>`
+    const html = `<span class="badge criticality-high">HIGH</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookSortOfImportant(element) {
-    const html = `<span class="badge criticalityMedium">MEDIUM</span>`
+    const html = `<span class="badge criticality-medium">MEDIUM</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookUnimportant(element) {
-    const html = `<span class="badge criticalityLow">LOW</span>`
+    const html = `<span class="badge criticality-low">LOW</span>`
     expect(element).toContainHTML(html)
 }
 
 function toLookMysterious(element) {
-    const html = `<span class="badge criticalityUnknown">UNKNOWN</span>`
+    const html = `<span class="badge criticality-unknown">UNKNOWN</span>`
     expect(element).toContainHTML(html)
 }

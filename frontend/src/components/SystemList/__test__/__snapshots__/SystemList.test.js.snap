@@ -68,7 +68,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     className="topMarginBig"
   >
     <div
-      className="systemCard topMargin"
+      className="systemCard card topMargin"
     >
       <a
         href="/system/undefined"
@@ -93,13 +93,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           </span>
           )
         </small>
-        <div
-          style={
-            Object {
-              "marginTop": "3px",
-            }
-          }
-        >
+        <div>
           <small>
             No Description
           </small>
@@ -107,7 +101,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
       </a>
     </div>
     <div
-      className="systemCard topMargin"
+      className="systemCard card topMargin"
     >
       <a
         href="/system/undefined"
@@ -132,13 +126,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           </span>
           )
         </small>
-        <div
-          style={
-            Object {
-              "marginTop": "3px",
-            }
-          }
-        >
+        <div>
           <small>
             No Description
           </small>
@@ -146,7 +134,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
       </a>
     </div>
     <div
-      className="systemCard topMargin"
+      className="systemCard card topMargin"
     >
       <a
         href="/system/undefined"
@@ -171,13 +159,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
           </span>
           )
         </small>
-        <div
-          style={
-            Object {
-              "marginTop": "3px",
-            }
-          }
-        >
+        <div>
           <small>
             No Description
           </small>
