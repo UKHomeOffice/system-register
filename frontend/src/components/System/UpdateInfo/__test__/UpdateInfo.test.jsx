@@ -28,7 +28,7 @@ describe("UpdateInfo", () => {
 
   it("calls submission handler with updated values", async () => {
     const system = { name: "system name", description: "description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -71,7 +71,7 @@ describe("UpdateInfo", () => {
   it.each(["value", null])
   ("does not send unchanged values to the submission handler: %p", async (value) => {
     const system = { name: value, description: value };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
@@ -116,7 +116,7 @@ describe("UpdateInfo", () => {
 
   it("shows an error summary containing all error details", async () => {
     const system = { name: "system name", description: "system description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -139,7 +139,7 @@ describe("UpdateInfo", () => {
       name: "validation error",
       description: "validation error",
     }));
-    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);

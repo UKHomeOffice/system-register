@@ -20,7 +20,7 @@ public class SR_SystemBuilder {
     private Instant lastUpdated = Instant.now();
     private final String portfolio = "SPAN-R";
     private String criticality = "low";
-    private final String investmentState = "evergreen";
+    private String investmentState = "evergreen";
     private final String businessOwner = null;
     private String serviceOwner = "Service Owner";
     private String technicalOwner = "Techy Owner";
@@ -80,6 +80,16 @@ public class SR_SystemBuilder {
         return this;
     }
 
+    public SR_SystemBuilder withCriticality(String criticality) {
+        this.criticality = criticality;
+        return this;
+    }
+
+    public SR_SystemBuilder withInvestmentState(String investmentState) {
+        this.investmentState = investmentState;
+        return this;
+    }
+
     public SR_SystemBuilder withDevelopedBy(String developedBy) {
         this.developedBy = developedBy;
         return this;
@@ -109,11 +119,6 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withSupportedBy(String supportedBy) {
         this.supportedBy = supportedBy;
-        return this;
-    }
-
-    public SR_SystemBuilder withCriticality(String criticality) {
-        this.criticality = criticality;
         return this;
     }
 }

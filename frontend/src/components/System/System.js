@@ -57,7 +57,7 @@ function System(props) {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} withDescription />
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
         <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />

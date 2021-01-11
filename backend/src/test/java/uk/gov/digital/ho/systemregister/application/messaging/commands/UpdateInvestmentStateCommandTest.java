@@ -2,10 +2,9 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 
 import javax.validation.Validation;
@@ -15,7 +14,7 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 
-class UpdateCriticalityCommandTest {
+class UpdateInvestmentStateCommandTest {
     private static final int ID = 1;
     private static final SR_Person AUTHOR = aPerson()
             .withUsername("username")
@@ -34,8 +33,8 @@ class UpdateCriticalityCommandTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"someValue"})
-    void rejectsStringsContainingInvalidSpecialCharacters(String illegalString) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, illegalString);
+    void rejectsStringsContainingInvalidValues(String illegalString) {
+        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, illegalString);
 
         var constraintViolations = validator.validate(command);
 
@@ -43,10 +42,10 @@ class UpdateCriticalityCommandTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"high", "low", "medium", "cni", "High", "Low", "Medium", "CNI", "UNKNOWN"})
+    @ValueSource(strings = {"evergreen", "invest", "maintain", "sunset", "decommissioned", "cancelled"})
     @NullSource
-    void allowsCriticalityStringToBeNullOrContainSpecifiedValueFromList(String criticality) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, criticality);
+    void allowsInvestmentStateStringToBeNullOrContainSpecifiedValueFromList(String investmentState) {
+        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, investmentState);
 
         var constraintViolations = validator.validate(command);
 
@@ -54,9 +53,9 @@ class UpdateCriticalityCommandTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" high", "High "})
-    void extraneousSpaceAreRemovedFromCriticalityValue(String criticalityWithSpaces) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, criticalityWithSpaces);
+    @ValueSource(strings = {" invest", "invest "})
+    void extraneousSpacesAreRemovedFromInvestmentStateValue(String investmentStateWithSpaces) {
+        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, investmentStateWithSpaces);
 
         var constraintViolations = validator.validate(command);
 

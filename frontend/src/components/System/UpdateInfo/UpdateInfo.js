@@ -18,7 +18,7 @@ const infoAbout = (system) => ({
   description: emptyIfUndefined(system.description),
 });
 
-function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescription = false }) {
+function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
@@ -51,13 +51,13 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescri
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can change the name of the system {withDescription && "and its description"}
+              You can change the name of the system and its description.
             </p>
 
             <Form>
               <TextField
                 name="name"
-                hint="Please enter the new system name"
+                hint="What is the primary name for the system?"
                 inputClassName="width-two-thirds"
                 validate={(value) => {
                   return validateName(value, onBeforeNameChange, emptyIfUndefined(system.name))
@@ -66,14 +66,14 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescri
                 System name
               </TextField>
 
-              {withDescription && <Textarea
+              <Textarea
                 name="description"
-                hint="Please provide a brief summary description of the system"
+                hint="Please provide a non-specialist summary of what the system is used for."
                 inputClassName="width-two-thirds"
                 validate={validateDescription}
               >
                 System description
-              </Textarea>}
+              </Textarea>
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
