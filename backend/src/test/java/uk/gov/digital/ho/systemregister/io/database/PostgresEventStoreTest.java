@@ -27,6 +27,7 @@ import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -94,8 +95,21 @@ public class PostgresEventStoreTest {
     }
 
     @Test
-    public void saveProductOwnerUpdatedEvent() {
-        var expected = aProductOwnerUpdatedEvent()
+    public void saveSystemNameUpdatedEvent() {
+        var expected = aSystemNameUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveSystemDescriptionUpdatedEvent() {
+        var expected = aSystemDescriptionUpdatedEvent()
                 .build();
         eventStore.save(expected);
 
@@ -120,8 +134,8 @@ public class PostgresEventStoreTest {
     }
 
     @Test
-    public void saveSystemNameUpdatedEvent() {
-        var expected = aSystemNameUpdatedEvent()
+    public void saveInvestmentStateUpdatedEvent() {
+        var expected = anInvestmentStateUpdatedEvent()
                 .build();
         eventStore.save(expected);
 
@@ -133,8 +147,8 @@ public class PostgresEventStoreTest {
     }
 
     @Test
-    public void saveSystemDescriptionUpdatedEvent() {
-        var expected = aSystemDescriptionUpdatedEvent()
+    public void saveProductOwnerUpdatedEvent() {
+        var expected = aProductOwnerUpdatedEvent()
                 .build();
         eventStore.save(expected);
 
