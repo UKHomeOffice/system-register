@@ -1,6 +1,6 @@
 import React from 'react'
 import './SystemCard.css'
-import { Link } from 'react-router-dom'
+import Link from '../Linking/Link'
 import ModifiedDetails from '../ModifiedDetails/ModifiedDetails'
 
 const trimDescription = (str) => {
@@ -16,7 +16,7 @@ const trimDescription = (str) => {
 const SystemCard = (props) => { //todo code review, extract to reusable styles "LINK" component
     const { id, name, portfolio, description, last_updated } = props.system
     return (
-        <div className="systemCard topMargin">
+        <div className="systemCard">
             <Link to={`/system/${id}`}>
                 <strong>{name}</strong>
                 <small> (Portfolio: {portfolio}, <ModifiedDetails date={last_updated.timestamp} author_name={last_updated.author_name} />)

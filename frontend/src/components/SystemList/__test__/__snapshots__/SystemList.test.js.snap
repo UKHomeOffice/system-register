@@ -68,9 +68,10 @@ exports[`<SystemList /> matches snapshot 1`] = `
     className="topMarginBig"
   >
     <div
-      className="systemCard topMargin"
+      className="systemCard"
     >
       <a
+        className="undefined system-register-link"
         href="/system/undefined"
         onClick={[Function]}
       >
@@ -101,9 +102,10 @@ exports[`<SystemList /> matches snapshot 1`] = `
       </a>
     </div>
     <div
-      className="systemCard topMargin"
+      className="systemCard"
     >
       <a
+        className="undefined system-register-link"
         href="/system/undefined"
         onClick={[Function]}
       >
@@ -134,9 +136,10 @@ exports[`<SystemList /> matches snapshot 1`] = `
       </a>
     </div>
     <div
-      className="systemCard topMargin"
+      className="systemCard"
     >
       <a
+        className="undefined system-register-link"
         href="/system/undefined"
         onClick={[Function]}
       >

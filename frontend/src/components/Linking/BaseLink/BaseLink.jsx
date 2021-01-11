@@ -1,7 +1,7 @@
 import React from "react";
 import GdsLink from '@govuk-react/link';
 
-import "./BaseLink.css";
+import "../CommonLink.css";
 
 function BaseLink({ className, href, children, ...rest }) {
   const cls = `${className} system-register-link`;

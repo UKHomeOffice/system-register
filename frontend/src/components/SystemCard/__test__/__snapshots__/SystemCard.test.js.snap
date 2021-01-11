@@ -2,9 +2,10 @@
 
 exports[`<SystemCard /> matches snapshot 1`] = `
 <div
-  className="systemCard topMargin"
+  className="systemCard"
 >
   <a
+    className="undefined system-register-link"
     href="/system/undefined"
     onClick={[Function]}
   >

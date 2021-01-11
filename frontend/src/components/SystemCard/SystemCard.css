@@ -1,5 +1,4 @@
 div.systemCard {
-    cursor: pointer;
     padding: 6px;
     margin-left: -6px;
     margin-top: 6px;
@@ -18,7 +17,5 @@ div.systemCard {
   }
 
  .systemCard a:focus, .systemCard a:active {
-    outline: none;
     background-color: var(--yellow);
-    border-bottom: 5px solid var(--black);
  }
