@@ -74,30 +74,6 @@ public class SystemRegisterResourceTest {
 
     @Test
     @TestSecurity
-    public void updatesProductOwner() throws JSONException {
-        String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-product-owner/command.json", "/api/systems/1/update-product-owner", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-product-owner/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesCriticality() throws JSONException {
-        String expectedResponse = getResourceAsString("update-criticality/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-criticality/command.json", "/api/systems/1/update-criticality", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
     public void updatesSystemName() throws JSONException {
         String expectedResponse = getResourceAsString("update-name/expectedResponse.json");
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
@@ -118,6 +94,42 @@ public class SystemRegisterResourceTest {
 
         assertEquals(expectedResponse, actualResponse, false);
         checkAllSystemsResponse("update-system-description/all-systems-response.json");
+    }
+
+    @Test
+    @TestSecurity
+    public void updatesCriticality() throws JSONException {
+        String expectedResponse = getResourceAsString("update-criticality/expectedResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+
+        String actualResponse = sendCommandToApi("update-criticality/command.json", "/api/systems/1/update-criticality", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
+    }
+
+    @Test
+    @TestSecurity
+    public void updatesInvestmentState() throws JSONException {
+        String expectedResponse = getResourceAsString("update-investment-state/expectedResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+
+        String actualResponse = sendCommandToApi("update-investment-state/command.json", "/api/systems/1/update-investment-state", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-investment-state/expectedAllSystemsResponse.json");
+    }
+
+    @Test
+    @TestSecurity
+    public void updatesProductOwner() throws JSONException {
+        String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+
+        String actualResponse = sendCommandToApi("update-product-owner/command.json", "/api/systems/1/update-product-owner", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-product-owner/expectedAllSystemsResponse.json");
     }
 
     private void checkAllSystemsResponse(String pathToExpectedJson) throws JSONException {
