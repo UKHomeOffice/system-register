@@ -6,7 +6,11 @@ import { filter, flow, indexOf, isEqual, map, sortBy } from "lodash-es";
 import usePrevious from "../../utilities/usePrevious";
 
 const handleErrorClick = (targetName) => {
-  document.getElementsByName(targetName)[0].scrollIntoView();
+  const field = document.getElementsByName(targetName)[0];
+  if (field) {
+    field.scrollIntoView();
+    field.focus();
+  }
 };
 
 const mapToErrorObjects = (errors) => map(errors, (text, fieldName) => ({ targetName: fieldName, text }));

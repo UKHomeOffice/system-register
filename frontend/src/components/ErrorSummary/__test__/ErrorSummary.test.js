@@ -1,10 +1,22 @@
 import React from "react";
+import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
 import ErrorSummary from "../ErrorSummary";
 
 describe("ErrorSummary", () => {
+  let originalScrollIntoView = null;
+
+  beforeAll(() => {
+    originalScrollIntoView = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = jest.fn();
+  });
+
+  afterAll(() => {
+    Element.prototype.scrollIntoView = originalScrollIntoView;
+  });
+
   it("displays form errors", async () => {
     render(
       <Formik initialErrors={{ error: "there was an error" }}
@@ -85,6 +97,23 @@ describe("ErrorSummary", () => {
 
       await waitFor(() => expect(screen.getByRole("textbox")).toHaveFocus());
       expect(document.getElementById("error-summary")).not.toHaveFocus();
+    });
+
+    it("moves focus to field when error is clicked", async () => {
+      render(withFormik(
+        <>
+          <ErrorSummary />
+          <input name="field" />
+        </>,
+        { field: "error text" },
+        { field: true }
+      ));
+      const errorLink = await screen.findByText(/error text/i, { selector: "a" });
+      const field = screen.getByRole("textbox");
+
+      user.click(errorLink);
+
+      await waitFor(() => expect(field).toHaveFocus());
     });
   });
 });
