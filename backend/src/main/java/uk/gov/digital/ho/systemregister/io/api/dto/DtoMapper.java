@@ -3,11 +3,7 @@ package uk.gov.digital.ho.systemregister.io.api.dto;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemDescriptionCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.*;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
@@ -21,20 +17,24 @@ public final class DtoMapper {
     private DtoMapper() {
     }
 
-    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
-    }
-
-    public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
-    }
-
     public static UpdateSystemNameCommand map(UpdateSystemNameCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateSystemNameCommand(id, cmd.name, author, timestamp);
     }
 
     public static UpdateSystemDescriptionCommand map(UpdateSystemDescriptionCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateSystemDescriptionCommand(id, cmd.description, author, timestamp);
+    }
+
+    public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
+    }
+
+    public static UpdateInvestmentStateCommand map(UpdateInvestmentStateCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateInvestmentStateCommand(author, timestamp, id, cmd.investmentState);
+    }
+
+    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
+        return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
     }
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
