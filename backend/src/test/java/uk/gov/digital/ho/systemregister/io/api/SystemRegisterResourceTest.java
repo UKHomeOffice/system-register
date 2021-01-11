@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import uk.gov.digital.ho.systemregister.helpers.JSONFiles;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
 
 import java.sql.Connection;
@@ -27,9 +26,7 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
-public class SystemsResourceTest {
-    private final JSONFiles resource = new JSONFiles();
-
+public class SystemRegisterResourceTest {
     @Inject
     @SuppressWarnings("CdiInjectionPointsInspection")
     AgroalDataSource dataSource;
@@ -109,6 +106,18 @@ public class SystemsResourceTest {
 
         assertEquals(expectedResponse, actualResponse, false);
         checkAllSystemsResponse("update-name/expectedAllSystemsResponse.json");
+    }
+
+    @Test
+    @TestSecurity
+    public void updatesSystemDescription() throws JSONException {
+        String expectedResponse = getResourceAsString("update-system-description/update-system-description-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+
+        String actualResponse = sendCommandToApi("update-system-description/command.json", "/api/systems/1/update-system-description", 200);
+
+        assertEquals(expectedResponse, actualResponse, false);
+        checkAllSystemsResponse("update-system-description/all-systems-response.json");
     }
 
     private void checkAllSystemsResponse(String pathToExpectedJson) throws JSONException {

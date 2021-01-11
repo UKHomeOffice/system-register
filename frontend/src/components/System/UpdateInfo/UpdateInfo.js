@@ -18,7 +18,7 @@ const infoAbout = (system) => ({
   description: emptyIfUndefined(system.description),
 });
 
-function UpdateInfo({ system, onSubmit, onCancel, executeCheck, withDescription = false }) {
+function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescription = false }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
@@ -60,7 +60,7 @@ function UpdateInfo({ system, onSubmit, onCancel, executeCheck, withDescription 
                 hint="Please enter the new system name"
                 inputClassName="width-two-thirds"
                 validate={(value) => {
-                  return validateName(value, executeCheck, emptyIfUndefined(system.name))
+                  return validateName(value, onBeforeNameChange, emptyIfUndefined(system.name))
                 }}
               >
                 System name

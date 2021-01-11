@@ -5,14 +5,28 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.*;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.NoSuchSystemException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateCriticalityCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateProductOwnerCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateSystemDescriptionCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.UpdateSystemNameCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemDescriptionCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.io.api.dto.*;
+import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.CurrentSystemStateDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdateCriticalityCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdateProductOwnerCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdateSystemDescriptionCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdateSystemNameCommandDTO;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;
@@ -54,6 +68,9 @@ public class SystemRegisterResource {
     @Inject
     UpdateSystemNameCommandHandler updateSystemNameCommandHandler;
 
+    @Inject
+    UpdateSystemDescriptionCommandHandler updateSystemDescriptionCommandHandler;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CurrentSystemStateDTO systems() {
@@ -85,6 +102,23 @@ public class SystemRegisterResource {
         SR_Person author = getAuthor(securityContext);
         UpdateSystemNameCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateSystemNameCommandHandler.handle(command);
+
+        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
+    }
+
+    @POST
+    @Path("/{system_id}/update-system-description")
+    @Authenticated
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UpdatedSystemDTO updateSystemDescription(
+            UpdateSystemDescriptionCommandDTO cmd,
+            @PathParam("system_id") int id,
+            @Context SecurityContext securityContext
+    ) throws NoSuchSystemException, CommandHasNoEffectException {
+        SR_Person author = getAuthor(securityContext);
+        UpdateSystemDescriptionCommand command = DtoMapper.map(cmd, id, author, Instant.now());
+        var updatedSystemAndMetadata = updateSystemDescriptionCommandHandler.handle(command);
 
         return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
     }

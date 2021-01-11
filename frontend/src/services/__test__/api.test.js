@@ -186,7 +186,7 @@ describe("api", () => {
   describe("update system description", () => {
     it("sends changed description to the API", async () => {
       server.use(
-        rest.post("/api/systems/456/update-description", (req, res, ctx) => {
+        rest.post("/api/systems/456/update-system-description", (req, res, ctx) => {
           const { description } = req.body;
           if (description !== "new description") {
             console.error("New description does not match");
@@ -209,7 +209,7 @@ describe("api", () => {
 
     it("removes the description when an empty value is provided", async () => {
       server.use(
-        rest.post("/api/systems/234/update-description", (req, res, ctx) => {
+        rest.post("/api/systems/234/update-system-description", (req, res, ctx) => {
           const { description } = req.body;
           if (description !== null) {
             console.error("Expected description does not match");
@@ -228,7 +228,7 @@ describe("api", () => {
 
     it("raises error if validation fails", async () => {
       server.use(
-        rest.post("/api/systems/345/update-description", (req, res, ctx) => {
+        rest.post("/api/systems/345/update-system-description", (req, res, ctx) => {
           return res(ctx.status(400), ctx.json({
             errors: {
               description: "invalid description",
