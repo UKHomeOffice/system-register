@@ -364,7 +364,7 @@ function renderWithHistory(path, context = {}) {
   return render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System onBeforeNameChange={() => false} withDescription onChange={changeHandler} />
+        <System onBeforeNameChange={() => false} onChange={changeHandler} />
       </Route>
     </Router>
   );
