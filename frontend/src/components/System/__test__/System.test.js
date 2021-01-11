@@ -22,7 +22,8 @@ jest.mock("@react-keycloak/web", () => ({
 const test_system = {
   name: "Test System",
   description: "The description",
-  criticality: "unknown",
+  criticality: "low",
+  investment_state: "invest",
   last_updated: {},
   risks: [],
   aliases: [],
@@ -284,7 +285,7 @@ describe('<System />', () => {
           });
           renderWithHistory(null, { history });
           const radioButton = await screen.findByLabelText(/high/i);
-          const saveButton = screen.getByRole("button", { name: /save/i });
+          const saveButton =  screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -298,7 +299,6 @@ describe('<System />', () => {
                 criticality: "high",
               })
             );
-
             expect(history).toHaveProperty("index", 1);
             expect(history).toHaveProperty(
               "location.pathname",
@@ -313,7 +313,7 @@ describe('<System />', () => {
             initialIndex: 0,
           });
           renderWithHistory(null, { history });
-          const radioButton = await screen.findByLabelText(/unknown/i);
+          const radioButton = await screen.findByLabelText(/low/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay

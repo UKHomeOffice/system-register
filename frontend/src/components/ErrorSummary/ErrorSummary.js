@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import GdsErrorSummary from "@govuk-react/error-summary";
 import { useFormikContext } from "formik";
-import { filter, flow, indexOf, isEqual, map, sortBy } from "lodash-es";
+import { filter, find, flow, includes, indexOf, isEqual, lowerCase, map, sortBy } from "lodash-es";
 
 import usePrevious from "../../utilities/usePrevious";
 
+const isFormControl = (element) => includes(["input", "textarea"], lowerCase(element.nodeName));
+
 const handleErrorClick = (targetName) => {
-  const field = document.getElementsByName(targetName)[0];
+  const field = find(document.getElementsByName(targetName), isFormControl);
   if (field) {
     field.scrollIntoView();
     field.focus();

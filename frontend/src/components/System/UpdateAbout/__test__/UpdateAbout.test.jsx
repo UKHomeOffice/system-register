@@ -25,7 +25,7 @@ describe("UpdateAbout", () => {
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
   });
 
-  it("current criticality button is checked", () => {
+  it("displays current criticality button as checked", () => {
     render(<UpdateAbout system={{ criticality: "medium" }} onSubmit={submitHandler} />);
 
     expect(screen.getByRole("radio", { name: /medium/i }).checked).toEqual(true);
@@ -44,19 +44,38 @@ describe("UpdateAbout", () => {
     }));
   });
 
-  it("does NOT call submission handler when criticality unchanged", async () => {
+  it("does NOT call submission handler when criticality and investment state both unchanged", async () => {
     const cancelHandler = jest.fn();
-    render(<UpdateAbout system={{ criticality: "low" }} onSubmit={submitHandler} onCancel={cancelHandler} />);
+    render(<UpdateAbout system={{ criticality: "low", investment_state: "invest"}} onSubmit={submitHandler} onCancel={cancelHandler} />);
     const lowRadio = screen.getByLabelText(/low/i);
+    const investRadio = screen.getByLabelText(/invest/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    user.click(investRadio)
     user.click(lowRadio);
     user.click(saveButton);
 
-    await waitFor(() => expect(submitHandler).not.toHaveBeenCalled());
-    await waitFor(() => expect(cancelHandler).toHaveBeenCalled());
+    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
   });
 
+  it("displays current investment state button as checked", () => {
+    render(<UpdateAbout system={{ investment_state: "invest" }} onSubmit={submitHandler} />);
+
+    expect(screen.getByRole("radio", { name: /invest/i }).checked).toEqual(true);
+  });
+
+  it("calls submission handler with updated investment state", async () => {
+    render(<UpdateAbout system={{ investment_state: "invest" }} onSubmit={submitHandler} />);
+    const maintainRadio = screen.getByLabelText(/maintain/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(maintainRadio);
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({
+      investmentState: "maintain",
+    }));
+  });
 
   it("cancels correctly", async () => {
     const cancelHandler = jest.fn();

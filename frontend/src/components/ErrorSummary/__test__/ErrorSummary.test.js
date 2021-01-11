@@ -115,6 +115,29 @@ describe("ErrorSummary", () => {
 
       await waitFor(() => expect(field).toHaveFocus());
     });
+
+    it.each(["input", "textarea"])
+    ("only moves focus to form controls: %p", async (control) => {
+      render(withFormik(
+        <>
+          <a name="input" />
+          <a name="textarea" />
+
+          <ErrorSummary />
+
+          <input name="input" defaultValue="input" />
+          <textarea name="textarea" defaultValue="textarea" />
+        </>,
+        { input: "input", textarea: "textarea" },
+        { input: true, textarea: true }
+      ));
+      const errorLink = await screen.findByText(control, { selector: "#error-summary a"});
+      const field = screen.getByDisplayValue(control);
+
+      user.click(errorLink);
+
+      await waitFor(() => expect(field).toHaveFocus());
+    });
   });
 });
 

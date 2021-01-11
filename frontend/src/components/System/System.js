@@ -33,7 +33,12 @@ function System(props) {
   }, [id, history, url, updateSystem]);
 
   const handleUpdateAbout = useCallback(async (data) => {
-    updateSystem(await api.updateCriticality(id, data));
+    if ("criticality" in data) {
+      updateSystem(await api.updateCriticality(id, data));
+    }
+    if ("investmentState" in data) {
+      updateSystem(await api.updateInvestmentState(id, data));
+    }
     history.push(url);
   }, [id, history, url, updateSystem]);
 
