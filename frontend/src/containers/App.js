@@ -1,11 +1,12 @@
 import React from 'react';
 import Keycloak from 'keycloak-js';
 import { KeycloakProvider } from '@react-keycloak/web';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import About from '../components/About';
 import Banner from '../components/Banner/Banner';
 import Contact from '../components/Contact';
+import Link from '../components/Linking/Link';
 import Menu from '../components/Menu/Menu';
 import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
 import SRFooter from "../components/SRFooter/SRFooter";
@@ -74,7 +75,7 @@ class App extends React.Component {
             <header>
               <TitleBar />
               <Banner phase="in development">
-                This is a new service - your <Link className="gds-link" to="/contact">feedback</Link> will help us to
+                This is a new service - your <Link to="/contact">feedback</Link> will help us to
                 improve it.
               </Banner>
             </header>

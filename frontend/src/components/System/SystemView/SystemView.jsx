@@ -5,7 +5,7 @@ import Criticality from "../Criticality/Criticality";
 import InvestmentState from "../InvestmentState/InvestmentState";
 import RiskDetails from "../RiskDetails/RiskDetails";
 import React from "react";
-import { Link } from 'react-router-dom'
+import Link from "../../Linking/Link";
 import './SystemView.css'
 
 const SystemView = ({ system }) => {
@@ -15,7 +15,7 @@ const SystemView = ({ system }) => {
         (<>
           <div className="contentBlock">
             <h1>{system.name}</h1>
-            <Link data-testid="info-change-link" className="gds-link change-link" to={window.location.pathname + `/update-info`}>Update</Link>
+            <Link data-testid="info-change-link" className="change-link" to={window.location.pathname + `/update-info`}>Update</Link>
             <p data-testid="system-last-modified">
               <ModifiedDetails date={system.last_updated.timestamp}
                 author_name={system.last_updated.author_name} />
@@ -25,7 +25,7 @@ const SystemView = ({ system }) => {
           </div>
           <div className="contentBlock">
             <h2>About</h2>
-            <Link data-testid="about-change-link" className="gds-link change-link" to={window.location.pathname + `/update-about`}>Update</Link>
+            <Link data-testid="about-change-link" className="change-link" to={window.location.pathname + `/update-about`}>Update</Link>
             {/* TODO discuss with team if better way to do relative path with react-router-dom */}
             <GridRow>
               <GridCol data-testid="about-column1" setWidth="one-quarter">
@@ -48,7 +48,7 @@ const SystemView = ({ system }) => {
           </div>
           <div className="contentBlock">
             <h2>Contacts</h2>
-            <Link data-testid="contacts-change-link" className="gds-link change-link" to={window.location.pathname + `/update-contacts`}>Update</Link>
+            <Link data-testid="contacts-change-link" className="change-link" to={window.location.pathname + `/update-contacts`}>Update</Link>
             <GridRow>
               <GridCol data-testid="contacts-column1" setWidth="one-quarter">
                 <p>System register owner</p>

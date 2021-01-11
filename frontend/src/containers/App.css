@@ -191,20 +191,6 @@ rect.blue5 {
     fill: #08519c;
 }
 
-a.gds-link:active {
-  color: var(--black);
-}
-
-a.gds-link:focus-visible {
-  outline: none;
-}
-
-a.gds-link:focus {
-  background-color: var(--yellow);
-  text-decoration: none;
-  border-bottom: solid 4px var(--black);
-}
-
 a.change-link {
     float: right;
     margin-top: -1.4em;
