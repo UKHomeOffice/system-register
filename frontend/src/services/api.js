@@ -5,10 +5,11 @@ import ValidationError from "./validationError";
 const api = {
   getAllSystems,
   getSystem,
-  updateProductOwner,
-  updateCriticality,
   updateSystemName,
   updateSystemDescription,
+  updateCriticality,
+  updateInvestmentState,
+  updateProductOwner,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -85,6 +86,18 @@ async function updateCriticality(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-criticality`,
     {criticality: nullIfEmpty(data.criticality)},
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      }
+    });
+  return response.data;
+}
+
+async function updateInvestmentState(id, data) {
+  const response = await axios.post(
+    `${config.api.url}/systems/${id}/update-investment-state`,
+    {investment_state: nullIfEmpty(data.investmentState)},
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,

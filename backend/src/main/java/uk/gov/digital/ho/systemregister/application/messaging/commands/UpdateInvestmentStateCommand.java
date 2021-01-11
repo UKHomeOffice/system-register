@@ -11,7 +11,7 @@ import java.time.Instant;
 
 public class UpdateInvestmentStateCommand {
     public final int id;
-    @Pattern(regexp = "evergreen|invest|maintain|sunset|decommissioned|cancelled", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Investment state must be one of the following values: evergreen, invest, maintain, sunset, decommissioned, cancelled")
+    @Pattern(regexp = "evergreen|invest|maintain|sunset|decommissioned|cancelled|unknown", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Investment state must be one of the following values: evergreen, invest, maintain, sunset, decommissioned, cancelled, or unknown")
     private final String investmentState;
     @NotNull
     public final SR_Person author;

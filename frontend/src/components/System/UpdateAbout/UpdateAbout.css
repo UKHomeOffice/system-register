@@ -33,3 +33,8 @@ button {
     min-width: 10rem;
     margin-top: 10px;
 }
+
+.update-about-radio-hint {
+    font-size: 19px;
+    color: #505a5f;
+}
