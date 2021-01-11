@@ -57,7 +57,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescri
             <Form>
               <TextField
                 name="name"
-                hint="Please enter the new system name"
+                hint="What is the primary name for the system?"
                 inputClassName="width-two-thirds"
                 validate={(value) => {
                   return validateName(value, onBeforeNameChange, emptyIfUndefined(system.name))
@@ -68,7 +68,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withDescri
 
               {withDescription && <Textarea
                 name="description"
-                hint="Please provide a brief summary description of the system"
+                hint="Please provide a non-specialist summary of what the system is used for."
                 inputClassName="width-two-thirds"
                 validate={validateDescription}
               >
