@@ -28,7 +28,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
       {system ? (
         <>
           <h1>{system.name}</h1>
-          <p className="secondary">
+          <p className="update-about-secondary">
             You can currently change only criticality.
             We are working to make other fields editable.
           </p>
@@ -42,7 +42,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
             onSubmit={handleSubmit}
           >
             <Form>
-              <h2>What is the criticality of the system?</h2>
+              <h2 className="update-about-radio-group-title">What is the criticality of the system?</h2>
               <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
               {
                 [
@@ -57,7 +57,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
                   )
                 })
               }
-              <h2>What is the investment state of the system?</h2>
+              <h2 className="update-about-radio-group-title">What is the investment state of the system?</h2>
               <p className="update-about-radio-group-hint">Please select the most applicable lifecycle stage.</p>
               {
                 [
