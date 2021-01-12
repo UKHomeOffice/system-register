@@ -43,7 +43,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
           >
             <Form>
               <h2>What is the criticality of the system?</h2>
-              <p className="update-about-radio-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
+              <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
               {
                 [
                   { value: "low", label: "Low" },
