@@ -10,6 +10,12 @@ describe("Radio", () => {
 
     expect(screen.getByLabelText(/label text/)).toBeInTheDocument();
   });
+
+it("displays hint text if hint provided as prop", () => {
+    renderWithFormik(<Radio hint="some hint">label text</Radio>);
+
+    expect(screen.getByText(/some hint/)).toBeInTheDocument();
+  });
 });
 
 function renderWithFormik(component, values = {}) {
