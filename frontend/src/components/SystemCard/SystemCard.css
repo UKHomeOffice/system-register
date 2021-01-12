@@ -12,6 +12,11 @@ div.systemCard {
     height:100%;
   }
 
+  .systemCard > a:visited{
+    color: black;
+  }
+
+
   .systemCard-description {
     margin-top: 3px;
   }

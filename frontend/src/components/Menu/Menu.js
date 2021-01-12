@@ -1,17 +1,18 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useRef } from 'react'
+import Link from '../Linking/Link'
 import './Menu.css'
 import config from "../../config/config";
+import ExternalLink from '../Linking/ExternalLink/ExternalLink';
 
 const Menu = () => {
     return (
         <nav className="Menu">
             <ul className="centerContent">
-                <li><NavLink exact to="/" activeClassName="selected">System Register</NavLink></li>
-                <li><NavLink to="/risk_dashboard" activeClassName="selected">Risk Dashboard</NavLink></li>
-                <li><a href={`${config.api.url}/systems`}>API</a></li>
-                <li><NavLink to="/about" activeClassName="selected">About</NavLink></li>
-                <li><NavLink to="/contact" activeClassName="selected">Contact</NavLink></li>
+                <li><Link exact to="/" activeClassName="selected">System Register</Link></li>
+                <li><Link ref={useRef()} to="/risk_dashboard" activeClassName="selected">Risk Dashboard</Link></li>
+                <li><ExternalLink href={`${config.api.url}/systems`}>API</ExternalLink></li>
+                <li><Link to="/about" activeClassName="selected">About</Link></li>
+                <li><Link to="/contact" activeClassName="selected">Contact</Link></li>
             </ul>
         </nav>
     )

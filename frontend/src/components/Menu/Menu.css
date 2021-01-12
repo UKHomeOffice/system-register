@@ -22,34 +22,18 @@
     color: #1E70B8;
 }
 
-.Menu a:focus-visible {
-    text-decoration: none;
-    text-decoration-color: transparent;
-    outline: none;
-    background-color: var(--yellow);
-    border-bottom: 5px solid var(--black);
-    padding-bottom: 0;
-}
-
-.Menu a:-moz-focusring {
-    text-decoration: none;
-    text-decoration-color: transparent;
-    outline: none;
-    background-color: var(--yellow);
-    border-bottom: 5px solid var(--black);
-    padding-bottom: 0;
-}
-
 .Menu a:hover{
     text-decoration: underline;
 }
 
 .Menu a:active {
     text-decoration: none;
+    color: black;
     outline: none;
-    background-color: var(--yellow);
-    border-bottom: 5px solid var(--black);
-    padding-bottom: 0;
+}
+
+.Menu a:focus {
+    color: black;
 }
 
 .Menu a.selected:after{
@@ -61,7 +45,5 @@
 }
 
 .Menu a{
-    color: #1E70B8;
-    padding-bottom: 12px;
     text-decoration: none;
 }
