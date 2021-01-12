@@ -4,13 +4,11 @@ import { Button } from "govuk-react";
 import Radio from "../../Radio"
 
 import "./UpdateAbout.css";
-import {omitBy} from "lodash-es";
-
-const emptyIfUndefined = (value) => value != null ? value : "";
+import {defaultTo, omitBy} from "lodash-es";
 
 const infoAbout = (system) => ({
-  criticality: emptyIfUndefined(system.criticality),
-  investmentState: emptyIfUndefined(system.investment_state),
+  criticality: defaultTo(system.criticality, "unknown"),
+  investmentState: defaultTo(system.investment_state, "unknown"),
 });
 
 function UpdateAbout({ system, onSubmit, onCancel }) {
@@ -29,16 +27,13 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
         <>
           <h1>{system.name}</h1>
           <p className="update-about-secondary">
-            You can currently change only criticality.
+            You can currently change system criticality and investment information only.
             We are working to make other fields editable.
           </p>
 
 
           <Formik
-            initialValues={{
-              criticality: system.criticality,
-              investmentState: system.investment_state,
-            }}
+            initialValues={infoAbout(system)}
             onSubmit={handleSubmit}
           >
             <Form>
@@ -87,7 +82,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
                   },
                   { value: "unknown",
                     label: "Unknown",
-                    hint:"The investment state for this system or product is unknown"
+                    hint:"The investment state for this system or product is unknown."
                   },
                 ].map(v => {
                   return (
