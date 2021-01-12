@@ -6,9 +6,14 @@ exports[`<SystemCard /> matches snapshot 1`] = `
 >
   <a
     aria-current={null}
-    className="sc-bdfBwQ gTeTd  system-register-link"
+    className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
     href="/system/undefined"
     onClick={[Function]}
+    style={
+      Object {
+        "color": "black",
+      }
+    }
   >
     <strong>
       System X

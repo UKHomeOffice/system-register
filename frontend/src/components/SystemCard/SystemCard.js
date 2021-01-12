@@ -17,7 +17,7 @@ const SystemCard = (props) => { //todo code review, extract to reusable styles "
     const { id, name, portfolio, description, last_updated } = props.system
     return (
         <div className="systemCard">
-            <Link to={`/system/${id}`}>
+            <Link style={{color: "black"}} className="systemCard-link" to={`/system/${id}`}>
                 <strong>{name}</strong>
                 <small> (Portfolio: {portfolio}, <ModifiedDetails date={last_updated.timestamp} author_name={last_updated.author_name} />)
                 </small>

@@ -7,15 +7,9 @@ div.systemCard {
 .systemCard > a{
     display:inline-block;
     text-decoration: none;
-    color: black;
     width:100%;
     height:100%;
   }
-
-  .systemCard > a:visited{
-    color: black;
-  }
-
 
   .systemCard-description {
     margin-top: 3px;
