@@ -58,7 +58,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
                 })
               }
               <h2>What is the investment state of the system?</h2>
-              <p className="update-about-radio-hint">Please select the most applicable lifecycle stage.</p>
+              <p className="update-about-radio-group-hint">Please select the most applicable lifecycle stage.</p>
               {
                 [
                   { value: "evergreen",
