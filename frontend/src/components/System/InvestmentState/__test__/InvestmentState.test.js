@@ -23,16 +23,22 @@ describe('<InvestmentState />', () => {
         toLookMaintained(element)
     });
 
-    it('makes sunset look like a beautfiul sunset', () => {
+    it('makes sunset look like a beautiful sunset', () => {
         const { getByText } = render(<InvestmentState state="sunset" />)
         const element = getByText('SUNSET')
         toLookLikeASunset(element)
     });
 
-    it('makes decomissioned tp look like its gone', () => {
+    it('makes decommissioned tp look like its gone', () => {
         const { getByText } = render(<InvestmentState state="decommissioned" />)
         const element = getByText('DECOMMISSIONED')
         toLookLikeItsBeenDecommissioned(element)
+    });
+
+    it('makes cancelled look like its been cancelled', () => {
+        const { getByText } = render(<InvestmentState state="cancelled" />)
+        const element = getByText('CANCELLED')
+        toLookLikeItsBeenCancelled(element)
     });
 
     it('makes unknown investment state look mysterious', () => {
@@ -64,6 +70,10 @@ function toLookLikeASunset(element) {
 
 function toLookLikeItsBeenDecommissioned(element) {
     const html = `<span class="badge investDecommissioned">DECOMMISSIONED</span>`
+    expect(element).toContainHTML(html)
+}
+function toLookLikeItsBeenCancelled(element) {
+    const html = `<span class="badge investCancelled">CANCELLED</span>`
     expect(element).toContainHTML(html)
 }
 
