@@ -43,7 +43,7 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
           >
             <Form>
               <h2>What is the criticality of the system?</h2>
-              <p className="update-about-radio-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
+              <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
               {
                 [
                   { value: "low", label: "Low" },
@@ -58,22 +58,44 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
                 })
               }
               <h2>What is the investment state of the system?</h2>
-              <p className="update-about-radio-hint">Please select the most applicable lifecycle stage.</p>
+              <p className="update-about-radio-group-hint">Please select the most applicable lifecycle stage.</p>
               {
                 [
-                  { value: "evergreen", label: "Evergreen" },
-                  { value: "invest", label: "Invest" },
-                  { value: "maintain", label: "Maintain" },
-                  { value: "sunset", label: "Sunset" },
-                  { value: "decommissioned", label: "Decommissioned" },
-                  { value: "cancelled", label: "Cancelled" },
-                  { value: "unknown", label: "Unknown" },
+                  { value: "evergreen",
+                    label: "Evergreen",
+                    hint:"Constantly funded system or product without a financial cliff edge."
+                  },
+                  { value: "invest",
+                    label: "Invest",
+                    hint:"System or product in conception, development, launch or maturity phase where the investment is increasing capability."
+                  },
+                  { value: "maintain",
+                    label: "Maintain",
+                    hint:"System or product in conception, development, launch, maturity or plateau phase where the capability is not being increased."
+                  },
+                  { value: "sunset",
+                    label: "Sunset",
+                    hint:"System or product still in production but planned for end of life."
+                  },
+                  { value: "decommissioned",
+                    label: "Decommissioned",
+                    hint:"System or product is no longer in production and has been switched off."
+                  },
+                  { value: "cancelled",
+                    label: "Cancelled",
+                    hint:"System or product did not go ahead and was never implemented."
+                  },
+                  { value: "unknown",
+                    label: "Unknown",
+                    hint:"The investment state for this system or product is unknown"
+                  },
                 ].map(v => {
                   return (
-                    <Radio name="investmentState" key={v.value} value={v.value}>{v.label}</Radio>
+                    <Radio name="investmentState" key={v.value} value={v.value} hint={v.hint}>{v.label} </Radio>
                   )
                 })
               }
+
               <div className="form-controls">
                 <Button type="submit">Save</Button>
                 <Button type="button" onClick={handleCancel} buttonColour="#f3f2f1" buttonTextColour="#0b0c0c">Cancel</Button>

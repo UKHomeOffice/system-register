@@ -13,6 +13,8 @@ const InvestmentState = (props) => {
             return <span className="badge investSunset">SUNSET</span>
         case 'decommissioned':
             return <span className="badge investDecommissioned">DECOMMISSIONED</span>
+        case 'cancelled':
+            return <span className="badge investCancelled">CANCELLED</span>
         default:
             return <span className="badge investmentUnknown">UNKNOWN</span>
     }

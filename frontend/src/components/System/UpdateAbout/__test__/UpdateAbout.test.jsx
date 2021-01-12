@@ -48,7 +48,7 @@ describe("UpdateAbout", () => {
     const cancelHandler = jest.fn();
     render(<UpdateAbout system={{ criticality: "low", investment_state: "invest"}} onSubmit={submitHandler} onCancel={cancelHandler} />);
     const lowRadio = screen.getByLabelText(/low/i);
-    const investRadio = screen.getByLabelText(/invest/i);
+    const investRadio = screen.getByDisplayValue(/invest/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(investRadio)
@@ -61,7 +61,7 @@ describe("UpdateAbout", () => {
   it("displays current investment state button as checked", () => {
     render(<UpdateAbout system={{ investment_state: "invest" }} onSubmit={submitHandler} />);
 
-    expect(screen.getByRole("radio", { name: /invest/i }).checked).toEqual(true);
+    expect(screen.getByDisplayValue("invest").checked).toEqual(true);
   });
 
   it("calls submission handler with updated investment state", async () => {

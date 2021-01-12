@@ -10,10 +10,11 @@ import api from '../../../services/api';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
-  updateProductOwner: jest.fn(),
-  updateCriticality: jest.fn(),
   updateSystemName: jest.fn(),
   updateSystemDescription: jest.fn(),
+  updateCriticality: jest.fn(),
+  updateInvestmentState: jest.fn(),
+  updateProductOwner: jest.fn()
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -329,6 +330,66 @@ describe('<System />', () => {
           });
           expect(changeHandler).not.toBeCalled();
           expect(api.updateCriticality).not.toBeCalled();
+        });
+      });
+
+      describe("investment state", () =>{
+        it("returns to system view on cancel", async () => {
+          await checkCancelButton("update-about");
+        });
+
+        it("returns to the system view after a successful update", async () => {
+          api.updateInvestmentState.mockResolvedValue({ ...test_system, investment_state: "sunset" });
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-about"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, { history });
+          const radioButton = await screen.findByDisplayValue(/sunset/i);
+          const saveButton =  screen.getByRole("button", { name: /save/i });
+
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.click(radioButton);
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(changeHandler).toBeCalled();
+            expect(api.updateInvestmentState).toBeCalledWith(
+              "123",
+              expect.objectContaining({
+                investmentState: "sunset",
+              })
+            );
+            expect(history).toHaveProperty("index", 1);
+            expect(history).toHaveProperty(
+              "location.pathname",
+              "/system/123"
+            );
+          });
+        });
+
+        it("api is not called if investment state is unchanged", async () => {
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-about"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, { history });
+          const radioButton = await screen.findByDisplayValue(/invest/i);
+          const saveButton = screen.getByRole("button", { name: /save/i });
+
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.click(radioButton);
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(history).toHaveProperty("index", 1);
+            expect(history).toHaveProperty(
+              "location.pathname",
+              "/system/123"
+            );
+          });
+          expect(changeHandler).not.toBeCalled();
+          expect(api.updateInvestmentState).not.toBeCalled();
         });
       });
     });

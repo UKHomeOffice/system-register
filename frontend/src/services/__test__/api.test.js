@@ -116,7 +116,7 @@ describe("api", () => {
         rest.post("/api/systems/345/update-criticality", (req, res, ctx) => {
           const { criticality: criticality } = req.body;
           if (criticality !== "high") {
-            console.error("New criticlaity does not match");
+            console.error("New criticality does not match");
             return;
           }
           if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
@@ -129,6 +129,31 @@ describe("api", () => {
 
       const pendingSystem = api.updateCriticality(345, {
         criticality: "high"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+  });
+
+  describe("update investment state", () => {
+    it("sends changed investment state to the API", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-investment-state", (req, res, ctx) => {
+          const { investment_state: investmentState } = req.body;
+          if (investmentState !== "sunset") {
+            console.error("New investment state does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateInvestmentState(345, {
+        investmentState: "sunset"
       });
 
       await expect(pendingSystem).resolves.toMatchObject(data);

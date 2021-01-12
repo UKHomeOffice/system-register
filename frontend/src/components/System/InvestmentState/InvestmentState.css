@@ -18,12 +18,9 @@
     color: var(--badge-orange-font);
 }
 
-.investDecommissioned{
-    background-color: var(--badge-grey-background);
-    color: var(--badge-grey-font);
-}
-
-.investmentUnknown{
+.investDecommissioned,
+.investCancelled,
+.investmentUnknown {
     background-color: var(--badge-grey-background);
     color: var(--badge-grey-font);
 }
