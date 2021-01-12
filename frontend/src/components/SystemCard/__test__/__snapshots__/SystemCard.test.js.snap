@@ -5,7 +5,8 @@ exports[`<SystemCard /> matches snapshot 1`] = `
   className="systemCard"
 >
   <a
-    className="undefined system-register-link"
+    aria-current={null}
+    className="sc-bdfBwQ gTeTd  system-register-link"
     href="/system/undefined"
     onClick={[Function]}
   >

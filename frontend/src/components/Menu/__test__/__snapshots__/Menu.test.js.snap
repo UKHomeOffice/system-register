@@ -10,7 +10,7 @@ exports[`<Menu /> matches snapshot 1`] = `
     <li>
       <a
         aria-current="page"
-        className="selected"
+        className="sc-bdfBwQ gTeTd  system-register-link selected"
         href="/"
         onClick={[Function]}
         style={Object {}}
@@ -21,6 +21,7 @@ exports[`<Menu /> matches snapshot 1`] = `
     <li>
       <a
         aria-current={null}
+        className="sc-bdfBwQ gTeTd  system-register-link"
         href="/risk_dashboard"
         onClick={[Function]}
       >
@@ -29,7 +30,10 @@ exports[`<Menu /> matches snapshot 1`] = `
     </li>
     <li>
       <a
+        className="sc-bdfBwQ gTeTd  system-register-link"
         href="/api/systems"
+        muted={false}
+        onClick={[Function]}
       >
         API
       </a>
@@ -37,6 +41,7 @@ exports[`<Menu /> matches snapshot 1`] = `
     <li>
       <a
         aria-current={null}
+        className="sc-bdfBwQ gTeTd  system-register-link"
         href="/about"
         onClick={[Function]}
       >
@@ -46,6 +51,7 @@ exports[`<Menu /> matches snapshot 1`] = `
     <li>
       <a
         aria-current={null}
+        className="sc-bdfBwQ gTeTd  system-register-link"
         href="/contact"
         onClick={[Function]}
       >
