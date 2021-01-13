@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import com.google.common.base.Objects;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
@@ -11,17 +12,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UpdateSystemNameCommand {
-    public final int id;
+public class UpdateSystemNameCommand implements Command {
+    private final int id;
     @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
     @Size(min = 2, message = "You must enter a complete system name.")
     @NotNull(message = "You must enter a system name")
     @NotEmpty(message = "You must enter a system name")
     public final String name;
     @NotNull
-    public final SR_Person author;
+    private final SR_Person author;
     @NotNull
-    public final Instant timestamp;
+    private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
     public UpdateSystemNameCommand(int id, String name, SR_Person author, Instant timestamp) {
@@ -31,11 +32,34 @@ public class UpdateSystemNameCommand {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public SR_Person getAuthor() {
+        return author;
+    }
+
+    @Override
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
     public SystemNameUpdatedEvent toEvent() {
         return new SystemNameUpdatedEvent(id, name, author, timestamp);
     }
 
     public boolean willUpdate(SR_System system) {
         return !Objects.equal(name, system.name);
+    }
+
+    @Override
+    public void ensureCommandUpdatesSystem(SR_System system) throws CommandHasNoEffectException {
+        if (!willUpdate(system)) {
+            throw new CommandHasNoEffectException("system name is the same: " + system.name);
+        }
     }
 }

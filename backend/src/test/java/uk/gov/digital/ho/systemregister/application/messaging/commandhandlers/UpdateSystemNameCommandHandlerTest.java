@@ -91,15 +91,14 @@ class UpdateSystemNameCommandHandlerTest {
     }
 
     @Test
-    void raisesExceptionIfSystemNameValueIsUnchanged() {
-        givenCurrentStateWithSystem(aSystem()
-                .withId(345)
-                .withName("original system name"));
-        var command = new UpdateSystemNameCommand(345, "original system name", aPerson().build(), Instant.now());
+    void raisesExceptionIfSystemNameValueIsUnchanged() throws CommandHasNoEffectException {
+        givenCurrentStateWithSystem(aSystem().withId(0));
+        var command = mock(UpdateSystemNameCommand.class);
+        doThrow(CommandHasNoEffectException.class)
+                .when(command).ensureCommandUpdatesSystem(any());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
-                .isInstanceOf(CommandHasNoEffectException.class)
-                .hasMessageContaining("system name is the same: original system name");
+                .isInstanceOf(CommandHasNoEffectException.class);
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {
@@ -114,7 +113,7 @@ class UpdateSystemNameCommandHandlerTest {
     private void givenCurrentStateWithSystems(SR_System... existing_systems) {
         UpdateMetadata metadata = new UpdateMetadata(aPerson().withUsername("username1").build(), Instant.now());
 
-        Map<SR_System, UpdateMetadata> sysMap = new HashMap<SR_System, UpdateMetadata>();
+        Map<SR_System, UpdateMetadata> sysMap = new HashMap<>();
         for (SR_System sys : existing_systems) {
             sysMap.put(sys, metadata);
         }
