@@ -17,6 +17,7 @@ import api from '../services/api';
 import config from '../config/config';
 
 import './App.css';
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
@@ -82,17 +83,19 @@ class App extends React.Component {
             <div className="page">
               <Menu />
               <main className="content-wrap">
-                <Switch>
-                  <Route exact path="/">
-                    <SystemList register={this.state.register} />
-                  </Route>
-                  <Route path="/system/:id">
-                    <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
-                  </Route>
-                  <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
-                  <Route exact path="/about" component={About} />
-                  <Route exact path="/contact" component={Contact} />
-                </Switch>
+                <ErrorBoundary>
+                  <Switch>
+                    <Route exact path="/">
+                      <SystemList register={this.state.register} />
+                    </Route>
+                    <Route path="/system/:id">
+                      <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
+                    </Route>
+                    <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
+                    <Route exact path="/about" component={About} />
+                    <Route exact path="/contact" component={Contact} />
+                  </Switch>
+                </ErrorBoundary>
               </main>
               <SRFooter />
             </div>

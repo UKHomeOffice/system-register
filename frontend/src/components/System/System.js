@@ -8,17 +8,19 @@ import api from '../../services/api';
 import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
+import useAsyncError from '../../utilities/useAsyncError';
 
 function System(props) {
   const { onChange, onBeforeNameChange } = props;
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
+  const throwError = useAsyncError();
 
   useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id));
-    fetchData();
-  }, [id]);
+    fetchData().catch((e) => { throwError(e) });
+  }, [id, throwError]);
 
   const updateSystem = useCallback((newSysData) => {
     setSystem(newSysData);
@@ -55,7 +57,6 @@ function System(props) {
   const handleCancel = useCallback(() => {
     history.push(url);
   }, [history, url]);
-
   return (
     <Switch>
       <Route path={`${path}`} exact>

@@ -4,6 +4,7 @@ import { setupServer } from "msw/node";
 import ValidationError from "../validationError";
 import api from '../api'
 import data from '../../data/systems_dummy.json';
+import SystemNotFoundError from "../systemNotFound";
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
@@ -42,6 +43,16 @@ describe("api", () => {
       name: "System Register"
     });
   })
+
+  it('throws SystemNotFound Exeption when asked for non existant system', async () => {
+    expect.assertions(2);
+    try {
+      await api.getSystem('9999');
+    } catch (e) {
+      expect(e).toBeInstanceOf(SystemNotFoundError);
+      expect(e.message).toEqual('System not found');
+    }
+  });
 
   describe("update product owner", () => {
     it("sends changed owner to the API", async () => {

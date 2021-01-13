@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '../config/config'
+import SystemNotFoundError from './systemNotFound';
 import ValidationError from "./validationError";
 
 const api = {
@@ -26,18 +27,20 @@ async function getAllSystems() {
     }
     return 0
   })
-  return {...response.data, systems: sortedSystems};
+  return { ...response.data, systems: sortedSystems };
 }
 
 async function getSystem(id) {
   const register = await getAllSystems();
-  return register.systems.find(s => s.id.toString() === id);
+  const matchingSystem = register.systems.find(s => s.id.toString() === id);
+  if (matchingSystem) { return matchingSystem }
+  else { throw new SystemNotFoundError(); }
 }
 
 async function updateProductOwner(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-product-owner`,
-    {product_owner: nullIfEmpty(data.productOwner)},
+    { product_owner: nullIfEmpty(data.productOwner) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
@@ -85,7 +88,7 @@ async function updateSystemDescription(id, data) {
 async function updateCriticality(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-criticality`,
-    {criticality: nullIfEmpty(data.criticality)},
+    { criticality: nullIfEmpty(data.criticality) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
@@ -97,7 +100,7 @@ async function updateCriticality(id, data) {
 async function updateInvestmentState(id, data) {
   const response = await axios.post(
     `${config.api.url}/systems/${id}/update-investment-state`,
-    {investment_state: nullIfEmpty(data.investmentState)},
+    { investment_state: nullIfEmpty(data.investmentState) },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
