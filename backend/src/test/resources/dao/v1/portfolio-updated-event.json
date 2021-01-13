@@ -1,0 +1,11 @@
+{
+  "id": 5678,
+  "portfolio": "option 2",
+  "author": {
+    "email": "user@example.com",
+    "firstName": "test_FirstName",
+    "surname":"test_Surname",
+    "username": "test_Username"
+  },
+  "timestamp": "2020-03-07T02:09:00Z"
+}

@@ -28,6 +28,7 @@ import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdatedEventBuilder.aPortfolioUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -136,6 +137,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveInvestmentStateUpdatedEvent() {
         var expected = anInvestmentStateUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void savePortfolioUpdatedEvent() {
+        var expected = aPortfolioUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

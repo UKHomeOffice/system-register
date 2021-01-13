@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import uk.gov.digital.ho.systemregister.application.messaging.events.InvestmentStateUpdatedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.events.PortfolioUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
-import uk.gov.digital.ho.systemregister.io.database.dao.v1.InvestmentStateUpdatedEventDAO_v1;
+import uk.gov.digital.ho.systemregister.io.database.dao.v1.PortfolioUpdatedEventDAO_v1;
 
 import javax.json.bind.JsonbBuilder;
 import java.time.Instant;
@@ -15,20 +15,20 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
-import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdatedEventBuilder.aPortfolioUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
-class InvestmentStateUpdatedEventDaoMapper_v1Test {
-    private InvestmentStateUpdatedEventDaoMapper_v1 mapper;
+class PortfolioUpdatedEventDaoMapper_v1Test {
+    private PortfolioUpdatedEventDaoMapper_v1 mapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new InvestmentStateUpdatedEventDaoMapper_v1(JsonbBuilder.create());
+        mapper = new PortfolioUpdatedEventDaoMapper_v1(JsonbBuilder.create());
     }
 
     @Test
     void supportsV1InvestmentStateUpdatedEvents() {
-        boolean supported = mapper.supports(InvestmentStateUpdatedEventDAO_v1.class);
+        boolean supported = mapper.supports(PortfolioUpdatedEventDAO_v1.class);
 
         assertThat(supported).isTrue();
     }
@@ -42,7 +42,7 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
     }
 
     @Test
-    void rejectsEventsOtherThanInvestmentStateUpdated() {
+    void rejectsEventsOtherThanPortfolioUpdated() {
         var event = new SR_Event(aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> mapper.mapToDao(event))
@@ -51,8 +51,8 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
     }
 
     @Test
-    void mapsToInvestmentStateUpdatedEventDAO() {
-        InvestmentStateUpdatedEvent event = anInvestmentStateUpdatedEvent()
+    void mapsToPortfolioUpdatedEventDAO() {
+        PortfolioUpdatedEvent event = aPortfolioUpdatedEvent()
                 .withAuthor(aPerson()
                         .withEmail("some@email.com")
                         .withFirstName("John")
@@ -67,10 +67,10 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
     }
 
     @Test
-    void mapsToInvestmentStateUpdatedEvent() {
-        InvestmentStateUpdatedEvent expectedEvent = anInvestmentStateUpdatedEvent()
+    void mapsToPortfolioUpdatedEvent() {
+        PortfolioUpdatedEvent expectedEvent = aPortfolioUpdatedEvent()
                 .withId(5678)
-                .withInvestmentState("sunset")
+                .withPortfolio("option 2")
                 .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
                 .withAuthor(aPerson()
                         .withEmail("user@example.com")
@@ -79,7 +79,7 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
                         .withUsername("test_Username"))
                 .build();
 
-        String json = getResourceAsString("dao/v1/investment-state-updated-event.json");
+        String json = getResourceAsString("dao/v1/portfolio-updated-event.json");
 
         SR_Event event = mapper.mapToDomain(json);
 
@@ -87,24 +87,4 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
                 .isEqualTo(expectedEvent);
     }
 
-    @Test
-    void mapsUnknownInvestmentStateToInvestmentStateUpdatedEvent() {
-        InvestmentStateUpdatedEvent expectedEvent = anInvestmentStateUpdatedEvent()
-                .withId(789)
-                .withInvestmentState(null)
-                .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
-                .withAuthor(aPerson()
-                        .withEmail("user@example.com")
-                        .withFirstName("test_FirstName")
-                        .withSurname("test_Surname")
-                        .withUsername("test_Username"))
-                .build();
-
-        String json = getResourceAsString("dao/v1/unknown-investment-state-updated-event.json");
-
-        SR_Event event = mapper.mapToDomain(json);
-
-        assertThat(event).usingRecursiveComparison()
-                .isEqualTo(expectedEvent);
-    }
 }
