@@ -5,7 +5,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.*;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.*;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
@@ -21,7 +20,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -42,9 +40,6 @@ public class SystemRegisterResource {
     @Inject
     CurrentSystemRegisterState systemRegisterState;
 
-    @Inject
-    UpdateProductOwnerCommandHandler updateProductOwnerCommandHandler;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public CurrentSystemStateDTO systems() {
@@ -62,22 +57,6 @@ public class SystemRegisterResource {
             public final String type = e.getClass().getSimpleName();
             public final SR_Event evt = e;
         }).collect(Collectors.toList());
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Authenticated
-    @Path("/{system_id}/update-product-owner")
-    public UpdatedSystemDTO updateProductOwner(UpdateProductOwnerCommandDTO cmd,
-                                               @PathParam("system_id") int id,
-                                               @Context SecurityContext securityContext)
-            throws NoSuchSystemException, CommandProcessingException {
-        SR_Person author = getAuthor(securityContext);
-        UpdateProductOwnerCommand command = DtoMapper.map(cmd, id, author, Instant.now());
-        var updatedSystemAndMetadata = updateProductOwnerCommandHandler.handle(command);
-
-        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
     }
 
     @POST

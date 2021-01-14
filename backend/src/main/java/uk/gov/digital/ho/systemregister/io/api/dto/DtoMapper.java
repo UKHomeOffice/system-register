@@ -17,10 +17,6 @@ public final class DtoMapper {
     private DtoMapper() {
     }
 
-    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
-    }
-
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
         return new AddSystemCommand(author, timestamp, cmd.system.name,
                 cmd.system.description, cmd.system.portfolio,
