@@ -86,30 +86,6 @@ public class SystemRegisterResourceTest {
 
     @Test
     @TestSecurity
-    public void updatesSystemDescription() throws JSONException {
-        String expectedResponse = getResourceAsString("update-system-description/update-system-description-response.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-system-description/command.json", "/api/systems/1/update-system-description", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-system-description/all-systems-response.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesCriticality() throws JSONException {
-        String expectedResponse = getResourceAsString("update-criticality/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-criticality/command.json", "/api/systems/1/update-criticality", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
     public void updatesInvestmentState() throws JSONException {
         String expectedResponse = getResourceAsString("update-investment-state/expectedResponse.json");
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
@@ -146,7 +122,7 @@ public class SystemRegisterResourceTest {
     private String sendCommandToApi(String pathToJson, String apiPath, int expectedStatusCode) {
         String command = getResourceAsString(pathToJson);
 
-        String actualResponse = given().auth().oauth2(
+        return given().auth().oauth2(
                 aJwtToken()
                         .withFirstName("Basil")
                         .withSurname("Barkley")
@@ -156,7 +132,5 @@ public class SystemRegisterResourceTest {
                 .when().post(apiPath)
                 .then().assertThat()
                 .statusCode(expectedStatusCode).and().extract().response().asString();
-
-        return actualResponse;
     }
 }
