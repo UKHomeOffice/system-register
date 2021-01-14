@@ -11,6 +11,6 @@ public class UpdateInvestmentStateCommandDTO {
     public String investmentState;
 
     public UpdateInvestmentStateCommand toCommand(int id, SR_Person author, Instant timestamp) {
-        return new UpdateInvestmentStateCommand(author, timestamp, id, investmentState);
+        return new UpdateInvestmentStateCommand(id, investmentState, author, timestamp);
     }
 }

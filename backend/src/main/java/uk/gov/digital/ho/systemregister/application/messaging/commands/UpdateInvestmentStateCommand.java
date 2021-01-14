@@ -20,7 +20,7 @@ public class UpdateInvestmentStateCommand implements Command {
     private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
-    public UpdateInvestmentStateCommand(SR_Person author, Instant timestamp, int id, String investmentState) {
+    public UpdateInvestmentStateCommand(int id, String investmentState, SR_Person author, Instant timestamp) {
         this.id = id;
         this.investmentState = investmentState == null ? null : investmentState.trim();
         this.author = author;
@@ -56,5 +56,4 @@ public class UpdateInvestmentStateCommand implements Command {
     public boolean willUpdate(SR_System system) {
         return !Objects.equal(investmentState, system.investmentState);
     }
-
 }

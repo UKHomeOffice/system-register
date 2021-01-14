@@ -46,11 +46,7 @@ class UpdateInvestmentStateCommandHandlerTest {
         givenCurrentStateWithSystem(partialSystem.withInvestmentState("sunset"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("username2").build();
-        var command = new UpdateInvestmentStateCommand(
-                expectedAuthor,
-                eventTimestamp,
-                123,
-                "decommissioned");
+        var command = new UpdateInvestmentStateCommand(123, "decommissioned", expectedAuthor, eventTimestamp);
 
         var updatedSystem = commandHandler.handle(command);
 
@@ -73,7 +69,7 @@ class UpdateInvestmentStateCommandHandlerTest {
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateInvestmentStateCommand(aPerson().build(), Instant.now(), 789, "invest");
+        var command = new UpdateInvestmentStateCommand(789, "invest", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -85,7 +81,7 @@ class UpdateInvestmentStateCommandHandlerTest {
         givenCurrentStateWithSystem(aSystem()
                 .withId(345)
                 .withInvestmentState("invest"));
-        var command = new UpdateInvestmentStateCommand(aPerson().build(), Instant.now(), 345, "invest");
+        var command = new UpdateInvestmentStateCommand(345, "invest", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
