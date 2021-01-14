@@ -8,6 +8,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateInvestmentStateCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.InvestmentStateUpdatedEventHandler;
@@ -16,6 +17,9 @@ import uk.gov.digital.ho.systemregister.application.messaging.events.InvestmentS
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import javax.validation.Valid;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.Map;
 
@@ -89,6 +93,17 @@ class UpdateInvestmentStateCommandHandlerTest {
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
                 .hasMessageContaining("investment state is the same: invest");
+    }
+
+    @Test
+    void validatesCommand() throws NoSuchMethodException {
+        Method handleMethod = commandHandler.getClass()
+                .getMethod("handle", Command.class);
+        Parameter commandArgument = handleMethod.getParameters()[0];
+
+        boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
+
+        assertThat(hasValidAnnotation).isTrue();
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {

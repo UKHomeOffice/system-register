@@ -113,7 +113,7 @@ public class SystemRegisterResource {
     public UpdatedSystemDTO updateInvestmentState(UpdateInvestmentStateCommandDTO cmd,
                                                   @PathParam("system_id") int id,
                                                   @Context SecurityContext securityContext)
-            throws NoSuchSystemException, CommandHasNoEffectException {
+            throws NoSuchSystemException, CommandProcessingException {
         SR_Person author = getAuthor(securityContext);
         UpdateInvestmentStateCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateInvestmentStateCommandHandler.handle(command);
