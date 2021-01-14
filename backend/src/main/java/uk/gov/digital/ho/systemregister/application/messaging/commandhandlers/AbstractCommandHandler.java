@@ -16,6 +16,7 @@ public abstract class AbstractCommandHandler<T extends Command> {
     private final EventHandler eventHandler;
     private final CurrentStateCalculator calculator;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public AbstractCommandHandler(CurrentSystemRegisterState systemRegisterState, EventHandler eventHandler, CurrentStateCalculator calculator) {
         this.systemRegisterState = systemRegisterState;
         this.eventHandler = eventHandler;
