@@ -10,14 +10,16 @@ public class PortfolioUpdatedEvent extends SR_SystemEvent {
     public final String portfolio;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
-    public PortfolioUpdatedEvent(int id, String investmentState, SR_Person author, Instant timestamp) {
+    public PortfolioUpdatedEvent(int id, String portfolio, SR_Person author, Instant timestamp) {
         super(author, timestamp);
         this.id = id;
-        this.portfolio = investmentState;
+        this.portfolio = portfolio;
     }
 
     @Override
-    public SR_System update(SR_System system) { return null; }
+    public SR_System update(SR_System system) {
+        return system.withPortfolio(portfolio);
+    }
 
     @Override
     public int getSystemId() {
