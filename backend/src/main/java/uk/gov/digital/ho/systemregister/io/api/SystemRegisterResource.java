@@ -46,9 +46,6 @@ public class SystemRegisterResource {
     UpdateSystemNameCommandHandler updateSystemNameCommandHandler;
 
     @Inject
-    UpdateSystemDescriptionCommandHandler updateSystemDescriptionCommandHandler;
-
-    @Inject
     UpdateCriticalityCommandHandler updateCriticalityCommandHandler;
 
     @Inject
@@ -88,23 +85,6 @@ public class SystemRegisterResource {
         SR_Person author = getAuthor(securityContext);
         UpdateSystemNameCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateSystemNameCommandHandler.handle(command);
-
-        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
-    }
-
-    @POST
-    @Path("/{system_id}/update-system-description")
-    @Authenticated
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public UpdatedSystemDTO updateSystemDescription(
-            UpdateSystemDescriptionCommandDTO cmd,
-            @PathParam("system_id") int id,
-            @Context SecurityContext securityContext
-    ) throws NoSuchSystemException, CommandProcessingException {
-        SR_Person author = getAuthor(securityContext);
-        UpdateSystemDescriptionCommand command = DtoMapper.map(cmd, id, author, Instant.now());
-        var updatedSystemAndMetadata = updateSystemDescriptionCommandHandler.handle(command);
 
         return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
     }

@@ -21,10 +21,6 @@ public final class DtoMapper {
         return new UpdateSystemNameCommand(id, cmd.name, author, timestamp);
     }
 
-    public static UpdateSystemDescriptionCommand map(UpdateSystemDescriptionCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateSystemDescriptionCommand(id, cmd.description, author, timestamp);
-    }
-
     public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
     }
