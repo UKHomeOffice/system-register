@@ -7,6 +7,9 @@ import { Route, Router } from 'react-router-dom';
 
 import System from '../System';
 import api from '../../../services/api';
+import SystemNotFoundException from '../../../services/systemNotFoundException';
+import ErrorBoundary from '../../Errors/ErrorBoundary/ErrorBoundary';
+import PageNotFoundError from '../../Errors/PageNotFoundError';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
@@ -33,6 +36,7 @@ const test_system = {
 const changeHandler = jest.fn();
 
 describe('<System />', () => {
+
   beforeEach(() => {
     jest.resetAllMocks();
     api.getSystem.mockResolvedValue(test_system);
@@ -45,6 +49,32 @@ describe('<System />', () => {
 
     expect(element).toBeInTheDocument();
   });
+
+  describe('Exceptions', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'error')
+      console.error.mockImplementation(() => null);
+    });
+
+    afterEach(() => {
+      console.error.mockRestore()
+    })
+
+    it('renders page not found error view when api throws SystemNotFoundException', async () => {
+      api.getSystem.mockResolvedValue(() => { throw new SystemNotFoundException() });
+      try {
+        render(
+          <ErrorBoundary fallback={<PageNotFoundError />}>
+            <System />
+          </ErrorBoundary>
+        )
+
+        const element = await screen.findByText('Page not found');
+
+        expect(element).toBeInTheDocument();
+      } catch (e) { }
+    });
+  })
 
   describe("when authorized", () => {
     beforeEach(() => {
@@ -286,7 +316,7 @@ describe('<System />', () => {
           });
           renderWithHistory(null, { history });
           const radioButton = await screen.findByLabelText(/high/i);
-          const saveButton =  screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -333,7 +363,7 @@ describe('<System />', () => {
         });
       });
 
-      describe("investment state", () =>{
+      describe("investment state", () => {
         it("returns to system view on cancel", async () => {
           await checkCancelButton("update-about");
         });
@@ -346,7 +376,7 @@ describe('<System />', () => {
           });
           renderWithHistory(null, { history });
           const radioButton = await screen.findByDisplayValue(/sunset/i);
-          const saveButton =  screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);

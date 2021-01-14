@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 import ValidationError from "../validationError";
 import api from '../api'
 import data from '../../data/systems_dummy.json';
-import SystemNotFoundError from "../systemNotFound";
+import SystemNotFoundException from "../systemNotFoundException";
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
@@ -49,7 +49,7 @@ describe("api", () => {
     try {
       await api.getSystem('9999');
     } catch (e) {
-      expect(e).toBeInstanceOf(SystemNotFoundError);
+      expect(e).toBeInstanceOf(SystemNotFoundException);
       expect(e.message).toEqual('System not found');
     }
   });

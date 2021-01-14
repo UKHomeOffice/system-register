@@ -17,7 +17,8 @@ import api from '../services/api';
 import config from '../config/config';
 
 import './App.css';
-import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+import ErrorBoundary from '../components/Errors/ErrorBoundary/ErrorBoundary';
+import PageNotFoundError from '../components/Errors/PageNotFoundError';
 
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
@@ -94,6 +95,7 @@ class App extends React.Component {
                     <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/contact" component={Contact} />
+                    <Route path="/*" component={PageNotFoundError} />
                   </Switch>
                 </ErrorBoundary>
               </main>

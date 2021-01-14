@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../config/config'
-import SystemNotFoundError from './systemNotFound';
+import SystemNotFoundException from './systemNotFoundException';
 import ValidationError from "./validationError";
 
 const api = {
@@ -34,7 +34,7 @@ async function getSystem(id) {
   const register = await getAllSystems();
   const matchingSystem = register.systems.find(s => s.id.toString() === id);
   if (matchingSystem) { return matchingSystem }
-  else { throw new SystemNotFoundError(); }
+  else { throw new SystemNotFoundException(); }
 }
 
 async function updateProductOwner(id, data) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../App';
-import { Router } from 'react-router-dom'
+import { BrowserRouter, Route, Router } from 'react-router-dom'
 import { render, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -48,10 +48,27 @@ describe("<App />", () => {
   })
 
   it("re-renders from api when a system calls back to notify its been updated", () => {
-    
+
   })
 
   describe("routing", () => {
+    it("shows <PageNotFound /> if route not valid", async () => { //TODO help writing this test
+      // const history = createMemoryHistory();
+      // const { findByRole, getByTestId } = render(
+      //   <Router history={history}>
+      //     <Route path="/nowhere">
+      //       <App />
+      //     </Route>
+      //   </Router>,
+      //   {
+      //     route: '/nowhere',
+      //   }
+      // );
+      // await waitForElementToBeRemoved(getByTestId("auth-initialising-msg"))
+
+      // expect(await findByRole("heading", { level: 1 })).toHaveTextContent("Page not found");
+    });
+
     it('navigates to the risk dashboard', async () => {
       const history = createMemoryHistory();
       const { getByText, getByTestId } = render(
