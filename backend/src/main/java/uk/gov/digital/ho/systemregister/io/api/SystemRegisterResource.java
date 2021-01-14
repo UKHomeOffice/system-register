@@ -43,9 +43,6 @@ public class SystemRegisterResource {
     CurrentSystemRegisterState systemRegisterState;
 
     @Inject
-    UpdateInvestmentStateCommandHandler updateInvestmentStateCommandHandler;
-
-    @Inject
     UpdateProductOwnerCommandHandler updateProductOwnerCommandHandler;
 
     @GET
@@ -65,22 +62,6 @@ public class SystemRegisterResource {
             public final String type = e.getClass().getSimpleName();
             public final SR_Event evt = e;
         }).collect(Collectors.toList());
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Authenticated
-    @Path("/{system_id}/update-investment-state")
-    public UpdatedSystemDTO updateInvestmentState(UpdateInvestmentStateCommandDTO cmd,
-                                                  @PathParam("system_id") int id,
-                                                  @Context SecurityContext securityContext)
-            throws NoSuchSystemException, CommandProcessingException {
-        SR_Person author = getAuthor(securityContext);
-        UpdateInvestmentStateCommand command = DtoMapper.map(cmd, id, author, Instant.now());
-        var updatedSystemAndMetadata = updateInvestmentStateCommandHandler.handle(command);
-
-        return UpdatedSystemDTO.from(updatedSystemAndMetadata.getItem1(), updatedSystemAndMetadata.getItem2());
     }
 
     @POST

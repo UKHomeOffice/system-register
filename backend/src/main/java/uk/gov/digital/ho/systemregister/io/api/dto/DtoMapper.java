@@ -17,10 +17,6 @@ public final class DtoMapper {
     private DtoMapper() {
     }
 
-    public static UpdateInvestmentStateCommand map(UpdateInvestmentStateCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateInvestmentStateCommand(author, timestamp, id, cmd.investmentState);
-    }
-
     public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
         return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
     }

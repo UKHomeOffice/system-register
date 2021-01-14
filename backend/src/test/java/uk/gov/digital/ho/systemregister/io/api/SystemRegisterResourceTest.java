@@ -74,18 +74,6 @@ public class SystemRegisterResourceTest {
 
     @Test
     @TestSecurity
-    public void updatesInvestmentState() throws JSONException {
-        String expectedResponse = getResourceAsString("update-investment-state/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-investment-state/command.json", "/api/systems/1/update-investment-state", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-investment-state/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
     public void updatesProductOwner() throws JSONException {
         String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
