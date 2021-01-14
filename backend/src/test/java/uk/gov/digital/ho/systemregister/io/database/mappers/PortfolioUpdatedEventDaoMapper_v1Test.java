@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import uk.gov.digital.ho.systemregister.application.messaging.events.InvestmentStateUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.PortfolioUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
+import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdatedEventBuilder.aPortfolioUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
@@ -87,4 +89,24 @@ class PortfolioUpdatedEventDaoMapper_v1Test {
                 .isEqualTo(expectedEvent);
     }
 
+    @Test
+    void mapsUnknownPortfolioToPortfolioUpdatedEvent() {
+        PortfolioUpdatedEvent expectedEvent = aPortfolioUpdatedEvent()
+                .withId(789)
+                .withPortfolio(null)
+                .withTimestamp(Instant.parse("2020-03-07T02:09:00Z"))
+                .withAuthor(aPerson()
+                        .withEmail("user@example.com")
+                        .withFirstName("test_FirstName")
+                        .withSurname("test_Surname")
+                        .withUsername("test_Username"))
+                .build();
+
+        String json = getResourceAsString("dao/v1/unknown-portfolio-updated-event.json");
+
+        SR_Event event = mapper.mapToDomain(json);
+
+        assertThat(event).usingRecursiveComparison()
+                .isEqualTo(expectedEvent);
+    }
 }
