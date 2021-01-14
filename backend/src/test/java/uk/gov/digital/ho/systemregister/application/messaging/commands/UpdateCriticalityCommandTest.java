@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 
 import javax.validation.Validation;
@@ -35,7 +33,7 @@ class UpdateCriticalityCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {"someValue"})
     void rejectsStringsContainingInvalidSpecialCharacters(String illegalString) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, illegalString);
+        var command = new UpdateCriticalityCommand(ID, illegalString, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 
@@ -46,7 +44,7 @@ class UpdateCriticalityCommandTest {
     @ValueSource(strings = {"high", "low", "medium", "cni", "High", "Low", "Medium", "CNI", "UNKNOWN"})
     @NullSource
     void allowsCriticalityStringToBeNullOrContainSpecifiedValueFromList(String criticality) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, criticality);
+        var command = new UpdateCriticalityCommand(ID, criticality, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 
@@ -56,7 +54,7 @@ class UpdateCriticalityCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {" high", "High "})
     void extraneousSpaceAreRemovedFromCriticalityValue(String criticalityWithSpaces) {
-        var command = new UpdateCriticalityCommand(AUTHOR, TIMESTAMP, ID, criticalityWithSpaces);
+        var command = new UpdateCriticalityCommand(ID, criticalityWithSpaces, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 

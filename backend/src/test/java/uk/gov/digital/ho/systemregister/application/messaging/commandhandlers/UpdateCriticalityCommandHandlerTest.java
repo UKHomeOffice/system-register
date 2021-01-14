@@ -37,10 +37,8 @@ class UpdateCriticalityCommandHandlerTest {
         commandHandler = new UpdateCriticalityCommandHandler(
                 systemRegisterState,
                  eventHandler,
-                new CurrentStateCalculator()
-        );
+                new CurrentStateCalculator());
     }
-
 
     @Test
     public void updatesCriticalityValueIfSystemExistsWithDifferentValue() throws Exception {
@@ -48,11 +46,7 @@ class UpdateCriticalityCommandHandlerTest {
         givenCurrentStateWithSystem(partialSystem.withCriticality("unknown"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("username2").build();
-        var command = new UpdateCriticalityCommand(
-                expectedAuthor,
-                eventTimestamp,
-                123,
-                "high");
+        var command = new UpdateCriticalityCommand(123, "high", expectedAuthor, eventTimestamp);
 
         var updatedSystem = commandHandler.handle(command);
 
@@ -75,7 +69,7 @@ class UpdateCriticalityCommandHandlerTest {
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 789, "low");
+        var command = new UpdateCriticalityCommand(789, "low", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -87,7 +81,7 @@ class UpdateCriticalityCommandHandlerTest {
         givenCurrentStateWithSystem(aSystem()
                 .withId(345)
                 .withCriticality("low"));
-        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 345, "low");
+        var command = new UpdateCriticalityCommand(345, "low", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)

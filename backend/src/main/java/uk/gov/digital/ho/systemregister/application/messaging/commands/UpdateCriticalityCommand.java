@@ -19,7 +19,7 @@ public class UpdateCriticalityCommand implements Command {
     private final SR_Person author;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
-    public UpdateCriticalityCommand(SR_Person author, Instant timestamp, int id, String criticality) {
+    public UpdateCriticalityCommand(int id, String criticality, SR_Person author, Instant timestamp) {
         this.id = id;
         this.criticality = criticality == null ? null : criticality.trim();
         this.author = author;

@@ -9,6 +9,6 @@ public class UpdateCriticalityCommandDTO {
     public String criticality;
 
     public UpdateCriticalityCommand toCommand(int id, SR_Person author, Instant timestamp) {
-        return new UpdateCriticalityCommand(author, timestamp, id, criticality);
+        return new UpdateCriticalityCommand(id, criticality, author, timestamp);
     }
 }
