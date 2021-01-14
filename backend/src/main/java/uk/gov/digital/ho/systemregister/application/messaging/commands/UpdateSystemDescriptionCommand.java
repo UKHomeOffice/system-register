@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import com.google.common.base.Objects;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemDescriptionUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
@@ -11,14 +12,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UpdateSystemDescriptionCommand {
-    public final int id;
+public class UpdateSystemDescriptionCommand implements Command {
+    private final int id;
     @Size(min = 2, message = "You must enter a description or leave blank if you do not know it.")
     private final String description;
     @NotNull
-    public final SR_Person author;
+    private final SR_Person author;
     @NotNull
-    public final Instant timestamp;
+    private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
     public UpdateSystemDescriptionCommand(int id, String description, SR_Person author, Instant timestamp) {
@@ -28,8 +29,30 @@ public class UpdateSystemDescriptionCommand {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public SR_Person getAuthor() {
+        return author;
+    }
+
+    @Override
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
     public SystemDescriptionUpdatedEvent toEvent() {
         return new SystemDescriptionUpdatedEvent(id, description, author, timestamp);
+    }
+
+    @Override
+    public void ensureCommandUpdatesSystem(SR_System system) throws CommandHasNoEffectException {
+        if (!willUpdate(system)) {
+            throw new CommandHasNoEffectException("system description is the same: " + description);
+        }
     }
 
     public boolean willUpdate(SR_System system) {

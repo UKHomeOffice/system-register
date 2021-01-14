@@ -101,7 +101,7 @@ public class SystemRegisterResource {
             UpdateSystemDescriptionCommandDTO cmd,
             @PathParam("system_id") int id,
             @Context SecurityContext securityContext
-    ) throws NoSuchSystemException, CommandHasNoEffectException {
+    ) throws NoSuchSystemException, CommandProcessingException {
         SR_Person author = getAuthor(securityContext);
         UpdateSystemDescriptionCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateSystemDescriptionCommandHandler.handle(command);
