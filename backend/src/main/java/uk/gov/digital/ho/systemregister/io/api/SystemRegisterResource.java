@@ -97,7 +97,7 @@ public class SystemRegisterResource {
     public UpdatedSystemDTO updateCriticality(UpdateCriticalityCommandDTO cmd,
                                                @PathParam("system_id") int id,
                                                @Context SecurityContext securityContext)
-            throws NoSuchSystemException, CommandHasNoEffectException {
+            throws NoSuchSystemException, CommandProcessingException {
         SR_Person author = getAuthor(securityContext);
         UpdateCriticalityCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateCriticalityCommandHandler.handle(command);
