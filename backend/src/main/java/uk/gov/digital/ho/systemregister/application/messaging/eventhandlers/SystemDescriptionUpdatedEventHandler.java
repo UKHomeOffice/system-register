@@ -15,6 +15,7 @@ public class SystemDescriptionUpdatedEventHandler implements EventHandler {
         this.eventStore = eventStore;
     }
 
+    @Override
     public void handle(SR_SystemEvent event) {
         eventStore.save(event);
     }

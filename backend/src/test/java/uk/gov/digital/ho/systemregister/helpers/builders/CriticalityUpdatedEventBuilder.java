@@ -1,7 +1,6 @@
 package uk.gov.digital.ho.systemregister.helpers.builders;
 
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder;
 

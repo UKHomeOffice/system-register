@@ -3,7 +3,6 @@ package uk.gov.digital.ho.systemregister.application.messaging.eventhandlers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.PortfolioUpdatedEvent;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;

@@ -10,9 +10,9 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Co
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import java.time.Instant;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

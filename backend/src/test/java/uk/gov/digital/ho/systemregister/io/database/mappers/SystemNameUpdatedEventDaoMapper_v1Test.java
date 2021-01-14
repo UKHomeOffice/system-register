@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemNameUpdatedEventDAO_v1;
 

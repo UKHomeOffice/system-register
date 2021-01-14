@@ -110,7 +110,7 @@ public class SystemRegisterResource {
     public UpdatedSystemDTO updateProductOwner(UpdateProductOwnerCommandDTO cmd,
                                                @PathParam("system_id") int id,
                                                @Context SecurityContext securityContext)
-            throws NoSuchSystemException, CommandHasNoEffectException {
+            throws NoSuchSystemException, CommandProcessingException {
         SR_Person author = getAuthor(securityContext);
         UpdateProductOwnerCommand command = DtoMapper.map(cmd, id, author, Instant.now());
         var updatedSystemAndMetadata = updateProductOwnerCommandHandler.handle(command);

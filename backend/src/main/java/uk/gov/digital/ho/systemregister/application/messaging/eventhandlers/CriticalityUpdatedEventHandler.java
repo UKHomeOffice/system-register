@@ -20,5 +20,5 @@ public class CriticalityUpdatedEventHandler implements EventHandler {
         eventStore.save(event);
     }
 
-    }
+}
 
