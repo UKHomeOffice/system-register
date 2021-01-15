@@ -7,6 +7,7 @@ import "./UpdateAbout.css";
 import {defaultTo, omitBy} from "lodash-es";
 
 const infoAbout = (system) => ({
+  portfolio: defaultTo(system.portfolio, "Unknown"),
   criticality: defaultTo(system.criticality, "unknown"),
   investmentState: defaultTo(system.investment_state, "unknown"),
 });
@@ -37,6 +38,22 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
             onSubmit={handleSubmit}
           >
             <Form>
+              <h2 className="update-about-radio-group-title">What portfolio does the system belong to?</h2>
+              <br />
+              {
+                [
+                  "Option 1",
+                  "Option 2",
+                  "Option 3",
+                  "Option 4",
+                  "Unknown",
+                ].map(v => {
+                  return (
+                    <Radio name="portfolio" key={v} value={v}>{v}</Radio>
+                  )
+                })
+              }
+
               <h2 className="update-about-radio-group-title">What is the criticality of the system?</h2>
               <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
               {
