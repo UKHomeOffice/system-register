@@ -38,7 +38,7 @@ const SystemView = ({ system }) => {
               </GridCol>
               <GridCol data-testid="about-column2" setWidth="one-half">
                 <p>{renderAliases(system.aliases)}</p>
-                <p><KeyInfo info={system.department} /></p>
+                <p><KeyInfo info={system.portfolio} /></p>
                 <p><Criticality level={system.criticality} /></p>
                 <p><InvestmentState state={system.investment_state} /></p>
                 <p><KeyInfo info={system.developed_by} /></p>
