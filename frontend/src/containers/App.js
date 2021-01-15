@@ -16,6 +16,8 @@ import TitleBar from '../components/TitleBar/TitleBar';
 import api from '../services/api';
 import config from '../config/config';
 
+import getPortfolios from './getPortfolios';
+
 import './App.css';
 
 // todo state should be in containers, components should be stateless
@@ -87,7 +89,7 @@ class App extends React.Component {
                     <SystemList register={this.state.register} />
                   </Route>
                   <Route path="/system/:id">
-                    <System portfolios={[]} onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
+                    <System portfolios={getPortfolios(this.state.register.systems)} onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
                   </Route>
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />
