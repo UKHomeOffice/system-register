@@ -44,4 +44,16 @@ describe('getPortfolios', () => {
 
     expect(portfolios).toEqual(["PF-1"]);
   })
+
+  it('removes "Unknown" portfolio values to avoid duplicate radio button creation', () => {
+    const systems = [
+      {system: "Sys-A", portfolio: "PF-1"},
+      {system: "Sys-C", portfolio: "Unknown"},
+      {system: "Sys-D", portfolio: "Unknown"},
+    ];
+
+    const portfolios = getPortfolios(systems);
+
+    expect(portfolios).toEqual(["PF-1"]);
+  })
 })
