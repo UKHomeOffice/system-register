@@ -1,4 +1,4 @@
-import {isEmpty} from "lodash-es";
+import {isEmpty, isEqual} from "lodash-es";
 
 function getPortfolios(systems){
   if(isEmpty(systems)){
@@ -6,7 +6,7 @@ function getPortfolios(systems){
   } else {
     return [...new Set(
       systems
-      .filter(system => !isEmpty(system.portfolio))
+      .filter(system => !isEmpty(system.portfolio) && !isEqual(system.portfolio, "Unknown"))
       .map(system => system.portfolio.trim()))];
   }
 }
