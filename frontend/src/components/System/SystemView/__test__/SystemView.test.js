@@ -144,7 +144,7 @@ describe("<SystemView>", () => {
         const column = await screen.findByTestId("about-column2");
         const entries = column.childNodes;
         expect(entries[0].textContent).toEqual("sys X, project Jupiter");
-        expect(entries[1].textContent).toEqual("Department of Fig and Indie");
+        expect(entries[1].textContent).toEqual("Portfolio Y");
         expect(entries[2].textContent).toEqual("HIGH");
         expect(entries[3].textContent).toEqual("EVERGREEN");
         expect(entries[4].textContent).toEqual("Dev Team");
