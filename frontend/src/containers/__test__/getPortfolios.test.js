@@ -46,6 +46,7 @@ describe('getPortfolios', () => {
   })
 
   it('removes "Unknown" portfolio values to avoid duplicate radio button creation', () => {
+    //should this be done here or in the UpdateAbout component?
     const systems = [
       {system: "Sys-A", portfolio: "PF-1"},
       {system: "Sys-C", portfolio: "Unknown"},
