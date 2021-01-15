@@ -7,6 +7,7 @@ const api = {
   getSystem,
   updateSystemName,
   updateSystemDescription,
+  updatePortfolio,
   updateCriticality,
   updateInvestmentState,
   updateProductOwner,
@@ -79,6 +80,18 @@ async function updateSystemDescription(id, data) {
   if (response.status === 400) {
     throw new ValidationError(response.data.errors);
   }
+  return response.data;
+}
+
+async function updatePortfolio(id, data) {
+  const response = await axios.post(
+    `${config.api.url}/systems/${id}/update-portfolio`,
+    {portfolio: nullIfEmpty(data.portfolio)},
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      }
+    });
   return response.data;
 }
 
