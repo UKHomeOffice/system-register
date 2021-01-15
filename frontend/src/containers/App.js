@@ -87,7 +87,7 @@ class App extends React.Component {
                     <SystemList register={this.state.register} />
                   </Route>
                   <Route path="/system/:id">
-                    <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
+                    <System portfolios={[]} onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
                   </Route>
                   <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
                   <Route exact path="/about" component={About} />
