@@ -4,7 +4,10 @@ function getPortfolios(systems){
   if(isEmpty(systems)){
     return []
   } else {
-    return [systems[0].portfolio];
+    return [...new Set(
+      systems
+      .filter(system => !isEmpty(system.portfolio))
+      .map(system => system.portfolio.trim()))];
   }
 }
 
