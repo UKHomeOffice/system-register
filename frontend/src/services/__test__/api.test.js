@@ -110,6 +110,31 @@ describe("api", () => {
     });
   });
 
+  describe("update portfolio", () => {
+    it("sends changed portfolio to the API", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-portfolio", (req, res, ctx) => {
+          const { portfolio } = req.body;
+          if (portfolio !== "new portfolio") {
+            console.error("New portfolio does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updatePortfolio(345, {
+        portfolio: "new portfolio"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+  });
+
   describe("update criticality", () => {
     it("sends changed criticality to the API", async () => {
       server.use(
