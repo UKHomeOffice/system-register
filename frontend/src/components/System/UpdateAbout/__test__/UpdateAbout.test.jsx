@@ -6,6 +6,18 @@ import UpdateAbout from "../UpdateAbout";
 
 describe("UpdateAbout", () => {
   const submitHandler = jest.fn();
+  const cancelHandler = jest.fn();
+
+  function setUp(props = {}) {
+    const actualProps = {
+      system: null,
+      portfolios: [],
+      onSubmit: submitHandler,
+      onCancel: cancelHandler,
+      ...props,
+    };
+    return render(<UpdateAbout {...actualProps} />);
+  }
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -14,26 +26,25 @@ describe("UpdateAbout", () => {
   });
 
   it("displays the name of the system", () => {
-    render(<UpdateAbout system={{ name: 'system name' }} onSubmit={submitHandler} />);
+    setUp({ system: {name: 'system name' }})
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("system name");
   });
 
   it("displays a loading message if data is unavailable", () => {
-    render(<UpdateAbout system={null} onSubmit={submitHandler} />);
+    setUp({system: null});
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
   });
 
   describe("portfolio", () => {
     it("displays current portfolio button as checked", () => {
-      render(<UpdateAbout system={{portfolio: "Option 1"}} onSubmit={submitHandler}/>);
-
+      setUp({system: {portfolio: "Option 1"}, portfolios: ["Option 1"]});
       expect(screen.getByRole("radio", {name: /Option 1/i}).checked).toEqual(true);
     });
 
     it("calls submission handler with updated portfolio", async () => {
-      render(<UpdateAbout system={{portfolio: "Option 1"}} onSubmit={submitHandler}/>);
+      setUp({system: {portfolio: "Option 1"}, portfolios: ["Option 1", "Option 2"]});
       const unknownRadio = screen.getByLabelText(/Option 2/i);
       const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -49,13 +60,14 @@ describe("UpdateAbout", () => {
   describe("criticality", () =>
   {
     it("displays current criticality button as checked", () => {
-      render(<UpdateAbout system={{criticality: "medium"}} onSubmit={submitHandler}/>);
+      setUp({system: {criticality: "medium"}});
 
       expect(screen.getByRole("radio", {name: /medium/i}).checked).toEqual(true);
     });
 
     it("calls submission handler with updated criticality", async () => {
-      render(<UpdateAbout system={{criticality: "low"}} onSubmit={submitHandler}/>);
+      setUp({system: {criticality: "low"}});
+
       const cniRadio = screen.getByLabelText(/cni/i);
       const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -70,13 +82,13 @@ describe("UpdateAbout", () => {
 
   describe("investment state", () => {
     it("displays current investment state button as checked", () => {
-      render(<UpdateAbout system={{investment_state: "invest"}} onSubmit={submitHandler}/>);
+      setUp({system: {investment_state: "invest"}});
 
       expect(screen.getByDisplayValue("invest").checked).toEqual(true);
     });
 
     it("calls submission handler with updated investment state", async () => {
-      render(<UpdateAbout system={{investment_state: "invest"}} onSubmit={submitHandler}/>);
+      setUp({system: {investment_state: "invest"}});
       const maintainRadio = screen.getByLabelText(/maintain/i);
       const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -90,9 +102,7 @@ describe("UpdateAbout", () => {
   });
 
   it("does NOT call submission handler when all field values are unchanged", async () => {
-    const cancelHandler = jest.fn();
-    render(<UpdateAbout system={{criticality: "low", investment_state: "invest", portfolio: "Option 1"}} onSubmit={submitHandler}
-                        onCancel={cancelHandler}/>);
+    setUp({system: {criticality: "low", investment_state: "invest", portfolio: "Option 1"}, portfolios: ["Option 1"]});
     const portfolioRadio = screen.getByLabelText(/Option 1/i);
     const criticalityRadio = screen.getByLabelText(/low/i);
     const investRadio = screen.getByDisplayValue(/invest/i);
@@ -107,8 +117,7 @@ describe("UpdateAbout", () => {
   });
 
   it("cancels correctly", async () => {
-    const cancelHandler = jest.fn();
-    render(<UpdateAbout system={{ criticality: "low" }} onCancel={cancelHandler} />);
+    setUp({system: {criticality: "low"}});
     const cniRadio = screen.getByLabelText(/cni/i);
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
 

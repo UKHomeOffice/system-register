@@ -12,7 +12,7 @@ const infoAbout = (system) => ({
   investmentState: defaultTo(system.investment_state, "unknown"),
 });
 
-function UpdateAbout({ system, onSubmit, onCancel }) {
+function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
         const initialInfo = infoAbout(system);
         const changedInfo = omitBy(
@@ -40,19 +40,8 @@ function UpdateAbout({ system, onSubmit, onCancel }) {
             <Form>
               <h2 className="update-about-radio-group-title">What portfolio does the system belong to?</h2>
               <br />
-              {
-                [
-                  "Option 1",
-                  "Option 2",
-                  "Option 3",
-                  "Option 4",
-                  "Unknown",
-                ].map(v => {
-                  return (
-                    <Radio name="portfolio" key={v} value={v}>{v}</Radio>
-                  )
-                })
-              }
+              {portfolios.map(v => <Radio name="portfolio" key={v} value={v}>{v}</Radio>)}
+              <Radio name="portfolio" value="Unknown">Unknown</Radio>
 
               <h2 className="update-about-radio-group-title">What is the criticality of the system?</h2>
               <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
