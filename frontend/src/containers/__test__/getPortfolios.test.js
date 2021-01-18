@@ -56,4 +56,16 @@ describe('getPortfolios', () => {
 
     expect(portfolios).toEqual(["PF-1"]);
   });
+
+  it("sorts portfolios alphabetically", () => {
+    const systems = [
+      { portfolio: "PF-1" },
+      { portfolio: "AX-9" },
+      { portfolio: "CR-2" }
+    ];
+
+    const portfolios = getPortfolios(systems);
+
+    expect(portfolios).toEqual(["AX-9", "CR-2", "PF-1"]);
+  });
 });

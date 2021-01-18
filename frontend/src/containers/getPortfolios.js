@@ -4,10 +4,12 @@ function getPortfolios(systems) {
   if (isEmpty(systems)) {
     return [];
   }
-  return [...new Set(
+  const portfolios = [...new Set(
     systems
       .filter(system => !isEmpty(system.portfolio) && !isEqual(system.portfolio, "Unknown"))
       .map(system => system.portfolio.trim()))];
+  portfolios.sort();
+  return portfolios;
 }
 
 export default getPortfolios;
