@@ -4,7 +4,7 @@ import { KeycloakProvider } from '@react-keycloak/web';
 import config from '../config/config';
 
 
-const withKeycloak = (Component) => {
+const withKeycloak = (Component) => { //todo test OR I think there is an official withKeyloak HOC from library?
     const KeycloakWrapped = (...props) => {
         var [keycloak, setKeycloak] = useState(undefined)
         useEffect(() => {

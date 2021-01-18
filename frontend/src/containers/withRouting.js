@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 
-const withRouting = (Component) => {
+const withRouting = (Component) => { //todo test
     const RouteWrapped = (...props) => {
         return (
             <BrowserRouter>
