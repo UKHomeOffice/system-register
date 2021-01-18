@@ -1,42 +1,48 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import Radio from "../../Radio"
+import { defaultTo, omitBy } from "lodash-es";
 
+import Radio from "../../Radio";
 import "./UpdateAbout.css";
-import {defaultTo, omitBy} from "lodash-es";
 
 const infoAbout = (system) => ({
+  portfolio: defaultTo(system.portfolio, "Unknown"),
   criticality: defaultTo(system.criticality, "unknown"),
   investmentState: defaultTo(system.investment_state, "unknown"),
 });
 
-function UpdateAbout({ system, onSubmit, onCancel }) {
+function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
-        const initialInfo = infoAbout(system);
-        const changedInfo = omitBy(
-          values,
-          (value, key) => value === initialInfo[key]);
-          await onSubmit(changedInfo);
+    const initialInfo = infoAbout(system);
+    const changedInfo = omitBy(
+      values,
+      (value, key) => value === initialInfo[key]);
+    await onSubmit(changedInfo);
   }, [onSubmit, system]);
-
   const handleCancel = () => { onCancel() };
+
   return (
     <div className="centerContent">
       {system ? (
         <>
           <h1>{system.name}</h1>
           <p className="update-about-secondary">
-            You can currently change system criticality and investment information only.
-            We are working to make other fields editable.
+            You can currently change system portfolio, criticality and investment information only.
+            If you would like to change other information within the ‘About’ section, please contact the System Register
+            team via the ‘Contact’ tab in the navigation header.
           </p>
-
 
           <Formik
             initialValues={infoAbout(system)}
             onSubmit={handleSubmit}
           >
             <Form>
+              <h2 className="update-about-radio-group-title">What portfolio does the system belong to?</h2>
+              <br />
+              {portfolios.map(v => <Radio name="portfolio" key={v} value={v}>{v}</Radio>)}
+              <Radio name="portfolio" value="Unknown">Unknown</Radio>
+
               <h2 className="update-about-radio-group-title">What is the criticality of the system?</h2>
               <p className="update-about-radio-group-hint">Please select the level of criticality, as per the system's Service Criticality Assessment.</p>
               {

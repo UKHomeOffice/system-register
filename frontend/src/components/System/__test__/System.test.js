@@ -1,9 +1,9 @@
 import React from 'react';
 import user from "@testing-library/user-event";
-import { useKeycloak } from "@react-keycloak/web";
-import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryHistory } from "history";
-import { Route, Router } from 'react-router-dom';
+import {useKeycloak} from "@react-keycloak/web";
+import {render, screen, waitFor} from '@testing-library/react';
+import {createMemoryHistory} from "history";
+import {Route, Router} from 'react-router-dom';
 
 import System from '../System';
 import api from '../../../services/api';
@@ -13,6 +13,7 @@ jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
   updateSystemName: jest.fn(),
   updateSystemDescription: jest.fn(),
+  updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
   updateProductOwner: jest.fn()
@@ -24,6 +25,7 @@ jest.mock("@react-keycloak/web", () => ({
 const test_system = {
   name: "Test System",
   description: "The description",
+  portfolio: "original portfolio",
   criticality: "low",
   investment_state: "invest",
   last_updated: {},
@@ -110,11 +112,11 @@ describe('<System />', () => {
 
     describe("editing contacts", () => {
       it("calls dirtyCallback when updates", async () => {
-        api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
-        const history = createMemoryHistory({ initialEntries: ["/system/123/update-contacts"], initialIndex: 0 });
-        renderWithHistory(null, { history });
+        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
+        const history = createMemoryHistory({initialEntries: ["/system/123/update-contacts"], initialIndex: 0});
+        renderWithHistory(null, {history});
         const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const saveButton = screen.getByRole("button", { name: /save/i });
+        const saveButton = screen.getByRole("button", {name: /save/i});
 
         // noinspection ES6MissingAwait: there is no typing delay
         user.type(productOwnerField, "updated owner");
@@ -126,14 +128,14 @@ describe('<System />', () => {
       });
 
       it("returns to the system view after a successful update", async () => {
-        api.updateProductOwner.mockResolvedValue({ ...test_system, product_owner: "updated owner" });
+        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
         const history = createMemoryHistory({
           initialEntries: ["/system/123/update-contacts"],
           initialIndex: 0,
         });
-        renderWithHistory(null, { history });
+        renderWithHistory(null, {history});
         const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const saveButton = screen.getByRole("button", { name: /save/i });
+        const saveButton = screen.getByRole("button", {name: /save/i});
 
         // noinspection ES6MissingAwait: there is no typing delay
         user.type(productOwnerField, "updated owner");
@@ -164,9 +166,9 @@ describe('<System />', () => {
           initialEntries: ["/system/123/update-contacts"],
           initialIndex: 0,
         });
-        renderWithHistory(null, { history });
+        renderWithHistory(null, {history});
         await screen.findByText("Test System");
-        const saveButton = await screen.findByRole("button", { name: /save/i });
+        const saveButton = await screen.findByRole("button", {name: /save/i});
 
         user.click(saveButton);
 
@@ -189,14 +191,14 @@ describe('<System />', () => {
 
       describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemName.mockResolvedValue({ ...test_system, name: "updated system name" });
+          api.updateSystemName.mockResolvedValue({...test_system, name: "updated system name"});
           const history = createMemoryHistory({
             initialEntries: ["/system/123/update-info"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const systemNameField = await screen.findByLabelText(/system name/i);
-          const saveButton = screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", {name: /save/i});
 
           user.clear(systemNameField);
           // noinspection ES6MissingAwait: there is no typing delay
@@ -225,9 +227,9 @@ describe('<System />', () => {
             initialEntries: ["/system/123/update-info"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           await screen.findByText("Test System");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {name: /save/i});
 
           user.click(saveButton);
 
@@ -245,14 +247,14 @@ describe('<System />', () => {
 
       describe("system description", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemDescription.mockResolvedValue({ ...test_system, description: "system description" });
+          api.updateSystemDescription.mockResolvedValue({...test_system, description: "system description"});
           const history = createMemoryHistory({
             initialEntries: ["/system/123/update-info"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const systemDescriptionField = await screen.findByLabelText(/system description/i);
-          const saveButton = screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", {name: /save/i});
 
           user.clear(systemDescriptionField);
           // noinspection ES6MissingAwait: there is no typing delay
@@ -281,9 +283,9 @@ describe('<System />', () => {
             initialEntries: ["/system/123/update-info"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           await screen.findByText("Test System");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {name: /save/i});
 
           user.click(saveButton);
 
@@ -301,18 +303,78 @@ describe('<System />', () => {
     });
 
     describe("editing about", () => {
+      describe("portfolio", () => {
+        it("returns to system view on cancel", async () => {
+          await checkCancelButton("update-about");
+        });
+
+        it("returns to the system view after a successful update", async () => {
+          api.updatePortfolio.mockResolvedValue({...test_system, portfolio: "updated portfolio"});
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-about"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, {history});
+          const radioButton = await screen.findByLabelText(/updated portfolio/i);
+          const saveButton = screen.getByRole("button", {name: /save/i});
+
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.click(radioButton);
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(changeHandler).toBeCalled();
+            expect(api.updatePortfolio).toBeCalledWith(
+              "123",
+              expect.objectContaining({
+                portfolio: "updated portfolio",
+              })
+            );
+            expect(history).toHaveProperty("index", 1);
+            expect(history).toHaveProperty(
+              "location.pathname",
+              "/system/123"
+            );
+          });
+        });
+
+        it("api is not called if portfolio is unchanged", async () => {
+          const history = createMemoryHistory({
+            initialEntries: ["/system/123/update-about"],
+            initialIndex: 0,
+          });
+          renderWithHistory(null, {history});
+          const radioButton = await screen.findByLabelText(/original portfolio/i);
+          const saveButton = screen.getByRole("button", {name: /save/i});
+
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.click(radioButton);
+          user.click(saveButton);
+
+          await waitFor(() => {
+            expect(history).toHaveProperty("index", 1);
+            expect(history).toHaveProperty(
+              "location.pathname",
+              "/system/123"
+            );
+          });
+          expect(changeHandler).not.toBeCalled();
+          expect(api.updatePortfolio).not.toBeCalled();
+        });
+      });
+
       describe("criticality", () => {
         it("returns to system view on cancel", async () => {
           await checkCancelButton("update-about");
         });
 
         it("returns to the system view after a successful update", async () => {
-          api.updateCriticality.mockResolvedValue({ ...test_system, criticality: "high" });
+          api.updateCriticality.mockResolvedValue({...test_system, criticality: "high"});
           const history = createMemoryHistory({
             initialEntries: ["/system/123/update-about"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const radioButton = await screen.findByLabelText(/high/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -341,9 +403,9 @@ describe('<System />', () => {
             initialEntries: ["/system/123/update-about"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const radioButton = await screen.findByLabelText(/low/i);
-          const saveButton = screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", {name: /save/i});
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -367,12 +429,12 @@ describe('<System />', () => {
         });
 
         it("returns to the system view after a successful update", async () => {
-          api.updateInvestmentState.mockResolvedValue({ ...test_system, investment_state: "sunset" });
+          api.updateInvestmentState.mockResolvedValue({...test_system, investment_state: "sunset"});
           const history = createMemoryHistory({
             initialEntries: ["/system/123/update-about"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const radioButton = await screen.findByDisplayValue(/sunset/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -401,9 +463,9 @@ describe('<System />', () => {
             initialEntries: ["/system/123/update-about"],
             initialIndex: 0,
           });
-          renderWithHistory(null, { history });
+          renderWithHistory(null, {history});
           const radioButton = await screen.findByDisplayValue(/invest/i);
-          const saveButton = screen.getByRole("button", { name: /save/i });
+          const saveButton = screen.getByRole("button", {name: /save/i});
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -429,8 +491,8 @@ async function checkCancelButton(path) {
     initialEntries: [`/system/123/${path}`],
     initialIndex: 0,
   });
-  renderWithHistory(null, { history });
-  const cancelButton = await screen.findByRole("button", { name: /cancel/i });
+  renderWithHistory(null, {history});
+  const cancelButton = await screen.findByRole("button", {name: /cancel/i});
 
   user.click(cancelButton);
 
@@ -445,15 +507,15 @@ async function checkCancelButton(path) {
 }
 
 function renderWithHistory(path, context = {}) {
-  const { history } = {
-    history: createMemoryHistory({ initialEntries: [`/system/${path}`] }),
+  const {history} = {
+    history: createMemoryHistory({initialEntries: [`/system/${path}`]}),
     ...context,
   };
 
   return render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System onBeforeNameChange={() => false} onChange={changeHandler} />
+        <System portfolios={["original portfolio", "updated portfolio"]} onBeforeNameChange={() => false} onChange={changeHandler} />
       </Route>
     </Router>
   );

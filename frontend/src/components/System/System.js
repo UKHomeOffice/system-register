@@ -10,8 +10,7 @@ import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 import useAsyncError from '../../utilities/useAsyncError';
 
-function System(props) {
-  const { onChange, onBeforeNameChange } = props;
+function System({ portfolios, onChange, onBeforeNameChange }) {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
@@ -35,6 +34,9 @@ function System(props) {
   }, [id, history, url, updateSystem]);
 
   const handleUpdateAbout = useCallback(async (data) => {
+    if ("portfolio" in data) {
+      updateSystem(await api.updatePortfolio(id, data));
+    }
     if ("criticality" in data) {
       updateSystem(await api.updateCriticality(id, data));
     }
@@ -59,18 +61,18 @@ function System(props) {
   }, [history, url]);
   return (
     <Switch>
-        <Route path={`${path}`} exact>
-          <SystemView system={system} />
-        </Route>
-        <SecureRoute path={`${path}/update-info`}>
-          <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
-        </SecureRoute>
-        <SecureRoute path={`${path}/update-about`}>
-          <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
-        </SecureRoute>
-        <SecureRoute path={`${path}/update-contacts`}>
-          <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
-        </SecureRoute>
+      <Route path={`${path}`} exact>
+        <SystemView system={system} />
+      </Route>
+      <SecureRoute path={`${path}/update-info`}>
+        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-about`}>
+        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-contacts`}>
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+      </SecureRoute>
     </Switch>
   );
 }
