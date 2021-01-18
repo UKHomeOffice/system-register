@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import Radio from "../../Radio"
+import { defaultTo, omitBy } from "lodash-es";
 
+import Radio from "../../Radio";
 import "./UpdateAbout.css";
-import {defaultTo, omitBy} from "lodash-es";
 
 const infoAbout = (system) => ({
   portfolio: defaultTo(system.portfolio, "Unknown"),
@@ -14,24 +14,24 @@ const infoAbout = (system) => ({
 
 function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values) => {
-        const initialInfo = infoAbout(system);
-        const changedInfo = omitBy(
-          values,
-          (value, key) => value === initialInfo[key]);
-          await onSubmit(changedInfo);
+    const initialInfo = infoAbout(system);
+    const changedInfo = omitBy(
+      values,
+      (value, key) => value === initialInfo[key]);
+    await onSubmit(changedInfo);
   }, [onSubmit, system]);
-
   const handleCancel = () => { onCancel() };
+
   return (
     <div className="centerContent">
       {system ? (
         <>
           <h1>{system.name}</h1>
           <p className="update-about-secondary">
-            You can currently change system criticality and investment information only.
-            We are working to make other fields editable.
+            You can currently change system portfolio, criticality and investment information only.
+            If you would like to change other information within the ‘About’ section, please contact the System Register
+            team via the ‘Contact’ tab in the navigation header.
           </p>
-
 
           <Formik
             initialValues={infoAbout(system)}
