@@ -8,12 +8,16 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemNameUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import javax.validation.Valid;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,15 +95,25 @@ class UpdateSystemNameCommandHandlerTest {
     }
 
     @Test
-    void raisesExceptionIfSystemNameValueIsUnchanged() {
-        givenCurrentStateWithSystem(aSystem()
-                .withId(345)
-                .withName("original system name"));
-        var command = new UpdateSystemNameCommand(345, "original system name", aPerson().build(), Instant.now());
+    void raisesExceptionIfSystemNameValueIsUnchanged() throws CommandHasNoEffectException {
+        givenCurrentStateWithSystem(aSystem().withId(0));
+        var command = mock(UpdateSystemNameCommand.class);
+        doThrow(CommandHasNoEffectException.class)
+                .when(command).ensureCommandUpdatesSystem(any());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
-                .isInstanceOf(CommandHasNoEffectException.class)
-                .hasMessageContaining("system name is the same: original system name");
+                .isInstanceOf(CommandHasNoEffectException.class);
+    }
+
+    @Test
+    void validatesCommand() throws NoSuchMethodException {
+        Method handleMethod = commandHandler.getClass()
+                .getMethod("handle", Command.class);
+        Parameter commandArgument = handleMethod.getParameters()[0];
+
+        boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
+
+        assertThat(hasValidAnnotation).isTrue();
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {
@@ -114,7 +128,7 @@ class UpdateSystemNameCommandHandlerTest {
     private void givenCurrentStateWithSystems(SR_System... existing_systems) {
         UpdateMetadata metadata = new UpdateMetadata(aPerson().withUsername("username1").build(), Instant.now());
 
-        Map<SR_System, UpdateMetadata> sysMap = new HashMap<SR_System, UpdateMetadata>();
+        Map<SR_System, UpdateMetadata> sysMap = new HashMap<>();
         for (SR_System sys : existing_systems) {
             sysMap.put(sys, metadata);
         }

@@ -135,6 +135,32 @@ public class CurrentStateCalculatorTest {
     }
 
     @Test
+    void appliesEventsOrderedByTimeStamp() {
+        Snapshot snapshot = aSnapshot().withTimestamp(Instant.MIN).build();
+        var templateSystem = aSystem().withId(123);
+        var initialEvent = aSystemAddedEvent()
+                .withId(123)
+                .withSystem(templateSystem.withProductOwner("initial owner"))
+                .withTimeStamp(Instant.now().plusNanos(1))
+                .build();
+        var productOwnerAuthor = aPerson().withUsername("editor");
+        var productOwnerUpdatedEvent = aProductOwnerUpdatedEvent()
+                .withId(123)
+                .withTimestamp(Instant.now().plusNanos(2))
+                .withProductOwner("new owner")
+                .withAuthor(productOwnerAuthor)
+                .build();
+        var expectedSystem = templateSystem.withProductOwner("new owner").build();
+
+        var updatedState = calculator.crunch(snapshot, List.of(productOwnerUpdatedEvent, initialEvent));
+
+        assertThat(updatedState).usingRecursiveComparison()
+                .isEqualTo(new CurrentState(
+                        Map.of(expectedSystem, new UpdateMetadata(productOwnerAuthor.build(), productOwnerUpdatedEvent.timestamp)),
+                        productOwnerUpdatedEvent.timestamp));
+    }
+
+    @Test
     void ignoresOldEvents() {
         var snapshotSystem = aSystem().withName("in snapshot").build();
         var snapshot = aSnapshot().withSystem(snapshotSystem).build();

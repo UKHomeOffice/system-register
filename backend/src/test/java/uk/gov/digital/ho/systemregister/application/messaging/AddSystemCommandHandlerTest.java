@@ -9,9 +9,9 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
-import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 import uk.gov.digital.ho.systemregister.helpers.FakeEventStore;
 import uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommandBuilder;
+import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;
 import java.util.ArrayList;

@@ -10,7 +10,6 @@ import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.CriticalityUpdatedEventDAO_v1;
 
 import javax.json.bind.JsonbBuilder;
-
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;

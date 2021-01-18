@@ -88,7 +88,7 @@ class InvestmentStateUpdatedEventDaoMapper_v1Test {
     }
 
     @Test
-    void mapsUnknownOwnerToInvestmentStateUpdatedEvent() {
+    void mapsUnknownInvestmentStateToInvestmentStateUpdatedEvent() {
         InvestmentStateUpdatedEvent expectedEvent = anInvestmentStateUpdatedEvent()
                 .withId(789)
                 .withInvestmentState(null)

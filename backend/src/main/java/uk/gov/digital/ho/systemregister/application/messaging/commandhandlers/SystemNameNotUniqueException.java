@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
-public class SystemNameNotUniqueException extends Exception {
+@SuppressWarnings("CdiInjectionPointsInspection")
+public class SystemNameNotUniqueException extends CommandProcessingException {
     public SystemNameNotUniqueException(String name) {
         super("There is already a system called " + name);
     }

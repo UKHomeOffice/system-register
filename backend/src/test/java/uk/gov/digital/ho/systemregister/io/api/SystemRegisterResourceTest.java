@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.inject.Inject;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -72,66 +72,6 @@ public class SystemRegisterResourceTest {
                 .then().assertThat().statusCode(401);
     }
 
-    @Test
-    @TestSecurity
-    public void updatesSystemName() throws JSONException {
-        String expectedResponse = getResourceAsString("update-name/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-name/command.json", "/api/systems/1/update-name", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-name/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesSystemDescription() throws JSONException {
-        String expectedResponse = getResourceAsString("update-system-description/update-system-description-response.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-system-description/command.json", "/api/systems/1/update-system-description", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-system-description/all-systems-response.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesCriticality() throws JSONException {
-        String expectedResponse = getResourceAsString("update-criticality/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-criticality/command.json", "/api/systems/1/update-criticality", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesInvestmentState() throws JSONException {
-        String expectedResponse = getResourceAsString("update-investment-state/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-investment-state/command.json", "/api/systems/1/update-investment-state", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-investment-state/expectedAllSystemsResponse.json");
-    }
-
-    @Test
-    @TestSecurity
-    public void updatesProductOwner() throws JSONException {
-        String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-
-        String actualResponse = sendCommandToApi("update-product-owner/command.json", "/api/systems/1/update-product-owner", 200);
-
-        assertEquals(expectedResponse, actualResponse, false);
-        checkAllSystemsResponse("update-product-owner/expectedAllSystemsResponse.json");
-    }
-
     private void checkAllSystemsResponse(String pathToExpectedJson) throws JSONException {
         String expectedAllSystemsResponse = getResourceAsString(pathToExpectedJson);
 
@@ -146,7 +86,7 @@ public class SystemRegisterResourceTest {
     private String sendCommandToApi(String pathToJson, String apiPath, int expectedStatusCode) {
         String command = getResourceAsString(pathToJson);
 
-        String actualResponse = given().auth().oauth2(
+        return given().auth().oauth2(
                 aJwtToken()
                         .withFirstName("Basil")
                         .withSurname("Barkley")
@@ -156,7 +96,5 @@ public class SystemRegisterResourceTest {
                 .when().post(apiPath)
                 .then().assertThat()
                 .statusCode(expectedStatusCode).and().extract().response().asString();
-
-        return actualResponse;
     }
 }

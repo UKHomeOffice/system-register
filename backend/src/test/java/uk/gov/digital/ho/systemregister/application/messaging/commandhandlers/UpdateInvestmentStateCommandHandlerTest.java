@@ -8,14 +8,15 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateInvestmentStateCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateProductOwnerCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.InvestmentStateUpdatedEventHandler;
-import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ProductOwnerUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.InvestmentStateUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import javax.validation.Valid;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.Map;
 
@@ -45,11 +46,7 @@ class UpdateInvestmentStateCommandHandlerTest {
         givenCurrentStateWithSystem(partialSystem.withInvestmentState("sunset"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("username2").build();
-        var command = new UpdateInvestmentStateCommand(
-                expectedAuthor,
-                eventTimestamp,
-                123,
-                "decommissioned");
+        var command = new UpdateInvestmentStateCommand(123, "decommissioned", expectedAuthor, eventTimestamp);
 
         var updatedSystem = commandHandler.handle(command);
 
@@ -72,7 +69,7 @@ class UpdateInvestmentStateCommandHandlerTest {
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateInvestmentStateCommand(aPerson().build(), Instant.now(), 789, "invest");
+        var command = new UpdateInvestmentStateCommand(789, "invest", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -84,11 +81,22 @@ class UpdateInvestmentStateCommandHandlerTest {
         givenCurrentStateWithSystem(aSystem()
                 .withId(345)
                 .withInvestmentState("invest"));
-        var command = new UpdateInvestmentStateCommand(aPerson().build(), Instant.now(), 345, "invest");
+        var command = new UpdateInvestmentStateCommand(345, "invest", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
                 .hasMessageContaining("investment state is the same: invest");
+    }
+
+    @Test
+    void validatesCommand() throws NoSuchMethodException {
+        Method handleMethod = commandHandler.getClass()
+                .getMethod("handle", Command.class);
+        Parameter commandArgument = handleMethod.getParameters()[0];
+
+        boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
+
+        assertThat(hasValidAnnotation).isTrue();
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {

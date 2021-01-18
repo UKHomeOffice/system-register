@@ -18,7 +18,7 @@ public class SR_SystemBuilder {
     private String name = "System Register";
     private String description = "Central source of system names, contacts and risk information";
     private Instant lastUpdated = Instant.now();
-    private final String portfolio = "SPAN-R";
+    private String portfolio = "SPAN-R";
     private String criticality = "low";
     private String investmentState = "evergreen";
     private final String businessOwner = null;
@@ -82,6 +82,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withCriticality(String criticality) {
         this.criticality = criticality;
+        return this;
+    }
+
+    public SR_SystemBuilder withPortfolio(String portfolio) {
+        this.portfolio = portfolio;
         return this;
     }
 

@@ -17,26 +17,6 @@ public final class DtoMapper {
     private DtoMapper() {
     }
 
-    public static UpdateSystemNameCommand map(UpdateSystemNameCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateSystemNameCommand(id, cmd.name, author, timestamp);
-    }
-
-    public static UpdateSystemDescriptionCommand map(UpdateSystemDescriptionCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateSystemDescriptionCommand(id, cmd.description, author, timestamp);
-    }
-
-    public static UpdateCriticalityCommand map(UpdateCriticalityCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateCriticalityCommand(author, timestamp, id, cmd.criticality);
-    }
-
-    public static UpdateInvestmentStateCommand map(UpdateInvestmentStateCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateInvestmentStateCommand(author, timestamp, id, cmd.investmentState);
-    }
-
-    public static UpdateProductOwnerCommand map(UpdateProductOwnerCommandDTO cmd, int id, SR_Person author, Instant timestamp) {
-        return new UpdateProductOwnerCommand(id, cmd.productOwner, author, timestamp);
-    }
-
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
         return new AddSystemCommand(author, timestamp, cmd.system.name,
                 cmd.system.description, cmd.system.portfolio,

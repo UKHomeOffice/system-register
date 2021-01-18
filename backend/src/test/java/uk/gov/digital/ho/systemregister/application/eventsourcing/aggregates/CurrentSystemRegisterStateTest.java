@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
-import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 import uk.gov.digital.ho.systemregister.helpers.FakeEventStore;
+import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.util.Map;
 

@@ -7,9 +7,9 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 
-import java.time.Instant;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;

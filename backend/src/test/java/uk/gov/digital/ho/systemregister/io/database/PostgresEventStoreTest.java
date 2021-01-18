@@ -10,14 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import javax.inject.Inject;
+import java.sql.*;
 import java.time.Instant;
 import java.util.List;
-import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,6 +24,7 @@ import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdatedEventBuilder.aPortfolioUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -136,6 +133,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveInvestmentStateUpdatedEvent() {
         var expected = anInvestmentStateUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void savePortfolioUpdatedEvent() {
+        var expected = aPortfolioUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

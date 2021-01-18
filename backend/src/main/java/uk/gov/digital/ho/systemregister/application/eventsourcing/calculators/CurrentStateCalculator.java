@@ -54,7 +54,7 @@ public class CurrentStateCalculator {
                     var system = systemAndMetadata != null
                             ? systemAndMetadata.getItem1()
                             : null;
-                    return applyEvents(system, events);
+                    return applyEvents(system, sortedEvents);
                 });
 
         return sortedEvents.get(sortedEvents.size() - 1).timestamp;

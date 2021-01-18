@@ -64,6 +64,9 @@ public class PostgresEventStore implements IEventStore {
     InvestmentStateUpdatedEventDaoMapper_v1 investmentStateUpdatedDaoMapper;
 
     @Inject
+    PortfolioUpdatedEventDaoMapper_v1 portfolioUpdatedDaoMapper;
+
+    @Inject
     ProductOwnerUpdatedEventDaoMapper_v1 productOwnerUpdatedDaoMapper;
 
     @Inject
@@ -121,6 +124,8 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = criticalityUpdatedDaoMapper;
         } else if (event instanceof InvestmentStateUpdatedEvent) {
             daoMapper = investmentStateUpdatedDaoMapper;
+        }else if (event instanceof PortfolioUpdatedEvent) {
+            daoMapper = portfolioUpdatedDaoMapper;
         } else if (event instanceof ProductOwnerUpdatedEvent) {
             daoMapper = productOwnerUpdatedDaoMapper;
         } else {

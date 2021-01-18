@@ -8,11 +8,15 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCriticalityCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.CriticalityUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import javax.validation.Valid;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.Map;
 
@@ -33,10 +37,8 @@ class UpdateCriticalityCommandHandlerTest {
         commandHandler = new UpdateCriticalityCommandHandler(
                 systemRegisterState,
                  eventHandler,
-                new CurrentStateCalculator()
-        );
+                new CurrentStateCalculator());
     }
-
 
     @Test
     public void updatesCriticalityValueIfSystemExistsWithDifferentValue() throws Exception {
@@ -44,11 +46,7 @@ class UpdateCriticalityCommandHandlerTest {
         givenCurrentStateWithSystem(partialSystem.withCriticality("unknown"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("username2").build();
-        var command = new UpdateCriticalityCommand(
-                expectedAuthor,
-                eventTimestamp,
-                123,
-                "high");
+        var command = new UpdateCriticalityCommand(123, "high", expectedAuthor, eventTimestamp);
 
         var updatedSystem = commandHandler.handle(command);
 
@@ -71,7 +69,7 @@ class UpdateCriticalityCommandHandlerTest {
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 789, "low");
+        var command = new UpdateCriticalityCommand(789, "low", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -83,11 +81,22 @@ class UpdateCriticalityCommandHandlerTest {
         givenCurrentStateWithSystem(aSystem()
                 .withId(345)
                 .withCriticality("low"));
-        var command = new UpdateCriticalityCommand(aPerson().build(), Instant.now(), 345, "low");
+        var command = new UpdateCriticalityCommand(345, "low", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
                 .hasMessageContaining("criticality level is the same: low");
+    }
+
+    @Test
+    void validatesCommand() throws NoSuchMethodException {
+        Method handleMethod = commandHandler.getClass()
+                .getMethod("handle", Command.class);
+        Parameter commandArgument = handleMethod.getParameters()[0];
+
+        boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
+
+        assertThat(hasValidAnnotation).isTrue();
     }
 
     private void givenCurrentStateWithSystem(SR_SystemBuilder systemBuilder) {

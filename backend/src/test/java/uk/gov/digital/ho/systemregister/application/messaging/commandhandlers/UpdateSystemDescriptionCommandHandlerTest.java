@@ -8,22 +8,21 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemDescriptionCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemDescriptionUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemDescriptionUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
+import javax.validation.Valid;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.time.Instant;
 import java.util.Map;
-import javax.validation.Valid;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
@@ -96,7 +95,7 @@ class UpdateSystemDescriptionCommandHandlerTest {
     @Test
     void validatesCommand() throws NoSuchMethodException {
         Method handleMethod = commandHandler.getClass()
-                .getMethod("handle", UpdateSystemDescriptionCommand.class);
+                .getMethod("handle", Command.class);
         Parameter commandArgument = handleMethod.getParameters()[0];
 
         boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);

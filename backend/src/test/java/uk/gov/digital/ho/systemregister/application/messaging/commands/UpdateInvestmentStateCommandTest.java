@@ -33,7 +33,7 @@ class UpdateInvestmentStateCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {"someValue"})
     void rejectsStringsContainingInvalidValues(String illegalString) {
-        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, illegalString);
+        var command = new UpdateInvestmentStateCommand(ID, illegalString, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 
@@ -44,7 +44,7 @@ class UpdateInvestmentStateCommandTest {
     @ValueSource(strings = {"evergreen", "invest", "maintain", "sunset", "decommissioned", "cancelled"})
     @NullSource
     void allowsInvestmentStateStringToBeNullOrContainSpecifiedValueFromList(String investmentState) {
-        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, investmentState);
+        var command = new UpdateInvestmentStateCommand(ID, investmentState, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 
@@ -54,7 +54,7 @@ class UpdateInvestmentStateCommandTest {
     @ParameterizedTest
     @ValueSource(strings = {" invest", "invest "})
     void extraneousSpacesAreRemovedFromInvestmentStateValue(String investmentStateWithSpaces) {
-        var command = new UpdateInvestmentStateCommand(AUTHOR, TIMESTAMP, ID, investmentStateWithSpaces);
+        var command = new UpdateInvestmentStateCommand(ID, investmentStateWithSpaces, AUTHOR, TIMESTAMP);
 
         var constraintViolations = validator.validate(command);
 

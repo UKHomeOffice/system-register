@@ -12,8 +12,8 @@ import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemAddedEventDAO_v1;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2;
 
-import java.time.Instant;
 import javax.json.bind.JsonbBuilder;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

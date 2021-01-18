@@ -8,10 +8,7 @@ import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import java.time.Instant;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class MockAuthorizationServer implements QuarkusTestResourceLifecycleManager {
     private static WireMockServer wireMockServer;
