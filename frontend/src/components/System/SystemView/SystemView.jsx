@@ -51,7 +51,6 @@ const SystemView = ({ system }) => {
             <Link data-testid="contacts-change-link" className="change-link" to={window.location.pathname + `/update-contacts`}>Update</Link>
             <GridRow>
               <GridCol data-testid="contacts-column1" setWidth="one-quarter">
-                <p>System register owner</p>
                 <p>Business owner</p>
                 <p>Technical owner</p>
                 <p>Service owner</p>
@@ -59,7 +58,6 @@ const SystemView = ({ system }) => {
                 <p>Information asset owner</p>
               </GridCol>
               <GridCol data-testid="contacts-column2" setWidth="one-half">
-                <p><KeyInfo info={system.system_register_owner} /></p>
                 <p><KeyInfo info={system.business_owner} /></p>
                 <p><KeyInfo info={system.technical_owner} /></p>
                 <p><KeyInfo info={system.service_owner} /></p>
