@@ -163,24 +163,22 @@ describe("<SystemView>", () => {
         setup(test_system);
         const column = await screen.findByTestId("contacts-column1");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("System register owner");
-        expect(entries[1].textContent).toEqual("Business owner");
-        expect(entries[2].textContent).toEqual("Technical owner");
-        expect(entries[3].textContent).toEqual("Service owner");
-        expect(entries[4].textContent).toEqual("Product owner");
-        expect(entries[5].textContent).toEqual("Information asset owner");
+        expect(entries[0].textContent).toEqual("Business owner");
+        expect(entries[1].textContent).toEqual("Technical owner");
+        expect(entries[2].textContent).toEqual("Service owner");
+        expect(entries[3].textContent).toEqual("Product owner");
+        expect(entries[4].textContent).toEqual("Information asset owner");
       });
 
       it('renders correct entries in the second column of About table', async () => {
         setup(test_system);
         const column = await screen.findByTestId("contacts-column2");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("I own the register");
-        expect(entries[1].textContent).toEqual("I own the business");
-        expect(entries[2].textContent).toEqual("I own the tech");
-        expect(entries[3].textContent).toEqual("I own the service");
-        expect(entries[4].textContent).toEqual("I own the product");
-        expect(entries[5].textContent).toEqual("I own the data");
+        expect(entries[0].textContent).toEqual("I own the business");
+        expect(entries[1].textContent).toEqual("I own the tech");
+        expect(entries[2].textContent).toEqual("I own the service");
+        expect(entries[3].textContent).toEqual("I own the product");
+        expect(entries[4].textContent).toEqual("I own the data");
       });
     });
 
@@ -273,12 +271,11 @@ describe("<SystemView>", () => {
         setup(test_unknown_system);
         const column = await screen.findByTestId("contacts-column1");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("System register owner");
-        expect(entries[1].textContent).toEqual("Business owner");
-        expect(entries[2].textContent).toEqual("Technical owner");
-        expect(entries[3].textContent).toEqual("Service owner");
-        expect(entries[4].textContent).toEqual("Product owner");
-        expect(entries[5].textContent).toEqual("Information asset owner");
+        expect(entries[0].textContent).toEqual("Business owner");
+        expect(entries[1].textContent).toEqual("Technical owner");
+        expect(entries[2].textContent).toEqual("Service owner");
+        expect(entries[3].textContent).toEqual("Product owner");
+        expect(entries[4].textContent).toEqual("Information asset owner");
       });
 
       it('renders correct entries in the second column of About table', async () => {
@@ -290,7 +287,6 @@ describe("<SystemView>", () => {
         expect(entries[2].textContent).toEqual("UNKNOWN");
         expect(entries[3].textContent).toEqual("UNKNOWN");
         expect(entries[4].textContent).toEqual("UNKNOWN");
-        expect(entries[5].textContent).toEqual("UNKNOWN");
       });
     });
 
