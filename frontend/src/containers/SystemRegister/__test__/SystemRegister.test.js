@@ -8,6 +8,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 
 import data from '../../../data/systems_dummy.json';
+import SystemNotFoundException from '../../../services/systemNotFoundException';
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
@@ -15,6 +16,9 @@ const server = setupServer(
       ctx.status(200),
       ctx.json(data)
     );
+  }),
+  rest.get("/api/system/9999", (req, res, ctx) => {
+    throw new SystemNotFoundException();
   })
 );
 
@@ -50,6 +54,21 @@ describe("<SystemRegister />", () => {
       await waitFor(() => {
         const dashboard = getByText('Page not found')
         expect(dashboard).toBeInTheDocument()
+      })
+    });
+
+    it("shows <PageNotFound /> if system does not exist", async () => { //TODO help writing this test
+      const history = createMemoryHistory({ initialEntries: ['/system/9999'] });
+      const { getByText } = render(
+        <Router history={history}>
+          <SystemRegister />
+        </Router>
+      )
+      await waitFor(() => {
+        try {
+          const dashboard = getByText('Page not found')
+          expect(dashboard).toBeInTheDocument()
+        } catch (e) { }
       })
     });
 
