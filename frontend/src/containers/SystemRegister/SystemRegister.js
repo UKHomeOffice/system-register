@@ -15,7 +15,9 @@ import SystemList from '../../components/SystemList/SystemList';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import PageNotFoundError from '../../components/Errors/PageNotFoundError';
 
+import getPortfolios from '../getPortfolios';
 import api from '../../services/api';
+
 
 class SystemRegister extends React.Component {
     state = {
@@ -70,7 +72,7 @@ class SystemRegister extends React.Component {
                         </Route>
                         <Route path="/system/:id">
                             <ErrorBoundary FallbackComponent={PageNotFoundError}>
-                                <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
+                                <System portfolios={getPortfolios(this.state.register.systems)} onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
                             </ErrorBoundary>
                         </Route>
                         <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />

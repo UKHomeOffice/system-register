@@ -6,8 +6,6 @@ import SystemRegister from './SystemRegister/SystemRegister';
 
 import config from '../config/config';
 
-import getPortfolios from './getPortfolios';
-
 import './App.css';
 
 // todo state should be in containers, components should be stateless
