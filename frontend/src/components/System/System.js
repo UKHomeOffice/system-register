@@ -59,18 +59,18 @@ function System(props) {
   }, [history, url]);
   return (
     <Switch>
-      <Route path={`${path}`} exact>
-        <SystemView system={system} />
-      </Route>
-      <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
-      </SecureRoute>
-      <SecureRoute path={`${path}/update-about`}>
-        <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
-      </SecureRoute>
-      <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
-      </SecureRoute>
+        <Route path={`${path}`} exact>
+          <SystemView system={system} />
+        </Route>
+        <SecureRoute path={`${path}/update-info`}>
+          <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
+        </SecureRoute>
+        <SecureRoute path={`${path}/update-about`}>
+          <UpdateAbout system={system} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+        </SecureRoute>
+        <SecureRoute path={`${path}/update-contacts`}>
+          <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+        </SecureRoute>
     </Switch>
   );
 }

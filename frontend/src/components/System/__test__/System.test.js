@@ -8,8 +8,6 @@ import { Route, Router } from 'react-router-dom';
 import System from '../System';
 import api from '../../../services/api';
 import SystemNotFoundException from '../../../services/systemNotFoundException';
-import ErrorBoundary from '../../Errors/ErrorBoundary/ErrorBoundary';
-import PageNotFoundError from '../../Errors/PageNotFoundError';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),

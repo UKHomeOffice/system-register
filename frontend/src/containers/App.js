@@ -1,44 +1,18 @@
 import React from 'react';
 import Keycloak from 'keycloak-js';
 import { KeycloakProvider } from '@react-keycloak/web';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import SystemRegister from './SystemRegister/SystemRegister';
 
-import About from '../components/About';
-import Banner from '../components/Banner/Banner';
-import Contact from '../components/Contact';
-import Link from '../components/Linking/Link';
-import Menu from '../components/Menu/Menu';
-import PortfolioHeatmap from '../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap';
-import SRFooter from "../components/SRFooter/SRFooter";
-import System from '../components/System/System';
-import SystemList from '../components/SystemList/SystemList';
-import TitleBar from '../components/TitleBar/TitleBar';
-import api from '../services/api';
 import config from '../config/config';
 
 import './App.css';
-import ErrorBoundary from '../components/Errors/ErrorBoundary/ErrorBoundary';
-import PageNotFoundError from '../components/Errors/PageNotFoundError';
 
 // todo state should be in containers, components should be stateless
 class App extends React.Component {
   state = {
-    keycloak: undefined,
-    register: {
-      "systems": []
-    }
+    keycloak: undefined
   }
-
-  loadSystems = async () => api.getAllSystems()
-    .then((register) => {
-      if (this._isMounted) {
-        this.setState(
-          {
-            keycloak: this.state.keycloak,
-            register: register
-          });
-      }
-    });
 
   componentDidMount() {
     this._isMounted = true;
@@ -52,17 +26,8 @@ class App extends React.Component {
         this.setState(
           {
             keycloak: new Keycloak(keycloakConfig),
-            register: this.state.register
           })
       }).catch((e) => console.error(e))
-
-    this.loadSystems()
-  }
-
-  checkForDuplicateNames = (name) => {
-    name = name.toLowerCase();
-    const allSystemNames = this.state.register.systems.map(system => system.name.toLowerCase())
-    return allSystemNames.includes(name);
   }
 
   componentWillUnmount() {
@@ -74,35 +39,9 @@ class App extends React.Component {
       return (
         <KeycloakProvider keycloak={this.state.keycloak}>
           <BrowserRouter>
-            <header>
-              <TitleBar />
-              <Banner phase="in development">
-                This is a new service - your <Link to="/contact">feedback</Link> will help us to
-                improve it.
-              </Banner>
-            </header>
-            <div className="page">
-              <Menu />
-              <main className="content-wrap">
-                <ErrorBoundary>
-                  <Switch>
-                    <Route exact path="/">
-                      <SystemList register={this.state.register} />
-                    </Route>
-                    <Route path="/system/:id">
-                      <System onBeforeNameChange={this.checkForDuplicateNames} onChange={this.loadSystems} />
-                    </Route>
-                    <Route exact path="/risk_dashboard" component={PortfolioHeatmap} />
-                    <Route exact path="/about" component={About} />
-                    <Route exact path="/contact" component={Contact} />
-                    <Route path="/*" component={PageNotFoundError} />
-                  </Switch>
-                </ErrorBoundary>
-              </main>
-              <SRFooter />
-            </div>
+           <SystemRegister />
           </BrowserRouter>
-        </KeycloakProvider>
+        </KeycloakProvider >
       );
     } else {
       return <main><p data-testid="auth-initialising-msg">Initialising authentication...</p></main>
