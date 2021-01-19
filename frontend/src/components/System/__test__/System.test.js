@@ -137,20 +137,13 @@ describe('<System />', () => {
         user.type(productOwnerField, "updated owner");
         user.click(saveButton);
 
-        await waitFor(() => {
-          expect(api.updateProductOwner).toBeCalledWith(
-            "123",
-            expect.objectContaining({
-              productOwner: "updated owner",
-            })
-          );
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
-          );
-        });
+        await returnToSystemView(123, history);
+        expect(api.updateProductOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            productOwner: "updated owner",
+          })
+        );
       });
 
       it("returns to system view on cancel", async () => {
@@ -164,13 +157,7 @@ describe('<System />', () => {
 
         user.click(saveButton);
 
-        await waitFor(() => {
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
-          );
-        });
+        await returnToSystemView(123, history);
         expect(api.updateProductOwner).not.toBeCalled();
         expect(changeHandler).not.toBeCalled();
       });
@@ -193,20 +180,13 @@ describe('<System />', () => {
           user.type(systemNameField, "updated system name");
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateSystemName).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                name: "updated system name",
-              })
-            );
-          });
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSystemName).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              name: "updated system name",
+            })
           );
         });
 
@@ -217,13 +197,7 @@ describe('<System />', () => {
 
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(api.updateSystemName).not.toBeCalled();
           expect(changeHandler).not.toBeCalled();
         });
@@ -241,20 +215,13 @@ describe('<System />', () => {
           user.type(systemDescriptionField, "updated system description");
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateSystemDescription).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                description: "updated system description",
-              })
-            );
-          });
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSystemDescription).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              description: "updated system description",
+            })
           );
         });
 
@@ -265,13 +232,7 @@ describe('<System />', () => {
 
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(api.updateSystemDescription).not.toBeCalled();
           expect(changeHandler).not.toBeCalled();
         });
@@ -294,20 +255,14 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updatePortfolio).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                portfolio: "updated portfolio",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updatePortfolio).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              portfolio: "updated portfolio",
+            })
+          );
         });
 
         it("api is not called if portfolio is unchanged", async () => {
@@ -319,13 +274,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updatePortfolio).not.toBeCalled();
         });
@@ -346,20 +295,14 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateCriticality).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                criticality: "high",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateCriticality).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              criticality: "high",
+            })
+          );
         });
 
         it("api is not called if criticality is unchanged", async () => {
@@ -371,13 +314,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updateCriticality).not.toBeCalled();
         });
@@ -398,20 +335,14 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateInvestmentState).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                investmentState: "sunset",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateInvestmentState).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              investmentState: "sunset",
+            })
+          );
         });
 
         it("api is not called if investment state is unchanged", async () => {
@@ -423,13 +354,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updateInvestmentState).not.toBeCalled();
         });
@@ -444,14 +369,19 @@ async function checkCancelButton(path) {
 
   user.click(cancelButton);
 
-  expect(history).toHaveProperty("index", 1);
-  expect(history).toHaveProperty(
-    "location.pathname",
-    "/system/123"
-  );
-
+  await returnToSystemView(123, history);
   expect(api.updateProductOwner).not.toBeCalled();
   expect(api.updateCriticality).not.toBeCalled(); //todo refactor to loop through all update api methods
+}
+
+async function returnToSystemView(systemId, history) {
+  await waitFor(() => {
+    expect(history).toHaveProperty("index", 1);
+    expect(history).toHaveProperty(
+      "location.pathname",
+      `/system/${systemId}`
+    );
+  });
 }
 
 function renderWithRouting(path, renderOptions) {
