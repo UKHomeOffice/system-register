@@ -1,13 +1,15 @@
 import React from 'react';
 import user from "@testing-library/user-event";
-import {useKeycloak} from "@react-keycloak/web";
-import {render, screen, waitFor} from '@testing-library/react';
-import {createMemoryHistory} from "history";
-import {Route, Router} from 'react-router-dom';
+import { useKeycloak } from "@react-keycloak/web";
+import { render, screen, waitFor } from '@testing-library/react';
+import { createMemoryHistory } from "history";
+import { ErrorBoundary } from 'react-error-boundary';
+import { Route, Router } from 'react-router-dom';
 
+import PageNotFoundError from "../../Errors/PageNotFoundError";
 import System from '../System';
-import api from '../../../services/api';
 import SystemNotFoundException from '../../../services/systemNotFoundException';
+import api from '../../../services/api';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
@@ -62,17 +64,17 @@ describe('<System />', () => {
 
     it('renders page not found error view when api throws SystemNotFoundException', async () => {
       api.getSystem.mockResolvedValue(() => { throw new SystemNotFoundException() });
-      try {
-        render(
+      render(
+        <Router history={createMemoryHistory()}>
           <ErrorBoundary fallback={<PageNotFoundError />}>
             <System />
           </ErrorBoundary>
-        )
+        </Router>
+      );
 
-        const element = await screen.findByText('Page not found');
+      const element = await screen.findByText('Page not found');
 
-        expect(element).toBeInTheDocument();
-      } catch (e) { }
+      expect(element).toBeInTheDocument();
     });
   })
 
