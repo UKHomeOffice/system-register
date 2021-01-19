@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Keycloak from 'keycloak-js';
 import { KeycloakProvider } from '@react-keycloak/web';
-import config from '../config/config';
 
 
-const withKeycloak = (Component) => { //todo test OR I think there is an official withKeyloak HOC from library?
-    const KeycloakWrapped = (...props) => {
+const withKeycloak = (config, Component) => { //todo test OR I think there is an official withKeyloak HOC from library?
+    const KeycloakWrapped = (props) => {
         var [keycloak, setKeycloak] = useState(undefined)
         useEffect(() => {
             config.getKeycloakConfig()
@@ -20,7 +19,7 @@ const withKeycloak = (Component) => { //todo test OR I think there is an officia
         }, [])
 
         if (keycloak) {
-            return <KeycloakProvider keycloak={keycloak}><> <Component {...props} /></></KeycloakProvider>
+            return <KeycloakProvider keycloak={keycloak}><Component {...props} /></KeycloakProvider>
         } else {
             return <main><p data-testid="auth-initialising-msg">Initialising authentication...</p></main>
         }
