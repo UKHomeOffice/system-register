@@ -59,7 +59,7 @@ const SystemView = ({ system }) => {
               </GridCol>
               <GridCol data-testid="contacts-column2" setWidth="one-half">
                 <p><KeyInfo info={system.business_owner} /></p>
-                <p><KeyInfo info={system.technical_owner} /></p>
+                <p><KeyInfo info={system.tech_owner} /></p>
                 <p><KeyInfo info={system.service_owner} /></p>
                 <p><KeyInfo info={system.product_owner} /></p>
                 <p><KeyInfo info={system.information_asset_owner} /></p>
