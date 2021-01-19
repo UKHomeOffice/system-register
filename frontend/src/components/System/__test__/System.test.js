@@ -38,14 +38,13 @@ const test_system = {
 const changeHandler = jest.fn();
 
 describe('<System />', () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
     api.getSystem.mockResolvedValue(test_system);
   });
 
   it('renders system view', async () => {
-    renderWithHistory("1");
+    renderWithRouting("1");
 
     const element = await screen.findByText('Test System');
 
@@ -89,7 +88,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for info", async () => {
-      renderWithHistory("1/update-info");
+      renderWithRouting("1/update-info");
 
       const element = await screen.findByText('Test System');
 
@@ -97,7 +96,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for about", async () => {
-      renderWithHistory("1/update-about");
+      renderWithRouting("1/update-about");
 
       const element = await screen.findByText('Test System');
 
@@ -105,7 +104,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for contacts", async () => {
-      renderWithHistory("1/update-contacts");
+      renderWithRouting("1/update-contacts");
 
       const element = await screen.findByText('Test System');
 
@@ -115,8 +114,7 @@ describe('<System />', () => {
     describe("editing contacts", () => {
       it("calls dirtyCallback when updates", async () => {
         api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
-        const history = createMemoryHistory({initialEntries: ["/system/123/update-contacts"], initialIndex: 0});
-        renderWithHistory(null, {history});
+        renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -131,11 +129,7 @@ describe('<System />', () => {
 
       it("returns to the system view after a successful update", async () => {
         api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
-        const history = createMemoryHistory({
-          initialEntries: ["/system/123/update-contacts"],
-          initialIndex: 0,
-        });
-        renderWithHistory(null, {history});
+        const { history } = renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -164,11 +158,7 @@ describe('<System />', () => {
       });
 
       it("does not send a request if field values are unchanged", async () => {
-        const history = createMemoryHistory({
-          initialEntries: ["/system/123/update-contacts"],
-          initialIndex: 0,
-        });
-        renderWithHistory(null, {history});
+        const { history } = renderWithRouting("123/update-contacts");
         await screen.findByText("Test System");
         const saveButton = await screen.findByRole("button", {name: /save/i});
 
@@ -194,11 +184,7 @@ describe('<System />', () => {
       describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
           api.updateSystemName.mockResolvedValue({...test_system, name: "updated system name"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           const systemNameField = await screen.findByLabelText(/system name/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -225,11 +211,7 @@ describe('<System />', () => {
         });
 
         it("does not send a request if field values are unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
           const saveButton = await screen.findByRole("button", {name: /save/i});
 
@@ -250,11 +232,7 @@ describe('<System />', () => {
       describe("system description", () => {
         it("returns to the system view after a successful update", async () => {
           api.updateSystemDescription.mockResolvedValue({...test_system, description: "system description"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           const systemDescriptionField = await screen.findByLabelText(/system description/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -281,11 +259,7 @@ describe('<System />', () => {
         });
 
         it("does not send a request if field values are unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
           const saveButton = await screen.findByRole("button", {name: /save/i});
 
@@ -312,11 +286,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updatePortfolio.mockResolvedValue({...test_system, portfolio: "updated portfolio"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/updated portfolio/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -341,11 +311,7 @@ describe('<System />', () => {
         });
 
         it("api is not called if portfolio is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/original portfolio/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -372,11 +338,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updateCriticality.mockResolvedValue({...test_system, criticality: "high"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/high/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -401,11 +363,7 @@ describe('<System />', () => {
         });
 
         it("api is not called if criticality is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/low/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -432,11 +390,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updateInvestmentState.mockResolvedValue({...test_system, investment_state: "sunset"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/sunset/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -461,11 +415,7 @@ describe('<System />', () => {
         });
 
         it("api is not called if investment state is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/invest/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -489,11 +439,7 @@ describe('<System />', () => {
 });
 
 async function checkCancelButton(path) {
-  const history = createMemoryHistory({
-    initialEntries: [`/system/123/${path}`],
-    initialIndex: 0,
-  });
-  renderWithHistory(null, {history});
+  const { history } = renderWithRouting(`123/${path}`);
   const cancelButton = await screen.findByRole("button", {name: /cancel/i});
 
   user.click(cancelButton);
@@ -508,17 +454,19 @@ async function checkCancelButton(path) {
   expect(api.updateCriticality).not.toBeCalled(); //todo refactor to loop through all update api methods
 }
 
-function renderWithHistory(path, context = {}) {
-  const {history} = {
-    history: createMemoryHistory({initialEntries: [`/system/${path}`]}),
-    ...context,
-  };
-
-  return render(
+function renderWithRouting(path, renderOptions) {
+  const history = createMemoryHistory({ initialEntries: [`/system/${path}`] });
+  const renderResult = render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System portfolios={["original portfolio", "updated portfolio"]} onBeforeNameChange={() => false} onChange={changeHandler} />
+        <System
+          portfolios={["original portfolio", "updated portfolio"]}
+          onBeforeNameChange={() => false}
+          onChange={changeHandler}
+        />
       </Route>
-    </Router>
+    </Router>,
+    renderOptions
   );
+  return { ...renderResult, history };
 }
