@@ -27,17 +27,23 @@ describe("UpdateContacts", () => {
   });
 
   it("calls submission handler with updated contacts", async () => {
-    render(<UpdateContacts system={{ product_owner: "existing owner" }} onSubmit={submitHandler} />);
+    const system = { product_owner: "existing product owner", tech_owner: "existing tech owner" };
+    render(<UpdateContacts system={system} onSubmit={submitHandler} withTechnicalOwner />);
     const productOwnerField = screen.getByLabelText(/product owner/i);
+    const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.clear(productOwnerField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "new owner");
+    user.clear(technicalOwnerField);
+    // noinspection ES6MissingAwait
+    user.type(productOwnerField, "new product owner");
+    // noinspection ES6MissingAwait
+    user.type(technicalOwnerField, "new technical owner");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
-      productOwner: "new owner",
+      productOwner: "new product owner",
+      technicalOwner: "new technical owner",
     }));
   });
 
