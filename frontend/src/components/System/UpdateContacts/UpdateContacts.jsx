@@ -68,6 +68,7 @@ function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false
                 hint="Who is the technical owner for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
                 placeholder="Unknown"
+                validate={validateContact}
               >
                 Technical owner
               </TextField>}
