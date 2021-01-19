@@ -48,7 +48,7 @@ function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false
             <ErrorSummary />
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can currently change only product owner information.
+              You can currently change only product owner {withTechnicalOwner && "and technical owner"} information.
               We are working to make other fields editable.
             </p>
 
