@@ -30,7 +30,7 @@ const SystemView = ({ system }) => {
             <GridRow>
               <GridCol data-testid="about-column1" setWidth="one-quarter">
                 <p>Aliases</p>
-                <p>Department</p>
+                <p>Portfolio</p>
                 <p>Criticality assessment</p>
                 <p>Investment state</p>
                 <p>Developed by</p>

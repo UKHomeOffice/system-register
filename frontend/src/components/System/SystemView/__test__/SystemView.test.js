@@ -132,7 +132,7 @@ describe("<SystemView>", () => {
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
         expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Department");
+        expect(entries[1].textContent).toEqual("Portfolio");
         expect(entries[2].textContent).toEqual("Criticality assessment");
         expect(entries[3].textContent).toEqual("Investment state");
         expect(entries[4].textContent).toEqual("Developed by");
@@ -239,7 +239,7 @@ describe("<SystemView>", () => {
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
         expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Department");
+        expect(entries[1].textContent).toEqual("Portfolio");
         expect(entries[2].textContent).toEqual("Criticality assessment");
         expect(entries[3].textContent).toEqual("Investment state");
         expect(entries[4].textContent).toEqual("Developed by");
