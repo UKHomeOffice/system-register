@@ -24,7 +24,7 @@
             ],
             "service_owner": "Home Office",
             "supported_by": "All",
-            "technical_owner": "Home Office",
+            "tech_owner": "Home Office",
             "id": 1,
             "last_updated": {
                 "timestamp": "2020-11-18T11:22:50.326570Z",
@@ -53,7 +53,7 @@
             ],
             "service_owner": "Home Office",
             "supported_by": "All",
-            "technical_owner": "Fun Office",
+            "tech_owner": "Fun Office",
             "id": 2,
             "last_updated": {
                 "timestamp": "2020-11-18T11:22:50.326570Z",

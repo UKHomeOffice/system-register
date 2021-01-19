@@ -22,7 +22,7 @@ const test_system = {
   system_register_owner: "I own the register",
   business_owner: "I own the business",
   service_owner: "I own the service",
-  technical_owner: "I own the tech",
+  tech_owner: "I own the tech",
   product_owner: "I own the product",
   information_asset_owner: "I own the data",
   developed_by: "Dev Team",
@@ -55,7 +55,7 @@ const test_unknown_system = {
   },
   business_owner: "",
   service_owner: "",
-  technical_owner: "",
+  tech_owner: "",
   product_owner: "",
   information_asset_owner: "",
   developed_by: "",
@@ -132,7 +132,7 @@ describe("<SystemView>", () => {
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
         expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Department");
+        expect(entries[1].textContent).toEqual("Portfolio");
         expect(entries[2].textContent).toEqual("Criticality assessment");
         expect(entries[3].textContent).toEqual("Investment state");
         expect(entries[4].textContent).toEqual("Developed by");
@@ -239,7 +239,7 @@ describe("<SystemView>", () => {
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
         expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Department");
+        expect(entries[1].textContent).toEqual("Portfolio");
         expect(entries[2].textContent).toEqual("Criticality assessment");
         expect(entries[3].textContent).toEqual("Investment state");
         expect(entries[4].textContent).toEqual("Developed by");

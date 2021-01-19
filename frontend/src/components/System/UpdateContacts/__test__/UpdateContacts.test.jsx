@@ -7,6 +7,19 @@ import ValidationError from "../../../../services/validationError";
 
 describe("UpdateContacts", () => {
   const submitHandler = jest.fn();
+  const cancelHandler = jest.fn();
+
+  function setUp(system = {}, props = {}) {
+    const defaults = {
+      name: "name",
+    };
+    return render(<UpdateContacts
+      system={system ? { ...defaults, ...system } : null}
+      onSubmit={submitHandler}
+      onCancel={cancelHandler}
+      {...props}
+    />);
+  }
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -15,34 +28,44 @@ describe("UpdateContacts", () => {
   });
 
   it("displays the name of the system", () => {
-    render(<UpdateContacts system={{ name: 'system name' }} onSubmit={submitHandler} />);
+    setUp({ name: "system name" });
 
     expect(screen.getByRole("heading")).toHaveTextContent("system name");
   });
 
   it("displays a loading message if data is unavailable", () => {
-    render(<UpdateContacts system={null} onSubmit={submitHandler} />);
+    setUp(null);
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
   });
 
   it("calls submission handler with updated contacts", async () => {
-    render(<UpdateContacts system={{ product_owner: "existing owner" }} onSubmit={submitHandler} />);
+    setUp({
+      product_owner: "existing product owner",
+      tech_owner: "existing tech owner",
+    }, {
+      withTechnicalOwner: true,
+    });
     const productOwnerField = screen.getByLabelText(/product owner/i);
+    const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.clear(productOwnerField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "new owner");
+    user.clear(technicalOwnerField);
+    // noinspection ES6MissingAwait
+    user.type(productOwnerField, "new product owner");
+    // noinspection ES6MissingAwait
+    user.type(technicalOwnerField, "new technical owner");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
-      productOwner: "new owner",
+      productOwner: "new product owner",
+      technicalOwner: "new technical owner",
     }));
   });
 
   it("trims values before calling the submission handler", async () => {
-    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -57,7 +80,7 @@ describe("UpdateContacts", () => {
 
   it.each(["owner", null])
   ("does not send unchanged values to the submission handler", async (value) => {
-    render(<UpdateContacts system={{ product_owner: value }} onSubmit={submitHandler} />);
+    setUp({ product_owner: value });
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
@@ -66,8 +89,7 @@ describe("UpdateContacts", () => {
   });
 
   it("calls cancel handler", () => {
-    const cancelHandler = jest.fn();
-    render(<UpdateContacts system={{ product_owner: null }} onCancel={cancelHandler} />);
+    setUp();
     const cancelButton = screen.getByRole("button", {name: /cancel/i});
 
     user.click(cancelButton);
@@ -76,7 +98,7 @@ describe("UpdateContacts", () => {
   });
 
   it("validates contacts before submission", async () => {
-    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -88,7 +110,7 @@ describe("UpdateContacts", () => {
   });
 
   it("shows an error summary containing all error details", async () => {
-    render(<UpdateContacts system={{ product_owner: null }} onSubmit={submitHandler} />);
+    setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -103,7 +125,7 @@ describe("UpdateContacts", () => {
     submitHandler.mockRejectedValue(new ValidationError({
       productOwner: "validation error",
     }));
-    render(<UpdateContacts system={{ product_owner: "owner" }} onSubmit={submitHandler} />);
+    setUp({ product_owner: "owner" });
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);

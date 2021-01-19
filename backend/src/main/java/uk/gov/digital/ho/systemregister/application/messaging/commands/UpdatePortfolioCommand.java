@@ -3,7 +3,6 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 import com.google.common.base.Objects;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.PortfolioUpdatedEvent;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SystemDescriptionUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
