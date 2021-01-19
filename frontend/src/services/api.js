@@ -12,6 +12,7 @@ const api = {
   updateCriticality,
   updateInvestmentState,
   updateProductOwner,
+  updateTechnicalOwner,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -52,6 +53,9 @@ async function updateProductOwner(id, data) {
     throw new ValidationError(response.data.errors);
   }
   return response.data;
+}
+
+async function updateTechnicalOwner(id, data) {
 }
 
 async function updateSystemName(id, data) {

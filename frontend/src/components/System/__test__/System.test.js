@@ -18,7 +18,8 @@ jest.mock('../../../services/api', () => ({
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
-  updateProductOwner: jest.fn()
+  updateProductOwner: jest.fn(),
+  updateTechnicalOwner: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -112,14 +113,23 @@ describe('<System />', () => {
     });
 
     describe("editing contacts", () => {
-      it("calls dirtyCallback when updates", async () => {
-        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
+      beforeEach(() => {
+        api.updateProductOwner.mockResolvedValue(test_system);
+        api.updateTechnicalOwner.mockResolvedValue(test_system);
+      });
+
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-contacts");
+      });
+
+      it("calls onChange callback when updates", async () => {
         renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
+        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
-        // noinspection ES6MissingAwait: there is no typing delay
-        user.type(productOwnerField, "updated owner");
+        overtype(productOwnerField, "updated product owner");
+        overtype(technicalOwnerField, "updated technical owner");
         user.click(saveButton);
 
         await waitFor(() => {
@@ -128,26 +138,22 @@ describe('<System />', () => {
       });
 
       it("returns to the system view after a successful update", async () => {
-        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
         const { history } = renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const saveButton = screen.getByRole("button", {name: /save/i});
+        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const saveButton = screen.getByRole("button", { name: /save/i });
 
-        // noinspection ES6MissingAwait: there is no typing delay
-        user.type(productOwnerField, "updated owner");
+        overtype(productOwnerField, "updated product owner");
+        overtype(technicalOwnerField, "updated technical owner");
         user.click(saveButton);
 
         await returnToSystemView(123, history);
-        expect(api.updateProductOwner).toBeCalledWith(
-          "123",
-          expect.objectContaining({
-            productOwner: "updated owner",
-          })
-        );
-      });
-
-      it("returns to system view on cancel", async () => {
-        await checkCancelButton("update-contacts");
+        expect(api.updateProductOwner).toBeCalledWith("123", expect.objectContaining({
+          productOwner: "updated product owner",
+        }));
+        expect(api.updateTechnicalOwner).toBeCalledWith("123", expect.objectContaining({
+          technicalOwner: "updated technical owner",
+        }));
       });
 
       it("does not send a request if field values are unchanged", async () => {
@@ -159,6 +165,7 @@ describe('<System />', () => {
 
         await returnToSystemView(123, history);
         expect(api.updateProductOwner).not.toBeCalled();
+        expect(api.updateTechnicalOwner).not.toBeCalled();
         expect(changeHandler).not.toBeCalled();
       });
     });
@@ -363,6 +370,12 @@ describe('<System />', () => {
   });
 });
 
+function overtype(field, value) {
+  user.clear(field);
+  // noinspection JSIgnoredPromiseFromCall
+  user.type(field, value);
+}
+
 async function checkCancelButton(path) {
   const { history } = renderWithRouting(`123/${path}`);
   const cancelButton = await screen.findByRole("button", {name: /cancel/i});
@@ -393,6 +406,7 @@ function renderWithRouting(path, renderOptions) {
           portfolios={["original portfolio", "updated portfolio"]}
           onBeforeNameChange={() => false}
           onChange={changeHandler}
+          withTechnicalOwner
         />
       </Route>
     </Router>,

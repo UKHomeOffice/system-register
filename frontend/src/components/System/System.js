@@ -10,7 +10,7 @@ import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 import useAsyncError from '../../utilities/useAsyncError';
 
-function System({ portfolios, onChange, onBeforeNameChange }) {
+function System({ portfolios, onChange, onBeforeNameChange, withTechnicalOwner = false }) {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
@@ -30,8 +30,11 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     if ("productOwner" in data) {
       updateSystem(await api.updateProductOwner(id, data));
     }
+    if (withTechnicalOwner && ("technicalOwner" in data)) {
+      updateSystem(await api.updateTechnicalOwner(id, data));
+    }
     history.push(url);
-  }, [id, history, url, updateSystem]);
+  }, [id, history, url, updateSystem, withTechnicalOwner]);
 
   const handleUpdateAbout = useCallback(async (data) => {
     if ("portfolio" in data) {
@@ -59,6 +62,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   const handleCancel = useCallback(() => {
     history.push(url);
   }, [history, url]);
+
   return (
     <Switch>
       <Route path={`${path}`} exact>
@@ -71,7 +75,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
         <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} withTechnicalOwner={withTechnicalOwner} />
       </SecureRoute>
     </Switch>
   );
