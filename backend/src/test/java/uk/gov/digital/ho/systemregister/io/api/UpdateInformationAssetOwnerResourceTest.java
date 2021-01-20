@@ -19,23 +19,24 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
-public class UpdateProductOwnerResourceTest extends ResourceTestBase {
+public class UpdateInformationAssetOwnerResourceTest extends ResourceTestBase {
 
-    public UpdateProductOwnerResourceTest(@SuppressWarnings("CdiInjectionPointsInspection") AgroalDataSource dataSource) {
+    public UpdateInformationAssetOwnerResourceTest(@SuppressWarnings("CdiInjectionPointsInspection") AgroalDataSource dataSource) {
         super(dataSource);
     }
 
     @Test
     @TestSecurity
-    public void updatesProductOwner() throws JSONException {
-        String expectedResponse = getResourceAsString("update-product-owner/updateProductOwnerSystemResponse.json");
+    public void updatesInformationAssetOwner() throws JSONException {
+        String expectedResponse = getResourceAsString("update-information-asset-owner/updateInformationAssetOwnerSystemResponse.json");
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
 
-        String response = sendCommandToApi("update-product-owner/command.json", "/api/systems/1/update-product-owner", 200);
+        String response = sendCommandToApi("update-information-asset-owner/command.json", "/api/systems/1/update-information-asset-owner", 200);
 
         assertEquals(expectedResponse, response, false);
-        checkAllSystemsResponse("update-product-owner/expectedAllSystemsResponse.json");
+        checkAllSystemsResponse("update-information-asset-owner/expectedAllSystemsResponse.json");
     }
+
 
     @Test
     @TestSecurity
@@ -43,7 +44,7 @@ public class UpdateProductOwnerResourceTest extends ResourceTestBase {
         given().auth().none()
                 .contentType(JSON)
                 .body("{}")
-                .when().post("/api/systems/1/update-product-owner")
+                .when().post("/api/systems/1/update-information-asset-owner")
                 .then().assertThat().statusCode(401);
     }
 }

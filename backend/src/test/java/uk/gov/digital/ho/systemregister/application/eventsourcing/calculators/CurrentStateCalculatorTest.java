@@ -16,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.InformationAssetOwnerUpdatedEventBuilder.anInformationAssetOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
@@ -215,11 +216,11 @@ public class CurrentStateCalculatorTest {
                 .withId(123)
                 .withSystem(templateSystem.withProductOwner("initial owner"))
                 .build();
-        var productOwnerAuthor = aPerson().withUsername("editor");
+        var author = aPerson().withUsername("editor");
         var productOwnerUpdatedEvent = aProductOwnerUpdatedEvent()
                 .withId(123)
                 .withProductOwner("new owner")
-                .withAuthor(productOwnerAuthor)
+                .withAuthor(author)
                 .build();
         var expectedSystem = templateSystem
                 .withProductOwner("new owner")
@@ -229,8 +230,34 @@ public class CurrentStateCalculatorTest {
 
         assertThat(updatedState).usingRecursiveComparison()
                 .isEqualTo(new CurrentState(
-                        Map.of(expectedSystem, new UpdateMetadata(productOwnerAuthor.build(), productOwnerUpdatedEvent.timestamp)),
+                        Map.of(expectedSystem, new UpdateMetadata(author.build(), productOwnerUpdatedEvent.timestamp)),
                         productOwnerUpdatedEvent.timestamp));
+    }
+
+    @Test
+    void combinesUpdateInformationAssetOwnerUpdatedEventTypesToChangeSystems() {
+        var snapshot = aSnapshot().build();
+        var templateSystem = aSystem().withId(123);
+        var initialEvent = aSystemAddedEvent()
+                .withId(123)
+                .withSystem(templateSystem.withInformationAssetOwner("initial owner"))
+                .build();
+        var author = aPerson().withUsername("author");
+        var informationAssetOwnerUpdatedEvent = anInformationAssetOwnerUpdatedEvent()
+                .withId(123)
+                .withInformationAssetOwner("new owner")
+                .withAuthor(author)
+                .build();
+        var expectedSystem = templateSystem
+                .withInformationAssetOwner("new owner")
+                .build();
+
+        var updatedState = calculator.crunch(snapshot, List.of(initialEvent, informationAssetOwnerUpdatedEvent));
+
+        assertThat(updatedState).usingRecursiveComparison()
+                .isEqualTo(new CurrentState(
+                        Map.of(expectedSystem, new UpdateMetadata(author.build(), informationAssetOwnerUpdatedEvent.timestamp)),
+                        informationAssetOwnerUpdatedEvent.timestamp));
     }
 
     @Test

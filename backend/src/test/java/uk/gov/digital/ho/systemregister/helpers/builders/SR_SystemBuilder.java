@@ -25,7 +25,7 @@ public class SR_SystemBuilder {
     private String serviceOwner = "Service Owner";
     private String technicalOwner = "Techy Owner";
     private String productOwner = null;
-    private final String informationAssetOwner = null;
+    private String informationAssetOwner = null;
     private String developedBy = "Developers";
     private String supportedBy = "All";
     private List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
@@ -119,6 +119,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withServiceOwner(String serviceOwner) {
         this.serviceOwner = serviceOwner;
+        return this;
+    }
+
+    public SR_SystemBuilder withInformationAssetOwner(String informationAssetOwner) {
+        this.informationAssetOwner = informationAssetOwner;
         return this;
     }
 
