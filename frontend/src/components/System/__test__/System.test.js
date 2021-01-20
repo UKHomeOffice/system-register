@@ -1,13 +1,15 @@
 import React from 'react';
 import user from "@testing-library/user-event";
-import {useKeycloak} from "@react-keycloak/web";
-import {render, screen, waitFor} from '@testing-library/react';
-import {createMemoryHistory} from "history";
-import {Route, Router} from 'react-router-dom';
+import { useKeycloak } from "@react-keycloak/web";
+import { render, screen, waitFor } from '@testing-library/react';
+import { createMemoryHistory } from "history";
+import { ErrorBoundary } from 'react-error-boundary';
+import { Route, Router } from 'react-router-dom';
 
+import PageNotFoundError from "../../Errors/PageNotFoundError";
 import System from '../System';
-import api from '../../../services/api';
 import SystemNotFoundException from '../../../services/systemNotFoundException';
+import api from '../../../services/api';
 
 jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
@@ -16,7 +18,8 @@ jest.mock('../../../services/api', () => ({
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
-  updateProductOwner: jest.fn()
+  updateProductOwner: jest.fn(),
+  updateTechnicalOwner: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -36,14 +39,13 @@ const test_system = {
 const changeHandler = jest.fn();
 
 describe('<System />', () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
     api.getSystem.mockResolvedValue(test_system);
   });
 
   it('renders system view', async () => {
-    renderWithHistory("1");
+    renderWithRouting("1");
 
     const element = await screen.findByText('Test System');
 
@@ -62,17 +64,17 @@ describe('<System />', () => {
 
     it('renders page not found error view when api throws SystemNotFoundException', async () => {
       api.getSystem.mockResolvedValue(() => { throw new SystemNotFoundException() });
-      try {
-        render(
+      render(
+        <Router history={createMemoryHistory()}>
           <ErrorBoundary fallback={<PageNotFoundError />}>
             <System />
           </ErrorBoundary>
-        )
+        </Router>
+      );
 
-        const element = await screen.findByText('Page not found');
+      const element = await screen.findByText('Page not found');
 
-        expect(element).toBeInTheDocument();
-      } catch (e) { }
+      expect(element).toBeInTheDocument();
     });
   })
 
@@ -87,7 +89,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for info", async () => {
-      renderWithHistory("1/update-info");
+      renderWithRouting("1/update-info");
 
       const element = await screen.findByText('Test System');
 
@@ -95,7 +97,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for about", async () => {
-      renderWithHistory("1/update-about");
+      renderWithRouting("1/update-about");
 
       const element = await screen.findByText('Test System');
 
@@ -103,7 +105,7 @@ describe('<System />', () => {
     });
 
     it("shows an edit view for contacts", async () => {
-      renderWithHistory("1/update-contacts");
+      renderWithRouting("1/update-contacts");
 
       const element = await screen.findByText('Test System');
 
@@ -111,15 +113,23 @@ describe('<System />', () => {
     });
 
     describe("editing contacts", () => {
-      it("calls dirtyCallback when updates", async () => {
-        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
-        const history = createMemoryHistory({initialEntries: ["/system/123/update-contacts"], initialIndex: 0});
-        renderWithHistory(null, {history});
+      beforeEach(() => {
+        api.updateProductOwner.mockResolvedValue(test_system);
+        api.updateTechnicalOwner.mockResolvedValue(test_system);
+      });
+
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-contacts");
+      });
+
+      it("calls onChange callback when updates", async () => {
+        renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
+        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
-        // noinspection ES6MissingAwait: there is no typing delay
-        user.type(productOwnerField, "updated owner");
+        overtype(productOwnerField, "updated product owner");
+        overtype(technicalOwnerField, "updated technical owner");
         user.click(saveButton);
 
         await waitFor(() => {
@@ -128,58 +138,34 @@ describe('<System />', () => {
       });
 
       it("returns to the system view after a successful update", async () => {
-        api.updateProductOwner.mockResolvedValue({...test_system, product_owner: "updated owner"});
-        const history = createMemoryHistory({
-          initialEntries: ["/system/123/update-contacts"],
-          initialIndex: 0,
-        });
-        renderWithHistory(null, {history});
+        const { history } = renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const saveButton = screen.getByRole("button", {name: /save/i});
+        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const saveButton = screen.getByRole("button", { name: /save/i });
 
-        // noinspection ES6MissingAwait: there is no typing delay
-        user.type(productOwnerField, "updated owner");
+        overtype(productOwnerField, "updated product owner");
+        overtype(technicalOwnerField, "updated technical owner");
         user.click(saveButton);
 
-        await waitFor(() => {
-          expect(api.updateProductOwner).toBeCalledWith(
-            "123",
-            expect.objectContaining({
-              productOwner: "updated owner",
-            })
-          );
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
-          );
-        });
-      });
-
-      it("returns to system view on cancel", async () => {
-        await checkCancelButton("update-contacts");
+        await returnToSystemView(123, history);
+        expect(api.updateProductOwner).toBeCalledWith("123", expect.objectContaining({
+          productOwner: "updated product owner",
+        }));
+        expect(api.updateTechnicalOwner).toBeCalledWith("123", expect.objectContaining({
+          technicalOwner: "updated technical owner",
+        }));
       });
 
       it("does not send a request if field values are unchanged", async () => {
-        const history = createMemoryHistory({
-          initialEntries: ["/system/123/update-contacts"],
-          initialIndex: 0,
-        });
-        renderWithHistory(null, {history});
+        const { history } = renderWithRouting("123/update-contacts");
         await screen.findByText("Test System");
         const saveButton = await screen.findByRole("button", {name: /save/i});
 
         user.click(saveButton);
 
-        await waitFor(() => {
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
-          );
-        });
+        await returnToSystemView(123, history);
         expect(api.updateProductOwner).not.toBeCalled();
+        expect(api.updateTechnicalOwner).not.toBeCalled();
         expect(changeHandler).not.toBeCalled();
       });
     });
@@ -192,11 +178,7 @@ describe('<System />', () => {
       describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
           api.updateSystemName.mockResolvedValue({...test_system, name: "updated system name"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           const systemNameField = await screen.findByLabelText(/system name/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -205,41 +187,24 @@ describe('<System />', () => {
           user.type(systemNameField, "updated system name");
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateSystemName).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                name: "updated system name",
-              })
-            );
-          });
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSystemName).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              name: "updated system name",
+            })
           );
         });
 
         it("does not send a request if field values are unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
           const saveButton = await screen.findByRole("button", {name: /save/i});
 
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(api.updateSystemName).not.toBeCalled();
           expect(changeHandler).not.toBeCalled();
         });
@@ -248,11 +213,7 @@ describe('<System />', () => {
       describe("system description", () => {
         it("returns to the system view after a successful update", async () => {
           api.updateSystemDescription.mockResolvedValue({...test_system, description: "system description"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           const systemDescriptionField = await screen.findByLabelText(/system description/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -261,41 +222,24 @@ describe('<System />', () => {
           user.type(systemDescriptionField, "updated system description");
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateSystemDescription).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                description: "updated system description",
-              })
-            );
-          });
-
-          expect(history).toHaveProperty("index", 1);
-          expect(history).toHaveProperty(
-            "location.pathname",
-            "/system/123"
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSystemDescription).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              description: "updated system description",
+            })
           );
         });
 
         it("does not send a request if field values are unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-info"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
           const saveButton = await screen.findByRole("button", {name: /save/i});
 
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(api.updateSystemDescription).not.toBeCalled();
           expect(changeHandler).not.toBeCalled();
         });
@@ -310,11 +254,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updatePortfolio.mockResolvedValue({...test_system, portfolio: "updated portfolio"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/updated portfolio/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -322,28 +262,18 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updatePortfolio).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                portfolio: "updated portfolio",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updatePortfolio).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              portfolio: "updated portfolio",
+            })
+          );
         });
 
         it("api is not called if portfolio is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/original portfolio/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -351,13 +281,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updatePortfolio).not.toBeCalled();
         });
@@ -370,11 +294,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updateCriticality.mockResolvedValue({...test_system, criticality: "high"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/high/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -382,28 +302,18 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateCriticality).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                criticality: "high",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateCriticality).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              criticality: "high",
+            })
+          );
         });
 
         it("api is not called if criticality is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/low/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -411,13 +321,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updateCriticality).not.toBeCalled();
         });
@@ -430,11 +334,7 @@ describe('<System />', () => {
 
         it("returns to the system view after a successful update", async () => {
           api.updateInvestmentState.mockResolvedValue({...test_system, investment_state: "sunset"});
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/sunset/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -442,28 +342,18 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(changeHandler).toBeCalled();
-            expect(api.updateInvestmentState).toBeCalledWith(
-              "123",
-              expect.objectContaining({
-                investmentState: "sunset",
-              })
-            );
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateInvestmentState).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              investmentState: "sunset",
+            })
+          );
         });
 
         it("api is not called if investment state is unchanged", async () => {
-          const history = createMemoryHistory({
-            initialEntries: ["/system/123/update-about"],
-            initialIndex: 0,
-          });
-          renderWithHistory(null, {history});
+          const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/invest/i);
           const saveButton = screen.getByRole("button", {name: /save/i});
 
@@ -471,13 +361,7 @@ describe('<System />', () => {
           user.click(radioButton);
           user.click(saveButton);
 
-          await waitFor(() => {
-            expect(history).toHaveProperty("index", 1);
-            expect(history).toHaveProperty(
-              "location.pathname",
-              "/system/123"
-            );
-          });
+          await returnToSystemView(123, history);
           expect(changeHandler).not.toBeCalled();
           expect(api.updateInvestmentState).not.toBeCalled();
         });
@@ -486,37 +370,47 @@ describe('<System />', () => {
   });
 });
 
+function overtype(field, value) {
+  user.clear(field);
+  // noinspection JSIgnoredPromiseFromCall
+  user.type(field, value);
+}
+
 async function checkCancelButton(path) {
-  const history = createMemoryHistory({
-    initialEntries: [`/system/123/${path}`],
-    initialIndex: 0,
-  });
-  renderWithHistory(null, {history});
+  const { history } = renderWithRouting(`123/${path}`);
   const cancelButton = await screen.findByRole("button", {name: /cancel/i});
 
   user.click(cancelButton);
 
-  expect(history).toHaveProperty("index", 1);
-  expect(history).toHaveProperty(
-    "location.pathname",
-    "/system/123"
-  );
-
+  await returnToSystemView(123, history);
   expect(api.updateProductOwner).not.toBeCalled();
   expect(api.updateCriticality).not.toBeCalled(); //todo refactor to loop through all update api methods
 }
 
-function renderWithHistory(path, context = {}) {
-  const {history} = {
-    history: createMemoryHistory({initialEntries: [`/system/${path}`]}),
-    ...context,
-  };
+async function returnToSystemView(systemId, history) {
+  await waitFor(() => {
+    expect(history).toHaveProperty("index", 1);
+    expect(history).toHaveProperty(
+      "location.pathname",
+      `/system/${systemId}`
+    );
+  });
+}
 
-  return render(
+function renderWithRouting(path, renderOptions) {
+  const history = createMemoryHistory({ initialEntries: [`/system/${path}`] });
+  const renderResult = render(
     <Router history={history}>
       <Route path='/system/:id'>
-        <System portfolios={["original portfolio", "updated portfolio"]} onBeforeNameChange={() => false} onChange={changeHandler} />
+        <System
+          portfolios={["original portfolio", "updated portfolio"]}
+          onBeforeNameChange={() => false}
+          onChange={changeHandler}
+          withTechnicalOwner
+        />
       </Route>
-    </Router>
+    </Router>,
+    renderOptions
   );
+  return { ...renderResult, history };
 }

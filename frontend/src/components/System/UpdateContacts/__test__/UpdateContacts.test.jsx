@@ -9,7 +9,7 @@ describe("UpdateContacts", () => {
   const submitHandler = jest.fn();
   const cancelHandler = jest.fn();
 
-  function setUp(system = {}, props = {}) {
+  function setUp(system = {}) {
     const defaults = {
       name: "name",
     };
@@ -17,7 +17,7 @@ describe("UpdateContacts", () => {
       system={system ? { ...defaults, ...system } : null}
       onSubmit={submitHandler}
       onCancel={cancelHandler}
-      {...props}
+      withTechnicalOwner
     />);
   }
 
@@ -43,8 +43,6 @@ describe("UpdateContacts", () => {
     setUp({
       product_owner: "existing product owner",
       tech_owner: "existing tech owner",
-    }, {
-      withTechnicalOwner: true,
     });
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
@@ -67,20 +65,24 @@ describe("UpdateContacts", () => {
   it("trims values before calling the submission handler", async () => {
     setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
+    const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "  owner with extra spaces  ");
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(technicalOwnerField, "  another owner with more spaces  ");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
       productOwner: "owner with extra spaces",
+      technicalOwner: "another owner with more spaces",
     }));
   });
 
   it.each(["owner", null])
   ("does not send unchanged values to the submission handler", async (value) => {
-    setUp({ product_owner: value });
+    setUp({ product_owner: value, tech_owner: value });
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
@@ -97,39 +99,47 @@ describe("UpdateContacts", () => {
     expect(cancelHandler).toBeCalled();
   });
 
-  it("validates contacts before submission", async () => {
+  it.each(["product owner", "technical owner"])
+  ("validates %p contact before submission", async (label) => {
     setUp();
-    const productOwnerField = screen.getByLabelText(/product owner/i);
+    const ownerField = screen.getByLabelText(new RegExp(label, "i"));
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "$");
+    user.type(ownerField, "$");
     user.click(saveButton);
 
-    expect(await screen.findByText(/must not use the following special characters/i, {selector: "label *"})).toBeInTheDocument();
+    expect(
+      await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+    ).toBeVisible();
   });
 
   it("shows an error summary containing all error details", async () => {
     setUp();
-    const productOwnerField = screen.getByLabelText(/product owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "$");
+    [/product owner/i, /technical owner/i].forEach((fieldMask) => {
+      const field = screen.getByLabelText(fieldMask);
+      // noinspection ES6MissingAwait: there is no typing delay
+      user.type(field, "$");
+    });
     user.click(saveButton);
 
-    expect(await screen.findByText(/must not use the following special characters/i, {selector: "a"})).toBeInTheDocument();
+    expect(
+      await screen.findAllByText(/must not use the following special characters/i, { selector: "a" })
+    ).toHaveLength(2);
   });
 
   it("shows validation errors returned from the API", async () => {
     submitHandler.mockRejectedValue(new ValidationError({
-      productOwner: "validation error",
+      productOwner: "product validation error",
+      technicalOwner: "tech validation error",
     }));
-    setUp({ product_owner: "owner" });
+    setUp();
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
 
-    expect(await screen.findByText(/validation error/i, {selector: "a"})).toBeInTheDocument();
+    expect(await screen.findAllByText(/validation error/i, {selector: "a"})).toHaveLength(2);
   });
 });
