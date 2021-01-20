@@ -11,7 +11,7 @@ import UpdateInfo from './UpdateInfo';
 import useAsyncError from '../../utilities/useAsyncError';
 import PageNotFoundError from '../../components/Errors/PageNotFoundError';
 
-function System({ portfolios, onChange, onBeforeNameChange, withTechnicalOwner = false }) {
+function System({ portfolios, onChange, onBeforeNameChange }) {
   const { path, url, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const history = useHistory();
@@ -31,11 +31,11 @@ function System({ portfolios, onChange, onBeforeNameChange, withTechnicalOwner =
     if ("productOwner" in data) {
       updateSystem(await api.updateProductOwner(id, data));
     }
-    if (withTechnicalOwner && ("technicalOwner" in data)) {
+    if ("technicalOwner" in data) {
       updateSystem(await api.updateTechnicalOwner(id, data));
     }
     history.push(url);
-  }, [id, history, url, updateSystem, withTechnicalOwner]);
+  }, [id, history, url, updateSystem]);
 
   const handleUpdateAbout = useCallback(async (data) => {
     if ("portfolio" in data) {
@@ -76,7 +76,7 @@ function System({ portfolios, onChange, onBeforeNameChange, withTechnicalOwner =
         <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} withTechnicalOwner={withTechnicalOwner} />
+        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
       </SecureRoute>
       <Route path="/*" component={PageNotFoundError} />
     </Switch>

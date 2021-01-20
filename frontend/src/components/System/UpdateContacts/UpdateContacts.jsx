@@ -17,7 +17,7 @@ const ownersOf = (system) => ({
   technicalOwner: emptyIfUndefined(system.tech_owner),
 });
 
-function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false }) {
+function UpdateContacts({ system, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialOwners = ownersOf(system);
     const changedOwners = omitBy(
@@ -48,7 +48,7 @@ function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false
             <ErrorSummary />
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can currently change only product owner {withTechnicalOwner && "and technical owner"} information.
+              You can currently change only product owner and technical owner information.
               We are working to make other fields editable.
             </p>
 
@@ -63,7 +63,7 @@ function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false
                 Product owner
               </TextField>
 
-              {withTechnicalOwner && <TextField
+              <TextField
                 name="technicalOwner"
                 hint="Who is the technical owner for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
@@ -71,7 +71,7 @@ function UpdateContacts({ system, onSubmit, onCancel, withTechnicalOwner = false
                 validate={validateContact}
               >
                 Technical owner
-              </TextField>}
+              </TextField>
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
