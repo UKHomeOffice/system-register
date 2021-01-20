@@ -4,8 +4,10 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Even
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_SystemEvent;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+@ApplicationScoped
 public class TechnicalOwnerUpdatedEventHandler implements EventHandler {
     private final IEventStore eventStore;
 

@@ -1,0 +1,28 @@
+{
+  "systems": [
+    {
+      "name": "Newly added system",
+      "id": 1,
+      "aliases": [
+        "new sys 1"
+      ],
+      "description": "A test system for testing purposes",
+      "portfolio": "SPAN-R",
+      "criticality": "low",
+      "investment_state": "evergreen",
+      "product_owner": "Indie Bunga",
+      "tech_owner": "A person",
+      "developed_by": "Home Office",
+      "risks": [
+        {
+          "name": "roadmap",
+          "level": "low",
+          "rationale": "Meaningful data here"
+        }
+      ],
+      "last_updated": {
+        "author_name": "Basil Barkley"
+      }
+    }
+  ]
+}

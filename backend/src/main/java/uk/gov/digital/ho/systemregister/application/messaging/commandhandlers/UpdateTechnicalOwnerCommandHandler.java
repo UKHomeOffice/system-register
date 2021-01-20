@@ -4,6 +4,9 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateTechnicalOwnerCommand;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class UpdateTechnicalOwnerCommandHandler extends AbstractCommandHandler<UpdateTechnicalOwnerCommand> {
     public UpdateTechnicalOwnerCommandHandler(
             CurrentSystemRegisterState systemRegisterState,
