@@ -121,6 +121,85 @@ describe("api", () => {
     });
   });
 
+  describe("update technical owner", () => {
+    it("sends changed owner to the API", async () => {
+      server.use(
+        rest.post("/api/systems/678/update-technical-owner", (req, res, ctx) => {
+          const { technical_owner: technicalOwner } = req.body;
+          if (technicalOwner !== "old owner") {
+            console.error("New technical owner does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateTechnicalOwner(678, {
+        technicalOwner: "old owner"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the technical owner when no value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-technical-owner", (req, res, ctx) => {
+          const { technical_owner: technicalOwner } = req.body;
+          if (technicalOwner !== null) {
+            console.error("New technical owner does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateTechnicalOwner(987, {
+        technicalOwner: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/765/update-technical-owner", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              technicalOwner: "invalid owner",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateTechnicalOwner(765, {
+        technicalOwner: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty("errors", expect.objectContaining({
+        technicalOwner: "invalid owner",
+      }));
+    });
+
+    it("raises error if system does not exist", async () => {
+      server.use(
+        rest.post("/api/systems/999/update-technical-owner", (req, res, ctx) => {
+          return res(ctx.status(404));
+        })
+      );
+
+      const pendingSystem = api.updateTechnicalOwner(999, {
+        technicalOwner: "owner",
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(SystemNotFoundException);
+    });
+  });
+
   describe("update portfolio", () => {
     it("sends changed portfolio to the API", async () => {
       server.use(
