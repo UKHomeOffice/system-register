@@ -2,6 +2,7 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_SystemEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.events.TechnicalOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
@@ -43,7 +44,7 @@ public class UpdateTechnicalOwnerCommand implements Command {
 
     @Override
     public SR_SystemEvent toEvent() {
-        throw new UnsupportedOperationException();
+        return new TechnicalOwnerUpdatedEvent(id, technicalOwner, author, timestamp);
     }
 
     @Override
