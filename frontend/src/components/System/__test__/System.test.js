@@ -88,6 +88,14 @@ describe('<System />', () => {
       });
     });
 
+    it('renders page not found error view when path to update path is incorrect', async () => {
+      renderWithRouting("123/update-blargh");
+
+      const element = await screen.findByText('Page not found');
+
+      expect(element).toBeInTheDocument();
+    });
+
     it("shows an edit view for info", async () => {
       renderWithRouting("1/update-info");
 
