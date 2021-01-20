@@ -31,6 +31,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.TechnicalOwnerUpdatedEventBuilder.aTechnicalOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest
@@ -171,8 +172,13 @@ public class PostgresEventStoreTest {
     }
 
     @Test
+<<<<<<< HEAD
     public void saveInformationAssetOwnerUpdatedEvent() {
         var expected = anInformationAssetOwnerUpdatedEvent()
+=======
+    public void saveTechnicalOwnerUpdatedEvent() {
+        var expected = aTechnicalOwnerUpdatedEvent()
+>>>>>>> fa4671c9741e856fe4c68541b78debaecd9a228a
                 .build();
         eventStore.save(expected);
 

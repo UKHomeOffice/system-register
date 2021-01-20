@@ -10,21 +10,17 @@ import uk.gov.digital.ho.systemregister.io.database.mappers.*;
 import uk.gov.digital.ho.systemregister.util.AES;
 import uk.gov.digital.ho.systemregister.util.EncryptionError;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.sql.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -71,6 +67,9 @@ public class PostgresEventStore implements IEventStore {
 
     @Inject
     InformationAssetOwnerUpdatedEventDaoMapper_v1 informationAssetOwnerUpdatedDaoMapper;
+
+    @Inject
+    TechnicalOwnerUpdatedEventDaoMapper_v1 technicalOwnerUpdatedDaoMapper;
 
     @Inject
     Instance<DaoMapper<? extends BaseDao>> mappers;
@@ -133,6 +132,8 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = productOwnerUpdatedDaoMapper;
         } else if (event instanceof InformationAssetOwnerUpdatedEvent) {
             daoMapper = informationAssetOwnerUpdatedDaoMapper;
+        } else if (event instanceof TechnicalOwnerUpdatedEvent) {
+            daoMapper = technicalOwnerUpdatedDaoMapper;
         } else {
             throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + ". Please implement a DAO Mapper for this event type");
         }
