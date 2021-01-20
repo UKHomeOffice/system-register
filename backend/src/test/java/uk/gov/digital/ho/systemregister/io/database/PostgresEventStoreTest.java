@@ -172,13 +172,21 @@ public class PostgresEventStoreTest {
     }
 
     @Test
-<<<<<<< HEAD
     public void saveInformationAssetOwnerUpdatedEvent() {
         var expected = anInformationAssetOwnerUpdatedEvent()
-=======
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
     public void saveTechnicalOwnerUpdatedEvent() {
         var expected = aTechnicalOwnerUpdatedEvent()
->>>>>>> fa4671c9741e856fe4c68541b78debaecd9a228a
                 .build();
         eventStore.save(expected);
 
