@@ -1,15 +1,15 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
-import com.google.common.base.Objects;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ProductOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import java.time.Instant;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.Objects;
 
 public class UpdateProductOwnerCommand implements Command{
     private final int id;
@@ -56,6 +56,6 @@ public class UpdateProductOwnerCommand implements Command{
     }
 
     public boolean willUpdate(SR_System system) {
-        return !Objects.equal(productOwner, system.productOwner);
+        return !Objects.equals(productOwner, system.productOwner);
     }
 }
