@@ -56,6 +56,10 @@ async function updateProductOwner(id, data) {
 }
 
 async function updateTechnicalOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-technical-owner`, {
+    technical_owner: nullIfEmpty(data.technicalOwner),
+  });
+  return response.data;
 }
 
 async function updateSystemName(id, data) {
@@ -124,6 +128,27 @@ async function updateInvestmentState(id, data) {
       }
     });
   return response.data;
+}
+
+async function sendPost(path, data) {
+  const response = await axios.post(
+    `${config.api.url}/${path}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+      },
+      validateStatus: status => status < 500,
+    }
+  );
+  switch (response.status) {
+    case 400:
+      throw new ValidationError(response.data.errors);
+    case 404:
+      throw new SystemNotFoundException();
+    default:
+      return response;
+  }
 }
 
 export default api;
