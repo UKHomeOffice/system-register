@@ -4,7 +4,7 @@ import withRouting from '../withRouting';
 import { Link, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
-describe('withKeycloak', () => {
+describe('withRouting', () => {
 
     const DummyComponent = () => {
         return (

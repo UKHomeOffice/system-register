@@ -9,6 +9,7 @@ import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
 import UpdateInfo from './UpdateInfo';
 import useAsyncError from '../../utilities/useAsyncError';
+import PageNotFoundError from '../../components/Errors/PageNotFoundError';
 
 function System({ portfolios, onChange, onBeforeNameChange }) {
   const { path, url, params: { id } } = useRouteMatch();
@@ -73,6 +74,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
       <SecureRoute path={`${path}/update-contacts`}>
         <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
       </SecureRoute>
+      <Route path="/*" component={PageNotFoundError} />
     </Switch>
   );
 }

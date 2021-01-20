@@ -27,10 +27,9 @@ describe('withKeycloak', () => {
     it('asks for its configuration', async () => {
         const SecureComponent = withKeycloak(mockConfig, DummyComponent);
 
-        const { getByTestId } = render(<SecureComponent />)
-        const initializingKeycloakMessage = getByTestId("auth-initialising-msg");
-
-        expect(initializingKeycloakMessage).toBeInTheDocument();
+        render(<SecureComponent />)
+       
+        expect(mockConfig.getKeycloakConfig).toHaveBeenCalled();
         await act(() => mock_getKeycloakConfig)
     });
 
