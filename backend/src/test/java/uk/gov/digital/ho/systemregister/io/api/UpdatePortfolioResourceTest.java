@@ -24,19 +24,10 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @QuarkusTest
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
-public class UpdatePortfolioResourceTest {
-    private final AgroalDataSource dataSource;
+public class UpdatePortfolioResourceTest extends ResourceTestBase {
 
     public UpdatePortfolioResourceTest(@SuppressWarnings("CdiInjectionPointsInspection") AgroalDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    @BeforeEach
-    void cleanUpEventStore() throws SQLException {
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.execute("TRUNCATE eventstore.snapshots, eventstore.events;");
-        }
+        super(dataSource);
     }
 
     @Test
