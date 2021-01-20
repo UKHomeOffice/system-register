@@ -30,6 +30,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.TechnicalOwnerUpdatedEventBuilder.aTechnicalOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
 @QuarkusTest
@@ -159,6 +160,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveProductOwnerUpdatedEvent() {
         var expected = aProductOwnerUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveTechnicalOwnerUpdatedEvent() {
+        var expected = aTechnicalOwnerUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

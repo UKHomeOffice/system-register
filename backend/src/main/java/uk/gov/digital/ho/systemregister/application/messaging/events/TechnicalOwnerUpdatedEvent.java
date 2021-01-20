@@ -7,7 +7,7 @@ import java.time.Instant;
 
 public class TechnicalOwnerUpdatedEvent extends SR_SystemEvent {
     private final int id;
-    private final String technicalOwner;
+    public final String technicalOwner;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
     public TechnicalOwnerUpdatedEvent(int id, String technicalOwner, SR_Person author, Instant timestamp) {
