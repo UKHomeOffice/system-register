@@ -1,6 +1,5 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
-import com.google.common.base.Objects;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
@@ -9,6 +8,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_System;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
+import java.util.Objects;
 
 public class UpdateCriticalityCommand implements Command {
     private final int id;
@@ -56,7 +56,7 @@ public class UpdateCriticalityCommand implements Command {
     }
 
     public boolean willUpdate(SR_System system) {
-        return !Objects.equal(criticality, system.criticality);
+        return !Objects.equals(criticality, system.criticality);
     }
 
 }
