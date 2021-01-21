@@ -414,7 +414,6 @@ function renderWithRouting(path, renderOptions) {
           portfolios={["original portfolio", "updated portfolio"]}
           onBeforeNameChange={() => false}
           onChange={changeHandler}
-          withTechnicalOwner
         />
       </Route>
     </Router>,

@@ -17,7 +17,6 @@ describe("UpdateContacts", () => {
       system={system ? { ...defaults, ...system } : null}
       onSubmit={submitHandler}
       onCancel={cancelHandler}
-      withTechnicalOwner
     />);
   }
 
