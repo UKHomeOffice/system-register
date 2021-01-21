@@ -115,18 +115,20 @@ describe("UpdateContacts", () => {
 
   it("shows an error summary containing all error details", async () => {
     setUp();
+    const productOwnerField = screen.getByLabelText(/product owner/i);
+    const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    [/product owner/i, /technical owner/i].forEach((fieldMask) => {
-      const field = screen.getByLabelText(fieldMask);
-      // noinspection ES6MissingAwait: there is no typing delay
-      user.type(field, "$");
-    });
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(productOwnerField, "!?$");
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(technicalOwnerField, "x");
     user.click(saveButton);
 
-    expect(
-      await screen.findAllByText(/must not use the following special characters/i, { selector: "a" })
-    ).toHaveLength(2);
+    const errors = await screen.findAllByText(/must/i, { selector: "a" });
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toHaveTextContent("special characters");
+    expect(errors[1]).toHaveTextContent("incomplete");
   });
 
   it("shows validation errors returned from the API", async () => {

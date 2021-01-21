@@ -45,7 +45,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary />
+            <ErrorSummary order={["productOwner", "technicalOwner"]}/>
+
             <h1>{system.name}</h1>
             <p className="secondary">
               You can currently change only product owner and technical owner information.
