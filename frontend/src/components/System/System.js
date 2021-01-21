@@ -28,11 +28,11 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   }, [onChange])
 
   const handleUpdateContacts = useCallback(async (data) => {
-    if ("productOwner" in data) {
-      updateSystem(await api.updateProductOwner(id, data));
-    }
     if ("technicalOwner" in data) {
       updateSystem(await api.updateTechnicalOwner(id, data));
+    }
+    if ("productOwner" in data) {
+      updateSystem(await api.updateProductOwner(id, data));
     }
     history.push(url);
   }, [id, history, url, updateSystem]);

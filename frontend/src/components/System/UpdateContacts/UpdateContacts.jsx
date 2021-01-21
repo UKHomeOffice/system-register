@@ -45,7 +45,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary order={["productOwner", "technicalOwner"]}/>
+            <ErrorSummary order={["technicalOwner", "productOwner"]}/>
 
             <h1>{system.name}</h1>
             <p className="secondary">
@@ -55,16 +55,6 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
             <Form>
               <TextField
-                name="productOwner"
-                hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
-                inputClassName="width-two-thirds"
-                placeholder="Unknown"
-                validate={validateContact}
-              >
-                Product owner
-              </TextField>
-
-              <TextField
                 name="technicalOwner"
                 hint="Who is the technical owner for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
@@ -72,6 +62,16 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
                 validate={validateContact}
               >
                 Technical owner
+              </TextField>
+
+              <TextField
+                name="productOwner"
+                hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
+                inputClassName="width-two-thirds"
+                placeholder="Unknown"
+                validate={validateContact}
+              >
+                Product owner
               </TextField>
 
               <div className="form-controls">
