@@ -40,18 +40,9 @@ async function getSystem(id) {
 }
 
 async function updateProductOwner(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-product-owner`,
-    { product_owner: nullIfEmpty(data.productOwner) },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      },
-      validateStatus: status => status < 500,
-    });
-  if (response.status === 400) {
-    throw new ValidationError(response.data.errors);
-  }
+  const response = await sendPost(`systems/${id}/update-product-owner`, {
+    product_owner: nullIfEmpty(data.productOwner),
+  });
   return response.data;
 }
 
@@ -63,70 +54,37 @@ async function updateTechnicalOwner(id, data) {
 }
 
 async function updateSystemName(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-name`,
-    { name: nullIfEmpty(data.name) },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      },
-      validateStatus: status => status < 500,
-    });
-  if (response.status === 400) {
-    throw new ValidationError(response.data.errors);
-  }
+  const response = await sendPost(`systems/${id}/update-name`, {
+    name: nullIfEmpty(data.name),
+  });
   return response.data;
 }
 
 async function updateSystemDescription(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-system-description`,
-    { description: nullIfEmpty(data.description) },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      },
-      validateStatus: status => status < 500,
-    });
-  if (response.status === 400) {
-    throw new ValidationError(response.data.errors);
-  }
+  const response = await sendPost(`systems/${id}/update-system-description`, {
+    description: nullIfEmpty(data.description),
+  });
   return response.data;
 }
 
 async function updatePortfolio(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-portfolio`,
-    {portfolio: nullIfEmpty(data.portfolio)},
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      }
-    });
+  const response = await sendPost(`systems/${id}/update-portfolio`, {
+    portfolio: nullIfEmpty(data.portfolio),
+  });
   return response.data;
 }
 
 async function updateCriticality(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-criticality`,
-    { criticality: nullIfEmpty(data.criticality) },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      }
-    });
+  const response = await sendPost(`systems/${id}/update-criticality`, {
+    criticality: nullIfEmpty(data.criticality),
+  });
   return response.data;
 }
 
 async function updateInvestmentState(id, data) {
-  const response = await axios.post(
-    `${config.api.url}/systems/${id}/update-investment-state`,
-    { investment_state: nullIfEmpty(data.investmentState) },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      }
-    });
+  const response = await sendPost(`systems/${id}/update-investment-state`, {
+    investment_state: nullIfEmpty(data.investmentState),
+  });
   return response.data;
 }
 
