@@ -1,4 +1,5 @@
 import React from 'react';
+import { SkipLink } from "govuk-react";
 import { Route, Switch } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
@@ -57,6 +58,7 @@ class SystemRegister extends React.Component {
   render() {
     return (
       <>
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
         <header>
           <TitleBar/>
           <Banner phase="in development">
@@ -65,7 +67,7 @@ class SystemRegister extends React.Component {
         </header>
         <div className="page">
           <Menu/>
-          <main className="content-wrap">
+          <main id="main-content" className="content-wrap">
             <Switch>
               <Route exact path="/">
                 <SystemList register={this.state.register}/>
