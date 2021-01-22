@@ -77,7 +77,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
               <TextField
                 name="informationAssetOwner"
-                hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
+                hint="Who is the information asset owner for this system (e.g. Jane Bloggs)?"
                 inputClassName="width-two-thirds"
                 placeholder="Unknown"
                 validate={validateContact}
