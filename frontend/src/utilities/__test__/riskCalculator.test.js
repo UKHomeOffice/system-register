@@ -19,6 +19,11 @@ describe('riskCalulator()', () => {
             // ∆ <- wow!
             expect(sumKnownRisk(a_system())).toEqual(RISK_VALUES.low)
         })
+        it('correctly sums value of a system with no risk lenses', () => {
+            const system = a_system()
+            system.risks = []
+            expect(sumKnownRisk(system)).toEqual(0)
+        })
         it('correctly sums value of a system with one low risk and an unkown risk', () => {
             const system = a_system()
             system.risks.push(an_unknown_risk())

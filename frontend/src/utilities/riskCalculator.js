@@ -44,7 +44,7 @@ function summariseSystemRisk(system) {
 
 function sumKnownRisk(system) {
     const riskValues = system.risks.map(r => riskConfig.mapToKnownRisk(r.level))
-    const score = riskValues.reduce((a, b) => a + b)
+    const score = riskValues.reduce((a, b) => a + b, 0)
     if(system.criticality) return score * scoreCriticality(system.criticality)
     return score
 }
