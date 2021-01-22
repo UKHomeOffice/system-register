@@ -1,29 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Title /> matches snapshot 1`] = `
-Array [
+<div
+  className="title-bar-root"
+>
   <div
-    className="sc-dlfnbm jyNBfj top-nav"
+    className="sc-bdfBwQ iBYTrY top-nav"
     color="#ffffff"
     data-testid="title-bar-div"
   >
     <div
-      className="sc-hKgILt iKEylQ"
+      className="sc-gsTCUz heEpZ"
     >
       <div
-        className="sc-gKsewC cYZWha"
+        className="sc-eCssSg hMcpmq"
       >
         <div
-          className="sc-jSgupP iRfEVQ"
+          className="sc-hKgILt klPTWy"
         >
           
         </div>
       </div>
       <div
-        className="sc-iBPRYJ hGlLWh"
+        className="sc-jSgupP bPwDQU"
       >
         <div
-          className="sc-hBEYos kJljoh"
+          className="sc-bqyKva eoKSDV"
         >
           <div
             className="title-bar-title"
@@ -33,10 +35,10 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
-    className="sc-eCssSg JwqYF"
-  />,
+    className="sc-dlfnbm ivQkZE"
+  />
   <div
     className="title-bar-login"
   >
@@ -44,13 +46,13 @@ Array [
       className="auth"
     >
       <button
-        className="sc-bdfBwQ gTInJb"
+        className="sc-fodVxV feoVNG"
         disabled={false}
         onClick={[Function]}
       >
         Sign in
       </button>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
