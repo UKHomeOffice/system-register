@@ -34,6 +34,9 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     if ("productOwner" in data) {
       updateSystem(await api.updateProductOwner(id, data));
     }
+    if ("informationAssetOwner" in data) {
+      updateSystem(await api.updateInformationAssetOwner(id, data));
+    }
     history.push(url);
   }, [id, history, url, updateSystem]);
 

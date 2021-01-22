@@ -20,6 +20,7 @@ jest.mock('../../../services/api', () => ({
   updateInvestmentState: jest.fn(),
   updateProductOwner: jest.fn(),
   updateTechnicalOwner: jest.fn(),
+  updateInformationAssetOwner: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -134,10 +135,12 @@ describe('<System />', () => {
         renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
+        overtype(informationAssetOwnerField, "updated information asset owner");
         user.click(saveButton);
 
         await waitFor(() => {
@@ -149,10 +152,13 @@ describe('<System />', () => {
         const { history } = renderWithRouting("123/update-contacts");
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
+
         const saveButton = screen.getByRole("button", { name: /save/i });
 
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
+        overtype(informationAssetOwnerField, "updated information asset owner");
         user.click(saveButton);
 
         await returnToSystemView(123, history);
@@ -161,6 +167,9 @@ describe('<System />', () => {
         }));
         expect(api.updateTechnicalOwner).toBeCalledWith("123", expect.objectContaining({
           technicalOwner: "updated technical owner",
+        }));
+        expect(api.updateInformationAssetOwner).toBeCalledWith("123", expect.objectContaining({
+          informationAssetOwner: "updated information asset owner",
         }));
       });
 
@@ -174,6 +183,7 @@ describe('<System />', () => {
         await returnToSystemView(123, history);
         expect(api.updateProductOwner).not.toBeCalled();
         expect(api.updateTechnicalOwner).not.toBeCalled();
+        expect(api.updateInformationAssetOwner).not.toBeCalled();
         expect(changeHandler).not.toBeCalled();
       });
     });
@@ -392,6 +402,8 @@ async function checkCancelButton(path) {
 
   await returnToSystemView(123, history);
   expect(api.updateProductOwner).not.toBeCalled();
+  expect(api.updateTechnicalOwner).not.toBeCalled();
+  expect(api.updateInformationAssetOwner).not.toBeCalled();
   expect(api.updateCriticality).not.toBeCalled(); //todo refactor to loop through all update api methods
 }
 

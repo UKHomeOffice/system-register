@@ -42,22 +42,29 @@ describe("UpdateContacts", () => {
     setUp({
       product_owner: "existing product owner",
       tech_owner: "existing tech owner",
+      information_asset_owner: "existing information asset owner",
     });
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.clear(productOwnerField);
     user.clear(technicalOwnerField);
+    user.clear(informationAssetOwnerField);
     // noinspection ES6MissingAwait
     user.type(productOwnerField, "new product owner");
     // noinspection ES6MissingAwait
     user.type(technicalOwnerField, "new technical owner");
+    // noinspection ES6MissingAwait
+    user.type(informationAssetOwnerField, "new information asset owner");
+
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
       productOwner: "new product owner",
       technicalOwner: "new technical owner",
+      informationAssetOwner: "new information asset owner",
     }));
   });
 
@@ -65,82 +72,91 @@ describe("UpdateContacts", () => {
     setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "  owner with extra spaces  ");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(technicalOwnerField, "  another owner with more spaces  ");
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(informationAssetOwnerField, "  yet another owner with more spaces  ");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
       productOwner: "owner with extra spaces",
       technicalOwner: "another owner with more spaces",
+      informationAssetOwner: "yet another owner with more spaces",
     }));
   });
 
   it.each(["owner", null])
-  ("does not send unchanged values to the submission handler", async (value) => {
-    setUp({ product_owner: value, tech_owner: value });
-    const saveButton = screen.getByRole("button", { name: /save/i });
+    ("does not send unchanged values to the submission handler", async (value) => {
+      setUp({ product_owner: value, tech_owner: value });
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
-    user.click(saveButton);
+      user.click(saveButton);
 
-    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
-  });
+      await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+    });
 
   it("calls cancel handler", () => {
     setUp();
-    const cancelButton = screen.getByRole("button", {name: /cancel/i});
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
 
     user.click(cancelButton);
 
     expect(cancelHandler).toBeCalled();
   });
 
-  it.each(["product owner", "technical owner"])
-  ("validates %p contact before submission", async (label) => {
-    setUp();
-    const ownerField = screen.getByLabelText(new RegExp(label, "i"));
-    const saveButton = screen.getByRole("button", { name: /save/i });
+  it.each(["product owner", "technical owner", "information asset owner"])
+    ("validates %p contact before submission", async (label) => {
+      setUp();
+      const ownerField = screen.getByLabelText(new RegExp(label, "i"));
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(ownerField, "$");
-    user.click(saveButton);
+      // noinspection ES6MissingAwait: there is no typing delay
+      user.type(ownerField, "$");
+      user.click(saveButton);
 
-    expect(
-      await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
-    ).toBeVisible();
-  });
+      expect(
+        await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+      ).toBeVisible();
+    });
 
   it("shows an error summary containing all error details", async () => {
     setUp();
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(technicalOwnerField, "x");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "!?$");
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(informationAssetOwnerField, "x");
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
-    expect(errors).toHaveLength(2);
+    expect(errors).toHaveLength(3);
     expect(errors[0]).toHaveTextContent("incomplete");
     expect(errors[1]).toHaveTextContent("special characters");
+    expect(errors[2]).toHaveTextContent("incomplete");
   });
 
   it("shows validation errors returned from the API", async () => {
     submitHandler.mockRejectedValue(new ValidationError({
       productOwner: "product validation error",
       technicalOwner: "tech validation error",
+      informationAssetOwner: "information validation error",
     }));
     setUp();
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
 
-    expect(await screen.findAllByText(/validation error/i, {selector: "a"})).toHaveLength(2);
+    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(3);
   });
 });

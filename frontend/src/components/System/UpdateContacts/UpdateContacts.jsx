@@ -15,6 +15,7 @@ const emptyIfUndefined = (value) => value != null ? value : "";
 const ownersOf = (system) => ({
   productOwner: emptyIfUndefined(system.product_owner),
   technicalOwner: emptyIfUndefined(system.tech_owner),
+  informationAssetOwner: emptyIfUndefined(system.information_asset_owner),
 });
 
 function UpdateContacts({ system, onSubmit, onCancel }) {
@@ -45,11 +46,11 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary order={["technicalOwner", "productOwner"]}/>
+            <ErrorSummary order={["technicalOwner", "productOwner", "informationAssetOwner"]}/>
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can currently change only product owner and technical owner information.
+              You can currently change only technical owner, product owner or information asset owner information.
               We are working to make other fields editable.
             </p>
 
@@ -72,6 +73,16 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
                 validate={validateContact}
               >
                 Product owner
+              </TextField>
+
+              <TextField
+                name="informationAssetOwner"
+                hint="Who is the primary contact for this system (e.g. Jane Bloggs)?"
+                inputClassName="width-two-thirds"
+                placeholder="Unknown"
+                validate={validateContact}
+              >
+                Information asset owner
               </TextField>
 
               <div className="form-controls">

@@ -200,6 +200,85 @@ describe("api", () => {
     });
   });
 
+  describe("update information asset owner", () => {
+    it("sends changed owner to the API", async () => {
+      server.use(
+        rest.post("/api/systems/678/update-information-asset-owner", (req, res, ctx) => {
+          const { information_asset_owner: informationAssetOwner } = req.body;
+          if (informationAssetOwner !== "old owner") {
+            console.error("New information asset owner does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateInformationAssetOwner(678, {
+        informationAssetOwner: "old owner"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the information asset owner when no value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-information-asset-owner", (req, res, ctx) => {
+          const { information_asset_owner: informationAssetOwner } = req.body;
+          if (informationAssetOwner !== null) {
+            console.error("New information asset owner does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateInformationAssetOwner(987, {
+        informationAssetOwner: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/765/update-information-asset-owner", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              technicalOwner: "invalid owner",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateInformationAssetOwner(765, {
+        informationAssetOwner: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty("errors", expect.objectContaining({
+        technicalOwner: "invalid owner",
+      }));
+    });
+
+    it("raises error if system does not exist", async () => {
+      server.use(
+        rest.post("/api/systems/999/update-information-asset-owner", (req, res, ctx) => {
+          return res(ctx.status(404));
+        })
+      );
+
+      const pendingSystem = api.updateInformationAssetOwner(999, {
+        informationAssetOwner: "owner",
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(SystemNotFoundException);
+    });
+  });
+
   describe("update portfolio", () => {
     it("sends changed portfolio to the API", async () => {
       server.use(
