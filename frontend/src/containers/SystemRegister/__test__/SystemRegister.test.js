@@ -1,7 +1,7 @@
 import React from 'react';
 import SystemRegister from '../SystemRegister';
 import { BrowserRouter, Router } from 'react-router-dom'
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { rest } from "msw";
@@ -17,7 +17,7 @@ const server = setupServer(
       ctx.json(data)
     );
   }),
-  rest.get("/api/system/9999", (req, res, ctx) => {
+  rest.get("/api/system/9999", () => {
     throw new SystemNotFoundException();
   })
 );
@@ -28,6 +28,18 @@ describe("<SystemRegister />", () => {
   afterAll(() => server.close());
 
   afterEach(() => server.resetHandlers());
+
+  it.each(["/", "/error"])
+  ("contains a skip link at the start of the document", (path) => {
+    render(
+      <Router history={createMemoryHistory({ initialEntries: [path] })}>
+        <SystemRegister />
+      </Router>
+    );
+
+    const skipLink = screen.getByRole("link", { name: "Skip to main content" });
+    expect(skipLink).toBeInTheDocument();
+  });
 
   it('renders system from the API', async () => {
     const { findByText } = render(
