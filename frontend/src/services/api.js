@@ -14,6 +14,7 @@ const api = {
   updateProductOwner,
   updateTechnicalOwner,
   updateInformationAssetOwner,
+  updateBusinessOwner,
 };
 
 const nullIfEmpty = (value) => value !== "" ? value : null;
@@ -50,6 +51,13 @@ async function updateProductOwner(id, data) {
 async function updateTechnicalOwner(id, data) {
   const response = await sendPost(`systems/${id}/update-technical-owner`, {
     technical_owner: nullIfEmpty(data.technicalOwner),
+  });
+  return response.data;
+}
+
+async function updateBusinessOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-business-owner`, {
+    business_owner: nullIfEmpty(data.businessOwner),
   });
   return response.data;
 }

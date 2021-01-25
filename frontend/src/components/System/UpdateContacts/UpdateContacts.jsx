@@ -13,6 +13,7 @@ import "./UpdateContacts.css";
 const emptyIfUndefined = (value) => value != null ? value : "";
 
 const ownersOf = (system) => ({
+  businessOwner: emptyIfUndefined(system.business_owner),
   productOwner: emptyIfUndefined(system.product_owner),
   technicalOwner: emptyIfUndefined(system.tech_owner),
   informationAssetOwner: emptyIfUndefined(system.information_asset_owner),
@@ -46,15 +47,25 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary order={["technicalOwner", "productOwner", "informationAssetOwner"]}/>
+            <ErrorSummary order={["businessOwner","technicalOwner", "productOwner", "informationAssetOwner"]} />
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can currently change only technical owner, product owner or information asset owner information.
+              You can currently change only business owner, technical owner, product owner or information asset owner information.
               We are working to make other fields editable.
             </p>
 
             <Form>
+              <TextField
+                name="businessOwner"
+                hint="Who is the business owner for this system (e.g. Jane Bloggs)?"
+                inputClassName="width-two-thirds"
+                placeholder="Unknown"
+                validate={validateContact}
+              >
+                Business owner
+              </TextField>
+
               <TextField
                 name="technicalOwner"
                 hint="Who is the technical owner for this system (e.g. Jane Bloggs)?"
@@ -100,8 +111,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           </>
         </Formik>
       ) : (
-        <p>Loading system data...</p>
-      )}
+          <p>Loading system data...</p>
+        )}
     </div>
   );
 }

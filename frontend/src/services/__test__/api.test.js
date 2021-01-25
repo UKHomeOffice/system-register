@@ -248,7 +248,7 @@ describe("api", () => {
         rest.post("/api/systems/765/update-information-asset-owner", (req, res, ctx) => {
           return res(ctx.status(400), ctx.json({
             errors: {
-              technicalOwner: "invalid owner",
+              informationAssetOwner: "invalid owner",
             },
           }));
         })
@@ -260,7 +260,7 @@ describe("api", () => {
 
       await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
       await expect(pendingSystem).rejects.toHaveProperty("errors", expect.objectContaining({
-        technicalOwner: "invalid owner",
+        informationAssetOwner: "invalid owner",
       }));
     });
 
@@ -273,6 +273,85 @@ describe("api", () => {
 
       const pendingSystem = api.updateInformationAssetOwner(999, {
         informationAssetOwner: "owner",
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(SystemNotFoundException);
+    });
+  });
+
+  describe("update business owner", () => {
+    it("sends changed owner to the API", async () => {
+      server.use(
+        rest.post("/api/systems/678/update-business-owner", (req, res, ctx) => {
+          const { business_owner: businessOwner } = req.body;
+          if (businessOwner !== "old owner") {
+            console.error("New business owner does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateBusinessOwner(678, {
+        businessOwner: "old owner"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the business owner when no value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-business-owner", (req, res, ctx) => {
+          const { business_owner: businessOwner } = req.body;
+          if (businessOwner !== null) {
+            console.error("New business owner does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateBusinessOwner(987, {
+        businessOwner: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/765/update-business-owner", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              businessOwner: "invalid owner",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateBusinessOwner(765, {
+        businessOwner: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty("errors", expect.objectContaining({
+        businessOwner: "invalid owner",
+      }));
+    });
+
+    it("raises error if system does not exist", async () => {
+      server.use(
+        rest.post("/api/systems/999/update-business-owner", (req, res, ctx) => {
+          return res(ctx.status(404));
+        })
+      );
+
+      const pendingSystem = api.updateBusinessOwner(999, {
+        businessOwner: "owner",
       });
 
       await expect(pendingSystem).rejects.toBeInstanceOf(SystemNotFoundException);

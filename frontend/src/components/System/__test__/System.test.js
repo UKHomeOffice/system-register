@@ -18,6 +18,7 @@ jest.mock('../../../services/api', () => ({
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
+  updateBusinessOwner: jest.fn(),
   updateProductOwner: jest.fn(),
   updateTechnicalOwner: jest.fn(),
   updateInformationAssetOwner: jest.fn(),
@@ -123,8 +124,10 @@ describe('<System />', () => {
 
     describe("editing contacts", () => {
       beforeEach(() => {
+        api.updateBusinessOwner.mockResolvedValue(test_system);
         api.updateProductOwner.mockResolvedValue(test_system);
         api.updateTechnicalOwner.mockResolvedValue(test_system);
+        api.updateInformationAssetOwner.mockResolvedValue(test_system);
       });
 
       it("returns to system view on cancel", async () => {
@@ -133,11 +136,13 @@ describe('<System />', () => {
 
       it("calls onChange callback when updates", async () => {
         renderWithRouting("123/update-contacts");
+        const businessOwnerField = await screen.findByLabelText(/business owner/i);
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
         const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
+        overtype(businessOwnerField, "updated business owner");
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
         overtype(informationAssetOwnerField, "updated information asset owner");
@@ -150,18 +155,23 @@ describe('<System />', () => {
 
       it("returns to the system view after a successful update", async () => {
         const { history } = renderWithRouting("123/update-contacts");
+        const businessOwnerField = await screen.findByLabelText(/business owner/i);
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
         const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
 
         const saveButton = screen.getByRole("button", { name: /save/i });
 
+        overtype(businessOwnerField, "updated business owner");
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
         overtype(informationAssetOwnerField, "updated information asset owner");
         user.click(saveButton);
 
         await returnToSystemView(123, history);
+        expect(api.updateBusinessOwner).toBeCalledWith("123", expect.objectContaining({
+          businessOwner: "updated business owner",
+        }));
         expect(api.updateProductOwner).toBeCalledWith("123", expect.objectContaining({
           productOwner: "updated product owner",
         }));
@@ -181,6 +191,7 @@ describe('<System />', () => {
         user.click(saveButton);
 
         await returnToSystemView(123, history);
+        expect(api.updateBusinessOwner).not.toBeCalled();
         expect(api.updateProductOwner).not.toBeCalled();
         expect(api.updateTechnicalOwner).not.toBeCalled();
         expect(api.updateInformationAssetOwner).not.toBeCalled();

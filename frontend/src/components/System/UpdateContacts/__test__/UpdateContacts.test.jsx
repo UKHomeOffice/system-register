@@ -40,18 +40,23 @@ describe("UpdateContacts", () => {
 
   it("calls submission handler with updated contacts", async () => {
     setUp({
+      business_owner: "existing business owner",
       product_owner: "existing product owner",
       tech_owner: "existing tech owner",
       information_asset_owner: "existing information asset owner",
     });
+    const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    user.clear(businessOwnerField);
     user.clear(productOwnerField);
     user.clear(technicalOwnerField);
     user.clear(informationAssetOwnerField);
+    // noinspection ES6MissingAwait
+    user.type(businessOwnerField, "new business owner");
     // noinspection ES6MissingAwait
     user.type(productOwnerField, "new product owner");
     // noinspection ES6MissingAwait
@@ -62,6 +67,7 @@ describe("UpdateContacts", () => {
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
+      businessOwner: "new business owner",
       productOwner: "new product owner",
       technicalOwner: "new technical owner",
       informationAssetOwner: "new information asset owner",
@@ -70,11 +76,14 @@ describe("UpdateContacts", () => {
 
   it("trims values before calling the submission handler", async () => {
     setUp();
+    const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(businessOwnerField, "  busy owner with extra spaces  ");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "  owner with extra spaces  ");
     // noinspection ES6MissingAwait: there is no typing delay
@@ -84,6 +93,7 @@ describe("UpdateContacts", () => {
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
+      businessOwner: "busy owner with extra spaces",
       productOwner: "owner with extra spaces",
       technicalOwner: "another owner with more spaces",
       informationAssetOwner: "yet another owner with more spaces",
@@ -109,7 +119,7 @@ describe("UpdateContacts", () => {
     expect(cancelHandler).toBeCalled();
   });
 
-  it.each(["product owner", "technical owner", "information asset owner"])
+  it.each(["business owner", "product owner", "technical owner", "information asset owner"])
     ("validates %p contact before submission", async (label) => {
       setUp();
       const ownerField = screen.getByLabelText(new RegExp(label, "i"));
@@ -126,11 +136,14 @@ describe("UpdateContacts", () => {
 
   it("shows an error summary containing all error details", async () => {
     setUp();
+    const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    // noinspection ES6MissingAwait: there is no typing delay
+    user.type(businessOwnerField, "!!!");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(technicalOwnerField, "x");
     // noinspection ES6MissingAwait: there is no typing delay
@@ -140,14 +153,16 @@ describe("UpdateContacts", () => {
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
-    expect(errors).toHaveLength(3);
-    expect(errors[0]).toHaveTextContent("incomplete");
-    expect(errors[1]).toHaveTextContent("special characters");
-    expect(errors[2]).toHaveTextContent("incomplete");
+    expect(errors).toHaveLength(4);
+    expect(errors[0]).toHaveTextContent("special characters");
+    expect(errors[1]).toHaveTextContent("incomplete");
+    expect(errors[2]).toHaveTextContent("special characters");
+    expect(errors[3]).toHaveTextContent("incomplete");
   });
 
   it("shows validation errors returned from the API", async () => {
     submitHandler.mockRejectedValue(new ValidationError({
+      businessOwner: "busy validation error",
       productOwner: "product validation error",
       technicalOwner: "tech validation error",
       informationAssetOwner: "information validation error",
@@ -157,6 +172,6 @@ describe("UpdateContacts", () => {
 
     user.click(saveButton);
 
-    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(3);
+    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(4);
   });
 });

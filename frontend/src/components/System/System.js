@@ -17,6 +17,7 @@ const actionsByField = {
   criticality: api.updateCriticality,
   investmentState: api.updateInvestmentState,
   portfolio: api.updatePortfolio,
+  businessOwner: api.updateBusinessOwner,
   productOwner: api.updateProductOwner,
   technicalOwner: api.updateTechnicalOwner,
   informationAssetOwner: api.updateInformationAssetOwner,
@@ -93,7 +94,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   }, [updateSystemRedux]);
 
   const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
-  const handleUpdateContacts = createUpdateCallback("technicalOwner", "productOwner", "informationAssetOwner");
+  const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "productOwner", "informationAssetOwner");
 
   const handleCancel = useReturnToSystemView();
 
