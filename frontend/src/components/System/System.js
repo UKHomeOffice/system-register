@@ -1,15 +1,55 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import { filter, isEmpty, map } from "lodash-es";
 
+import PageNotFoundError from '../../components/Errors/PageNotFoundError';
 import SecureRoute from "../SecureRoute";
 import SystemView from "./SystemView/SystemView";
-import UpdateContacts from "./UpdateContacts";
-import api from '../../services/api';
-import './System.css';
 import UpdateAbout from './UpdateAbout/UpdateAbout';
+import UpdateContacts from "./UpdateContacts";
 import UpdateInfo from './UpdateInfo';
+import api from '../../services/api';
 import useAsyncError from '../../utilities/useAsyncError';
-import PageNotFoundError from '../../components/Errors/PageNotFoundError';
+
+import './System.css';
+
+const actionsByField = {
+  criticality: api.updateCriticality,
+  investmentState: api.updateInvestmentState,
+  portfolio: api.updatePortfolio,
+  productOwner: api.updateProductOwner,
+  technicalOwner: api.updateTechnicalOwner,
+  informationAssetOwner: api.updateInformationAssetOwner,
+};
+
+const findMatchingActions = (data, fields) => map(
+  filter(fields, (field) => field in data),
+  (field) => actionsByField[field]
+);
+
+function useReturnToSystemView() {
+  const history = useHistory();
+  const { url } = useRouteMatch();
+
+  return useCallback(() => {
+    history.push(url);
+  }, [history, url]);
+}
+
+function useUpdateCallbackFactory(id, onChange, setSystem) {
+  const returnToSystemView = useReturnToSystemView();
+
+  return useCallback((...fields) => async (data) => {
+    const actions = findMatchingActions(data, fields);
+    for (const action of actions) {
+      setSystem(await action(id, data));
+    }
+    if (!isEmpty(actions)) {
+      onChange();
+    }
+    returnToSystemView();
+  }, [id, returnToSystemView, onChange, setSystem]);
+}
 
 function System({ portfolios, onChange, onBeforeNameChange }) {
   const { path, url, params: { id } } = useRouteMatch();
@@ -25,33 +65,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   const updateSystem = useCallback((newSysData) => {
     setSystem(newSysData);
     onChange();
-  }, [onChange])
-
-  const handleUpdateContacts = useCallback(async (data) => {
-    if ("technicalOwner" in data) {
-      updateSystem(await api.updateTechnicalOwner(id, data));
-    }
-    if ("productOwner" in data) {
-      updateSystem(await api.updateProductOwner(id, data));
-    }
-    if ("informationAssetOwner" in data) {
-      updateSystem(await api.updateInformationAssetOwner(id, data));
-    }
-    history.push(url);
-  }, [id, history, url, updateSystem]);
-
-  const handleUpdateAbout = useCallback(async (data) => {
-    if ("portfolio" in data) {
-      updateSystem(await api.updatePortfolio(id, data));
-    }
-    if ("criticality" in data) {
-      updateSystem(await api.updateCriticality(id, data));
-    }
-    if ("investmentState" in data) {
-      updateSystem(await api.updateInvestmentState(id, data));
-    }
-    history.push(url);
-  }, [id, history, url, updateSystem]);
+  }, [onChange]);
 
   const handleUpdateInfo = useCallback(async (data) => {
     if ("name" in data) {
@@ -63,9 +77,25 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     history.push(url);
   }, [id, history, url, updateSystem]);
 
-  const handleCancel = useCallback(() => {
+  const updateSystemRedux = useCallback(async (data, ...fields) => {
+    const actions = findMatchingActions(data, fields);
+    for (const action of actions) {
+      setSystem(await action(id, data));
+    }
+    if (!isEmpty(actions)) {
+      onChange();
+    }
     history.push(url);
-  }, [history, url]);
+  }, [id, history, url, onChange]);
+
+  const handleUpdateAbout = useCallback(async (data) => {
+    await updateSystemRedux(data, "portfolio", "criticality", "investmentState");
+  }, [updateSystemRedux]);
+
+  const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
+  const handleUpdateContacts = createUpdateCallback("technicalOwner", "productOwner", "informationAssetOwner");
+
+  const handleCancel = useReturnToSystemView();
 
   return (
     <Switch>
