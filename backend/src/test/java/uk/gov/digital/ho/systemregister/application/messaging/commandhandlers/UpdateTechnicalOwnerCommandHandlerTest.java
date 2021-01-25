@@ -10,6 +10,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateTechnicalOwnerCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.TechnicalOwnerUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.TechnicalOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
