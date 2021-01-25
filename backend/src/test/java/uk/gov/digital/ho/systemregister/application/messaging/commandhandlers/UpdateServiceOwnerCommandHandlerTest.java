@@ -9,9 +9,9 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Cu
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateTechnicalOwnerCommand;
-import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.TechnicalOwnerUpdatedEventHandler;
-import uk.gov.digital.ho.systemregister.application.messaging.events.TechnicalOwnerUpdatedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateServiceOwnerCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.ServiceOwnerUpdatedEventHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.events.ServiceOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import javax.validation.Valid;
@@ -26,46 +26,46 @@ import static org.mockito.Mockito.*;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
-class UpdateTechnicalOwnerCommandHandlerTest {
+class UpdateServiceOwnerCommandHandlerTest {
     private final CurrentSystemRegisterState systemRegisterState = mock(CurrentSystemRegisterState.class);
-    private final TechnicalOwnerUpdatedEventHandler eventHandler = mock(TechnicalOwnerUpdatedEventHandler.class);
+    private final ServiceOwnerUpdatedEventHandler eventHandler = mock(ServiceOwnerUpdatedEventHandler.class);
 
-    private UpdateTechnicalOwnerCommandHandler commandHandler;
+    private UpdateServiceOwnerCommandHandler commandHandler;
 
     @BeforeEach
     void setUp() {
-        commandHandler = new UpdateTechnicalOwnerCommandHandler(
+        commandHandler = new UpdateServiceOwnerCommandHandler(
                 systemRegisterState,
                 eventHandler,
                 new CurrentStateCalculator());
     }
 
     @Test
-    public void updatesTechnicalOwnerValueIfSystemExistsWithDifferentValue() throws Exception {
+    public void updatesServiceOwnerValueIfSystemExistsWithDifferentValue() throws Exception {
         SR_SystemBuilder partialSystem = aSystem().withId(456);
-        givenCurrentStateWithSystem(partialSystem.withTechnicalOwner("Tech Owner"));
+        givenCurrentStateWithSystem(partialSystem.withServiceOwner("Service Owner"));
         var eventTimestamp = Instant.now();
         var expectedAuthor = aPerson().withUsername("user").build();
-        var command = new UpdateTechnicalOwnerCommand(
+        var command = new UpdateServiceOwnerCommand(
                 456,
-                "New Tech Owner",
+                "New Service Owner",
                 expectedAuthor,
                 eventTimestamp);
 
         var updatedSystem = commandHandler.handle(command);
 
-        var eventCaptor = ArgumentCaptor.forClass(TechnicalOwnerUpdatedEvent.class);
+        var eventCaptor = ArgumentCaptor.forClass(ServiceOwnerUpdatedEvent.class);
         verify(eventHandler).handle(eventCaptor.capture());
         assertThat(updatedSystem).usingRecursiveComparison()
                 .isEqualTo(Tuple2.of(
                         partialSystem
-                                .withTechnicalOwner("New Tech Owner")
+                                .withServiceOwner("New Service Owner")
                                 .build(),
                         new UpdateMetadata(expectedAuthor, eventTimestamp)));
         assertThat(eventCaptor.getValue()).usingRecursiveComparison()
-                .isEqualTo(new TechnicalOwnerUpdatedEvent(
+                .isEqualTo(new ServiceOwnerUpdatedEvent(
                         456,
-                        "New Tech Owner",
+                        "New Service Owner",
                         expectedAuthor,
                         eventTimestamp));
     }
@@ -73,7 +73,7 @@ class UpdateTechnicalOwnerCommandHandlerTest {
     @Test
     void raisesExceptionIfTheSystemCannotBeFound() {
         givenCurrentStateWithSystem(aSystem().withId(456));
-        var command = new UpdateTechnicalOwnerCommand(678, "owner", aPerson().build(), Instant.now());
+        var command = new UpdateServiceOwnerCommand(678, "owner", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(NoSuchSystemException.class)
@@ -81,15 +81,15 @@ class UpdateTechnicalOwnerCommandHandlerTest {
     }
 
     @Test
-    void raisesExceptionIfTechnicalOwnerValueIsUnchanged() {
+    void raisesExceptionIfServiceOwnerValueIsUnchanged() {
         givenCurrentStateWithSystem(aSystem()
                 .withId(987)
-                .withTechnicalOwner("owner"));
-        var command = new UpdateTechnicalOwnerCommand(987, "owner", aPerson().build(), Instant.now());
+                .withServiceOwner("owner"));
+        var command = new UpdateServiceOwnerCommand(987, "owner", aPerson().build(), Instant.now());
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
-                .hasMessageContaining("technical owner is the same: owner");
+                .hasMessageContaining("service owner is the same: owner");
     }
 
     @Test

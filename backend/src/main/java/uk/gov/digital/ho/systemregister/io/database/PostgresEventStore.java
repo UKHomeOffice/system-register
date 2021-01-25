@@ -75,6 +75,9 @@ public class PostgresEventStore implements IEventStore {
     BusinessOwnerUpdatedEventDaoMapper_v1 businessOwnerUpdatedDaoMapper;
 
     @Inject
+    ServiceOwnerUpdatedEventDaoMapper_v1 serviceOwnerUpdatedDaoMapper;
+
+    @Inject
     Instance<DaoMapper<? extends BaseDao>> mappers;
 
     Jsonb jsonb = JsonbBuilder.create();
@@ -129,7 +132,7 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = criticalityUpdatedDaoMapper;
         } else if (event instanceof InvestmentStateUpdatedEvent) {
             daoMapper = investmentStateUpdatedDaoMapper;
-        } else if (event instanceof PortfolioUpdatedEvent) {
+        }else if (event instanceof PortfolioUpdatedEvent) {
             daoMapper = portfolioUpdatedDaoMapper;
         } else if (event instanceof ProductOwnerUpdatedEvent) {
             daoMapper = productOwnerUpdatedDaoMapper;
@@ -137,6 +140,8 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = informationAssetOwnerUpdatedDaoMapper;
         } else if (event instanceof TechnicalOwnerUpdatedEvent) {
             daoMapper = technicalOwnerUpdatedDaoMapper;
+        } else if (event instanceof ServiceOwnerUpdatedEvent) {
+            daoMapper = serviceOwnerUpdatedDaoMapper;
         } else if (event instanceof BusinessOwnerUpdatedEvent) {
             daoMapper = businessOwnerUpdatedDaoMapper;
         } else {
