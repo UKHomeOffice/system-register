@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aHighRisk;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
+import static uk.gov.digital.ho.systemregister.helpers.builders.BusinessOwnerUpdatedEventBuilder.aBusinessOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.CriticalityUpdatedEventBuilder.aCriticalityUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.InformationAssetOwnerUpdatedEventBuilder.anInformationAssetOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
@@ -187,6 +188,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveTechnicalOwnerUpdatedEvent() {
         var expected = aTechnicalOwnerUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveBusinessOwnerUpdatedEvent() {
+        var expected = aBusinessOwnerUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

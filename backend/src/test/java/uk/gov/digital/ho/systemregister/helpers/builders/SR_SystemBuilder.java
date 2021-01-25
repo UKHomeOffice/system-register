@@ -21,7 +21,7 @@ public class SR_SystemBuilder {
     private String portfolio = "SPAN-R";
     private String criticality = "low";
     private String investmentState = "evergreen";
-    private final String businessOwner = null;
+    private String businessOwner = null;
     private String serviceOwner = "Service Owner";
     private String technicalOwner = "Techy Owner";
     private String productOwner = null;
@@ -114,6 +114,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withProductOwner(String productOwner) {
         this.productOwner = productOwner;
+        return this;
+    }
+
+    public SR_SystemBuilder withBusinessOwner(String businessOwner) {
+        this.businessOwner = businessOwner;
         return this;
     }
 
