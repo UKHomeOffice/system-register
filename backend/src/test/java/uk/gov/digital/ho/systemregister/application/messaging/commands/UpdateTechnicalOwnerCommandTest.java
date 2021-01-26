@@ -79,9 +79,8 @@ class UpdateTechnicalOwnerCommandTest {
         assertThat(constraintViolations).isEmpty();
     }
 
-
     @Test
-    void raisesExceptionIfPortfolioValueIsUnchanged() {
+    void raisesExceptionIfOwnerValueIsUnchanged() {
         SR_System system = aSystem()
                 .withId(456)
                 .withTechnicalOwner("owner")
