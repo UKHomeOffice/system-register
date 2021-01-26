@@ -132,7 +132,7 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = criticalityUpdatedDaoMapper;
         } else if (event instanceof InvestmentStateUpdatedEvent) {
             daoMapper = investmentStateUpdatedDaoMapper;
-        }else if (event instanceof PortfolioUpdatedEvent) {
+        } else if (event instanceof PortfolioUpdatedEvent) {
             daoMapper = portfolioUpdatedDaoMapper;
         } else if (event instanceof ProductOwnerUpdatedEvent) {
             daoMapper = productOwnerUpdatedDaoMapper;

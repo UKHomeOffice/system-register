@@ -8,7 +8,6 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
-import uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -85,7 +84,13 @@ public class PostgresEventStoreTest {
 
     @Test
     public void saveSystemAddedEvent() {
-        var expected = new SystemAddedEventBuilder().build();
+        var expected = aSystemAddedEvent()
+                .withAuthor(aPerson()
+                        .withUsername("clogan")
+                        .withFirstName("Corey")
+                        .withSurname("Logan")
+                        .withEmail("clogan@example.com"))
+                .build();
         eventStore.save(expected);
 
         var actual = eventStore.getEvents();
