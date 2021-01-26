@@ -20,6 +20,7 @@ const actionsByField = {
   businessOwner: api.updateBusinessOwner,
   productOwner: api.updateProductOwner,
   technicalOwner: api.updateTechnicalOwner,
+  serviceOwner: api.updateServiceOwner,
   informationAssetOwner: api.updateInformationAssetOwner,
 };
 
@@ -94,7 +95,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   }, [updateSystemRedux]);
 
   const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
-  const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "productOwner", "informationAssetOwner");
+  const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner");
 
   const handleCancel = useReturnToSystemView();
 

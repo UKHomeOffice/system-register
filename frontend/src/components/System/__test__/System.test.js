@@ -21,6 +21,7 @@ jest.mock('../../../services/api', () => ({
   updateBusinessOwner: jest.fn(),
   updateProductOwner: jest.fn(),
   updateTechnicalOwner: jest.fn(),
+  updateServiceOwner: jest.fn(),
   updateInformationAssetOwner: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
@@ -127,6 +128,7 @@ describe('<System />', () => {
         api.updateBusinessOwner.mockResolvedValue(test_system);
         api.updateProductOwner.mockResolvedValue(test_system);
         api.updateTechnicalOwner.mockResolvedValue(test_system);
+        api.updateServiceOwner.mockResolvedValue(test_system);
         api.updateInformationAssetOwner.mockResolvedValue(test_system);
       });
 
@@ -139,12 +141,14 @@ describe('<System />', () => {
         const businessOwnerField = await screen.findByLabelText(/business owner/i);
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const serviceOwnerField = await screen.findByLabelText(/service owner/i);
         const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
         const saveButton = screen.getByRole("button", {name: /save/i});
 
         overtype(businessOwnerField, "updated business owner");
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
+        overtype(serviceOwnerField, "updated service owner");
         overtype(informationAssetOwnerField, "updated information asset owner");
         user.click(saveButton);
 
@@ -158,6 +162,7 @@ describe('<System />', () => {
         const businessOwnerField = await screen.findByLabelText(/business owner/i);
         const productOwnerField = await screen.findByLabelText(/product owner/i);
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
+        const serviceOwnerField = await screen.findByLabelText(/service owner/i);
         const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
 
         const saveButton = screen.getByRole("button", { name: /save/i });
@@ -165,6 +170,7 @@ describe('<System />', () => {
         overtype(businessOwnerField, "updated business owner");
         overtype(productOwnerField, "updated product owner");
         overtype(technicalOwnerField, "updated technical owner");
+        overtype(serviceOwnerField, "updated service owner");
         overtype(informationAssetOwnerField, "updated information asset owner");
         user.click(saveButton);
 
@@ -177,6 +183,9 @@ describe('<System />', () => {
         }));
         expect(api.updateTechnicalOwner).toBeCalledWith("123", expect.objectContaining({
           technicalOwner: "updated technical owner",
+        }));
+        expect(api.updateServiceOwner).toBeCalledWith("123", expect.objectContaining({
+          serviceOwner: "updated service owner",
         }));
         expect(api.updateInformationAssetOwner).toBeCalledWith("123", expect.objectContaining({
           informationAssetOwner: "updated information asset owner",
@@ -194,6 +203,7 @@ describe('<System />', () => {
         expect(api.updateBusinessOwner).not.toBeCalled();
         expect(api.updateProductOwner).not.toBeCalled();
         expect(api.updateTechnicalOwner).not.toBeCalled();
+        expect(api.updateServiceOwner).not.toBeCalled();
         expect(api.updateInformationAssetOwner).not.toBeCalled();
         expect(changeHandler).not.toBeCalled();
       });
