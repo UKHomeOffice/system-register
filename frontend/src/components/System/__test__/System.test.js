@@ -228,24 +228,6 @@ describe('<System />', () => {
 
           await returnToSystemView(123, history);
           expect(changeHandler).toBeCalled();
-          expect(api.updateSystemName).toBeCalledWith(
-            "123",
-            expect.objectContaining({
-              name: "updated system name",
-            })
-          );
-        });
-
-        it("does not send a request if field values are unchanged", async () => {
-          const { history } = renderWithRouting("123/update-info");
-          await screen.findByText("Test System");
-          const saveButton = await screen.findByRole("button", {name: /save/i});
-
-          user.click(saveButton);
-
-          await returnToSystemView(123, history);
-          expect(api.updateSystemName).not.toBeCalled();
-          expect(changeHandler).not.toBeCalled();
         });
       });
 
@@ -303,33 +285,8 @@ describe('<System />', () => {
 
           await returnToSystemView(123, history);
           expect(changeHandler).toBeCalled();
-          expect(api.updatePortfolio).toBeCalledWith(
-            "123",
-            expect.objectContaining({
-              portfolio: "updated portfolio",
-            })
-          );
-        });
-
-        it("api is not called if portfolio is unchanged", async () => {
-          const { history } = renderWithRouting("123/update-about");
-          const radioButton = await screen.findByLabelText(/original portfolio/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
-
-          // noinspection ES6MissingAwait: there is no typing delay
-          user.click(radioButton);
-          user.click(saveButton);
-
-          await returnToSystemView(123, history);
-          expect(changeHandler).not.toBeCalled();
-          expect(api.updatePortfolio).not.toBeCalled();
         });
       });
-
-      describe("criticality", () => {
-        it("returns to system view on cancel", async () => {
-          await checkCancelButton("update-about");
-        });
 
         it("returns to the system view after a successful update", async () => {
           api.updateCriticality.mockResolvedValue({...test_system, criticality: "high"});
@@ -407,7 +364,7 @@ describe('<System />', () => {
       });
     });
   });
-});
+
 
 function overtype(field, value) {
   user.clear(field);

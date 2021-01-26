@@ -84,7 +84,14 @@ public final class SR_System extends SystemData {
                 List.copyOf(aliases), List.copyOf(risks));
     }
 
+
     public SR_System withDevelopedBy(String developedBy) {
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
+                List.copyOf(aliases), List.copyOf(risks));
+    }
+
+    public SR_System withSupportedBy(String supportedBy) {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
                 List.copyOf(aliases), List.copyOf(risks));

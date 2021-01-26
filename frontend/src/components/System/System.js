@@ -14,6 +14,8 @@ import useAsyncError from '../../utilities/useAsyncError';
 import './System.css';
 
 const actionsByField = {
+  name: api.updateSystemName,
+  description: api.updateSystemDescription,
   criticality: api.updateCriticality,
   investmentState: api.updateInvestmentState,
   portfolio: api.updatePortfolio,
@@ -54,9 +56,8 @@ function useUpdateCallbackFactory(id, onChange, setSystem) {
 }
 
 function System({ portfolios, onChange, onBeforeNameChange }) {
-  const { path, url, params: { id } } = useRouteMatch();
+  const { path, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
-  const history = useHistory();
   const throwError = useAsyncError();
 
   useEffect(() => {
@@ -64,37 +65,9 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     fetchData().catch((e) => { throwError(e) });
   }, [id, throwError]);
 
-  const updateSystem = useCallback((newSysData) => {
-    setSystem(newSysData);
-    onChange();
-  }, [onChange]);
-
-  const handleUpdateInfo = useCallback(async (data) => {
-    if ("name" in data) {
-      updateSystem(await api.updateSystemName(id, data));
-    }
-    if ("description" in data) {
-      updateSystem(await api.updateSystemDescription(id, data));
-    }
-    history.push(url);
-  }, [id, history, url, updateSystem]);
-
-  const updateSystemRedux = useCallback(async (data, ...fields) => {
-    const actions = findMatchingActions(data, fields);
-    for (const action of actions) {
-      setSystem(await action(id, data));
-    }
-    if (!isEmpty(actions)) {
-      onChange();
-    }
-    history.push(url);
-  }, [id, history, url, onChange]);
-
-  const handleUpdateAbout = useCallback(async (data) => {
-    await updateSystemRedux(data, "portfolio", "criticality", "investmentState");
-  }, [updateSystemRedux]);
-
   const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
+  const handleUpdateInfo = createUpdateCallback("name", "description");
+  const handleUpdateAbout = createUpdateCallback("portfolio", "criticality", "investmentState");
   const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner");
 
   const handleCancel = useReturnToSystemView();

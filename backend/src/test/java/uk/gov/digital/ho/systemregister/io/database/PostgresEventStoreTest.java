@@ -8,7 +8,6 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
-import uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -31,6 +30,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdated
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ServiceOwnerUpdatedEventBuilder.aServiceOwnerUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SupportedByUpdatedEventBuilder.aSupportedByUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
@@ -86,7 +86,13 @@ public class PostgresEventStoreTest {
 
     @Test
     public void saveSystemAddedEvent() {
-        var expected = new SystemAddedEventBuilder().build();
+        var expected = aSystemAddedEvent()
+                .withAuthor(aPerson()
+                        .withUsername("clogan")
+                        .withFirstName("Corey")
+                        .withSurname("Logan")
+                        .withEmail("clogan@example.com"))
+                .build();
         eventStore.save(expected);
 
         var actual = eventStore.getEvents();
@@ -229,6 +235,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveBusinessOwnerUpdatedEvent() {
         var expected = aBusinessOwnerUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveSupportedByUpdatedEvent() {
+        var expected = aSupportedByUpdatedEvent()
                 .build();
         eventStore.save(expected);
 
