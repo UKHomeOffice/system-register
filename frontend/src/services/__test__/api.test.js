@@ -200,6 +200,85 @@ describe("api", () => {
     });
   });
 
+  describe("update service owner", () => {
+    it("sends changed owner to the API", async () => {
+      server.use(
+        rest.post("/api/systems/678/update-service-owner", (req, res, ctx) => {
+          const { service_owner: serviceOwner } = req.body;
+          if (serviceOwner !== "old owner") {
+            console.error("New service owner does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateServiceOwner(678, {
+        serviceOwner: "old owner"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the service owner when no value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-service-owner", (req, res, ctx) => {
+          const { service_owner: serviceOwner } = req.body;
+          if (serviceOwner !== null) {
+            console.error("New service owner does not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateServiceOwner(987, {
+        serviceOwner: ""
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/765/update-service-owner", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              serviceOwner: "invalid owner",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateServiceOwner(765, {
+        servciceOwner: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty("errors", expect.objectContaining({
+        serviceOwner: "invalid owner",
+      }));
+    });
+
+    it("raises error if system does not exist", async () => {
+      server.use(
+        rest.post("/api/systems/999/update-service-owner", (req, res, ctx) => {
+          return res(ctx.status(404));
+        })
+      );
+
+      const pendingSystem = api.updateServiceOwner(999, {
+        serviceOwner: "owner",
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(SystemNotFoundException);
+    });
+  });
+
   describe("update information asset owner", () => {
     it("sends changed owner to the API", async () => {
       server.use(

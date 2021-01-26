@@ -13,6 +13,7 @@ const api = {
   updateInvestmentState,
   updateProductOwner,
   updateTechnicalOwner,
+  updateServiceOwner,
   updateInformationAssetOwner,
   updateBusinessOwner,
 };
@@ -51,6 +52,13 @@ async function updateProductOwner(id, data) {
 async function updateTechnicalOwner(id, data) {
   const response = await sendPost(`systems/${id}/update-technical-owner`, {
     technical_owner: nullIfEmpty(data.technicalOwner),
+  });
+  return response.data;
+}
+
+async function updateServiceOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-service-owner`, {
+    service_owner: nullIfEmpty(data.serviceOwner),
   });
   return response.data;
 }
