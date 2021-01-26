@@ -78,6 +78,9 @@ public class PostgresEventStore implements IEventStore {
     ServiceOwnerUpdatedEventDaoMapper_v1 serviceOwnerUpdatedDaoMapper;
 
     @Inject
+    DevelopedByUpdatedEventDaoMapper_v1 developedByUpdatedDaoMapper;
+
+    @Inject
     Instance<DaoMapper<? extends BaseDao>> mappers;
 
     Jsonb jsonb = JsonbBuilder.create();
@@ -132,7 +135,7 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = criticalityUpdatedDaoMapper;
         } else if (event instanceof InvestmentStateUpdatedEvent) {
             daoMapper = investmentStateUpdatedDaoMapper;
-        }else if (event instanceof PortfolioUpdatedEvent) {
+        } else if (event instanceof PortfolioUpdatedEvent) {
             daoMapper = portfolioUpdatedDaoMapper;
         } else if (event instanceof ProductOwnerUpdatedEvent) {
             daoMapper = productOwnerUpdatedDaoMapper;
@@ -144,6 +147,8 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = serviceOwnerUpdatedDaoMapper;
         } else if (event instanceof BusinessOwnerUpdatedEvent) {
             daoMapper = businessOwnerUpdatedDaoMapper;
+        } else if (event instanceof DevelopedByUpdatedEvent) {
+            daoMapper = developedByUpdatedDaoMapper;
         } else {
             throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + ". Please implement a DAO Mapper for this event type");
         }
