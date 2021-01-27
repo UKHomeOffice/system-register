@@ -3,6 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import UpdateAbout from "../UpdateAbout";
+import ValidationError from "../../../../services/validationError";
 
 describe("UpdateAbout", () => {
   const submitHandler = jest.fn();
@@ -178,5 +179,20 @@ describe("UpdateAbout", () => {
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toHaveTextContent("special characters");
+  });
+
+  it("shows validation errors returned from the API", async () => {
+    submitHandler.mockRejectedValue(new ValidationError({
+      portfolio: "portfolio validation error",
+      criticality: "criticality validation error",
+      investmentState: "investment state validation error",
+      supportedBy: "supported by validation error",
+    }));
+    setUp({ system: {} });
+    const saveButton = await screen.findByRole("button", { name: /save/i });
+
+    user.click(saveButton);
+
+    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(4);
   });
 });

@@ -6,6 +6,7 @@ import { defaultTo, omitBy } from "lodash-es";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import Radio from "../../Radio";
 import TextField from "../../TextField";
+import ValidationError from "../../../services/validationError";
 import validateName from "./validators";
 
 import "./UpdateAbout.css";
@@ -20,12 +21,19 @@ const infoAbout = (system) => ({
 });
 
 function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy = false }) {
-  const handleSubmit = useCallback(async (values) => {
+  const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
       values,
       (value, key) => value === initialInfo[key]);
-    await onSubmit(changedInfo);
+
+    try {
+      await onSubmit(changedInfo);
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        formik.setErrors(e.errors);
+      }
+    }
   }, [onSubmit, system]);
   const handleCancel = () => { onCancel() };
 
