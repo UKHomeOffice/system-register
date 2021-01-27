@@ -166,4 +166,17 @@ describe("UpdateAbout", () => {
     await waitFor(() => expect(submitHandler).not.toHaveBeenCalled());
     await waitFor(() => expect(cancelHandler).toHaveBeenCalled());
   });
+
+  it("shows an error summary containing all error details", async () => {
+    setUp({ system: { supported_by: "person" } });
+    const supportedByField = screen.getByLabelText(/who supports/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(supportedByField, "$!");
+    user.click(saveButton);
+
+    const errors = await screen.findAllByText(/must/i, { selector: "a" });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toHaveTextContent("special characters");
+  });
 });
