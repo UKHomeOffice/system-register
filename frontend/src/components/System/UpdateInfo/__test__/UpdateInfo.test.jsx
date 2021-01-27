@@ -49,7 +49,7 @@ describe("UpdateInfo", () => {
 
   it("trims values before calling the submission handler", async () => {
     const system = { name: "system name", description: "description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -102,7 +102,7 @@ describe("UpdateInfo", () => {
   });
 
   it("validates description before submission", async () => {
-    render(<UpdateInfo system={{ description: "system description" }} onSubmit={submitHandler} onBeforeNameChange={() => false} withDescription />);
+    render(<UpdateInfo system={{ description: "system description" }} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
