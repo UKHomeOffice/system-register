@@ -221,16 +221,19 @@ describe("UpdateAbout", () => {
   });
 
   it("shows an error summary containing all error details", async () => {
-    setUp({ system: { supported_by: "person" } });
+    setUp({ system: { developed_by: "developer", supported_by: "person" } });
+    const developedByField = screen.getByLabelText(/who develops/i);
     const supportedByField = screen.getByLabelText(/who supports/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    overtype(developedByField, "x");
     overtype(supportedByField, "$!");
     user.click(saveButton);
 
-    const errors = await screen.findAllByText(/must/i, { selector: "a" });
-    expect(errors).toHaveLength(1);
-    expect(errors[0]).toHaveTextContent("special characters");
+    const errors = await screen.findAllByText(/must|enter/i, { selector: "a" });
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toHaveTextContent("leave blank");
+    expect(errors[1]).toHaveTextContent("special characters");
   });
 
   it("shows validation errors returned from the API", async () => {

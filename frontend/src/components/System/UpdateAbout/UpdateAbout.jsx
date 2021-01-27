@@ -47,7 +47,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withDevelopedBy =
           onSubmit={handleSubmit}
         >
           <Form>
-            <ErrorSummary order={["portfolio", "criticality", "investmentState", "supportedBy"]} />
+            <ErrorSummary order={["portfolio", "criticality", "investmentState", "developedBy", "supportedBy"]} />
 
             <h1>{system.name}</h1>
             <p className="update-about-secondary">
