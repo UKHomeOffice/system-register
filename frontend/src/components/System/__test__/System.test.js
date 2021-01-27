@@ -66,11 +66,13 @@ describe('<System />', () => {
     })
 
     it('renders page not found error view when api throws SystemNotFoundException', async () => {
-      api.getSystem.mockResolvedValue(() => { throw new SystemNotFoundException() });
+      api.getSystem.mockResolvedValue(() => {
+        throw new SystemNotFoundException()
+      });
       render(
         <Router history={createMemoryHistory()}>
-          <ErrorBoundary fallback={<PageNotFoundError />}>
-            <System />
+          <ErrorBoundary fallback={<PageNotFoundError/>}>
+            <System/>
           </ErrorBoundary>
         </Router>
       );
@@ -143,7 +145,7 @@ describe('<System />', () => {
         const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
         const serviceOwnerField = await screen.findByLabelText(/service owner/i);
         const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
-        const saveButton = screen.getByRole("button", {name: /save/i});
+        const saveButton = screen.getByRole("button", { name: /save/i });
 
         overtype(businessOwnerField, "updated business owner");
         overtype(productOwnerField, "updated product owner");
@@ -195,7 +197,7 @@ describe('<System />', () => {
       it("does not send a request if field values are unchanged", async () => {
         const { history } = renderWithRouting("123/update-contacts");
         await screen.findByText("Test System");
-        const saveButton = await screen.findByRole("button", {name: /save/i});
+        const saveButton = await screen.findByRole("button", { name: /save/i });
 
         user.click(saveButton);
 
@@ -216,10 +218,10 @@ describe('<System />', () => {
 
       describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemName.mockResolvedValue({...test_system, name: "updated system name"});
+          api.updateSystemName.mockResolvedValue({ ...test_system, name: "updated system name" });
           const { history } = renderWithRouting("123/update-info");
           const systemNameField = await screen.findByLabelText(/system name/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           user.clear(systemNameField);
           // noinspection ES6MissingAwait: there is no typing delay
@@ -233,10 +235,10 @@ describe('<System />', () => {
 
       describe("system description", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemDescription.mockResolvedValue({...test_system, description: "system description"});
+          api.updateSystemDescription.mockResolvedValue({ ...test_system, description: "system description" });
           const { history } = renderWithRouting("123/update-info");
           const systemDescriptionField = await screen.findByLabelText(/system description/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           user.clear(systemDescriptionField);
           // noinspection ES6MissingAwait: there is no typing delay
@@ -256,7 +258,7 @@ describe('<System />', () => {
         it("does not send a request if field values are unchanged", async () => {
           const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
-          const saveButton = await screen.findByRole("button", {name: /save/i});
+          const saveButton = await screen.findByRole("button", { name: /save/i });
 
           user.click(saveButton);
 
@@ -274,10 +276,10 @@ describe('<System />', () => {
         });
 
         it("returns to the system view after a successful update", async () => {
-          api.updatePortfolio.mockResolvedValue({...test_system, portfolio: "updated portfolio"});
+          api.updatePortfolio.mockResolvedValue({ ...test_system, portfolio: "updated portfolio" });
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/updated portfolio/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -288,8 +290,9 @@ describe('<System />', () => {
         });
       });
 
+      describe("criticality", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateCriticality.mockResolvedValue({...test_system, criticality: "high"});
+          api.updateCriticality.mockResolvedValue({ ...test_system, criticality: "high" });
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/high/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -311,7 +314,7 @@ describe('<System />', () => {
         it("api is not called if criticality is unchanged", async () => {
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/low/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -329,7 +332,7 @@ describe('<System />', () => {
         });
 
         it("returns to the system view after a successful update", async () => {
-          api.updateInvestmentState.mockResolvedValue({...test_system, investment_state: "sunset"});
+          api.updateInvestmentState.mockResolvedValue({ ...test_system, investment_state: "sunset" });
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/sunset/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -351,7 +354,7 @@ describe('<System />', () => {
         it("api is not called if investment state is unchanged", async () => {
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/invest/i);
-          const saveButton = screen.getByRole("button", {name: /save/i});
+          const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
           user.click(radioButton);
@@ -364,7 +367,7 @@ describe('<System />', () => {
       });
     });
   });
-
+});
 
 function overtype(field, value) {
   user.clear(field);
