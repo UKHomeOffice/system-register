@@ -241,6 +241,7 @@ describe("UpdateAbout", () => {
       portfolio: "portfolio validation error",
       criticality: "criticality validation error",
       investmentState: "investment state validation error",
+      developedBy: "developed by validation error",
       supportedBy: "supported by validation error",
     }));
     setUp({ system: {} });
@@ -248,6 +249,6 @@ describe("UpdateAbout", () => {
 
     user.click(saveButton);
 
-    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(4);
+    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(5);
   });
 });
