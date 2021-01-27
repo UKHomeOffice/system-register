@@ -180,20 +180,28 @@ describe("UpdateAbout", () => {
     }));
   });
 
-  it("does NOT call submission handler when all field values are unchanged", async () => {
+  it("does not send data to submission handler when field values are unchanged", async () => {
     setUp({
-      system: { criticality: "low", investment_state: "invest", portfolio: "Option 1", supported_by: "person" },
+      system: {
+        criticality: "low",
+        investment_state: "invest",
+        portfolio: "Option 1",
+        developed_by: "developer",
+        supported_by: "person"
+      },
       portfolios: ["Option 1"]
     });
     const portfolioRadio = screen.getByLabelText(/Option 1/i);
     const criticalityRadio = screen.getByLabelText(/low/i);
     const investRadio = screen.getByDisplayValue(/invest/i);
+    const developedByField = screen.getByLabelText(/who develops/i);
     const supportedByField = screen.getByLabelText(/who supports/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(portfolioRadio);
     user.click(criticalityRadio);
     user.click(investRadio);
+    overtype(developedByField, "developer");
     overtype(supportedByField, "person");
     user.click(saveButton);
 
