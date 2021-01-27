@@ -15,6 +15,7 @@ describe("UpdateAbout", () => {
       portfolios: [],
       onSubmit: submitHandler,
       onCancel: cancelHandler,
+      withDevelopedBy: true,
       ...props,
     };
     return render(<UpdateAbout {...actualProps} />);
@@ -132,6 +133,21 @@ describe("UpdateAbout", () => {
       expect(
         await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
       ).toBeVisible();
+    });
+  });
+
+  describe("developed by", () => {
+    it("calls submission handler with updated developed by value", async () => {
+      setUp({ system: { supported_by: "original developer" } });
+      const textField = screen.getByLabelText(/who develops/i);
+      const saveButton = screen.getByRole("button", {name: /save/i});
+
+      overtype(textField, "new developer");
+      user.click(saveButton);
+
+      await waitFor(() => expect(submitHandler).toBeCalledWith({
+        developedBy: "new developer",
+      }));
     });
   });
 
