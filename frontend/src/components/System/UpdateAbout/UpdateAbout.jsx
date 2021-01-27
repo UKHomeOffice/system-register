@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { defaultTo, omitBy } from "lodash-es";
+import { defaultTo, mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import Radio from "../../Radio";
@@ -24,7 +24,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
-      values,
+      mapValues(values, (value) => value.trim()),
       (value, key) => value === initialInfo[key]);
 
     try {

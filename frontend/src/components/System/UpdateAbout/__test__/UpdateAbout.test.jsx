@@ -136,6 +136,19 @@ describe("UpdateAbout", () => {
     });
   });
 
+  it("trims values before calling the submission handler", async () => {
+    setUp({ system: {} });
+    const supportedByField = screen.getByLabelText(/who supports/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(supportedByField, "  a supportive person with extra spaces    ");
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({
+      supportedBy: "a supportive person with extra spaces",
+    }));
+  });
+
   it("does NOT call submission handler when all field values are unchanged", async () => {
     setUp({
       system: { criticality: "low", investment_state: "invest", portfolio: "Option 1", supported_by: "person" },
