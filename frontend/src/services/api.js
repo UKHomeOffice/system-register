@@ -11,6 +11,7 @@ const api = {
   updatePortfolio,
   updateCriticality,
   updateInvestmentState,
+  updateDevelopedBy,
   updateSupportedBy,
   updateProductOwner,
   updateTechnicalOwner,
@@ -109,6 +110,13 @@ async function updateCriticality(id, data) {
 async function updateInvestmentState(id, data) {
   const response = await sendPost(`systems/${id}/update-investment-state`, {
     investment_state: nullIfEmpty(data.investmentState),
+  });
+  return response.data;
+}
+
+async function updateDevelopedBy(id, data) {
+  const response = await sendPost(`systems/${id}/update-developed-by`, {
+    developed_by: nullIfEmpty(data.developedBy),
   });
   return response.data;
 }

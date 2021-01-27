@@ -18,6 +18,7 @@ jest.mock('../../../services/api', () => ({
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
+  updateDevelopedBy: jest.fn(),
   updateSupportedBy: jest.fn(),
   updateBusinessOwner: jest.fn(),
   updateProductOwner: jest.fn(),
@@ -363,6 +364,37 @@ describe('<System />', () => {
         });
       });
 
+      describe("developed by", () => {
+        it("returns to the system view after a successful update", async () => {
+          const { history } = renderWithRouting("123/update-about");
+          const textField = await screen.findByLabelText(/who develops/i);
+          const saveButton = screen.getByRole("button", { name: /save/i });
+
+          overtype(textField, "someone new")
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateDevelopedBy).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              developedBy: "someone new",
+            })
+          );
+        });
+
+        it("api is not called if developed by is unchanged", async () => {
+          const { history } = renderWithRouting("123/update-about");
+          const saveButton = await screen.findByRole("button", { name: /save/i });
+
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(changeHandler).not.toBeCalled();
+          expect(api.updateDevelopedBy).not.toBeCalled();
+        });
+      });
+
       describe("supported by", () => {
         it("returns to the system view after a successful update", async () => {
           const { history } = renderWithRouting("123/update-about");
@@ -435,6 +467,7 @@ function renderWithRouting(path, renderOptions) {
           portfolios={["original portfolio", "updated portfolio"]}
           onBeforeNameChange={() => false}
           onChange={changeHandler}
+          withDevelopedBy
         />
       </Route>
     </Router>,

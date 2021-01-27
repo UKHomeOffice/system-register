@@ -512,6 +512,55 @@ describe("api", () => {
     });
   });
 
+  describe("update developed by", () => {
+    it("sends updated developer to the API", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-developed-by", (req, res, ctx) => {
+          const { developed_by: developedBy } = req.body;
+          if (developedBy !== "new developer") {
+            console.error("Developed by value does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateDevelopedBy(987, {
+        developedBy: "new developer"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/765/update-developed-by", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              developed_by: "invalid developed by value",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateDevelopedBy(765, {
+        developed_by: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          developed_by: "invalid developed by value",
+        })
+      );
+    });
+  });
+
   describe("update supported by", () => {
     it("sends updated supporter to the API", async () => {
       server.use(
