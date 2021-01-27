@@ -270,11 +270,11 @@ describe('<System />', () => {
     });
 
     describe("editing about", () => {
-      describe("portfolio", () => {
-        it("returns to system view on cancel", async () => {
-          await checkCancelButton("update-about");
-        });
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-about");
+      });
 
+      describe("portfolio", () => {
         it("returns to the system view after a successful update", async () => {
           api.updatePortfolio.mockResolvedValue({ ...test_system, portfolio: "updated portfolio" });
           const { history } = renderWithRouting("123/update-about");
@@ -327,10 +327,6 @@ describe('<System />', () => {
       });
 
       describe("investment state", () => {
-        it("returns to system view on cancel", async () => {
-          await checkCancelButton("update-about");
-        });
-
         it("returns to the system view after a successful update", async () => {
           api.updateInvestmentState.mockResolvedValue({ ...test_system, investment_state: "sunset" });
           const { history } = renderWithRouting("123/update-about");
