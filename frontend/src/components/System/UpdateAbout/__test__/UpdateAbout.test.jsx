@@ -149,17 +149,33 @@ describe("UpdateAbout", () => {
         developedBy: "new developer",
       }));
     });
+
+    it("validates before submission", async () => {
+      setUp({ system: { developed_by: "someone" }});
+      const textField = await screen.findByLabelText(/who develops/i);
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(textField, "$");
+      user.click(saveButton);
+
+      expect(
+        await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+      ).toBeVisible();
+    });
   });
 
   it("trims values before calling the submission handler", async () => {
     setUp({ system: {} });
+    const developedByField = screen.getByLabelText(/who develops/i);
     const supportedByField = screen.getByLabelText(/who supports/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
+    overtype(developedByField, "   a developer with extra spaces ");
     overtype(supportedByField, "  a supportive person with extra spaces    ");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
+      developedBy: "a developer with extra spaces",
       supportedBy: "a supportive person with extra spaces",
     }));
   });

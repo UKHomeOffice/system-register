@@ -17,6 +17,7 @@ const infoAbout = (system) => ({
   portfolio: defaultTo(system.portfolio, "Unknown"),
   criticality: defaultTo(system.criticality, "unknown"),
   investmentState: defaultTo(system.investment_state, "unknown"),
+  developedBy: emptyIfUndefined(system.developed_by),
   supportedBy: emptyIfUndefined(system.supported_by),
 });
 
@@ -119,6 +120,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withDevelopedBy =
               hint="Please state the organisation, group or individuals developing the system (e.g. a specific portfolio, an outsourced company, Jane Bloggs, etc.)"
               inputClassName="update-about-two-thirds"
               placeholder="Unknown"
+              validate={validateName}
             >
               Who develops the system?
             </TextField>}
