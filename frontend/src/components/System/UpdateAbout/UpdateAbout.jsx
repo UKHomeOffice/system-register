@@ -20,7 +20,7 @@ const infoAbout = (system) => ({
   supportedBy: emptyIfUndefined(system.supported_by),
 });
 
-function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy = false }) {
+function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
@@ -50,7 +50,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
 
             <h1>{system.name}</h1>
             <p className="update-about-secondary">
-              You can currently change system portfolio, criticality and investment information only.
+              You can currently change system portfolio, criticality, investment, and support contact information only.
               If you would like to change other information within the ‘About’ section, please contact the System Register
               team via the ‘Contact’ tab in the navigation header.
             </p>
@@ -114,7 +114,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
               })
             }
 
-            {withSupportedBy && <TextField
+            <TextField
               name="supportedBy"
               hint="Please state the organisation, group or individuals supporting the system (e.g. a specific portfolio, an outsourced company, Jane Bloggs, etc.)"
               inputClassName="update-about-two-thirds"
@@ -122,7 +122,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
               validate={validateName}
             >
               Who supports the system?
-            </TextField>}
+            </TextField>
 
             <div className="form-controls">
               <Button type="submit">Save</Button>

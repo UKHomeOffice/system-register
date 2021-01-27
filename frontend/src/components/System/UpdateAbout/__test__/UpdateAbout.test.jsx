@@ -15,7 +15,6 @@ describe("UpdateAbout", () => {
       portfolios: [],
       onSubmit: submitHandler,
       onCancel: cancelHandler,
-      withSupportedBy: true,
       ...props,
     };
     return render(<UpdateAbout {...actualProps} />);
