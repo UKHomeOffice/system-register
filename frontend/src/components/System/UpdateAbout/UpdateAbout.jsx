@@ -5,6 +5,7 @@ import { defaultTo, omitBy } from "lodash-es";
 
 import Radio from "../../Radio";
 import TextField from "../../TextField";
+import validateName from "./validators";
 
 import "./UpdateAbout.css";
 
@@ -40,6 +41,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
 
           <Formik
             initialValues={infoAbout(system)}
+            validateOnChange={false}
             onSubmit={handleSubmit}
           >
             <Form>
@@ -107,6 +109,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy =
                 hint="Please state the organisation, group or individuals supporting the system (e.g. a specific portfolio, an outsourced company, Jane Bloggs, etc.)"
                 inputClassName="update-about-two-thirds"
                 placeholder="Unknown"
+                validate={validateName}
               >
                 Who supports the system?
               </TextField>}

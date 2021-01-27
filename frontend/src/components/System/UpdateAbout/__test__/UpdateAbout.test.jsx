@@ -120,6 +120,19 @@ describe("UpdateAbout", () => {
         supportedBy: "new supporter",
       }));
     });
+
+    it("validates before submission", async () => {
+      setUp({ system: { supported_by: "someone" }});
+      const textField = await screen.findByLabelText(/who supports/i);
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(textField, "$");
+      user.click(saveButton);
+
+      expect(
+        await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+      ).toBeVisible();
+    });
   });
 
   it("does NOT call submission handler when all field values are unchanged", async () => {
