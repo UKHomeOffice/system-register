@@ -9,7 +9,7 @@ import SystemView from "../SystemView";
 const test_system = {
   id: 444,
   name: "System X",
-  aliases: ["sys X", "project Jupiter"],
+  aliases: ["sys X", "project Jupiter", "avalanche"],
   department: "Department of Fig and Indie",
   criticality: "high",
   investment_state: "evergreen",
@@ -76,10 +76,22 @@ const test_unknown_system = {
 
 describe("<SystemView>", () => {
   describe("When we have data", () => {
-    describe("Renderes system section", () => {
+    describe("Renders system section", () => {
       it('renders system name', async () => {
         setup(test_system);
         const element = await screen.findByText('System X');
+        expect(element).toBeInTheDocument();
+      });
+
+      it('renders a comma separated list of aliases sorted into alphabetical order if aliases are supplied', async () => {
+        setup(test_system);
+        const element = await screen.findByText('avalanche, project Jupiter, sys X')
+        expect(element).toBeInTheDocument();
+      });
+
+      it('displays a message stating the system is not known by another name if no aliases are supplied', async () => {
+        setup(test_unknown_system);
+        const element = await screen.findByText('This system is not known by another name.')
         expect(element).toBeInTheDocument();
       });
 
@@ -127,28 +139,26 @@ describe("<SystemView>", () => {
         expect(element).toHaveAttribute("href", '//update-contacts') //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
-      it('renders first column correclty', async () => {
+      it('renders first column correctly', async () => {
         setup(test_system);
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Portfolio");
-        expect(entries[2].textContent).toEqual("Criticality assessment");
-        expect(entries[3].textContent).toEqual("Investment state");
-        expect(entries[4].textContent).toEqual("Developed by");
-        expect(entries[5].textContent).toEqual("Supported by");
+        expect(entries[0].textContent).toEqual("Portfolio");
+        expect(entries[1].textContent).toEqual("Criticality assessment");
+        expect(entries[2].textContent).toEqual("Investment state");
+        expect(entries[3].textContent).toEqual("Developed by");
+        expect(entries[4].textContent).toEqual("Supported by");
       });
 
       it('renders correct entries in the second column of About table', async () => {
         setup(test_system);
         const column = await screen.findByTestId("about-column2");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("sys X, project Jupiter");
-        expect(entries[1].textContent).toEqual("Portfolio Y");
-        expect(entries[2].textContent).toEqual("HIGH");
-        expect(entries[3].textContent).toEqual("EVERGREEN");
-        expect(entries[4].textContent).toEqual("Dev Team");
-        expect(entries[5].textContent).toEqual("Support Team");
+        expect(entries[0].textContent).toEqual("Portfolio Y");
+        expect(entries[1].textContent).toEqual("HIGH");
+        expect(entries[2].textContent).toEqual("EVERGREEN");
+        expect(entries[3].textContent).toEqual("Dev Team");
+        expect(entries[4].textContent).toEqual("Support Team");
       })
     });
 
@@ -238,24 +248,22 @@ describe("<SystemView>", () => {
         setup(test_unknown_system);
         const column = await screen.findByTestId("about-column1");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Aliases");
-        expect(entries[1].textContent).toEqual("Portfolio");
-        expect(entries[2].textContent).toEqual("Criticality assessment");
-        expect(entries[3].textContent).toEqual("Investment state");
-        expect(entries[4].textContent).toEqual("Developed by");
-        expect(entries[5].textContent).toEqual("Supported by");
+        expect(entries[0].textContent).toEqual("Portfolio");
+        expect(entries[1].textContent).toEqual("Criticality assessment");
+        expect(entries[2].textContent).toEqual("Investment state");
+        expect(entries[3].textContent).toEqual("Developed by");
+        expect(entries[4].textContent).toEqual("Supported by");
       });
 
       it('renders correct entries in the second column of About table', async () => {
         setup(test_unknown_system);
         const column = await screen.findByTestId("about-column2");
         const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("None");
+        expect(entries[0].textContent).toEqual("UNKNOWN");
         expect(entries[1].textContent).toEqual("UNKNOWN");
         expect(entries[2].textContent).toEqual("UNKNOWN");
         expect(entries[3].textContent).toEqual("UNKNOWN");
         expect(entries[4].textContent).toEqual("UNKNOWN");
-        expect(entries[5].textContent).toEqual("UNKNOWN");
       })
 
     });

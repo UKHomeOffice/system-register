@@ -18,18 +18,21 @@ const SystemView = ({ system }) => {
             <Link data-testid="info-change-link" className="change-link" to={window.location.pathname + `/update-info`}>Update</Link>
             <p data-testid="system-last-modified">
               <ModifiedDetails date={system.last_updated.timestamp}
-                author_name={system.last_updated.author_name} />
+                               author_name={system.last_updated.author_name} />
             </p>
+            <div className="hanging-indent">
+              {renderAliases(system.aliases)}
+            </div>
             <h2>Description</h2>
             <p data-testid="system-description"><KeyInfo info={system.description} /></p>
           </div>
+
           <div className="contentBlock">
             <h2>About</h2>
             <Link data-testid="about-change-link" className="change-link" to={window.location.pathname + `/update-about`}>Update</Link>
             {/* TODO discuss with team if better way to do relative path with react-router-dom */}
             <GridRow>
               <GridCol data-testid="about-column1" setWidth="one-quarter">
-                <p>Aliases</p>
                 <p>Portfolio</p>
                 <p>Criticality assessment</p>
                 <p>Investment state</p>
@@ -37,7 +40,6 @@ const SystemView = ({ system }) => {
                 <p>Supported by</p>
               </GridCol>
               <GridCol data-testid="about-column2" setWidth="one-half">
-                <p>{renderAliases(system.aliases)}</p>
                 <p><KeyInfo info={system.portfolio} /></p>
                 <p><Criticality level={system.criticality} /></p>
                 <p><InvestmentState state={system.investment_state} /></p>
@@ -80,9 +82,10 @@ const SystemView = ({ system }) => {
 
 
 function renderAliases(aliases) {
-  if (aliases.length > 0)
-    return aliases.join(', ');
-  else
-    return 'None'
+  if (aliases.length > 0) {
+    aliases.sort((a, b) => {return a.toLowerCase().localeCompare(b.toLowerCase())});
+    return <p><span>Aliases: </span>{aliases.join(', ')}</p>;
+  } else
+    return <p className="no-aliases-message">This system is not known by another name.</p>;
 }
 export default SystemView
