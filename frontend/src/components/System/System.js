@@ -19,6 +19,7 @@ const actionsByField = {
   criticality: api.updateCriticality,
   investmentState: api.updateInvestmentState,
   portfolio: api.updatePortfolio,
+  supportedBy: api.updateSupportedBy,
   businessOwner: api.updateBusinessOwner,
   productOwner: api.updateProductOwner,
   technicalOwner: api.updateTechnicalOwner,
@@ -55,7 +56,7 @@ function useUpdateCallbackFactory(id, onChange, setSystem) {
   }, [id, returnToSystemView, onChange, setSystem]);
 }
 
-function System({ portfolios, onChange, onBeforeNameChange }) {
+function System({ portfolios, onChange, onBeforeNameChange, withSupportedBy = false }) {
   const { path, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const throwError = useAsyncError();
@@ -67,7 +68,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
 
   const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
   const handleUpdateInfo = createUpdateCallback("name", "description");
-  const handleUpdateAbout = createUpdateCallback("portfolio", "criticality", "investmentState");
+  const handleUpdateAbout = createUpdateCallback("portfolio", "criticality", "investmentState", "supportedBy");
   const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner");
 
   const handleCancel = useReturnToSystemView();
@@ -81,7 +82,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
         <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
-        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} withSupportedBy={withSupportedBy} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>
         <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />

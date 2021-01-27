@@ -18,6 +18,7 @@ jest.mock('../../../services/api', () => ({
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
+  updateSupportedBy: jest.fn(),
   updateBusinessOwner: jest.fn(),
   updateProductOwner: jest.fn(),
   updateTechnicalOwner: jest.fn(),
@@ -361,6 +362,37 @@ describe('<System />', () => {
           expect(api.updateInvestmentState).not.toBeCalled();
         });
       });
+
+      describe("supported by", () => {
+        it("returns to the system view after a successful update", async () => {
+          const { history } = renderWithRouting("123/update-about");
+          const textField = await screen.findByLabelText(/who supports/i);
+          const saveButton = screen.getByRole("button", { name: /save/i });
+
+          overtype(textField, "someone new")
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSupportedBy).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              supportedBy: "someone new",
+            })
+          );
+        });
+
+        it("api is not called if supported by is unchanged", async () => {
+          const { history } = renderWithRouting("123/update-about");
+          const saveButton = await screen.findByRole("button", { name: /save/i });
+
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(changeHandler).not.toBeCalled();
+          expect(api.updateSupportedBy).not.toBeCalled();
+        });
+      });
     });
   });
 });
@@ -403,6 +435,7 @@ function renderWithRouting(path, renderOptions) {
           portfolios={["original portfolio", "updated portfolio"]}
           onBeforeNameChange={() => false}
           onChange={changeHandler}
+          withSupportedBy
         />
       </Route>
     </Router>,

@@ -255,7 +255,7 @@ describe("api", () => {
       );
 
       const pendingSystem = api.updateServiceOwner(765, {
-        servciceOwner: "$"
+        serviceOwner: "$"
       });
 
       await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
@@ -466,7 +466,7 @@ describe("api", () => {
     it("sends changed criticality to the API", async () => {
       server.use(
         rest.post("/api/systems/345/update-criticality", (req, res, ctx) => {
-          const { criticality: criticality } = req.body;
+          const { criticality } = req.body;
           if (criticality !== "high") {
             console.error("New criticality does not match");
             return;
@@ -512,8 +512,57 @@ describe("api", () => {
     });
   });
 
+  describe("update supported by", () => {
+    it("sends updated supporter to the API", async () => {
+      server.use(
+        rest.post("/api/systems/876/update-supported-by", (req, res, ctx) => {
+          const { supported_by: supportedBy } = req.body;
+          if (supportedBy !== "new supporter") {
+            console.error("Supported by value does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSupportedBy(876, {
+        supportedBy: "new supporter"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-supported-by", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              supported_by: "invalid supported by value",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateSupportedBy(987, {
+        supported_by: "$"
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          supported_by: "invalid supported by value",
+        })
+      );
+    });
+  });
+
   describe("update system name", () => {
-    it("sends changed owner to the API", async () => {
+    it("sends changed name to the API", async () => {
       server.use(
         rest.post("/api/systems/345/update-name", (req, res, ctx) => {
           const { name: newName } = req.body;
