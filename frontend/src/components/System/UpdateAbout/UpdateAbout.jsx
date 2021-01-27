@@ -4,15 +4,20 @@ import { Button } from "govuk-react";
 import { defaultTo, omitBy } from "lodash-es";
 
 import Radio from "../../Radio";
+import TextField from "../../TextField";
+
 import "./UpdateAbout.css";
+
+const emptyIfUndefined = (value) => value != null ? value : "";
 
 const infoAbout = (system) => ({
   portfolio: defaultTo(system.portfolio, "Unknown"),
   criticality: defaultTo(system.criticality, "unknown"),
   investmentState: defaultTo(system.investment_state, "unknown"),
+  supportedBy: emptyIfUndefined(system.supported_by),
 });
 
-function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
+function UpdateAbout({ system, portfolios, onSubmit, onCancel, withSupportedBy = false }) {
   const handleSubmit = useCallback(async (values) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
@@ -96,6 +101,15 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
                   )
                 })
               }
+
+              {withSupportedBy && <TextField
+                name="supportedBy"
+                hint="Please state the organisation, group or individuals supporting the system (e.g. a specific portfolio, an outsourced company, Jane Bloggs, etc.)"
+                inputClassName="update-about-two-thirds"
+                placeholder="Unknown"
+              >
+                Who supports the system?
+              </TextField>}
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>

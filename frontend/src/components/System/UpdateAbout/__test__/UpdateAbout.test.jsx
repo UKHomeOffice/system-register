@@ -14,9 +14,16 @@ describe("UpdateAbout", () => {
       portfolios: [],
       onSubmit: submitHandler,
       onCancel: cancelHandler,
+      withSupportedBy: true,
       ...props,
     };
     return render(<UpdateAbout {...actualProps} />);
+  }
+
+  function overtype(field, value) {
+    user.clear(field);
+    // noinspection JSIgnoredPromiseFromCall
+    user.type(field, value);
   }
 
   beforeEach(() => {
@@ -57,8 +64,7 @@ describe("UpdateAbout", () => {
     });
   });
 
-  describe("criticality", () =>
-  {
+  describe("criticality", () => {
     it("displays current criticality button as checked", () => {
       setUp({system: {criticality: "medium"}});
 
@@ -101,16 +107,36 @@ describe("UpdateAbout", () => {
     });
   });
 
+  describe("supported by", () => {
+    it("calls submission handler with updated supported by value", async () => {
+      setUp({ system: { supported_by: "original supporter" } });
+      const textField = screen.getByLabelText(/who supports/i);
+      const saveButton = screen.getByRole("button", {name: /save/i});
+
+      overtype(textField, "new supporter");
+      user.click(saveButton);
+
+      await waitFor(() => expect(submitHandler).toBeCalledWith({
+        supportedBy: "new supporter",
+      }));
+    });
+  });
+
   it("does NOT call submission handler when all field values are unchanged", async () => {
-    setUp({system: {criticality: "low", investment_state: "invest", portfolio: "Option 1"}, portfolios: ["Option 1"]});
+    setUp({
+      system: { criticality: "low", investment_state: "invest", portfolio: "Option 1", supported_by: "person" },
+      portfolios: ["Option 1"]
+    });
     const portfolioRadio = screen.getByLabelText(/Option 1/i);
     const criticalityRadio = screen.getByLabelText(/low/i);
     const investRadio = screen.getByDisplayValue(/invest/i);
-    const saveButton = screen.getByRole("button", {name: /save/i});
+    const supportedByField = screen.getByLabelText(/who supports/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(portfolioRadio);
     user.click(criticalityRadio);
-    user.click(investRadio)
+    user.click(investRadio);
+    overtype(supportedByField, "person");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({}));
