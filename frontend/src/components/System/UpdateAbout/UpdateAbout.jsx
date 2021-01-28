@@ -51,9 +51,8 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
 
             <h1>{system.name}</h1>
             <p className="update-about-secondary">
-              You can currently change system portfolio, criticality, investment, and support contact information only.
-              If you would like to change other information within the ‘About’ section, please contact the System Register
-              team via the ‘Contact’ tab in the navigation header.
+              You can update system portfolio, criticality, investment, support and development information. If you have
+              any questions, please contact the System Register team via the ‘Contact’ tab in the navigation header.
             </p>
 
             <h2 className="update-about-radio-group-title">What portfolio does the system belong to?</h2>
