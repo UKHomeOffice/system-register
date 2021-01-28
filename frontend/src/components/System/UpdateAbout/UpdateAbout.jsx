@@ -21,7 +21,7 @@ const infoAbout = (system) => ({
   supportedBy: emptyIfUndefined(system.supported_by),
 });
 
-function UpdateAbout({ system, portfolios, onSubmit, onCancel, withDevelopedBy = false }) {
+function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = infoAbout(system);
     const changedInfo = omitBy(
@@ -115,7 +115,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withDevelopedBy =
               })
             }
 
-            {withDevelopedBy && <TextField
+            <TextField
               name="developedBy"
               hint="Please state the organisation, group or individuals developing the system (e.g. a specific portfolio, an outsourced company, Jane Bloggs, etc.)"
               inputClassName="update-about-two-thirds"
@@ -123,7 +123,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel, withDevelopedBy =
               validate={validateName}
             >
               Who develops the system?
-            </TextField>}
+            </TextField>
 
             <TextField
               name="supportedBy"

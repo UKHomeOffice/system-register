@@ -57,7 +57,7 @@ function useUpdateCallbackFactory(id, onChange, setSystem) {
   }, [id, returnToSystemView, onChange, setSystem]);
 }
 
-function System({ portfolios, onChange, onBeforeNameChange, withDevelopedBy = false }) {
+function System({ portfolios, onChange, onBeforeNameChange }) {
   const { path, params: { id } } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const throwError = useAsyncError();
@@ -83,7 +83,7 @@ function System({ portfolios, onChange, onBeforeNameChange, withDevelopedBy = fa
         <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
-        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} withDevelopedBy={withDevelopedBy} />
+        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>
         <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
