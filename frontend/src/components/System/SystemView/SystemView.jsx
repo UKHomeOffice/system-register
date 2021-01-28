@@ -23,7 +23,7 @@ const SystemView = ({ system }) => {
             <h2>Description</h2>
             <p data-testid="system-description"><KeyInfo info={system.description} /></p>
             <div className="hanging-indent">
-              {renderAliases(system.aliases)}
+              <p><span>Aliases: </span>{renderAliases(system.aliases)}</p>
             </div>
           </div>
 
@@ -84,8 +84,8 @@ const SystemView = ({ system }) => {
 function renderAliases(aliases) {
   if (aliases.length > 0) {
     aliases.sort((a, b) => {return a.toLowerCase().localeCompare(b.toLowerCase())});
-    return <p><span>Aliases: </span>{aliases.join(', ')}</p>;
+    return aliases.join(', ');
   } else
-    return <p>Aliases: This system is not known by another name.</p>;
+    return 'This system is not known by another name.';
 }
 export default SystemView
