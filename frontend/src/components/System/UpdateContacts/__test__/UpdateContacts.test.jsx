@@ -43,17 +43,20 @@ describe("UpdateContacts", () => {
       business_owner: "existing business owner",
       product_owner: "existing product owner",
       tech_owner: "existing tech owner",
+      service_owner: "existing service owner",
       information_asset_owner: "existing information asset owner",
     });
     const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const serviceOwnerField = screen.getByLabelText(/service owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.clear(businessOwnerField);
     user.clear(productOwnerField);
     user.clear(technicalOwnerField);
+    user.clear(serviceOwnerField);
     user.clear(informationAssetOwnerField);
     // noinspection ES6MissingAwait
     user.type(businessOwnerField, "new business owner");
@@ -61,6 +64,8 @@ describe("UpdateContacts", () => {
     user.type(productOwnerField, "new product owner");
     // noinspection ES6MissingAwait
     user.type(technicalOwnerField, "new technical owner");
+    // noinspection ES6MissingAwait
+    user.type(serviceOwnerField, "new service owner");
     // noinspection ES6MissingAwait
     user.type(informationAssetOwnerField, "new information asset owner");
 
@@ -70,6 +75,7 @@ describe("UpdateContacts", () => {
       businessOwner: "new business owner",
       productOwner: "new product owner",
       technicalOwner: "new technical owner",
+      serviceOwner: "new service owner",
       informationAssetOwner: "new information asset owner",
     }));
   });
@@ -79,6 +85,7 @@ describe("UpdateContacts", () => {
     const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const serviceOwnerField = screen.getByLabelText(/service owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -88,6 +95,8 @@ describe("UpdateContacts", () => {
     user.type(productOwnerField, "  owner with extra spaces  ");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(technicalOwnerField, "  another owner with more spaces  ");
+    // noinspection ES6MissingAwait
+    user.type(serviceOwnerField, "  service owner with extra spaces  ");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(informationAssetOwnerField, "  yet another owner with more spaces  ");
     user.click(saveButton);
@@ -96,6 +105,7 @@ describe("UpdateContacts", () => {
       businessOwner: "busy owner with extra spaces",
       productOwner: "owner with extra spaces",
       technicalOwner: "another owner with more spaces",
+      serviceOwner: "service owner with extra spaces",
       informationAssetOwner: "yet another owner with more spaces",
     }));
   });
@@ -119,7 +129,7 @@ describe("UpdateContacts", () => {
     expect(cancelHandler).toBeCalled();
   });
 
-  it.each(["business owner", "product owner", "technical owner", "information asset owner"])
+  it.each(["business owner", "product owner", "technical owner", "service owner", "information asset owner"])
     ("validates %p contact before submission", async (label) => {
       setUp();
       const ownerField = screen.getByLabelText(new RegExp(label, "i"));
@@ -139,6 +149,7 @@ describe("UpdateContacts", () => {
     const businessOwnerField = screen.getByLabelText(/business owner/i);
     const productOwnerField = screen.getByLabelText(/product owner/i);
     const technicalOwnerField = screen.getByLabelText(/technical owner/i);
+    const serviceOwnerField = screen.getByLabelText(/service owner/i);
     const informationAssetOwnerField = screen.getByLabelText(/information asset owner/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -146,6 +157,8 @@ describe("UpdateContacts", () => {
     user.type(businessOwnerField, "!!!");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(technicalOwnerField, "x");
+    // noinspection ES6MissingAwait
+    user.type(serviceOwnerField, "x");
     // noinspection ES6MissingAwait: there is no typing delay
     user.type(productOwnerField, "!?$");
     // noinspection ES6MissingAwait: there is no typing delay
@@ -153,11 +166,12 @@ describe("UpdateContacts", () => {
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
-    expect(errors).toHaveLength(4);
+    expect(errors).toHaveLength(5);
     expect(errors[0]).toHaveTextContent("special characters");
     expect(errors[1]).toHaveTextContent("incomplete");
-    expect(errors[2]).toHaveTextContent("special characters");
-    expect(errors[3]).toHaveTextContent("incomplete");
+    expect(errors[2]).toHaveTextContent("incomplete");
+    expect(errors[3]).toHaveTextContent("special characters");
+    expect(errors[4]).toHaveTextContent("incomplete");
   });
 
   it("shows validation errors returned from the API", async () => {
@@ -165,6 +179,7 @@ describe("UpdateContacts", () => {
       businessOwner: "busy validation error",
       productOwner: "product validation error",
       technicalOwner: "tech validation error",
+      serviceOwner: "service validation error",
       informationAssetOwner: "information validation error",
     }));
     setUp();
@@ -172,6 +187,6 @@ describe("UpdateContacts", () => {
 
     user.click(saveButton);
 
-    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(4);
+    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(5);
   });
 });
