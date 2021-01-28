@@ -71,7 +71,11 @@ public class SR_SystemBuilder {
     }
 
     public SR_SystemBuilder withAliases(String... aliases) {
-        this.aliases = List.of(aliases);
+        return withAliases(List.of(aliases));
+    }
+
+    public SR_SystemBuilder withAliases(List<String> aliases) {
+        this.aliases = aliases;
         return this;
     }
 
