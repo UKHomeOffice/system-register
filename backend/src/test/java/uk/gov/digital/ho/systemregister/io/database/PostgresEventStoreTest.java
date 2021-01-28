@@ -32,6 +32,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder
 import static uk.gov.digital.ho.systemregister.helpers.builders.ServiceOwnerUpdatedEventBuilder.aServiceOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SupportedByUpdatedEventBuilder.aSupportedByUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAliasesUpdatedEventBuilder.aSystemAliasesUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.TechnicalOwnerUpdatedEventBuilder.aTechnicalOwnerUpdatedEvent;
@@ -118,6 +119,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveSystemDescriptionUpdatedEvent() {
         var expected = aSystemDescriptionUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveAliasesUpdatedEvent() {
+        var expected = aSystemAliasesUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

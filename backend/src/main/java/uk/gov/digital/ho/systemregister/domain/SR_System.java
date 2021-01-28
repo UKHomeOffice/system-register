@@ -3,6 +3,7 @@ package uk.gov.digital.ho.systemregister.domain;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class SR_System extends SystemData {
      // todo I want to make all these immutable but cant
@@ -31,6 +32,12 @@ public final class SR_System extends SystemData {
     }
 
     public SR_System withDescription(String description) {
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
+                List.copyOf(aliases), List.copyOf(risks));
+    }
+
+    public SR_System withAliases(Set<String> aliases) {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
                 List.copyOf(aliases), List.copyOf(risks));
