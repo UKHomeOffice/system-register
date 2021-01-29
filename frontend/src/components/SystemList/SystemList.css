@@ -1,4 +1,14 @@
-.dropdown {
+.system-list-filter {
+  display: inline-flex;
+  margin-top: 20px;
+}
+
+.system-list-dropdown {
     margin-left: 40px;
     margin-top: 16px;
+    min-width: 500px;
+  }
+
+  .system-list-search{
+    margin-top: 32px;
   }

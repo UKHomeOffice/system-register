@@ -8,61 +8,84 @@ exports[`<SystemList /> matches snapshot 1`] = `
     System search
   </h1>
   <div
+    className="system-list-filter"
+  >
+    <span
+      className="system-list-search"
+    >
+      <div
+        className="MuiFormControl-root MuiTextField-root"
+      >
+        <label
+          className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink={false}
+          htmlFor="search"
+          id="search-label"
+        >
+          search
+        </label>
+        <div
+          className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          onClick={[Function]}
+        >
+          <input
+            aria-invalid={false}
+            autoFocus={false}
+            className="MuiInputBase-input MuiInput-input"
+            disabled={false}
+            id="search"
+            onAnimationStart={[Function]}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={false}
+            type="text"
+          />
+        </div>
+      </div>
+    </span>
+    <label
+      className="sc-bdfBwQ gOoCOU system-list-dropdown"
+      data-testid="select-portfolio"
+      name="portfolio-select"
+      onChange={[Function]}
+      value="all"
+    >
+      <span
+        className="sc-gsTCUz gZLQFY"
+      >
+        Filter by Portfolio
+      </span>
+      <select
+        className="sc-eCssSg dhiIIr"
+      >
+        <option
+          value="all"
+        >
+          All Portfolios
+        </option>
+        <option
+          data-testid="portfolio-option-Portfolio 1"
+          value="Portfolio 1"
+        >
+          Portfolio 1
+        </option>
+        <option
+          data-testid="portfolio-option-Portfolio 2"
+          value="Portfolio 2"
+        >
+          Portfolio 2
+        </option>
+      </select>
+    </label>
+  </div>
+  <div
     className="topMarginBig"
   >
     <strong>
       Number of systems identified: 
     </strong>
     3
-  </div>
-  <div
-    className="bottomMargin topMarginBig"
-  >
-    <div
-      className="MuiFormControl-root MuiTextField-root"
-    >
-      <label
-        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-        data-shrink={false}
-        htmlFor="search"
-        id="search-label"
-      >
-        search
-      </label>
-      <div
-        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-        onClick={[Function]}
-      >
-        <input
-          aria-invalid={false}
-          autoFocus={false}
-          className="MuiInputBase-input MuiInput-input"
-          disabled={false}
-          id="search"
-          onAnimationStart={[Function]}
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          required={false}
-          type="text"
-        />
-      </div>
-    </div>
-    <select
-      data-testid="select-portfolio"
-      onChange={[Function]}
-      value="all"
-    >
-      <option
-        value="Portfolio 1"
-      />
-      <option
-        value="Portfolio 2"
-      />
-      <option
-        value="Portfolio 3"
-      />
-    </select>
   </div>
   <div
     className="topMarginBig"
@@ -72,7 +95,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-jSgupP jySQGO systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -112,7 +135,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-jSgupP jySQGO systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -152,7 +175,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-jSgupP jySQGO systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={

@@ -2,8 +2,7 @@
 import './SystemList.css'
 import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+import Select from '@govuk-react/select'
 import SystemCard from "../SystemCard/SystemCard"
 
 //todo make stateless, all components stateless all, state should be in the containers only
@@ -26,31 +25,24 @@ const SystemList = props => {
     return (
         <div className="centerContent">
             <h1>System search</h1>
+            <div className="system-list-filter">
+                <span className="system-list-search">
+                    <TextField
+                        id="search"
+                        label="search"
+                        onChange={e => setSearchString(e.target.value)}
+                    />
+                </span>
+                <Select data-testid="select-portfolio" className="system-list-dropdown" name="portfolio-select" label="Filter by Portfolio" onChange={e => setSelectedPortfolio(e.target.value)} value={selectedPortfolio}>
+                    <option value="all">All Portfolios</option>
+                    {portfolios.map((p, i) => <option data-testid={`portfolio-option-${p}`} key={i} value={p}>{p}</option>)}
+                </Select>
+            </div>
             <div className="topMarginBig">
                 <strong>Number of systems identified: </strong>{systems?.length}
             </div>
-            <div className="bottomMargin topMarginBig">
-                <TextField
-                    id="search"
-                    label="search"
-                    onChange={e => setSearchString(e.target.value)}
-                />
-                <Select
-                    value={selectedPortfolio}
-                    onChange={e => setSelectedPortfolio(e.target.value)}
-                    className="dropdown">
-                    <MenuItem value="all">
-                        All Portfolios
-                    </MenuItem>
-                    {portfolios.map((p, i) => <MenuItem key={i} value={p}>{p}</MenuItem>)}
-                </Select>
-            </div>
-            {/* todo refactor out to functional <Systems /> component */}
             <div className="topMarginBig">
-                {
-                    visibleSystems?.map((system, key) => <SystemCard key={key} system={system} />)
-                    /* todo use id rather than key to help out the shadow DOM */
-                }
+                {visibleSystems?.map((system, key) => <SystemCard key={key} system={system} />)}
             </div>
         </div >
     )
