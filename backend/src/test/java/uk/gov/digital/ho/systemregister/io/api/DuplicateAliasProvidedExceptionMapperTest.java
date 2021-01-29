@@ -32,6 +32,6 @@ class DuplicateAliasProvidedExceptionMapperTest {
                 .isEqualTo(BAD_REQUEST);
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .extracting("errors", map(String.class, String.class))
-                .containsEntry("aliases", exception.getMessage());
+                .containsEntry("alias", exception.getMessage());
     }
 }
