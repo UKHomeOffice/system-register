@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, cleanup, within, screen } from '@testing-library/react';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import SystemList from '../SystemList';
 import renderer from 'react-test-renderer';
 import { BrowserRouter } from 'react-router-dom';
@@ -152,11 +152,11 @@ function whenUserSearchesFor(str) {
     fireEvent.change(_getByLabelText('search'), { target: { value: str } })
 }
 function whenUserSelectsPortfolio(portfolio) {
-    fireEvent.change(_getByTestId(`portfolio-option-${portfolio}`), { target: { value: portfolio } })
+    fireEvent.change(_getByTestId("select-portfolio"), { target: { value: portfolio } })
 }
 
 //mocks
-jest.mock("@material-ui/core/Select", () => ({ value, onChange }) => {
+jest.mock("@govuk-react/select", () => ({ value, onChange }) => {
     const options = [{ value: "Portfolio 1" }, { value: "Portfolio 2" }, { value: "Portfolio 3" }]
     function handleChange(event) {
         const option = options.find(
@@ -167,7 +167,7 @@ jest.mock("@material-ui/core/Select", () => ({ value, onChange }) => {
     return (
         <select data-testid="select-portfolio" value={value} onChange={handleChange}>
             {options.map(({ label, value }) => (
-                <option data-testid={`portfolio-option-${value}`} key={value} value={value}>
+                <option key={value} value={value}>
                     {label}
                 </option>
             ))}

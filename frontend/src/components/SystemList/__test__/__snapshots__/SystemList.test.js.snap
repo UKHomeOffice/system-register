@@ -44,40 +44,21 @@ exports[`<SystemList /> matches snapshot 1`] = `
         </div>
       </div>
     </span>
-    <label
-      className="sc-bdfBwQ gOoCOU system-list-dropdown"
+    <select
       data-testid="select-portfolio"
-      name="portfolio-select"
       onChange={[Function]}
       value="all"
     >
-      <span
-        className="sc-gsTCUz gZLQFY"
-      >
-        Filter by Portfolio
-      </span>
-      <select
-        className="sc-eCssSg dhiIIr"
-      >
-        <option
-          value="all"
-        >
-          All Portfolios
-        </option>
-        <option
-          data-testid="portfolio-option-Portfolio 1"
-          value="Portfolio 1"
-        >
-          Portfolio 1
-        </option>
-        <option
-          data-testid="portfolio-option-Portfolio 2"
-          value="Portfolio 2"
-        >
-          Portfolio 2
-        </option>
-      </select>
-    </label>
+      <option
+        value="Portfolio 1"
+      />
+      <option
+        value="Portfolio 2"
+      />
+      <option
+        value="Portfolio 3"
+      />
+    </select>
   </div>
   <div
     className="topMarginBig"
@@ -95,7 +76,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-jSgupP jySQGO systemCard-link system-register-link"
+        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -135,7 +116,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-jSgupP jySQGO systemCard-link system-register-link"
+        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -175,7 +156,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-jSgupP jySQGO systemCard-link system-register-link"
+        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
