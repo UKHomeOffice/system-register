@@ -52,8 +52,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can currently change only business owner, technical owner, service owner, product owner or information asset owner information.
-              We are working to make other fields editable.
+              You can provide named individuals as key points of contact for your system.
+              An individual can be named multiple times if applicable.
             </p>
 
             <Form>
