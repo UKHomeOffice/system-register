@@ -5,6 +5,6 @@ import java.util.Collection;
 @SuppressWarnings("CdiInjectionPointsInspection")
 public class DuplicateAliasProvidedException extends CommandProcessingException {
     public DuplicateAliasProvidedException(Collection<String> aliases) {
-        super("system aliases contains duplicate value: " + aliases);
+        super("You have entered duplicate aliases: " + String.join(", ", aliases));
     }
 }

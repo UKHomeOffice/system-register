@@ -15,6 +15,8 @@ public class DuplicateAliasProvidedExceptionMapper implements ExceptionMapper<Du
     @Override
     public Response toResponse(DuplicateAliasProvidedException exception) {
         return Response.status(BAD_REQUEST)
-                .entity(Map.of("errors", Map.of("alias", exception.getMessage()))).build();
+                .entity(Map.of("errors",
+                        Map.of("alias", exception.getMessage() + ". Please amend or remove the duplicates.")))
+                .build();
     }
 }

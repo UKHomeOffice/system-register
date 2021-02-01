@@ -1,6 +1,5 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
-import io.smallrye.mutiny.tuples.Tuple2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -105,7 +104,7 @@ class UpdateSystemAliasesCommandHandlerTest {
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(DuplicateAliasProvidedException.class)
-                .hasMessageContaining("system aliases contains duplicate value: [duplicate alias]");
+                .hasMessageContaining("You have entered duplicate aliases: duplicate alias");
     }
 
     @Test
@@ -122,7 +121,7 @@ class UpdateSystemAliasesCommandHandlerTest {
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(DuplicateAliasProvidedException.class)
-                .hasMessageContaining("system aliases contains duplicate value: [duplicate alias, another dupe]");
+                .hasMessageContaining("You have entered duplicate aliases: duplicate alias, another dupe");
     }
 
     @Test
