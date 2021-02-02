@@ -10,10 +10,12 @@ const AliasInput = ({ name }) => (
   <Field name={name} validate={validateAlias}>
     {({ field, meta }) => {
       const hasError = meta.touched && meta.error;
+      const className = `alias-input-list-item ${hasError ? "alias-input-error" : ""}`
 
       return (
-        <span>
+        <span className={className}>
           {hasError && <ErrorText>
+            <span className="alias-input-hidden">Error:</span>
             {meta.error}
           </ErrorText>}
 
@@ -30,24 +32,24 @@ function AliasInputList() {
   return (
     <FieldArray name="aliases">
       {({ push, remove }) => (
-        <>
-          <LabelText>Aliases</LabelText>
+        <div className="alias-input-list">
+          <LabelText className="alias-input-list-title">Aliases</LabelText>
           <HintText>What is the system also known as?</HintText>
 
           {values.aliases && values.aliases.map(
             (alias, index) => (
               <div key={`field-${index}`}>
                 <AliasInput name={`aliases[${index}]`}/>
-                <Button type="button" onClick={() => {
+                <Button className="alias-input-list-remove" type="button" onClick={() => {
                   remove(index);
                 }}>Remove</Button>
               </div>
             )
           )}
-          <Button type="button" onClick={() => {
+          <Button className="alias-input-list-add" type="button" onClick={() => {
             push("");
           }}>Add another alias</Button>
-        </>
+        </div>
       )}
     </FieldArray>
   );

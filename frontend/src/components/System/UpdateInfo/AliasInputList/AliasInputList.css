@@ -1,0 +1,43 @@
+.alias-input-list {
+    margin-top: 25px;
+}
+
+.alias-input-list-title {
+    font-weight: bold !important;
+}
+
+.alias-input-list-item {
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 49%;
+}
+
+.alias-input-list-add {
+    margin: 0 !important;
+}
+
+.alias-input-list-remove {
+    margin: 0 0 0 10px !important;
+    vertical-align: baseline !important;
+}
+
+.alias-input-error {
+    border-left: 4px solid var(--red);
+    margin-right: 15px;
+    padding-left: 10px;
+}
+
+.alias-input-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    /*noinspection CssUnknownProperty*/
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+}

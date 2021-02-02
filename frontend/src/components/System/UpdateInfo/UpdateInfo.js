@@ -85,7 +85,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliase
 
               {withAliases && <AliasInputList />}
 
-              <div className="form-controls">
+              <div className="update-info-form-controls">
                 <Button type="submit">Save</Button>
                 <Button
                   type="button"

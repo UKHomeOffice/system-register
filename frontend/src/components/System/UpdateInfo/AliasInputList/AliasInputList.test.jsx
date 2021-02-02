@@ -7,7 +7,6 @@ import AliasInputList from ".";
 
 // TODO:
 //    Validation
-//    Styling (GDS input field)
 
 describe("AliasInputList", () => {
   const submitHandler = jest.fn();
