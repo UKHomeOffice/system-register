@@ -8,6 +8,24 @@ import ValidationError from "../../../../services/validationError";
 describe("UpdateInfo", () => {
   const submitHandler = jest.fn();
 
+  function setUp(props = {}) {
+    const actualProps = {
+      system: null,
+      portfolios: [],
+      onSubmit: submitHandler,
+      onBeforeNameChange: () => false,
+      withAliases: true,
+      ...props,
+    };
+    return render(<UpdateInfo {...actualProps} />);
+  }
+
+  function overtype(field, value) {
+    user.clear(field);
+    // noinspection JSIgnoredPromiseFromCall
+    user.type(field, value);
+  }
+
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -27,56 +45,80 @@ describe("UpdateInfo", () => {
   });
 
   it("calls submission handler with updated values", async () => {
-    const system = { name: "system name", description: "description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: "system name", description: "description", aliases: ["alias"] } });
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const systemAliasField = screen.getByDisplayValue("alias");
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    user.clear(systemNameField);
-    user.clear(systemDescriptionField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemNameField, "new system name");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemDescriptionField, "new system description");
+    overtype(systemNameField, "new system name");
+    overtype(systemDescriptionField, "new system description");
+    overtype(systemAliasField, "new alias");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
       name: "new system name",
       description: "new system description",
+      aliases: ["new alias"],
     }));
   });
 
   it("trims values before calling the submission handler", async () => {
-    const system = { name: "system name", description: "description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: "system name", description: "description", aliases: ["alias"] } });
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const systemAliasField = screen.getByDisplayValue("alias");
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    user.clear(systemNameField);
-    user.clear(systemDescriptionField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemNameField, "    new system name with spaces ");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemDescriptionField, "    new system description with spaces ");
+    overtype(systemNameField, "    new system name with spaces ");
+    overtype(systemDescriptionField, "    new system description with spaces ");
+    overtype(systemAliasField, " new alias  ");
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({
       name: "new system name with spaces",
       description: "new system description with spaces",
+      aliases: ["new alias"],
     }));
   });
 
   it.each(["value", null])
   ("does not send unchanged values to the submission handler: %p", async (value) => {
-    const system = { name: value, description: value };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: value, description: value, aliases: value && [value] } });
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
 
     await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+  });
+
+  it.each(["", " "])
+  ("does not submit blank aliases", async (value) => {
+    setUp({ system: { name: "name", description: "description", aliases: [] } });
+    const addAliasButton = screen.getByRole("button", { name: /add/i });
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(addAliasButton);
+    overtype(screen.getAllByDisplayValue("")[0], value);
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+  });
+
+  it("provides an initial empty alias field", async () => {
+    setUp({ system: { name: "name", description: "description" } });
+
+    const aliasField = await screen.findByDisplayValue("");
+
+    expect(aliasField).toBeInTheDocument();
+  });
+
+  it("always provides an extra empty alias field", async () => {
+    setUp({ system: { name: "name", description: "description", aliases: ["alias"] } });
+
+    const aliasField = await screen.findByDisplayValue("");
+
+    expect(aliasField).toBeInTheDocument();
   });
 
   it("calls cancel handler", () => {

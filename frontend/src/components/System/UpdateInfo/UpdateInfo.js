@@ -1,29 +1,37 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { mapValues, omitBy } from "lodash-es";
+import { flow, isArray, isEmpty, isEqual, map, mapValues, omitBy, reject, trim, update } from "lodash-es";
 
+import AliasInputList from "./AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
-import { validateName, validateDescription } from "./validators";
+import { validateDescription, validateName } from "./validators";
 
 import "./UpdateInfo.css";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
+const emptyArrayIfUndefined = (value) => value != null ? value : [];
+const deepTrim = (values) => mapValues(values, (value) => isArray(value) ? map(value, trim) : trim(value));
+const removeBlankAliases = (values) => update(values, "aliases", (aliases) => reject(aliases, isEmpty));
+const removeUnchangedValues = (initialValues) => (values) => omitBy(values, (value, key) => isEqual(value, initialValues[key]));
 
 const infoAbout = (system) => ({
   name: emptyIfUndefined(system.name),
   description: emptyIfUndefined(system.description),
+  aliases: [...emptyArrayIfUndefined(system.aliases), ""],
 });
 
-function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
+function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliases = false }) {
   const handleSubmit = useCallback(async (values, formik) => {
-    const initialInfo = infoAbout(system);
-    const changedInfo = omitBy(
-      mapValues(values, (value) => value.trim()),
-      (value, key) => value === initialInfo[key]);
+    const initialInfo = removeBlankAliases(infoAbout(system));
+    const changedInfo = flow(
+      deepTrim,
+      removeBlankAliases,
+      removeUnchangedValues(initialInfo)
+    )(values);
 
     try {
       await onSubmit(changedInfo);
@@ -74,6 +82,8 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
               >
                 System description
               </Textarea>
+
+              {withAliases && <AliasInputList />}
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
