@@ -7,15 +7,22 @@ function AliasInputList() {
 
   return (
     <FieldArray name="aliases">
-      {({ remove }) => values.aliases && values.aliases.map(
-        (alias, index) => (
-          <div key={`field-${index}`}>
-            <Field name={`aliases[${index}]`}/>
-            <Button onClick={() => {
-              remove(index);
-            }}>Remove</Button>
-          </div>
-        )
+      {({ push, remove }) => (
+        <>
+          {values.aliases && values.aliases.map(
+            (alias, index) => (
+              <div key={`field-${index}`}>
+                <Field name={`aliases[${index}]`}/>
+                <Button onClick={() => {
+                  remove(index);
+                }}>Remove</Button>
+              </div>
+            )
+          )}
+          <Button type="button" onClick={() => {
+            push("");
+          }}>Add another alias</Button>
+        </>
       )}
     </FieldArray>
   );

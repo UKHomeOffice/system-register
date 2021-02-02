@@ -7,7 +7,6 @@ import AliasInputList from ".";
 
 // TODO:
 //    Validation
-//    Add button
 //    Styling (GDS input field)
 
 describe("AliasInputList", () => {
@@ -39,5 +38,14 @@ describe("AliasInputList", () => {
     });
     expect(screen.getByDisplayValue("an alias")).toBeInTheDocument();
     expect(screen.getByDisplayValue("yet another value")).toBeInTheDocument();
+  });
+
+  it("adds a new, empty entry when the Add button is clicked", async () => {
+    setup({ initialValues: { aliases: [] } });
+    const addButton = await screen.findByRole("button", { name: /add/i });
+
+    user.click(addButton);
+
+    expect(await screen.findByDisplayValue("")).toBeInTheDocument();
   });
 });
