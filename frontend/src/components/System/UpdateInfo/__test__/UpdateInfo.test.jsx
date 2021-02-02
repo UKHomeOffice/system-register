@@ -7,12 +7,14 @@ import ValidationError from "../../../../services/validationError";
 
 describe("UpdateInfo", () => {
   const submitHandler = jest.fn();
+  const cancelHandler = jest.fn();
 
   function setUp(props = {}) {
     const actualProps = {
       system: null,
       portfolios: [],
       onSubmit: submitHandler,
+      onCancel: cancelHandler,
       onBeforeNameChange: () => false,
       withAliases: true,
       ...props,
@@ -33,13 +35,13 @@ describe("UpdateInfo", () => {
   });
 
   it("displays the name of the system", () => {
-    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} />);
+    setUp({ system: { name: 'system name' } });
 
     expect(screen.getByRole("heading")).toHaveTextContent("system name");
   });
 
   it("displays a loading message if data is unavailable", () => {
-    render(<UpdateInfo system={null} onSubmit={submitHandler} />);
+    setUp({ system: null });
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
   });
@@ -122,8 +124,7 @@ describe("UpdateInfo", () => {
   });
 
   it("calls cancel handler", () => {
-    const cancelHandler = jest.fn();
-    render(<UpdateInfo system={{ name: null }} onCancel={cancelHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: null } });
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
 
     user.click(cancelButton);
@@ -132,42 +133,35 @@ describe("UpdateInfo", () => {
   });
 
   it("validates name before submission", async () => {
-    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: "system name" } });
     const systemNameField = screen.getByLabelText(/system name/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemNameField, "$");
+    overtype(systemNameField, "$");
     user.click(saveButton);
 
     expect(await screen.findByText(/must not use the following special characters/i, { selector: "label *" })).toBeInTheDocument();
   });
 
   it("validates description before submission", async () => {
-    render(<UpdateInfo system={{ description: "system description" }} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { description: "system description "} });
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    user.clear(systemDescriptionField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemDescriptionField, "x");
+    overtype(systemDescriptionField, "x");
     user.click(saveButton);
 
     expect(await screen.findByText(/must enter a description or leave blank/i, { selector: "label *" })).toBeInTheDocument();
   });
 
   it("shows an error summary containing all error details", async () => {
-    const system = { name: "system name", description: "system description" };
-    render(<UpdateInfo system={system} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: "system name", description: "system description" } });
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemNameField, "$");
-    user.clear(systemDescriptionField);
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(systemDescriptionField, "x");
+    overtype(systemNameField, "$");
+    overtype(systemDescriptionField, "x");
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
@@ -181,7 +175,7 @@ describe("UpdateInfo", () => {
       name: "validation error",
       description: "validation error",
     }));
-    render(<UpdateInfo system={{ name: 'system name' }} onSubmit={submitHandler} onBeforeNameChange={() => false} />);
+    setUp({ system: { name: 'system name' } });
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     user.click(saveButton);
