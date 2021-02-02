@@ -13,7 +13,7 @@ function AliasInputList() {
             (alias, index) => (
               <div key={`field-${index}`}>
                 <Field name={`aliases[${index}]`}/>
-                <Button onClick={() => {
+                <Button type="button" onClick={() => {
                   remove(index);
                 }}>Remove</Button>
               </div>
