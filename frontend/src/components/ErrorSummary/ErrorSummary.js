@@ -1,7 +1,21 @@
 import React, { useEffect } from "react";
 import GdsErrorSummary from "@govuk-react/error-summary";
 import { useFormikContext } from "formik";
-import { filter, find, flow, includes, indexOf, isEqual, lowerCase, map, sortBy } from "lodash-es";
+import {
+  filter,
+  find,
+  findIndex,
+  flatMap,
+  flow,
+  get,
+  includes,
+  isArray,
+  isEqual,
+  lowerCase,
+  map,
+  sortBy,
+  startsWith
+} from "lodash-es";
 
 import usePrevious from "../../utilities/usePrevious";
 
@@ -15,16 +29,27 @@ const handleErrorClick = (targetName) => {
   }
 };
 
-const mapToErrorObjects = (errors) => map(errors, (text, fieldName) => ({ targetName: fieldName, text }));
-const filterOnlyFieldsThatWereTouched = (touched) => (errors) => filter(errors, ({ targetName }) => touched[targetName]);
-const sortByFieldOrder = (order) => (errors) => sortBy(errors, ({ targetName }) => indexOf(order, targetName));
+const newErrorObject = (field, text) => ({ targetName: field, text });
+const mapAllToErrorObjects = (field, array) => map(array, (text, index) => newErrorObject(`${field}[${index}]`, text));
+const mapToSingleErrorObject = (field, text) => [newErrorObject(field, text)];
+const findPositionInOrder = (order, name) => findIndex(order, (key) => startsWith(name, key));
+const wasTouched = (touched) => ({ targetName }) => get(touched, targetName);
+
+const mapToErrorObjects = (errors) => flatMap(errors, (text, fieldName) => {
+  return isArray(text)
+    ? mapAllToErrorObjects(fieldName, text)
+    : mapToSingleErrorObject(fieldName, text);
+});
+const filterOnlyFieldsThatWereTouched = (touched) => (errors) => filter(errors, wasTouched(touched));
+const sortByFieldOrder = (order) => (errors) => sortBy(errors, ({ targetName }) => findPositionInOrder(order, targetName));
 
 function ErrorSummary({ order }) {
   const { errors: formErrors, touched } = useFormikContext();
   const errors = flow(
     mapToErrorObjects,
     filterOnlyFieldsThatWereTouched(touched),
-    sortByFieldOrder(order))(formErrors);
+    sortByFieldOrder(order)
+  )(formErrors);
   const prevErrors = usePrevious(errors);
 
   useEffect(() => {
@@ -34,7 +59,7 @@ function ErrorSummary({ order }) {
   }, [errors, prevErrors]);
 
   return errors.length !== 0
-    ? <GdsErrorSummary id="error-summary" onHandleErrorClick={handleErrorClick} errors={errors} />
+    ? <GdsErrorSummary id="error-summary" onHandleErrorClick={handleErrorClick} errors={errors}/>
     : null;
 }
 

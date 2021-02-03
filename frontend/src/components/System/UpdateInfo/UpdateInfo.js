@@ -55,7 +55,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliase
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary order={["name", "description"]} />
+            <ErrorSummary order={["name", "description", "aliases"]} />
 
             <h1>{system.name}</h1>
             <p className="secondary">

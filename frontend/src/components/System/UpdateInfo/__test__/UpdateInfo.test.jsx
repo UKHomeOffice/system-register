@@ -155,25 +155,29 @@ describe("UpdateInfo", () => {
   });
 
   it("shows an error summary containing all error details", async () => {
-    setUp({ system: { name: "system name", description: "system description" } });
+    setUp({ system: { name: "system name", description: "system description", aliases: ["alias"] } });
     const systemNameField = screen.getByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const aliasField = screen.getByDisplayValue("alias");
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     overtype(systemNameField, "$");
     overtype(systemDescriptionField, "x");
+    overtype(aliasField, "!");
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
-    expect(errors).toHaveLength(2);
+    expect(errors).toHaveLength(3);
     expect(errors[0]).toHaveTextContent(/must not use the following special characters/i);
     expect(errors[1]).toHaveTextContent(/must enter a description or leave blank/i);
+    expect(errors[2]).toHaveTextContent(/must not use the following special characters/i);
   });
 
   it("shows validation errors returned from the API", async () => {
     submitHandler.mockRejectedValue(new ValidationError({
-      name: "validation error",
-      description: "validation error",
+      name: "name validation error",
+      description: "description validation error",
+      aliases: "alias validation error",
     }));
     setUp({ system: { name: 'system name' } });
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -181,8 +185,11 @@ describe("UpdateInfo", () => {
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/validation error/i, { selector: "a" });
-    expect(errors).toHaveLength(2);
-    expect(errors[0]).toBeInTheDocument();
-    expect(errors[1]).toBeInTheDocument();
+    expect(errors).toHaveLength(3);
+    expect(errors[0]).toHaveTextContent("name validation error");
+    expect(errors[1]).toHaveTextContent("description validation error");
+    expect(errors[2]).toHaveTextContent("alias validation error");
+
+    expect(screen.getByText("alias validation error", { selector: ".alias-input-list *" })).toBeInTheDocument();
   });
 });

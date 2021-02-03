@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, FieldArray, useFormikContext } from "formik";
 import { Button, ErrorText, HintText, Input, LabelText } from "govuk-react";
+import { isString } from "lodash-es";
 
 import { validateAlias } from "./validators";
 
@@ -27,7 +28,7 @@ const AliasInput = ({ name }) => (
 );
 
 function AliasInputList() {
-  const { values } = useFormikContext();
+  const { values, errors } = useFormikContext();
 
   return (
     <FieldArray name="aliases">
@@ -35,6 +36,8 @@ function AliasInputList() {
         <div className="alias-input-list">
           <LabelText className="alias-input-list-title">Aliases</LabelText>
           <HintText>What is the system also known as?</HintText>
+
+          {isString(errors.aliases) && <ErrorText>{errors.aliases}</ErrorText>}
 
           {values.aliases && values.aliases.map(
             (alias, index) => (

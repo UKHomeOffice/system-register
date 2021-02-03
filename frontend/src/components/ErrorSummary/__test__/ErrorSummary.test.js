@@ -30,6 +30,15 @@ describe("ErrorSummary", () => {
     expect(await screen.findByText("there was an error", { selector: "a" })).toBeInTheDocument();
   });
 
+  it("displays errors for each error in an array", () => {
+    render(withFormik(<ErrorSummary />, { many: ["error 1", "error 2", "error 3"] }, { many: [true, false, true] }));
+
+    const errors = screen.getAllByText(/error/i);
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toHaveTextContent("error 1");
+    expect(errors[1]).toHaveTextContent("error 3");
+  });
+
   it("does not display if there are no errors", () => {
     render(
       <Formik initialValues={{}} onSubmit={null}>
@@ -40,7 +49,7 @@ describe("ErrorSummary", () => {
     expect(screen.queryByText("There is a problem")).not.toBeInTheDocument();
   });
 
-  it("does not display errors for fields that not be showing their own errors", async () => {
+  it("does not display errors for fields that are not showing their own errors", async () => {
     render(
       <Formik initialErrors={{ error: "showing on field", otherError: "not yet visible" }}
               initialTouched={{ error: true, otherError: false }}
@@ -56,17 +65,18 @@ describe("ErrorSummary", () => {
 
   it("orders multiple errors by field", async () => {
     render(
-      <Formik initialErrors={{ first: "first error", second: "second error" }}
-              initialTouched={{ first: true, second: true }}
+      <Formik initialErrors={{ first: "first error", second: "second error", third: ["third error"] }}
+              initialTouched={{ first: true, second: true, third: [true] }}
               initialValues={{}}
               onSubmit={null}>
-        <ErrorSummary order={["second", "first"]} />
+        <ErrorSummary order={["second", "first", "third"]} />
       </Formik>
     );
 
     const errors = await screen.findAllByText(/error/, { selector: "a" });
     expect(errors[0]).toHaveTextContent("second error");
     expect(errors[1]).toHaveTextContent("first error");
+    expect(errors[2]).toHaveTextContent("third error");
   });
 
   describe("focus", () => {
