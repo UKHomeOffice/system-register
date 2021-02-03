@@ -94,6 +94,19 @@ describe("UpdateInfo", () => {
     await waitFor(() => expect(submitHandler).toBeCalledWith({}));
   });
 
+  it("does not send values to submit handler if all aliases in array are the same regardless of order", async () => {
+    setUp({system: {aliases: ["alias 1", "alias 2", "alias 3"]}});
+    const aliasFields = screen.getAllByDisplayValue(/alias/);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(aliasFields[0], "alias 3");
+    overtype(aliasFields[1], "alias 1");
+    overtype(aliasFields[2], "alias 2");
+    user.click(saveButton);
+
+    await waitFor(() => expect(submitHandler).toBeCalledWith({}));
+  } )
+
   it.each(["", " "])
   ("does not submit blank aliases", async (value) => {
     setUp({ system: { name: "name", description: "description", aliases: [] } });

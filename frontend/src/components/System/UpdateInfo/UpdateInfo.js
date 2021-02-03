@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { flow, isArray, isEmpty, isEqual, map, mapValues, omitBy, reject, trim, update } from "lodash-es";
+import {difference, flow, isArray, isEmpty, isEqual, map, mapValues, omitBy, reject, trim, update} from "lodash-es";
 
 import AliasInputList from "./AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
@@ -18,7 +18,18 @@ const emptyIfUndefined = (value) => value != null ? value : "";
 const emptyArrayIfUndefined = (value) => value != null ? value : [];
 const deepTrim = (values) => mapValues(values, (value) => isArray(value) ? map(value, trim) : trim(value));
 const removeBlankAliases = (values) => update(values, "aliases", (aliases) => reject(aliases, isEmpty));
-const removeUnchangedValues = (initialValues) => (values) => omitBy(values, (value, key) => isEqual(value, initialValues[key]));
+const removeUnchangedValues = (initialValues) => (values) => omitBy(values, (value, key) => {
+  return isArray(value)
+    ? sizeAndContentAreTheSame(value, initialValues[key])
+    : isEqual(value, initialValues[key]);
+});
+
+function sizeAndContentAreTheSame(arr1, arr2){
+  if(arr1.length !== arr2.length){
+    return false
+  }
+  return isEmpty(difference(arr1, arr2));
+}
 
 const infoAbout = (system) => ({
   name: emptyIfUndefined(system.name),
