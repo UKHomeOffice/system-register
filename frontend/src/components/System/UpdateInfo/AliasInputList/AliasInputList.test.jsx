@@ -5,9 +5,6 @@ import { Form, Formik } from "formik";
 
 import AliasInputList from ".";
 
-// TODO:
-//    Validation
-
 describe("AliasInputList", () => {
   const submitHandler = jest.fn();
 

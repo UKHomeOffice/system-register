@@ -11,8 +11,10 @@ import {
   includes,
   isArray,
   isEqual,
+  isUndefined,
   lowerCase,
   map,
+  reject,
   sortBy,
   startsWith
 } from "lodash-es";
@@ -40,6 +42,7 @@ const mapToErrorObjects = (errors) => flatMap(errors, (text, fieldName) => {
     ? mapAllToErrorObjects(fieldName, text)
     : mapToSingleErrorObject(fieldName, text);
 });
+const rejectValidFields = (errors) => reject(errors, (error) => isUndefined(error.text));
 const filterOnlyFieldsThatWereTouched = (touched) => (errors) => filter(errors, wasTouched(touched));
 const sortByFieldOrder = (order) => (errors) => sortBy(errors, ({ targetName }) => findPositionInOrder(order, targetName));
 
@@ -47,6 +50,7 @@ function ErrorSummary({ order }) {
   const { errors: formErrors, touched } = useFormikContext();
   const errors = flow(
     mapToErrorObjects,
+    rejectValidFields,
     filterOnlyFieldsThatWereTouched(touched),
     sortByFieldOrder(order)
   )(formErrors);

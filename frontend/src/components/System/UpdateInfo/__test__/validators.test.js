@@ -1,4 +1,4 @@
-import { validateName, validateDescription } from "../validators";
+import {validateName, validateDescription, validateAliases} from "../validators";
 
 describe("UpdateInfo validators", () => {
   describe("validate system name", () => {
@@ -53,4 +53,33 @@ describe("UpdateInfo validators", () => {
       expect(result).toBeUndefined();
     });
   });
+
+  describe("validates system aliases", () => {
+    it("returns undefined for valid values", () => {
+      const values = {aliases: ["alias 1", "alias 2"]}
+      const result = validateAliases(values);
+
+      expect(result).toStrictEqual({});
+    });
+
+    it("returns an error message if there is a duplicate value", () => {
+      const values = {aliases: ["duplicate alias", "unique alias", "duplicate alias"]}
+      const result = validateAliases(values);
+
+      expect(result).toStrictEqual({
+        aliases: [
+          "You have entered duplicate aliases. Please remove or amend the duplicate.",
+          undefined,
+          "You have entered duplicate aliases. Please remove or amend the duplicate."
+        ]
+      });
+    })
+
+    it("ignores empty strings", () => {
+      const values = {aliases: ["", ""]};
+      const result = validateAliases(values);
+
+      expect(result).toStrictEqual({})
+    })
+  })
 });

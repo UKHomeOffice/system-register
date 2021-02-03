@@ -8,7 +8,7 @@ import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
-import { validateDescription, validateName } from "./validators";
+import {validateAliases, validateDescription, validateName} from "./validators";
 import SecondaryButton from "../../SecondaryButton"
 
 import "./UpdateInfo.css";
@@ -65,6 +65,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliase
         <Formik
           initialValues={infoAbout(system)}
           validateOnChange={false}
+          validate={validateAliases}
           onSubmit={handleSubmit}
         >
           <>

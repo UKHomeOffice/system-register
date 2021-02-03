@@ -167,6 +167,17 @@ describe("UpdateInfo", () => {
     expect(await screen.findByText(/must enter a description or leave blank/i, { selector: "label *" })).toBeInTheDocument();
   });
 
+  it("validates aliases before submission", async () => {
+    setUp({system: {name: "irrelevant", description: "irrelevant", aliases: ["existing alias"]}});
+    const emptyAliasField = screen.getByDisplayValue("");
+    const saveButton = screen.getByRole("button", {name: /save/i});
+
+    overtype(emptyAliasField, "existing alias");
+    user.click(saveButton);
+
+    expect(await screen.findAllByText(/duplicate alias/, {selector: '.alias-input-list *'})).toHaveLength(2);
+  })
+
   it("shows an error summary containing all error details", async () => {
     setUp({ system: { name: "system name", description: "system description", aliases: ["alias"] } });
     const systemNameField = screen.getByLabelText(/system name/i);

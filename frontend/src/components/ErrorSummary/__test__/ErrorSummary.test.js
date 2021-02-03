@@ -39,6 +39,12 @@ describe("ErrorSummary", () => {
     expect(errors[1]).toHaveTextContent("error 3");
   });
 
+  it("does not display if there are no array errors", () => {
+    render(withFormik(<ErrorSummary />, { field: [undefined] }, { field: [true] }));
+
+    expect(screen.queryByText("There is a problem")).not.toBeInTheDocument();
+  });
+
   it("does not display if there are no errors", () => {
     render(
       <Formik initialValues={{}} onSubmit={null}>

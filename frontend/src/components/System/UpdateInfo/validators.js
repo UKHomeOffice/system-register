@@ -1,3 +1,5 @@
+import {every, indexOf, isUndefined, lastIndexOf, map} from "lodash-es";
+
 import { containsForbiddenCharacters, isEmpty, isTooShort } from "../../../utilities/sharedValidators";
 
 function validateName(value, duplicateCheckCallback, initialValue) { //todo Team review
@@ -19,4 +21,16 @@ function validateDescription(value) {
   }
 }
 
-export { validateName, validateDescription };
+function validateAliases({ aliases }) {
+  const aliasErrors = map(
+    aliases,
+    (value, index) => value === "" || ((indexOf(aliases, value) === index) && (lastIndexOf(aliases, value) === index))
+      ? undefined
+      : "You have entered duplicate aliases. Please remove or amend the duplicate."
+  );
+
+  if(every(aliasErrors, isUndefined))  return {}
+  return { aliases: aliasErrors};
+}
+
+export { validateName, validateDescription, validateAliases };
