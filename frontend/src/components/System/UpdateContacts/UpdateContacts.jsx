@@ -9,6 +9,7 @@ import ValidationError from "../../../services/validationError";
 import validateContact from "./validators";
 
 import "./UpdateContacts.css";
+import SecondaryButton from "../../SecondaryButton";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 
@@ -109,14 +110,9 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
-                <Button
-                  type="button"
-                  onClick={handleCancel}
-                  buttonColour="#f3f2f1"
-                  buttonTextColour="#0b0c0c"
-                >
+                <SecondaryButton onClick={handleCancel}>
                   Cancel
-                </Button>
+                </SecondaryButton>
               </div>
             </Form>
           </>

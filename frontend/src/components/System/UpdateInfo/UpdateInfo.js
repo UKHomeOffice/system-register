@@ -9,8 +9,10 @@ import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
 import { validateDescription, validateName } from "./validators";
+import SecondaryButton from "../../SecondaryButton"
 
 import "./UpdateInfo.css";
+
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 const emptyArrayIfUndefined = (value) => value != null ? value : [];
@@ -87,14 +89,9 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliase
 
               <div className="update-info-form-controls">
                 <Button type="submit">Save</Button>
-                <Button
-                  type="button"
-                  onClick={handleCancel}
-                  buttonColour="#f3f2f1"
-                  buttonTextColour="#0b0c0c"
-                >
+                <SecondaryButton onClick={handleCancel}>
                   Cancel
-                </Button>
+                </SecondaryButton>
               </div>
             </Form>
           </>

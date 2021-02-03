@@ -1,11 +1,12 @@
 import React from "react";
 import { Field, FieldArray, useFormikContext } from "formik";
-import { Button, ErrorText, HintText, Input, LabelText } from "govuk-react";
+import { ErrorText, HintText, Input, LabelText } from "govuk-react";
 import { isString } from "lodash-es";
 
 import { validateAlias } from "./validators";
 
 import "./AliasInputList.css";
+import SecondaryButton from "../../../SecondaryButton";
 
 const AliasInput = ({ name }) => (
   <Field name={name} validate={validateAlias}>
@@ -43,15 +44,15 @@ function AliasInputList() {
             (alias, index) => (
               <div key={`field-${index}`}>
                 <AliasInput name={`aliases[${index}]`}/>
-                <Button className="alias-input-list-remove" type="button" onClick={() => {
+                <SecondaryButton className="alias-input-list-remove" onClick={() => {
                   remove(index);
-                }}>Remove</Button>
+                }}>Remove</SecondaryButton>
               </div>
             )
           )}
-          <Button className="alias-input-list-add" type="button" onClick={() => {
+          <SecondaryButton className="alias-input-list-add" onClick={() => {
             push("");
-          }}>Add another alias</Button>
+          }}>Add another alias</SecondaryButton>
         </div>
       )}
     </FieldArray>

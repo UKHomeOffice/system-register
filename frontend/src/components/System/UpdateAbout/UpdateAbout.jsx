@@ -10,6 +10,7 @@ import ValidationError from "../../../services/validationError";
 import validateName from "./validators";
 
 import "./UpdateAbout.css";
+import SecondaryButton from "../../SecondaryButton";
 
 const emptyIfUndefined = (value) => value != null ? value : "";
 
@@ -136,7 +137,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
 
             <div className="form-controls">
               <Button type="submit">Save</Button>
-              <Button type="button" onClick={handleCancel} buttonColour="#f3f2f1" buttonTextColour="#0b0c0c">Cancel</Button>
+              <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
             </div>
           </Form>
         </Formik>
