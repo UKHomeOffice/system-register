@@ -18,12 +18,6 @@ describe("AliasInputList", () => {
     );
   }
 
-  function overtype(field, value) {
-    user.clear(field);
-    // noinspection JSIgnoredPromiseFromCall
-    user.type(field, value);
-  }
-
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -80,18 +74,6 @@ describe("AliasInputList", () => {
 
       await screen.findByRole("textbox");
       expect(submitHandler).not.toBeCalled();
-    });
-  });
-
-  describe("validation", () => {
-    it("validates name before submission", async () => {
-      setup({ initialValues: { aliases: ["alias"] } });
-      const aliasFields = screen.getAllByRole("textbox");
-
-      overtype(aliasFields[0], "$");
-      user.tab();
-
-      expect(await screen.findByText(/must not use the following special characters/i)).toBeInTheDocument();
     });
   });
 });

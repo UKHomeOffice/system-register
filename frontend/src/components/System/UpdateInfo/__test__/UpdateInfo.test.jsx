@@ -167,7 +167,17 @@ describe("UpdateInfo", () => {
     expect(await screen.findByText(/must enter a description or leave blank/i, { selector: "label *" })).toBeInTheDocument();
   });
 
-  it("validates aliases before submission", async () => {
+  it("validates alias for invalid values before submission", async () => {
+    setUp({ system: { aliases: ["alias"] } });
+    const aliasField = screen.getByDisplayValue("alias");
+
+    overtype(aliasField, "$");
+    user.tab();
+
+    expect(await screen.findByText(/must not use the following special characters/i, { selector: '.alias-input-list *' })).toBeInTheDocument();
+  });
+
+  it("validates aliases for duplicates before submission", async () => {
     setUp({system: {name: "irrelevant", description: "irrelevant", aliases: ["existing alias"]}});
     const emptyAliasField = screen.getByDisplayValue("");
     const saveButton = screen.getByRole("button", {name: /save/i});

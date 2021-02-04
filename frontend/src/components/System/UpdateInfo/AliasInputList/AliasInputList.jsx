@@ -3,13 +3,12 @@ import { Field, FieldArray, useFormikContext } from "formik";
 import { ErrorText, HintText, Input, LabelText } from "govuk-react";
 import { isString } from "lodash-es";
 
-import { validateAlias } from "./validators";
-
-import "./AliasInputList.css";
 import SecondaryButton from "../../../SecondaryButton";
 
+import "./AliasInputList.css";
+
 const AliasInput = ({ name }) => (
-  <Field name={name} validate={validateAlias}>
+  <Field name={name}>
     {({ field, meta }) => {
       const hasError = meta.touched && meta.error;
       const className = `alias-input-list-item ${hasError ? "alias-input-error" : ""}`

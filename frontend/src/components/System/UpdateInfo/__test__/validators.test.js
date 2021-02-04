@@ -1,4 +1,4 @@
-import {validateName, validateDescription, validateAliases} from "../validators";
+import { validateAlias, validateAliases, validateDescription, validateName } from "../validators";
 
 describe("UpdateInfo validators", () => {
   describe("validate system name", () => {
@@ -56,7 +56,7 @@ describe("UpdateInfo validators", () => {
 
   describe("validates system aliases", () => {
     it("returns undefined for valid values", () => {
-      const values = {aliases: ["alias 1", "alias 2"]}
+      const values = {aliases: ["alias 1", "alias 2", ""]};
       const result = validateAliases(values);
 
       expect(result).toStrictEqual({});
@@ -75,11 +75,35 @@ describe("UpdateInfo validators", () => {
       });
     })
 
-    it("ignores empty strings", () => {
-      const values = {aliases: ["", ""]};
-      const result = validateAliases(values);
+    it("returns an error message if alias contains forbidden characters", () => {
+      const result = validateAliases({ aliases: ["ca$h"] });
 
-      expect(result).toStrictEqual({})
-    })
-  })
+      expect(result).toStrictEqual({
+        aliases: expect.arrayContaining([
+          expect.stringContaining("must not use the following special characters")
+        ]),
+      });
+    });
+
+    it("returns an error message if alias is too short", () => {
+      const result = validateAliases({ aliases: ["x"] });
+
+      expect(result).toStrictEqual({
+        aliases: expect.arrayContaining([
+          expect.stringContaining("You must enter a complete system alias")
+        ]),
+      });
+    });
+
+    it("prefers to reject invalid values over duplicates", () => {
+      const result = validateAliases({ aliases: ["x", "x"] });
+
+      expect(result).toStrictEqual({
+        aliases: expect.arrayContaining([
+          expect.stringContaining("You must enter a complete system alias"),
+          expect.stringContaining("You must enter a complete system alias")
+        ]),
+      });
+    });
+  });
 });
