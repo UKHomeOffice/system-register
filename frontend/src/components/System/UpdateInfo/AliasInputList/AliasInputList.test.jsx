@@ -76,4 +76,40 @@ describe("AliasInputList", () => {
       expect(submitHandler).not.toBeCalled();
     });
   });
+
+  describe("moving focus", () => {
+    it("gives focus to the Add button when the only remaining input is removed", async () => {
+      setup({ initialValues: { aliases: [""] } });
+      const removeButton = await screen.findByRole("button", { name: /remove/i });
+
+      user.click(removeButton);
+
+      const addButton = await screen.findByRole("button", { name: /add/i });
+      expect(addButton).toHaveFocus();
+    });
+
+    it("gives focus to the next text field when an input (other than the last) is removed", async () => {
+      setup({ initialValues: { aliases: ["first", "second"] } });
+      const removeButtons = await screen.findAllByRole("button", { name: /remove/i });
+
+      user.click(removeButtons[0]);
+
+      await waitFor(() => {
+        const nextField = screen.getByDisplayValue("second");
+        expect(nextField).toHaveFocus();
+      });
+    });
+
+    it("gives focus to the previous text field when the last input is removed", async () => {
+      setup({ initialValues: { aliases: ["first", "second"] } });
+      const removeButtons = await screen.findAllByRole("button", { name: /remove/i });
+
+      user.click(removeButtons[1]);
+
+      await waitFor(() => {
+        const nextField = screen.getByDisplayValue("first");
+        expect(nextField).toHaveFocus();
+      });
+    });
+  });
 });

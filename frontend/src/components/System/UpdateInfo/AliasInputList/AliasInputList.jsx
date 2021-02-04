@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Field, FieldArray, useFormikContext } from "formik";
 import { ErrorText, HintText, Input, LabelText } from "govuk-react";
 import { isString, reject } from "lodash-es";
@@ -29,6 +29,17 @@ const AliasInput = ({ name }) => (
 
 function AliasInputList() {
   const { values, errors } = useFormikContext();
+  const [focusedIndex, setFocusedIndex] = useState(undefined);
+
+  useEffect(() => {
+    if (focusedIndex !== undefined) {
+      const fields = document.querySelectorAll(".alias-input-list-item input");
+      if (focusedIndex < fields.length) {
+        fields[focusedIndex].focus();
+      }
+      setFocusedIndex(undefined);
+    }
+  }, [focusedIndex]);
 
   return (
     <FieldArray name="aliases">
@@ -44,6 +55,13 @@ function AliasInputList() {
               <div key={`field-${index}`} className="alias-input-list-row">
                 <AliasInput name={`aliases[${index}]`}/>
                 <SecondaryButton className="alias-input-list-remove" onClick={() => {
+                  if (values.aliases.length === 1) {
+                    document.querySelector(".alias-input-list-add").focus();
+                  } else if (index === values.aliases.length - 1) {
+                    setFocusedIndex(index - 1);
+                  } else {
+                    setFocusedIndex(index);
+                  }
                   remove(index);
                   // noinspection JSIgnoredPromiseFromCall
                   form.validateForm({
