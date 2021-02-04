@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, FieldArray, useFormikContext } from "formik";
 import { ErrorText, HintText, Input, LabelText } from "govuk-react";
-import { isString } from "lodash-es";
+import { isString, reject } from "lodash-es";
 
 import SecondaryButton from "../../../SecondaryButton";
 
@@ -32,7 +32,7 @@ function AliasInputList() {
 
   return (
     <FieldArray name="aliases">
-      {({ push, remove }) => (
+      {({ form, push, remove }) => (
         <div className="alias-input-list">
           <LabelText className="alias-input-list-title">Aliases</LabelText>
           <HintText>What is the system also known as?</HintText>
@@ -45,6 +45,11 @@ function AliasInputList() {
                 <AliasInput name={`aliases[${index}]`}/>
                 <SecondaryButton className="alias-input-list-remove" onClick={() => {
                   remove(index);
+                  // noinspection JSIgnoredPromiseFromCall
+                  form.validateForm({
+                    ...form.values,
+                    aliases: reject(values.aliases, (_, i) => i === index)
+                  });
                 }}>Remove</SecondaryButton>
               </div>
             )

@@ -186,7 +186,23 @@ describe("UpdateInfo", () => {
     user.click(saveButton);
 
     expect(await screen.findAllByText(/duplicate alias/, {selector: '.alias-input-list *'})).toHaveLength(2);
-  })
+  });
+
+  it("revalidates duplicates after one of the duplicates has been removed", async () => {
+    setUp({system: {name: "irrelevant", description: "irrelevant", aliases: ["existing alias"]}});
+    const emptyAliasField = screen.getByDisplayValue("");
+    const saveButton = screen.getByRole("button", {name: /save/i});
+    overtype(emptyAliasField, "existing alias");
+    user.click(saveButton);
+    expect(await screen.findAllByText(/duplicate alias/)).not.toHaveLength(0);
+
+    const removeButtons = screen.getAllByRole("button", { name: /remove/i });
+    user.click(removeButtons[0]);
+
+    await waitFor(() => {
+      expect(screen.queryByText(/duplicate alias/i)).not.toBeInTheDocument();
+    });
+  });
 
   it("shows an error summary containing all error details", async () => {
     setUp({ system: { name: "system name", description: "system description", aliases: ["alias"] } });
