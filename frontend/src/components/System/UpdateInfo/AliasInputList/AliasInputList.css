@@ -6,10 +6,16 @@
     font-weight: bold !important;
 }
 
+.alias-input-list-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 66.6%;
+}
+
 .alias-input-list-item {
     display: inline-block;
-    margin-bottom: 10px;
-    width: 49%;
+    flex-grow: 1;
 }
 
 .alias-input-list-add {
@@ -17,13 +23,13 @@
 }
 
 .alias-input-list-remove {
-    margin: 0 0 0 10px !important;
+    align-self: flex-end;
+    margin: 0 0 2px 10px !important;
     vertical-align: baseline !important;
 }
 
 .alias-input-error {
     border-left: 4px solid var(--red);
-    margin-right: 15px;
     padding-left: 10px;
 }
 

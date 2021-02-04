@@ -42,7 +42,7 @@ function AliasInputList() {
 
           {values.aliases && values.aliases.map(
             (alias, index) => (
-              <div key={`field-${index}`}>
+              <div key={`field-${index}`} className="alias-input-list-row">
                 <AliasInput name={`aliases[${index}]`}/>
                 <SecondaryButton className="alias-input-list-remove" onClick={() => {
                   remove(index);
