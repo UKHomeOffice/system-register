@@ -37,7 +37,7 @@ const infoAbout = (system) => ({
   aliases: [...emptyArrayIfUndefined(system.aliases), ""],
 });
 
-function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliases = false }) {
+function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
   const handleSubmit = useCallback(async (values, formik) => {
     const initialInfo = removeBlankAliases(infoAbout(system));
     const changedInfo = flow(
@@ -97,7 +97,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange, withAliase
                 System description
               </Textarea>
 
-              {withAliases && <AliasInputList />}
+              <AliasInputList />
 
               <div className="update-info-form-controls">
                 <Button type="submit">Save</Button>

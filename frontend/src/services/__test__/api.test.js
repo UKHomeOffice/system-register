@@ -725,4 +725,72 @@ describe("api", () => {
       );
     });
   });
+
+  describe("update system aliases", () => {
+    it("sends changed set of aliases to the API", async () => {
+      server.use(
+        rest.post("/api/systems/456/update-system-aliases", (req, res, ctx) => {
+          const { aliases } = req.body;
+          if (aliases !== "[new alias]") {
+            console.error("Alias list does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error("Authorization header does not contain a bearer token");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSystemAliases(456, {
+        aliases: "[new alias]"
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("removes the aliases when an empty value is provided", async () => {
+      server.use(
+        rest.post("/api/systems/234/update-system-aliases", (req, res, ctx) => {
+          const { aliases } = req.body;
+          if (aliases !== "[]") {
+            console.error("Expected aliases do not match");
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSystemAliases(234, {
+        aliases: "[]"
+      });
+
+      await expect(pendingSystem).resolves.not.toBeNull();
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/345/update-system-aliases", (req, res, ctx) => {
+          return res(ctx.status(400), ctx.json({
+            errors: {
+              aliases: "invalid aliases",
+            },
+          }));
+        })
+      );
+
+      const pendingSystem = api.updateSystemAliases(345, {
+        aliases: ["x"]
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          aliases: "invalid aliases",
+        })
+      );
+    });
+  });
 });

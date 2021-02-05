@@ -8,6 +8,7 @@ const api = {
   getSystem,
   updateSystemName,
   updateSystemDescription,
+  updateSystemAliases,
   updatePortfolio,
   updateCriticality,
   updateInvestmentState,
@@ -44,41 +45,6 @@ async function getSystem(id) {
   else { throw new SystemNotFoundException(); }
 }
 
-async function updateProductOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-product-owner`, {
-    product_owner: nullIfEmpty(data.productOwner),
-  });
-  return response.data;
-}
-
-async function updateTechnicalOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-technical-owner`, {
-    technical_owner: nullIfEmpty(data.technicalOwner),
-  });
-  return response.data;
-}
-
-async function updateServiceOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-service-owner`, {
-    service_owner: nullIfEmpty(data.serviceOwner),
-  });
-  return response.data;
-}
-
-async function updateBusinessOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-business-owner`, {
-    business_owner: nullIfEmpty(data.businessOwner),
-  });
-  return response.data;
-}
-
-async function updateInformationAssetOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-information-asset-owner`, {
-    information_asset_owner: nullIfEmpty(data.informationAssetOwner),
-  });
-  return response.data;
-}
-
 async function updateSystemName(id, data) {
   const response = await sendPost(`systems/${id}/update-name`, {
     name: nullIfEmpty(data.name),
@@ -92,6 +58,14 @@ async function updateSystemDescription(id, data) {
   });
   return response.data;
 }
+
+async function updateSystemAliases(id, data) {
+  const response = await sendPost(`systems/${id}/update-system-aliases`, {
+    aliases: nullIfEmpty(data.aliases),
+  });
+  return response.data;
+}
+
 
 async function updatePortfolio(id, data) {
   const response = await sendPost(`systems/${id}/update-portfolio`, {
@@ -124,6 +98,41 @@ async function updateDevelopedBy(id, data) {
 async function updateSupportedBy(id, data) {
   const response = await sendPost(`systems/${id}/update-supported-by`, {
     supported_by: nullIfEmpty(data.supportedBy),
+  });
+  return response.data;
+}
+
+async function updateProductOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-product-owner`, {
+    product_owner: nullIfEmpty(data.productOwner),
+  });
+  return response.data;
+}
+
+async function updateTechnicalOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-technical-owner`, {
+    technical_owner: nullIfEmpty(data.technicalOwner),
+  });
+  return response.data;
+}
+
+async function updateServiceOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-service-owner`, {
+    service_owner: nullIfEmpty(data.serviceOwner),
+  });
+  return response.data;
+}
+
+async function updateBusinessOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-business-owner`, {
+    business_owner: nullIfEmpty(data.businessOwner),
+  });
+  return response.data;
+}
+
+async function updateInformationAssetOwner(id, data) {
+  const response = await sendPost(`systems/${id}/update-information-asset-owner`, {
+    information_asset_owner: nullIfEmpty(data.informationAssetOwner),
   });
   return response.data;
 }

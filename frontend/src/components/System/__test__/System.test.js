@@ -15,6 +15,7 @@ jest.mock('../../../services/api', () => ({
   getSystem: jest.fn(),
   updateSystemName: jest.fn(),
   updateSystemDescription: jest.fn(),
+  updateSystemAliases: jest.fn(),
   updatePortfolio: jest.fn(),
   updateCriticality: jest.fn(),
   updateInvestmentState: jest.fn(),
@@ -266,6 +267,41 @@ describe('<System />', () => {
 
           await returnToSystemView(123, history);
           expect(api.updateSystemDescription).not.toBeCalled();
+          expect(changeHandler).not.toBeCalled();
+        });
+      });
+
+      describe("system aliases", () => {
+        it("returns to the system view after a successful update", async () => {
+          api.updateSystemAliases.mockResolvedValue({ test_system });
+          const { history } = renderWithRouting("123/update-info");
+          const systemAliasField = await screen.findByDisplayValue("");
+          const saveButton = screen.getByRole("button", { name: /save/i });
+
+          user.clear(systemAliasField);
+          // noinspection ES6MissingAwait: there is no typing delay
+          user.type(systemAliasField, "new alias");
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(changeHandler).toBeCalled();
+          expect(api.updateSystemAliases).toBeCalledWith(
+            "123",
+            expect.objectContaining({
+              aliases: ["new alias"],
+            })
+          );
+        });
+
+        it("does not send a request if field values are unchanged", async () => {
+          const { history } = renderWithRouting("123/update-info");
+          await screen.findByDisplayValue("");
+          const saveButton = await screen.findByRole("button", { name: /save/i });
+
+          user.click(saveButton);
+
+          await returnToSystemView(123, history);
+          expect(api.updateSystemAliases).not.toBeCalled();
           expect(changeHandler).not.toBeCalled();
         });
       });

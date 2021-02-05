@@ -16,6 +16,7 @@ import './System.css';
 const actionsByField = {
   name: api.updateSystemName,
   description: api.updateSystemDescription,
+  aliases: api.updateSystemAliases,
   criticality: api.updateCriticality,
   investmentState: api.updateInvestmentState,
   portfolio: api.updatePortfolio,
@@ -68,7 +69,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   }, [id, throwError]);
 
   const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
-  const handleUpdateInfo = createUpdateCallback("name", "description");
+  const handleUpdateInfo = createUpdateCallback("name", "description", "aliases");
   const handleUpdateAbout = createUpdateCallback("portfolio", "criticality", "investmentState", "developedBy", "supportedBy");
   const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner");
 

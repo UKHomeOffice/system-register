@@ -16,7 +16,6 @@ describe("UpdateInfo", () => {
       onSubmit: submitHandler,
       onCancel: cancelHandler,
       onBeforeNameChange: () => false,
-      withAliases: true,
       ...props,
     };
     return render(<UpdateInfo {...actualProps} />);
