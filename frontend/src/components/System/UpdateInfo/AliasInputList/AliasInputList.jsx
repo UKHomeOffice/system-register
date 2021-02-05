@@ -53,6 +53,7 @@ function AliasInputList() {
           {values.aliases && values.aliases.map(
             (alias, index) => (
               <div key={`field-${index}`} className="alias-input-list-row">
+                <label className='alias-input-hidden'>alias field: {alias}</label>
                 <AliasInput name={`aliases[${index}]`}/>
                 <SecondaryButton className="alias-input-list-remove" onClick={() => {
                   if (values.aliases.length === 1) {
