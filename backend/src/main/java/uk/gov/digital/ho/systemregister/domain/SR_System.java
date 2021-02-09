@@ -2,7 +2,6 @@ package uk.gov.digital.ho.systemregister.domain;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public final class SR_System extends SystemData {
@@ -106,18 +105,12 @@ public final class SR_System extends SystemData {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof SR_System)) {
-            return false;
-        }
-        SR_System sR_System = (SR_System) o;
-        return Objects.equals(name, sR_System.name);
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return super.hashCode();
     }
 
     @Override
