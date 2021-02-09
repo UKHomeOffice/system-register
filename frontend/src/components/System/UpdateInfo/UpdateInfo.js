@@ -73,7 +73,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can change the name of the system and its description.
+              You can change the name of the system, its description and aliases.
             </p>
 
             <Form>
