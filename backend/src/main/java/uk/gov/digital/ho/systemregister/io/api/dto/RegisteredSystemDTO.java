@@ -1,9 +1,15 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.Instant;
 import java.util.List;
 
+@SuppressFBWarnings(
+        value = "URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD",
+        justification = "Fields are serialized by Jsonb"
+)
 public class RegisteredSystemDTO extends SystemDTO {
     public Integer id;
     @JsonbProperty("last_updated")
