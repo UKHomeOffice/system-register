@@ -43,7 +43,7 @@ do
         cd $backend_dir
         mkdir -p $backend_dir/src/main/resources/META-INF/resources/
         cp -r $frontend_dir/build/* $backend_dir/src/main/resources/META-INF/resources/
-        mvn package
+        mvn verify
         cd $project_dir
         ;;
     dev-frontend)
