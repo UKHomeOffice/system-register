@@ -17,7 +17,7 @@ public class MigrationTest {
     MigrationService migrationService;
 
     @Test
-    public void TestMigration() {
+    public void testMigration() {
         migrationService.migrate();
 
         assertEquals(ExpectedDBVersion, migrationService.getCurrentVersion());

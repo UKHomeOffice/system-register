@@ -9,7 +9,7 @@ public class AESTest {
     private static final Logger LOG = Logger.getLogger(AESTest.class);
 
     @Test
-    public void Decrypt() throws EncryptionError {
+    public void decrypt() throws EncryptionError {
         final String origonalString = "{a:\" ";
         final byte[] encryptedString = AES.encrypt(origonalString, "1234567812345678");
 

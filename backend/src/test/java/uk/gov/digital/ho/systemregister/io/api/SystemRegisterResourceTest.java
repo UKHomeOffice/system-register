@@ -5,15 +5,9 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.security.TestSecurity;
 import org.json.JSONException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
-
-import javax.inject.Inject;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -39,14 +33,14 @@ public class SystemRegisterResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
-    public void AddSystem() throws JSONException {
+    public void addSystem() throws JSONException {
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
         checkAllSystemsResponse("add-system/system-response.json");
     }
 
     @Test
     @TestSecurity
-    public void AddTwoSystems() {
+    public void addTwoSystems() {
         sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
         sendCommandToApi("add-system/addAnotherSystemCommand.json", "/api/systems", 201);
 
