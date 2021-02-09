@@ -27,11 +27,11 @@ public class SystemRegister {
 
     public AddSystemResult addSystem(SystemData system) {
         if (systems.get(system.name) != null) {
-            return AddSystemResult.Duplicate(systems.get(system.name));
+            return AddSystemResult.duplicate(systems.get(system.name));
         }
         SR_System newSystem = buildSystem(system);
         systems.put(newSystem.name, newSystem);
-        return AddSystemResult.Added(newSystem);
+        return AddSystemResult.added(newSystem);
     }
 
     public List<SR_System> getAllSystems() {

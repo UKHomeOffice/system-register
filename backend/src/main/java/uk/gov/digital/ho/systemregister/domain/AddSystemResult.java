@@ -9,11 +9,11 @@ public class AddSystemResult {
         this.result = result;
     }
 
-    public static AddSystemResult Added(SR_System newSystem) {
+    public static AddSystemResult added(SR_System newSystem) {
         return new AddSystemResult(newSystem, Change.ADDED);
     }
 
-    public static AddSystemResult Duplicate(SR_System newSystem) {
+    public static AddSystemResult duplicate(SR_System newSystem) {
       return new AddSystemResult(newSystem, Change.DUPLICATE);
     }
 }
