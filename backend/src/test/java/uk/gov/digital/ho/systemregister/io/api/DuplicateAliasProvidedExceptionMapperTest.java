@@ -32,6 +32,6 @@ class DuplicateAliasProvidedExceptionMapperTest {
                 .isEqualTo(BAD_REQUEST);
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .extracting("errors", map(String.class, String.class))
-                .containsEntry("alias", "You have entered duplicate aliases: duplicate alias. Please amend or remove the duplicates.");
+                .containsEntry("aliases", "You have entered duplicate aliases: duplicate alias. Please amend or remove the duplicates.");
     }
 }
