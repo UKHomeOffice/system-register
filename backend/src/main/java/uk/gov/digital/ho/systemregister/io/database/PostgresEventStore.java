@@ -221,11 +221,12 @@ public class PostgresEventStore implements IEventStore {
     }
 
     private <T extends SR_Event> Optional<List<T>> readEvents(String sql, Instant timestamp) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
             preparedStatement.setTimestamp(1, Timestamp.from(timestamp));
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Optional<List<EncodedData>> encodedData = transformResponse(resultSet);
+            Optional<List<EncodedData>> encodedData = readEncodedEvents(preparedStatement);
             return encodedData.map(
                     data -> data.stream()
                             .map(this::<T>toDomainObject)
@@ -233,6 +234,12 @@ public class PostgresEventStore implements IEventStore {
         } catch (Exception e) {
             LOG.error("Massive database failure: ", e);
             return Optional.empty();
+        }
+    }
+
+    private Optional<List<EncodedData>> readEncodedEvents(PreparedStatement preparedStatement) throws SQLException {
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            return transformResponse(resultSet);
         }
     }
 
