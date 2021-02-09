@@ -33,12 +33,7 @@ public class AddSystemCommandHandlerTest {
         eventStore = new FakeEventStore();
         receivedEvents.clear();
         currentSystemRegisterState = new CurrentSystemRegisterState(eventStore, new CurrentStateCalculator());
-        eventBus.subscribe(new Object() {
-            @Subscribe
-            public void handle(AuthoredMessage evt) {
-                receivedEvents.add(evt);
-            }
-        });
+        eventBus.subscribe(new Subscriber(receivedEvents));
     }
 
     @Test
@@ -65,5 +60,20 @@ public class AddSystemCommandHandlerTest {
         Assertions.assertEquals(cmd.author, receivedEvents.get(0).author);
         Assertions.assertEquals(cmd.systemData.name, ((SystemAddedEvent) receivedEvents.get(0)).system.name);
         assertTrue(receivedEvents.get(0).timestamp.compareTo(Instant.MIN) > 0);
+    }
+
+    private static class Subscriber {
+        private final List<AuthoredMessage> events;
+
+        @SuppressWarnings("CdiInjectionPointsInspection")
+        Subscriber(List<AuthoredMessage> events) {
+            this.events = events;
+        }
+
+        @Subscribe
+        @SuppressWarnings("UnstableApiUsage")
+        public void handle(AuthoredMessage event) {
+            events.add(event);
+        }
     }
 }
