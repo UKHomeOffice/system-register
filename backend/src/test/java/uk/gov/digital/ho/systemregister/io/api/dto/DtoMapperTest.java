@@ -1,20 +1,17 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.model.Snapshot;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.helpers.TestDataUtil;
-import uk.gov.digital.ho.systemregister.io.database.SnapshotBuilder;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
@@ -38,16 +35,6 @@ public class DtoMapperTest extends TestDataUtil {
 
         expectMetaDataToBeCorrect(expectedAuthor, authorUsername, result);
         expectSystemToBeCorrect(result, a_system_dto.build());
-    }
-
-    @Test
-    public void mapSnapshot() {
-        Snapshot snapshot = new SnapshotBuilder().build();
-
-        SnapshotDTO result = DtoMapper.map(snapshot);
-
-        assertEquals(snapshot.timestamp, result.timestamp);
-        expectSnapshotsToMatch(snapshot, result);
     }
 
     @Test
