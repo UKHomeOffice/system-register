@@ -31,9 +31,11 @@ public class MockAuthorizationServer implements QuarkusTestResourceLifecycleMana
 
     @Override
     public Map<String, String> start() {
-        if (wireMockServer == null) {
-            wireMockServer = new WireMockServer();
-            wireMockServer.start();
+        synchronized (MockAuthorizationServer.class) {
+            if (wireMockServer == null) {
+                wireMockServer = new WireMockServer();
+                wireMockServer.start();
+            }
         }
 
         stubFor(get("/.well-known/openid-configuration")
