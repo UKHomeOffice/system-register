@@ -6,6 +6,20 @@
 
 Crowdsource systems and the risk they contain.
 
+## Prerequisites
+
+- pre-commit [^1]
+- Java 11+ JDK
+- Node 10
+- Maven
+- Yarn
+- Docker & docker-compose
+
+[^1]:
+    There are Git hooks in this repository that perform linting before commits. Use pre-commit to install these:
+
+    `pre-commit install`
+
 ## Development
 
 There are 2 services, frontend (UI) and backend (API).
@@ -25,12 +39,13 @@ To build and start developing the API locally:
 ./tasks dev-backend
 ```
 
-This will build the UI, copy the files 
+This will build the UI, copy the files
 over to be served up by the backend, build the backend
-and start the backend in dev mode with file watch and 
+and start the backend in dev mode with file watch and
 hot reload for the backend only.
 
 If you want to develop the frontend with hot reload
+
 ```bash
 ./tasks dev-frontend
 ```
