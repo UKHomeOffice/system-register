@@ -8,17 +8,16 @@ Crowdsource systems and the risk they contain.
 
 ## Prerequisites
 
-- pre-commit [^1]
+- pre-commit <sup>†</sup>
 - Java 11+ JDK
 - Node 10
 - Maven
 - Yarn
 - Docker & docker-compose
 
-[^1]:
-    There are Git hooks in this repository that perform linting before commits. Use pre-commit to install these:
+<sup>†</sup> There are Git hooks in this repository that perform linting before commits. Use pre-commit to install these:
 
-    `pre-commit install`
+    pre-commit install
 
 ## Development
 
