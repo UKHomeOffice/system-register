@@ -1,8 +1,8 @@
-import { screen } from "@testing-library/dom";
-import { render } from '@testing-library/react'
+import { screen, render, within } from "@testing-library/react";
+
 import React from "react";
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
 import SystemView from "../SystemView";
 
@@ -14,9 +14,9 @@ const test_system = {
   criticality: "high",
   investment_state: "evergreen",
   description: "The description",
-  portfolio: 'Portfolio Y',
+  portfolio: "Portfolio Y",
   last_updated: {
-    timestamp: '2020-02-13T11:01:01',
+    timestamp: "2020-02-13T11:01:01",
     author_name: "Betty Franklin",
   },
   system_register_owner: "I own the register",
@@ -29,16 +29,16 @@ const test_system = {
   supported_by: "Support Team",
   risks: [
     {
-      "name": "roadmap",
-      "level": "medium",
-      "rationale": "there is no plan"
+      name: "roadmap",
+      level: "medium",
+      rationale: "there is no plan",
     },
     {
-      "name": "tech_stack",
-      "level": "low",
-      "rationale": "Really good tech"
-    }
-  ]
+      name: "tech_stack",
+      level: "low",
+      rationale: "Really good tech",
+    },
+  ],
 };
 
 const test_unknown_system = {
@@ -48,7 +48,7 @@ const test_unknown_system = {
   criticality: "",
   investment_state: "",
   description: "",
-  portfolio: '',
+  portfolio: "",
   last_updated: {
     timestamp: "",
     author_name: "",
@@ -62,137 +62,131 @@ const test_unknown_system = {
   supported_by: "",
   risks: [
     {
-      "name": "roadmap",
-      "level": null,
-      "rationale": null
+      name: "roadmap",
+      level: null,
+      rationale: null,
     },
     {
-      "name": "change",
-      "level": null,
-      "rationale": null
-    }
-  ]
+      name: "change",
+      level: null,
+      rationale: null,
+    },
+  ],
 };
 
 describe("<SystemView>", () => {
   describe("When we have data", () => {
     describe("Renders system section", () => {
-      it('renders system name', async () => {
+      it("renders system name", async () => {
         setup(test_system);
-        const element = await screen.findByText('System X');
+        const element = await screen.findByText("System X");
         expect(element).toBeInTheDocument();
       });
 
-      it('renders a comma separated list of aliases sorted into alphabetical order if aliases are supplied', async () => {
+      it("renders a comma separated list of aliases sorted into alphabetical order if aliases are supplied", async () => {
         setup(test_system);
-        const element = await screen.findByText('avalanche, project Jupiter, sys X')
+        const element = await screen.findByText(
+          "avalanche, project Jupiter, sys X"
+        );
         expect(element).toBeInTheDocument();
       });
 
-      it('displays a message stating the system is not known by another name if no aliases are supplied', async () => {
+      it("displays a message stating the system is not known by another name if no aliases are supplied", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByText('This system is not known by another name.')
+        const element = await screen.findByText(
+          "This system is not known by another name."
+        );
         expect(element).toBeInTheDocument();
       });
 
-      it('displays correct modified on', async () => {
+      it("displays correct modified on", async () => {
         setup(test_system);
-        const element = await screen.findByText('Last modified: 13 February 2020 by Betty Franklin');
+        const element = await screen.findByText(
+          "Last modified: 13 February 2020 by Betty Franklin"
+        );
         expect(element).toBeInTheDocument();
       });
 
-      it('renders Description section', async () => {
+      it("renders Description section", async () => {
         setup(test_system);
-        const element = await screen.findByRole("heading", { name: "Description" });
+        const element = await screen.findByRole("heading", {
+          name: "Description",
+        });
         expect(element).toBeInTheDocument();
       });
 
-      it('renders Change link for info section', async () => {
+      it("renders Change link for info section", () => {
         setup(test_system);
-        const element = await screen.getByTestId("info-change-link");
+        const element = screen.getByTestId("info-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", '//update-info') //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-info"); //TODO discuss with team if better way to do relative path with react-router-dom
       });
+    });
 
-
-    })
-
-    describe('About section', () => {
-      it('renders About section', async () => {
+    describe("About section", () => {
+      it("renders About section", async () => {
         setup(test_system);
         const element = await screen.findByRole("heading", { name: "About" });
         expect(element).toBeInTheDocument();
       });
 
-      it('renders Change link for about section', async () => {
+      it("renders Change link for about section", () => {
         setup(test_system);
-        const element = await screen.getByTestId("about-change-link");
+        const element = screen.getByTestId("about-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", '//update-about') //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-about"); //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
-
-      it('renders Change link for contacts section', async () => {
+      it("renders Change link for contacts section", () => {
         setup(test_system);
-        const element = await screen.getByTestId("contacts-change-link");
+        const element = screen.getByTestId("contacts-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", '//update-contacts') //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-contacts"); //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
-      it('renders first column correctly', async () => {
+      it.each([
+        ["Portfolio", "Portfolio Y"],
+        ["Criticality assessment", "HIGH"],
+        ["Investment state", "EVERGREEN"],
+        ["Developed by", "Dev Team"],
+        ["Supported by", "Support Team"],
+      ])("renders correct entries in the About table: %p", (label, value) => {
         setup(test_system);
-        const column = await screen.findByTestId("about-column1");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Portfolio");
-        expect(entries[1].textContent).toEqual("Criticality assessment");
-        expect(entries[2].textContent).toEqual("Investment state");
-        expect(entries[3].textContent).toEqual("Developed by");
-        expect(entries[4].textContent).toEqual("Supported by");
-      });
+        const row = screen.getByText(label).closest(".system-view-row");
+        const cell = within(row).getByText(value);
 
-      it('renders correct entries in the second column of About table', async () => {
-        setup(test_system);
-        const column = await screen.findByTestId("about-column2");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Portfolio Y");
-        expect(entries[1].textContent).toEqual("HIGH");
-        expect(entries[2].textContent).toEqual("EVERGREEN");
-        expect(entries[3].textContent).toEqual("Dev Team");
-        expect(entries[4].textContent).toEqual("Support Team");
-      })
-    });
-
-    describe('Contacts section', () => {
-      it('renders Contacts section', async () => {
-        setup(test_system);
-        const element = await screen.findByRole("heading", { name: "Contacts" });
-        expect(element).toBeInTheDocument();
-      });
-
-      it('renders first column correclty', async () => {
-        setup(test_system);
-        const column = await screen.findByTestId("contacts-column1");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Business owner");
-        expect(entries[1].textContent).toEqual("Technical owner");
-        expect(entries[2].textContent).toEqual("Service owner");
-        expect(entries[3].textContent).toEqual("Product owner");
-        expect(entries[4].textContent).toEqual("Information asset owner");
-      });
-
-      it('renders correct entries in the second column of About table', async () => {
-        setup(test_system);
-        const column = await screen.findByTestId("contacts-column2");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("I own the business");
-        expect(entries[1].textContent).toEqual("I own the tech");
-        expect(entries[2].textContent).toEqual("I own the service");
-        expect(entries[3].textContent).toEqual("I own the product");
-        expect(entries[4].textContent).toEqual("I own the data");
+        expect(cell).toBeInTheDocument();
       });
     });
 
-    describe('Risk section', () => {
+    describe("Contacts section", () => {
+      it("renders Contacts section", async () => {
+        setup(test_system);
+        const element = await screen.findByRole("heading", {
+          name: "Contacts",
+        });
+        expect(element).toBeInTheDocument();
+      });
+
+      it.each([
+        ["Business owner", "I own the business"],
+        ["Technical owner", "I own the tech"],
+        ["Service owner", "I own the service"],
+        ["Product owner", "I own the product"],
+        ["Information asset owner", "I own the data"],
+      ])(
+        "renders correct entries in the contacts table: %p",
+        (label, value) => {
+          setup(test_system);
+          const row = screen.getByText(label).closest(".system-view-row");
+          const cell = within(row).getByText(value);
+
+          expect(cell).toBeInTheDocument();
+        }
+      );
+    });
+
+    describe("Risk section", () => {
       it("renders Risk section", async () => {
         setup(test_system);
         const element = await screen.findByRole("heading", { name: "Risk" });
@@ -210,95 +204,82 @@ describe("<SystemView>", () => {
 
       it("renders the details of each risk", async () => {
         setup(test_system);
-        const risks = await screen.findAllByTestId('risk-details');
+        const risks = await screen.findAllByTestId("risk-details");
         expect(risks).toHaveLength(2);
       });
     });
-  })
+  });
 
   describe("When we don't have data", () => {
-    describe('System section', () => {
-      it('renders system name', async () => {
+    describe("System section", () => {
+      it("renders system name", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByText('System Y')
-        expect(element).toBeInTheDocument()
+        const element = await screen.findByText("System Y");
+        expect(element).toBeInTheDocument();
       });
 
-      it('displays correct modified on', async () => {
+      it("displays correct modified on", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByTestId("system-last-modified")
-        expect(element).toHaveTextContent("Never")
+        const element = await screen.findByTestId("system-last-modified");
+        expect(element).toHaveTextContent("Never");
       });
 
-      it('renders Description section', async () => {
+      it("renders Description section", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", { name: "Description" });
+        const element = await screen.findByRole("heading", {
+          name: "Description",
+        });
         expect(element).toBeInTheDocument();
       });
     });
 
-    describe('About section', () => {
-      it('renders About section ', async () => {
+    describe("About section", () => {
+      it("renders About section ", async () => {
         setup(test_unknown_system);
         const element = await screen.findByRole("heading", { name: "About" });
         expect(element).toBeInTheDocument();
       });
 
-      it('renders first column correctly', async () => {
+      it.each([
+        ["Portfolio"],
+        ["Criticality assessment"],
+        ["Investment state"],
+        ["Developed by"],
+        ["Supported by"],
+      ])("renders unknown values in the About table: %p", (label) => {
         setup(test_unknown_system);
-        const column = await screen.findByTestId("about-column1");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Portfolio");
-        expect(entries[1].textContent).toEqual("Criticality assessment");
-        expect(entries[2].textContent).toEqual("Investment state");
-        expect(entries[3].textContent).toEqual("Developed by");
-        expect(entries[4].textContent).toEqual("Supported by");
+        const row = screen.getByText(label).closest(".system-view-row");
+        const cell = within(row).getByText("UNKNOWN");
+
+        expect(cell).toBeInTheDocument();
       });
-
-      it('renders correct entries in the second column of About table', async () => {
-        setup(test_unknown_system);
-        const column = await screen.findByTestId("about-column2");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("UNKNOWN");
-        expect(entries[1].textContent).toEqual("UNKNOWN");
-        expect(entries[2].textContent).toEqual("UNKNOWN");
-        expect(entries[3].textContent).toEqual("UNKNOWN");
-        expect(entries[4].textContent).toEqual("UNKNOWN");
-      })
-
     });
 
-    describe('Contacts section', () => {
-      it('renders Contacts section', async () => {
+    describe("Contacts section", () => {
+      it("renders Contacts section", async () => {
         setup(test_unknown_system);
-        const element = await screen.findByRole("heading", { name: "Contacts" });
+        const element = await screen.findByRole("heading", {
+          name: "Contacts",
+        });
         expect(element).toBeInTheDocument();
       });
 
-      it('renders first column correclty', async () => {
+      it.each([
+        ["Business owner"],
+        ["Technical owner"],
+        ["Service owner"],
+        ["Product owner"],
+        ["Information asset owner"],
+      ])("renders unknown values in the Contacts table: %p", (label) => {
         setup(test_unknown_system);
-        const column = await screen.findByTestId("contacts-column1");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("Business owner");
-        expect(entries[1].textContent).toEqual("Technical owner");
-        expect(entries[2].textContent).toEqual("Service owner");
-        expect(entries[3].textContent).toEqual("Product owner");
-        expect(entries[4].textContent).toEqual("Information asset owner");
-      });
+        const row = screen.getByText(label).closest(".system-view-row");
+        const cell = within(row).getByText("UNKNOWN");
 
-      it('renders correct entries in the second column of About table', async () => {
-        setup(test_unknown_system);
-        const column = await screen.findByTestId("contacts-column2");
-        const entries = column.childNodes;
-        expect(entries[0].textContent).toEqual("UNKNOWN");
-        expect(entries[1].textContent).toEqual("UNKNOWN");
-        expect(entries[2].textContent).toEqual("UNKNOWN");
-        expect(entries[3].textContent).toEqual("UNKNOWN");
-        expect(entries[4].textContent).toEqual("UNKNOWN");
+        expect(cell).toBeInTheDocument();
       });
     });
 
-    describe('Risk section', () => {
+    describe("Risk section", () => {
       it("renders Risk section", async () => {
         setup(test_unknown_system);
         const element = await screen.findByRole("heading", { name: "Risk" });
@@ -308,7 +289,9 @@ describe("<SystemView>", () => {
       it("displays correct risk names", async () => {
         setup(test_unknown_system);
         const roadmap = await screen.findByText("Roadmap");
-        const techStack = await screen.findByRole("heading", { name: "Change" });
+        const techStack = await screen.findByRole("heading", {
+          name: "Change",
+        });
 
         expect(roadmap).toBeInTheDocument();
         expect(techStack).toBeInTheDocument();
@@ -316,14 +299,18 @@ describe("<SystemView>", () => {
 
       it("renders the details of each risk", async () => {
         setup(test_unknown_system);
-        const risks = await screen.findAllByTestId('risk-details');
+        const risks = await screen.findAllByTestId("risk-details");
         expect(risks).toHaveLength(2);
       });
-    })
-  })
+    });
+  });
 });
 
 function setup(system) {
   const history = createMemoryHistory();
-  render(<Router history={history}><SystemView system={system} /></Router>)
+  render(
+    <Router history={history}>
+      <SystemView system={system} />
+    </Router>
+  );
 }

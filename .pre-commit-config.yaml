@@ -24,3 +24,4 @@ repos:
           - eslint-plugin-react@^7.22.0
           - eslint-plugin-react-hooks@^4.2.0
           - eslint-plugin-testing-library@^3.10.1
+          - eslint-plugin-flowtype@^4.7.0

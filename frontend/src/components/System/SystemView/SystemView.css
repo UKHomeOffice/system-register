@@ -1,15 +1,19 @@
 h1 {
-    max-width: 90%;
-    word-wrap: break-word;
+  max-width: 90%;
+  word-wrap: break-word;
 }
 
-.hanging-indent p{
-    text-indent: -105px;
-    padding-left: 105px;
-    margin-top: 5px;
+.hanging-indent p {
+  text-indent: -105px;
+  padding-left: 105px;
+  margin-top: 5px;
 }
 
 .hanging-indent span {
-    display: inline-block;
-    margin-left: 105px;
+  display: inline-block;
+  margin-left: 105px;
+}
+
+.systemDetails .system-view-row {
+  margin: 15px 0 15px -15px;
 }
