@@ -45,6 +45,9 @@
       "plugin:import/recommended"
     ],
     "settings": {
+      "react": {
+        "version": "16.14"
+      },
       "import/resolver": {
         "node": {
           "extensions": [
