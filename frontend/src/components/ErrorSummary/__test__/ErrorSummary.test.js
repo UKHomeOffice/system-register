@@ -4,6 +4,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
 import ErrorSummary from "../ErrorSummary";
+import withBlurOnNavigate from "../../BlurOnNavigate";
+import { MemoryRouter } from "react-router-dom";
 
 describe("ErrorSummary", () => {
   let originalScrollIntoView = null;
@@ -191,6 +193,32 @@ describe("ErrorSummary", () => {
         await waitFor(() => expect(field).toHaveFocus());
       }
     );
+
+    it("is not affected by blur-on-navigate effect", async () => {
+      const FormComponentWithBlurOnNavigate = withBlurOnNavigate(() =>
+        withFormik(
+          <>
+            <ErrorSummary />
+            <input name="input" defaultValue="input" />
+          </>,
+          { input: "input" },
+          { input: true }
+        )
+      );
+      render(
+        <MemoryRouter>
+          <FormComponentWithBlurOnNavigate />
+        </MemoryRouter>
+      );
+      const errorLink = await screen.findByText("input", {
+        selector: "#error-summary a",
+      });
+      const field = screen.getByDisplayValue("input");
+
+      user.click(errorLink);
+
+      await waitFor(() => expect(field).toHaveFocus());
+    });
   });
 });
 
