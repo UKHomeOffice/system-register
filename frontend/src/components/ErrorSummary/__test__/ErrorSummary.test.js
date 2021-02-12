@@ -19,19 +19,29 @@ describe("ErrorSummary", () => {
 
   it("displays form errors", async () => {
     render(
-      <Formik initialErrors={{ error: "there was an error" }}
-              initialTouched={{ error: true }}
-              initialValues={{}}
-              onSubmit={null}>
+      <Formik
+        initialErrors={{ error: "there was an error" }}
+        initialTouched={{ error: true }}
+        initialValues={{}}
+        onSubmit={null}
+      >
         <ErrorSummary />
       </Formik>
     );
 
-    expect(await screen.findByText("there was an error", { selector: "a" })).toBeInTheDocument();
+    expect(
+      await screen.findByText("there was an error", { selector: "a" })
+    ).toBeInTheDocument();
   });
 
   it("displays errors for each error in an array", () => {
-    render(withFormik(<ErrorSummary />, { many: ["error 1", "error 2", "error 3"] }, { many: [true, false, true] }));
+    render(
+      withFormik(
+        <ErrorSummary />,
+        { many: ["error 1", "error 2", "error 3"] },
+        { many: [true, false, true] }
+      )
+    );
 
     const errors = screen.getAllByText(/error/i);
     expect(errors).toHaveLength(2);
@@ -40,7 +50,9 @@ describe("ErrorSummary", () => {
   });
 
   it("does not display if there are no array errors", () => {
-    render(withFormik(<ErrorSummary />, { field: [undefined] }, { field: [true] }));
+    render(
+      withFormik(<ErrorSummary />, { field: [undefined] }, { field: [true] })
+    );
 
     expect(screen.queryByText("There is a problem")).not.toBeInTheDocument();
   });
@@ -57,24 +69,37 @@ describe("ErrorSummary", () => {
 
   it("does not display errors for fields that are not showing their own errors", async () => {
     render(
-      <Formik initialErrors={{ error: "showing on field", otherError: "not yet visible" }}
-              initialTouched={{ error: true, otherError: false }}
-              initialValues={{}}
-              onSubmit={null}>
+      <Formik
+        initialErrors={{
+          error: "showing on field",
+          otherError: "not yet visible",
+        }}
+        initialTouched={{ error: true, otherError: false }}
+        initialValues={{}}
+        onSubmit={null}
+      >
         <ErrorSummary />
       </Formik>
     );
 
-    expect(await screen.findByText("showing on field", { selector: "a" })).toBeInTheDocument();
+    expect(
+      await screen.findByText("showing on field", { selector: "a" })
+    ).toBeInTheDocument();
     expect(screen.queryByText("not yet visible")).not.toBeInTheDocument();
   });
 
   it("orders multiple errors by field", async () => {
     render(
-      <Formik initialErrors={{ first: "first error", second: "second error", third: ["third error"] }}
-              initialTouched={{ first: true, second: true, third: [true] }}
-              initialValues={{}}
-              onSubmit={null}>
+      <Formik
+        initialErrors={{
+          first: "first error",
+          second: "second error",
+          third: ["third error"],
+        }}
+        initialTouched={{ first: true, second: true, third: [true] }}
+        initialValues={{}}
+        onSubmit={null}
+      >
         <ErrorSummary order={["second", "first", "third"]} />
       </Formik>
     );
@@ -87,9 +112,7 @@ describe("ErrorSummary", () => {
 
   describe("focus", () => {
     it("receives focus when shown", async () => {
-      render(withFormik(<ErrorSummary />,
-        { field: "error" },
-        { field: true }));
+      render(withFormik(<ErrorSummary />, { field: "error" }, { field: true }));
 
       await waitFor(() => {
         const summary = document.getElementById("error-summary");
@@ -99,11 +122,15 @@ describe("ErrorSummary", () => {
     });
 
     it("does not move focus if errors have not changed", async () => {
-      const content = <>
-        <ErrorSummary />
-        <input name="field" />
-      </>;
-      const { rerender } = render(withFormik(content, { field: "text" }, { field: true }));
+      const content = (
+        <>
+          <ErrorSummary />
+          <input name="field" />
+        </>
+      );
+      const { rerender } = render(
+        withFormik(content, { field: "text" }, { field: true })
+      );
       await waitFor(() => {
         expect(document.getElementById("error-summary")).toHaveFocus();
       });
@@ -116,15 +143,19 @@ describe("ErrorSummary", () => {
     });
 
     it("moves focus to field when error is clicked", async () => {
-      render(withFormik(
-        <>
-          <ErrorSummary />
-          <input name="field" />
-        </>,
-        { field: "error text" },
-        { field: true }
-      ));
-      const errorLink = await screen.findByText(/error text/i, { selector: "a" });
+      render(
+        withFormik(
+          <>
+            <ErrorSummary />
+            <input name="field" />
+          </>,
+          { field: "error text" },
+          { field: true }
+        )
+      );
+      const errorLink = await screen.findByText(/error text/i, {
+        selector: "a",
+      });
       const field = screen.getByRole("textbox");
 
       user.click(errorLink);
@@ -132,35 +163,44 @@ describe("ErrorSummary", () => {
       await waitFor(() => expect(field).toHaveFocus());
     });
 
-    it.each(["input", "textarea"])
-    ("only moves focus to form controls: %p", async (control) => {
-      render(withFormik(
-        <>
-          <a name="input" />
-          <a name="textarea" />
+    it.each(["input", "textarea"])(
+      "only moves focus to form controls: %p",
+      async (control) => {
+        render(
+          withFormik(
+            <>
+              <object name="input">content</object>
+              <object name="textarea">content</object>
 
-          <ErrorSummary />
+              <ErrorSummary />
 
-          <input name="input" defaultValue="input" />
-          <textarea name="textarea" defaultValue="textarea" />
-        </>,
-        { input: "input", textarea: "textarea" },
-        { input: true, textarea: true }
-      ));
-      const errorLink = await screen.findByText(control, { selector: "#error-summary a"});
-      const field = screen.getByDisplayValue(control);
+              <input name="input" defaultValue="input" />
+              <textarea name="textarea" defaultValue="textarea" />
+            </>,
+            { input: "input", textarea: "textarea" },
+            { input: true, textarea: true }
+          )
+        );
+        const errorLink = await screen.findByText(control, {
+          selector: "#error-summary a",
+        });
+        const field = screen.getByDisplayValue(control);
 
-      user.click(errorLink);
+        user.click(errorLink);
 
-      await waitFor(() => expect(field).toHaveFocus());
-    });
+        await waitFor(() => expect(field).toHaveFocus());
+      }
+    );
   });
 });
 
 function withFormik(component, errors = {}, touched = {}) {
   return (
-    <Formik initialValues={{}} onSubmit={null}
-            initialErrors={errors} initialTouched={touched}
+    <Formik
+      initialValues={{}}
+      onSubmit={null}
+      initialErrors={errors}
+      initialTouched={touched}
     >
       {component}
     </Formik>
