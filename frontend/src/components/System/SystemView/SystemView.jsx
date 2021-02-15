@@ -11,12 +11,14 @@ import RiskDetails from "../RiskDetails/RiskDetails";
 
 import "./SystemView.css";
 
-function SystemView({ system }) {
+function SystemView({ system, status }) {
   return (
     <div className="systemDetails centerContent">
       {system ? (
         <>
           <div className="contentBlock">
+            {status}
+
             <h1>{system.name}</h1>
             <Link
               data-testid="info-change-link"
@@ -165,6 +167,7 @@ SystemView.propTypes = {
       author_name: PropTypes.string,
     }).isRequired,
   }),
+  status: PropTypes.node,
 };
 
 function renderAliases(aliases) {

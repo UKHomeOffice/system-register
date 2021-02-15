@@ -230,6 +230,9 @@ describe("<System />", () => {
             informationAssetOwner: "updated information asset owner",
           })
         );
+        expect(
+          await screen.findByText(/update has been saved/i)
+        ).toBeInTheDocument();
       });
 
       it("does not send a request if field values are unchanged", async () => {
@@ -271,6 +274,9 @@ describe("<System />", () => {
 
           await returnToSystemView(123, history);
           expect(changeHandler).toBeCalled();
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
       });
 
@@ -299,6 +305,9 @@ describe("<System />", () => {
               description: "updated system description",
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("does not send a request if field values are unchanged", async () => {
@@ -336,6 +345,9 @@ describe("<System />", () => {
               aliases: ["new alias"],
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("does not send a request if field values are unchanged", async () => {
@@ -377,6 +389,9 @@ describe("<System />", () => {
 
           await returnToSystemView(123, history);
           expect(changeHandler).toBeCalled();
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
       });
 
@@ -402,6 +417,9 @@ describe("<System />", () => {
               criticality: "high",
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("api is not called if criticality is unchanged", async () => {
@@ -441,6 +459,9 @@ describe("<System />", () => {
               investmentState: "sunset",
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("api is not called if investment state is unchanged", async () => {
@@ -460,6 +481,7 @@ describe("<System />", () => {
 
       describe("developed by", () => {
         it("returns to the system view after a successful update", async () => {
+          api.updateDevelopedBy.mockResolvedValue(test_system);
           const { history } = renderWithRouting("123/update-about");
           const textField = await screen.findByLabelText(/who develops/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -475,6 +497,9 @@ describe("<System />", () => {
               developedBy: "someone new",
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("api is not called if developed by is unchanged", async () => {
@@ -493,6 +518,7 @@ describe("<System />", () => {
 
       describe("supported by", () => {
         it("returns to the system view after a successful update", async () => {
+          api.updateSupportedBy.mockResolvedValue(test_system);
           const { history } = renderWithRouting("123/update-about");
           const textField = await screen.findByLabelText(/who supports/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -508,6 +534,9 @@ describe("<System />", () => {
               supportedBy: "someone new",
             })
           );
+          expect(
+            await screen.findByText(/update has been saved/i)
+          ).toBeInTheDocument();
         });
 
         it("api is not called if supported by is unchanged", async () => {

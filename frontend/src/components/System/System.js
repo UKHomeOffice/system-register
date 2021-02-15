@@ -45,7 +45,7 @@ function useReturnToSystemView() {
   }, [history, url]);
 }
 
-function useUpdateCallbackFactory(id, onChange, setSystem) {
+function useUpdateCallbackFactory(id, onChange, setSystem, setUpdated) {
   const returnToSystemView = useReturnToSystemView();
 
   return useCallback(
@@ -57,9 +57,10 @@ function useUpdateCallbackFactory(id, onChange, setSystem) {
       if (!isEmpty(actions)) {
         onChange();
       }
+      setUpdated(true);
       returnToSystemView();
     },
-    [id, returnToSystemView, onChange, setSystem]
+    [id, returnToSystemView, onChange, setSystem, setUpdated]
   );
 }
 
@@ -69,6 +70,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     params: { id },
   } = useRouteMatch();
   const [system, setSystem] = useState(null);
+  const [updated, setUpdated] = useState(false);
   const throwError = useAsyncError();
 
   useEffect(() => {
@@ -81,7 +83,8 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   const createUpdateCallback = useUpdateCallbackFactory(
     id,
     onChange,
-    setSystem
+    setSystem,
+    setUpdated
   );
   const handleUpdateInfo = createUpdateCallback(
     "name",
@@ -102,13 +105,15 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "productOwner",
     "informationAssetOwner"
   );
-
   const handleCancel = useReturnToSystemView();
 
   return (
     <Switch>
       <Route path={`${path}`} exact>
-        <SystemView system={system} />
+        <SystemView
+          system={system}
+          status={updated && "Your update has been saved."}
+        />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
         <UpdateInfo
