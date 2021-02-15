@@ -44,6 +44,11 @@
       "plugin:testing-library/react",
       "plugin:import/recommended"
     ],
+    "env": {
+      "browser": true,
+      "es6": true,
+      "jest": true
+    },
     "settings": {
       "react": {
         "version": "16.14"
@@ -55,6 +60,12 @@
             ".jsx"
           ]
         }
+      }
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+        "jsx": true
       }
     }
   },
