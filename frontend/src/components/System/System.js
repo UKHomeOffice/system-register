@@ -64,6 +64,20 @@ function useUpdateCallbackFactory(id, onChange, setSystem, setUpdated) {
   );
 }
 
+const useOnUnmount = (onUnmount) => {
+  useEffect(() => {
+    return () => {
+      onUnmount();
+    };
+  }, [onUnmount]);
+};
+
+function UpdateSuccessMessage({ onDismiss }) {
+  useOnUnmount(onDismiss);
+
+  return "Your update has been saved.";
+}
+
 function System({ portfolios, onChange, onBeforeNameChange }) {
   const {
     path,
@@ -106,13 +120,16 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "informationAssetOwner"
   );
   const handleCancel = useReturnToSystemView();
+  const handleDismiss = useCallback(() => {
+    setUpdated(false);
+  }, []);
 
   return (
     <Switch>
       <Route path={`${path}`} exact>
         <SystemView
           system={system}
-          status={updated && "Your update has been saved."}
+          status={updated && <UpdateSuccessMessage onDismiss={handleDismiss} />}
         />
       </Route>
       <SecureRoute path={`${path}/update-info`}>

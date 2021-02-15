@@ -128,6 +128,29 @@ describe("<System />", () => {
       expect(element).toBeInTheDocument();
     });
 
+    it("hides the status message after it’s been viewed", async () => {
+      api.updateSystemName.mockResolvedValue({
+        ...test_system,
+        name: "a new name",
+      });
+      const { history } = renderWithRouting("123/update-info");
+      const systemNameField = await screen.findByLabelText(/system name/i);
+      const saveButton = screen.getByRole("button", { name: /save/i });
+      overtype(systemNameField, "a new name");
+      user.click(saveButton);
+      expect(
+        await screen.findByText(/update has been saved/i)
+      ).toBeInTheDocument();
+
+      history.go(-1);
+      history.go(1);
+
+      await screen.findByRole("heading", { name: "a new name" });
+      expect(
+        screen.queryByText(/update has been saved/i)
+      ).not.toBeInTheDocument();
+    });
+
     describe("editing contacts", () => {
       beforeEach(() => {
         api.updateBusinessOwner.mockResolvedValue(test_system);
