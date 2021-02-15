@@ -16,6 +16,7 @@ repos:
     hooks:
       - id: eslint
         files: '\.jsx?$'
+        types: [file]
         args:
           - "--ignore-pattern"
           - "!frontend/.eslintrc.js"
