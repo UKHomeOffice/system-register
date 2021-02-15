@@ -1,14 +1,17 @@
-import ModifiedDetails from "../../ModifiedDetails/ModifiedDetails";
-import KeyInfo from "../KeyInfo/KeyInfo";
+import React from "react";
+import PropTypes from "prop-types";
 import { GridCol, GridRow } from "govuk-react";
+
 import Criticality from "../Criticality/Criticality";
 import InvestmentState from "../InvestmentState/InvestmentState";
-import RiskDetails from "../RiskDetails/RiskDetails";
-import React from "react";
+import KeyInfo from "../KeyInfo/KeyInfo";
 import Link from "../../Linking/Link";
+import ModifiedDetails from "../../ModifiedDetails/ModifiedDetails";
+import RiskDetails from "../RiskDetails/RiskDetails";
+
 import "./SystemView.css";
 
-const SystemView = ({ system }) => {
+function SystemView({ system }) {
   return (
     <div className="systemDetails centerContent">
       {system ? (
@@ -133,6 +136,35 @@ const SystemView = ({ system }) => {
       )}
     </div>
   );
+}
+
+SystemView.propTypes = {
+  system: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    aliases: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    description: PropTypes.string,
+    portfolio: PropTypes.string,
+    criticality: PropTypes.string,
+    investment_state: PropTypes.string,
+    business_owner: PropTypes.string,
+    service_owner: PropTypes.string,
+    tech_owner: PropTypes.string,
+    product_owner: PropTypes.string,
+    information_asset_owner: PropTypes.string,
+    developed_by: PropTypes.string,
+    supported_by: PropTypes.string,
+    risks: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        level: PropTypes.string,
+        rationale: PropTypes.string,
+      })
+    ).isRequired,
+    last_updated: PropTypes.shape({
+      timestamp: PropTypes.string,
+      author_name: PropTypes.string,
+    }).isRequired,
+  }),
 };
 
 function renderAliases(aliases) {
@@ -143,4 +175,5 @@ function renderAliases(aliases) {
     return aliases.join(", ");
   } else return "This system is not known by another name.";
 }
+
 export default SystemView;

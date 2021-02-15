@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import user from "@testing-library/user-event";
 import { useKeycloak } from "@react-keycloak/web";
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { ErrorBoundary } from 'react-error-boundary';
-import { Route, Router } from 'react-router-dom';
+import { ErrorBoundary } from "react-error-boundary";
+import { Route, Router } from "react-router-dom";
 
 import PageNotFoundError from "../../Errors/PageNotFoundError";
-import System from '../System';
-import SystemNotFoundException from '../../../services/systemNotFoundException';
-import api from '../../../services/api';
+import System from "../System";
+import SystemNotFoundException from "../../../services/systemNotFoundException";
+import api from "../../../services/api";
 
-jest.mock('../../../services/api', () => ({
+jest.mock("../../../services/api", () => ({
   getSystem: jest.fn(),
   updateSystemName: jest.fn(),
   updateSystemDescription: jest.fn(),
@@ -44,47 +44,47 @@ const test_system = {
 
 const changeHandler = jest.fn();
 
-describe('<System />', () => {
+describe("<System />", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     api.getSystem.mockResolvedValue(test_system);
   });
 
-  it('renders system view', async () => {
+  it("renders system view", async () => {
     renderWithRouting("1");
 
-    const element = await screen.findByText('Test System');
+    const element = await screen.findByText("Test System");
 
     expect(element).toBeInTheDocument();
   });
 
-  describe('Exceptions', () => {
+  describe("Exceptions", () => {
     beforeEach(() => {
-      jest.spyOn(console, 'error')
+      jest.spyOn(console, "error");
       console.error.mockImplementation(() => null);
     });
 
     afterEach(() => {
-      console.error.mockRestore()
-    })
+      console.error.mockRestore();
+    });
 
-    it('renders page not found error view when api throws SystemNotFoundException', async () => {
+    it("renders page not found error view when api throws SystemNotFoundException", async () => {
       api.getSystem.mockResolvedValue(() => {
-        throw new SystemNotFoundException()
+        throw new SystemNotFoundException();
       });
       render(
         <Router history={createMemoryHistory()}>
-          <ErrorBoundary fallback={<PageNotFoundError/>}>
-            <System/>
+          <ErrorBoundary fallback={<PageNotFoundError />}>
+            <System />
           </ErrorBoundary>
         </Router>
       );
 
-      const element = await screen.findByText('Page not found');
+      const element = await screen.findByText("Page not found");
 
       expect(element).toBeInTheDocument();
     });
-  })
+  });
 
   describe("when authorized", () => {
     beforeEach(() => {
@@ -96,10 +96,10 @@ describe('<System />', () => {
       });
     });
 
-    it('renders page not found error view when path to update path is incorrect', async () => {
+    it("renders page not found error view when path to update path is incorrect", async () => {
       renderWithRouting("123/update-blargh");
 
-      const element = await screen.findByText('Page not found');
+      const element = await screen.findByText("Page not found");
 
       expect(element).toBeInTheDocument();
     });
@@ -107,7 +107,7 @@ describe('<System />', () => {
     it("shows an edit view for info", async () => {
       renderWithRouting("1/update-info");
 
-      const element = await screen.findByText('Test System');
+      const element = await screen.findByText("Test System");
 
       expect(element).toBeInTheDocument();
     });
@@ -115,7 +115,7 @@ describe('<System />', () => {
     it("shows an edit view for about", async () => {
       renderWithRouting("1/update-about");
 
-      const element = await screen.findByText('Test System');
+      const element = await screen.findByText("Test System");
 
       expect(element).toBeInTheDocument();
     });
@@ -123,7 +123,7 @@ describe('<System />', () => {
     it("shows an edit view for contacts", async () => {
       renderWithRouting("1/update-contacts");
 
-      const element = await screen.findByText('Test System');
+      const element = await screen.findByText("Test System");
 
       expect(element).toBeInTheDocument();
     });
@@ -143,11 +143,21 @@ describe('<System />', () => {
 
       it("calls onChange callback when updates", async () => {
         renderWithRouting("123/update-contacts");
-        const businessOwnerField = await screen.findByLabelText(/business owner/i);
-        const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
-        const serviceOwnerField = await screen.findByLabelText(/service owner/i);
-        const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
+        const businessOwnerField = await screen.findByLabelText(
+          /business owner/i
+        );
+        const productOwnerField = await screen.findByLabelText(
+          /product owner/i
+        );
+        const technicalOwnerField = await screen.findByLabelText(
+          /technical owner/i
+        );
+        const serviceOwnerField = await screen.findByLabelText(
+          /service owner/i
+        );
+        const informationAssetOwnerField = await screen.findByLabelText(
+          /information asset owner/i
+        );
         const saveButton = screen.getByRole("button", { name: /save/i });
 
         overtype(businessOwnerField, "updated business owner");
@@ -164,11 +174,21 @@ describe('<System />', () => {
 
       it("returns to the system view after a successful update", async () => {
         const { history } = renderWithRouting("123/update-contacts");
-        const businessOwnerField = await screen.findByLabelText(/business owner/i);
-        const productOwnerField = await screen.findByLabelText(/product owner/i);
-        const technicalOwnerField = await screen.findByLabelText(/technical owner/i);
-        const serviceOwnerField = await screen.findByLabelText(/service owner/i);
-        const informationAssetOwnerField = await screen.findByLabelText(/information asset owner/i);
+        const businessOwnerField = await screen.findByLabelText(
+          /business owner/i
+        );
+        const productOwnerField = await screen.findByLabelText(
+          /product owner/i
+        );
+        const technicalOwnerField = await screen.findByLabelText(
+          /technical owner/i
+        );
+        const serviceOwnerField = await screen.findByLabelText(
+          /service owner/i
+        );
+        const informationAssetOwnerField = await screen.findByLabelText(
+          /information asset owner/i
+        );
 
         const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -180,21 +200,36 @@ describe('<System />', () => {
         user.click(saveButton);
 
         await returnToSystemView(123, history);
-        expect(api.updateBusinessOwner).toBeCalledWith("123", expect.objectContaining({
-          businessOwner: "updated business owner",
-        }));
-        expect(api.updateProductOwner).toBeCalledWith("123", expect.objectContaining({
-          productOwner: "updated product owner",
-        }));
-        expect(api.updateTechnicalOwner).toBeCalledWith("123", expect.objectContaining({
-          technicalOwner: "updated technical owner",
-        }));
-        expect(api.updateServiceOwner).toBeCalledWith("123", expect.objectContaining({
-          serviceOwner: "updated service owner",
-        }));
-        expect(api.updateInformationAssetOwner).toBeCalledWith("123", expect.objectContaining({
-          informationAssetOwner: "updated information asset owner",
-        }));
+        expect(api.updateBusinessOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            businessOwner: "updated business owner",
+          })
+        );
+        expect(api.updateProductOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            productOwner: "updated product owner",
+          })
+        );
+        expect(api.updateTechnicalOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            technicalOwner: "updated technical owner",
+          })
+        );
+        expect(api.updateServiceOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            serviceOwner: "updated service owner",
+          })
+        );
+        expect(api.updateInformationAssetOwner).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            informationAssetOwner: "updated information asset owner",
+          })
+        );
       });
 
       it("does not send a request if field values are unchanged", async () => {
@@ -221,7 +256,10 @@ describe('<System />', () => {
 
       describe("system name", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemName.mockResolvedValue({ ...test_system, name: "updated system name" });
+          api.updateSystemName.mockResolvedValue({
+            ...test_system,
+            name: "updated system name",
+          });
           const { history } = renderWithRouting("123/update-info");
           const systemNameField = await screen.findByLabelText(/system name/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -238,9 +276,14 @@ describe('<System />', () => {
 
       describe("system description", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemDescription.mockResolvedValue({ ...test_system, description: "system description" });
+          api.updateSystemDescription.mockResolvedValue({
+            ...test_system,
+            description: "system description",
+          });
           const { history } = renderWithRouting("123/update-info");
-          const systemDescriptionField = await screen.findByLabelText(/system description/i);
+          const systemDescriptionField = await screen.findByLabelText(
+            /system description/i
+          );
           const saveButton = screen.getByRole("button", { name: /save/i });
 
           user.clear(systemDescriptionField);
@@ -261,7 +304,9 @@ describe('<System />', () => {
         it("does not send a request if field values are unchanged", async () => {
           const { history } = renderWithRouting("123/update-info");
           await screen.findByText("Test System");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {
+            name: /save/i,
+          });
 
           user.click(saveButton);
 
@@ -273,7 +318,7 @@ describe('<System />', () => {
 
       describe("system aliases", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateSystemAliases.mockResolvedValue({ test_system });
+          api.updateSystemAliases.mockResolvedValue(test_system);
           const { history } = renderWithRouting("123/update-info");
           const systemAliasField = await screen.findByDisplayValue("");
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -296,7 +341,9 @@ describe('<System />', () => {
         it("does not send a request if field values are unchanged", async () => {
           const { history } = renderWithRouting("123/update-info");
           await screen.findByDisplayValue("");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {
+            name: /save/i,
+          });
 
           user.click(saveButton);
 
@@ -314,9 +361,14 @@ describe('<System />', () => {
 
       describe("portfolio", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updatePortfolio.mockResolvedValue({ ...test_system, portfolio: "updated portfolio" });
+          api.updatePortfolio.mockResolvedValue({
+            ...test_system,
+            portfolio: "updated portfolio",
+          });
           const { history } = renderWithRouting("123/update-about");
-          const radioButton = await screen.findByLabelText(/updated portfolio/i);
+          const radioButton = await screen.findByLabelText(
+            /updated portfolio/i
+          );
           const saveButton = screen.getByRole("button", { name: /save/i });
 
           // noinspection ES6MissingAwait: there is no typing delay
@@ -330,7 +382,10 @@ describe('<System />', () => {
 
       describe("criticality", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateCriticality.mockResolvedValue({ ...test_system, criticality: "high" });
+          api.updateCriticality.mockResolvedValue({
+            ...test_system,
+            criticality: "high",
+          });
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByLabelText(/high/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -366,7 +421,10 @@ describe('<System />', () => {
 
       describe("investment state", () => {
         it("returns to the system view after a successful update", async () => {
-          api.updateInvestmentState.mockResolvedValue({ ...test_system, investment_state: "sunset" });
+          api.updateInvestmentState.mockResolvedValue({
+            ...test_system,
+            investment_state: "sunset",
+          });
           const { history } = renderWithRouting("123/update-about");
           const radioButton = await screen.findByDisplayValue(/sunset/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
@@ -406,7 +464,7 @@ describe('<System />', () => {
           const textField = await screen.findByLabelText(/who develops/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
-          overtype(textField, "someone new")
+          overtype(textField, "someone new");
           user.click(saveButton);
 
           await returnToSystemView(123, history);
@@ -421,7 +479,9 @@ describe('<System />', () => {
 
         it("api is not called if developed by is unchanged", async () => {
           const { history } = renderWithRouting("123/update-about");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {
+            name: /save/i,
+          });
 
           user.click(saveButton);
 
@@ -437,7 +497,7 @@ describe('<System />', () => {
           const textField = await screen.findByLabelText(/who supports/i);
           const saveButton = screen.getByRole("button", { name: /save/i });
 
-          overtype(textField, "someone new")
+          overtype(textField, "someone new");
           user.click(saveButton);
 
           await returnToSystemView(123, history);
@@ -452,7 +512,9 @@ describe('<System />', () => {
 
         it("api is not called if supported by is unchanged", async () => {
           const { history } = renderWithRouting("123/update-about");
-          const saveButton = await screen.findByRole("button", { name: /save/i });
+          const saveButton = await screen.findByRole("button", {
+            name: /save/i,
+          });
 
           user.click(saveButton);
 
@@ -473,7 +535,7 @@ function overtype(field, value) {
 
 async function checkCancelButton(path) {
   const { history } = renderWithRouting(`123/${path}`);
-  const cancelButton = await screen.findByRole("button", {name: /cancel/i});
+  const cancelButton = await screen.findByRole("button", { name: /cancel/i });
 
   user.click(cancelButton);
 
@@ -487,10 +549,7 @@ async function checkCancelButton(path) {
 async function returnToSystemView(systemId, history) {
   await waitFor(() => {
     expect(history).toHaveProperty("index", 1);
-    expect(history).toHaveProperty(
-      "location.pathname",
-      `/system/${systemId}`
-    );
+    expect(history).toHaveProperty("location.pathname", `/system/${systemId}`);
   });
 }
 
@@ -498,7 +557,7 @@ function renderWithRouting(path, renderOptions) {
   const history = createMemoryHistory({ initialEntries: [`/system/${path}`] });
   const renderResult = render(
     <Router history={history}>
-      <Route path='/system/:id'>
+      <Route path="/system/:id">
         <System
           portfolios={["original portfolio", "updated portfolio"]}
           onBeforeNameChange={() => false}

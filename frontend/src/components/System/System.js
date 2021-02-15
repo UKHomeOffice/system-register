@@ -1,17 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { filter, isEmpty, map } from "lodash-es";
 
-import PageNotFoundError from '../../components/Errors/PageNotFoundError';
+import PageNotFoundError from "../../components/Errors/PageNotFoundError";
 import SecureRoute from "../SecureRoute";
 import SystemView from "./SystemView/SystemView";
-import UpdateAbout from './UpdateAbout/UpdateAbout';
+import UpdateAbout from "./UpdateAbout/UpdateAbout";
 import UpdateContacts from "./UpdateContacts";
-import UpdateInfo from './UpdateInfo';
-import api from '../../services/api';
-import useAsyncError from '../../utilities/useAsyncError';
+import UpdateInfo from "./UpdateInfo";
+import api from "../../services/api";
+import useAsyncError from "../../utilities/useAsyncError";
 
-import './System.css';
+import "./System.css";
 
 const actionsByField = {
   name: api.updateSystemName,
@@ -29,10 +30,11 @@ const actionsByField = {
   informationAssetOwner: api.updateInformationAssetOwner,
 };
 
-const findMatchingActions = (data, fields) => map(
-  filter(fields, (field) => field in data),
-  (field) => actionsByField[field]
-);
+const findMatchingActions = (data, fields) =>
+  map(
+    filter(fields, (field) => field in data),
+    (field) => actionsByField[field]
+  );
 
 function useReturnToSystemView() {
   const history = useHistory();
@@ -46,32 +48,60 @@ function useReturnToSystemView() {
 function useUpdateCallbackFactory(id, onChange, setSystem) {
   const returnToSystemView = useReturnToSystemView();
 
-  return useCallback((...fields) => async (data) => {
-    const actions = findMatchingActions(data, fields);
-    for (const action of actions) {
-      setSystem(await action(id, data));
-    }
-    if (!isEmpty(actions)) {
-      onChange();
-    }
-    returnToSystemView();
-  }, [id, returnToSystemView, onChange, setSystem]);
+  return useCallback(
+    (...fields) => async (data) => {
+      const actions = findMatchingActions(data, fields);
+      for (const action of actions) {
+        setSystem(await action(id, data));
+      }
+      if (!isEmpty(actions)) {
+        onChange();
+      }
+      returnToSystemView();
+    },
+    [id, returnToSystemView, onChange, setSystem]
+  );
 }
 
 function System({ portfolios, onChange, onBeforeNameChange }) {
-  const { path, params: { id } } = useRouteMatch();
+  const {
+    path,
+    params: { id },
+  } = useRouteMatch();
   const [system, setSystem] = useState(null);
   const throwError = useAsyncError();
 
   useEffect(() => {
     const fetchData = async () => setSystem(await api.getSystem(id));
-    fetchData().catch((e) => { throwError(e) });
+    fetchData().catch((e) => {
+      throwError(e);
+    });
   }, [id, throwError]);
 
-  const createUpdateCallback = useUpdateCallbackFactory(id, onChange, setSystem);
-  const handleUpdateInfo = createUpdateCallback("name", "description", "aliases");
-  const handleUpdateAbout = createUpdateCallback("portfolio", "criticality", "investmentState", "developedBy", "supportedBy");
-  const handleUpdateContacts = createUpdateCallback("businessOwner", "technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner");
+  const createUpdateCallback = useUpdateCallbackFactory(
+    id,
+    onChange,
+    setSystem
+  );
+  const handleUpdateInfo = createUpdateCallback(
+    "name",
+    "description",
+    "aliases"
+  );
+  const handleUpdateAbout = createUpdateCallback(
+    "portfolio",
+    "criticality",
+    "investmentState",
+    "developedBy",
+    "supportedBy"
+  );
+  const handleUpdateContacts = createUpdateCallback(
+    "businessOwner",
+    "technicalOwner",
+    "serviceOwner",
+    "productOwner",
+    "informationAssetOwner"
+  );
 
   const handleCancel = useReturnToSystemView();
 
@@ -81,17 +111,37 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
         <SystemView system={system} />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
-        <UpdateInfo system={system} onSubmit={handleUpdateInfo} onCancel={handleCancel} onBeforeNameChange={onBeforeNameChange} />
+        <UpdateInfo
+          system={system}
+          onSubmit={handleUpdateInfo}
+          onCancel={handleCancel}
+          onBeforeNameChange={onBeforeNameChange}
+        />
       </SecureRoute>
       <SecureRoute path={`${path}/update-about`}>
-        <UpdateAbout system={system} portfolios={portfolios} onSubmit={handleUpdateAbout} onCancel={handleCancel} />
+        <UpdateAbout
+          system={system}
+          portfolios={portfolios}
+          onSubmit={handleUpdateAbout}
+          onCancel={handleCancel}
+        />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>
-        <UpdateContacts system={system} onSubmit={handleUpdateContacts} onCancel={handleCancel} />
+        <UpdateContacts
+          system={system}
+          onSubmit={handleUpdateContacts}
+          onCancel={handleCancel}
+        />
       </SecureRoute>
       <Route path="/*" component={PageNotFoundError} />
     </Switch>
   );
 }
+
+System.propTypes = {
+  portfolios: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBeforeNameChange: PropTypes.func.isRequired,
+};
 
 export default System;
