@@ -1,0 +1,49 @@
+.notification-banner {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.25;
+  margin-bottom: 30px;
+  border: 5px solid;
+}
+
+.notification-banner--default {
+  border-color: #1d70b8;
+  background-color: #1d70b8;
+}
+
+.notification-banner--success {
+  border-color: #00703c;
+  background-color: #00703c;
+}
+
+.notification-banner-header {
+  padding: 2px 15px 5px;
+  border-bottom: 1px solid transparent;
+}
+
+.notification-banner-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+}
+
+.notification-banner-content {
+  color: #0b0c0c;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.notification-banner-content > :last-child {
+  margin-bottom: 0;
+}
+
+.notification-banner-heading {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.11111;
+  margin: 0 0 15px 0;
+  padding: 0;
+}
