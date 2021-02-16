@@ -9,6 +9,7 @@ import SystemView from "./SystemView/SystemView";
 import UpdateAbout from "./UpdateAbout/UpdateAbout";
 import UpdateContacts from "./UpdateContacts";
 import UpdateInfo from "./UpdateInfo";
+import UpdateSuccessMessage from "./UpdateSuccessMessage";
 import api from "../../services/api";
 import useAsyncError from "../../utilities/useAsyncError";
 
@@ -62,20 +63,6 @@ function useUpdateCallbackFactory(id, onChange, setSystem, setUpdated) {
     },
     [id, returnToSystemView, onChange, setSystem, setUpdated]
   );
-}
-
-const useOnUnmount = (onUnmount) => {
-  useEffect(() => {
-    return () => {
-      onUnmount();
-    };
-  }, [onUnmount]);
-};
-
-function UpdateSuccessMessage({ onDismiss }) {
-  useOnUnmount(onDismiss);
-
-  return "Your update has been saved.";
 }
 
 function System({ portfolios, onChange, onBeforeNameChange }) {
