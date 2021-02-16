@@ -47,3 +47,28 @@
   margin: 0 0 15px 0;
   padding: 0;
 }
+
+@media (min-width: 40.0625em) {
+  .notification-banner {
+    font-size: 19px;
+    line-height: 1.31579;
+  }
+
+  .notification-banner-header {
+    padding: 2px 20px 5px;
+  }
+
+  .notification-banner-title {
+    font-size: 19px;
+    line-height: 1.31579;
+  }
+
+  .notification-banner-content {
+    padding: 20px;
+  }
+
+  .notification-banner-heading {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+}
