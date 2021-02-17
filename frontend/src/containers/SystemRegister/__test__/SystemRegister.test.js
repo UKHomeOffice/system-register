@@ -1,21 +1,18 @@
-import React from 'react';
-import SystemRegister from '../SystemRegister';
-import { BrowserRouter, Router } from 'react-router-dom'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
+import React from "react";
+import SystemRegister from "../SystemRegister";
+import { BrowserRouter, Router } from "react-router-dom";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
-import data from '../../../data/systems_dummy.json';
-import SystemNotFoundException from '../../../services/systemNotFoundException';
+import data from "../../../data/systems_dummy.json";
+import SystemNotFoundException from "../../../services/systemNotFoundException";
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json(data)
-    );
+    return res(ctx.status(200), ctx.json(data));
   }),
   rest.get("/api/system/9999", () => {
     throw new SystemNotFoundException();
@@ -29,73 +26,83 @@ describe("<SystemRegister />", () => {
 
   afterEach(() => server.resetHandlers());
 
-  it.each(["/", "/error"])
-  ("contains a skip link at the start of the document", (path) => {
-    render(
-      <Router history={createMemoryHistory({ initialEntries: [path] })}>
-        <SystemRegister />
-      </Router>
-    );
+  it.each(["/", "/error"])(
+    "contains a skip link at the start of the document",
+    (path) => {
+      render(
+        <Router history={createMemoryHistory({ initialEntries: [path] })}>
+          <SystemRegister />
+        </Router>
+      );
 
-    const skipLink = screen.getByRole("link", { name: "Skip to main content" });
-    expect(skipLink).toBeInTheDocument();
-  });
+      const skipLink = screen.getByRole("link", {
+        name: "Skip to main content",
+      });
+      expect(skipLink).toBeInTheDocument();
+    }
+  );
 
-  it('renders system from the API', async () => {
+  it("renders system from the API", async () => {
     const { findByText } = render(
       <BrowserRouter>
         <SystemRegister />
       </BrowserRouter>
-    )
+    );
 
-    expect(await findByText('System Register', { selector: '.systemCard *' })).toBeInTheDocument();
-  })
+    expect(
+      await findByText("System Register", { selector: ".systemCard *" })
+    ).toBeInTheDocument();
+  });
 
   it("re-renders from api when a system calls back to notify its been updated", () => {
     //TODO: write this test (JB)
-  })
+  });
 
   describe("routing", () => {
-    it("shows <PageNotFound /> if route not valid", async () => { //TODO help writing this test
-      const history = createMemoryHistory({ initialEntries: ['/nowhere'] });
+    it("shows <PageNotFound /> if route not valid", async () => {
+      //TODO help writing this test
+      const history = createMemoryHistory({ initialEntries: ["/nowhere"] });
       const { getByText } = render(
         <Router history={history}>
           <SystemRegister />
         </Router>
-      )
+      );
       await waitFor(() => {
-        const dashboard = getByText('Page not found')
-        expect(dashboard).toBeInTheDocument()
-      })
+        const dashboard = getByText("Page not found");
+        expect(dashboard).toBeInTheDocument();
+      });
     });
 
-    it("shows <PageNotFound /> if system does not exist", async () => { //TODO help writing this test
-      const history = createMemoryHistory({ initialEntries: ['/system/9999'] });
+    it("shows <PageNotFound /> if system does not exist", async () => {
+      //TODO help writing this test
+      const history = createMemoryHistory({ initialEntries: ["/system/9999"] });
       const { getByText } = render(
         <Router history={history}>
           <SystemRegister />
         </Router>
-      )
+      );
       await waitFor(() => {
         try {
-          const dashboard = getByText('Page not found')
-          expect(dashboard).toBeInTheDocument()
-        } catch (e) { }
-      })
+          const dashboard = getByText("Page not found");
+          expect(dashboard).toBeInTheDocument();
+        } catch (e) {
+          // ignored
+        }
+      });
     });
 
-    it('navigates to the risk dashboard', async () => {
+    it("navigates to the risk dashboard", async () => {
       const { getByText } = render(
         <BrowserRouter>
           <SystemRegister />
         </BrowserRouter>
-      )
-      userEvent.click(getByText(/Risk Dashboard/i))
+      );
+      userEvent.click(getByText(/Risk Dashboard/i));
 
       await waitFor(() => {
-        const dashboard = getByText('Aggregated risk by portfolio')
-        expect(dashboard).toBeInTheDocument()
-      })
+        const dashboard = getByText("Aggregated risk by portfolio");
+        expect(dashboard).toBeInTheDocument();
+      });
     });
 
     it("navigates to the About page", async () => {
@@ -108,7 +115,9 @@ describe("<SystemRegister />", () => {
 
       userEvent.click(aboutLink);
 
-      expect(await findByRole("heading", { level: 1 })).toHaveTextContent("About the System Register");
+      expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
+        "About the System Register"
+      );
     });
 
     it("navigates to the Contact page", async () => {
@@ -121,7 +130,23 @@ describe("<SystemRegister />", () => {
 
       userEvent.click(contactLink);
 
-      expect(await findByRole("heading", { level: 1 })).toHaveTextContent("Get in touch");
+      expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
+        "Get in touch"
+      );
     });
-  })
-})
+
+    it("navigates to the Add-System page", async () => {
+      //ToDo: amend test to click on add system link in SR-315
+      const history = createMemoryHistory({ initialEntries: ["/add-system"] });
+      const { findByRole } = render(
+        <Router history={history}>
+          <SystemRegister />
+        </Router>
+      );
+
+      expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
+        "Add a system to the register"
+      );
+    });
+  });
+});
