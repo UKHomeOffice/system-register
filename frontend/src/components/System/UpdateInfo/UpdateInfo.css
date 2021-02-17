@@ -1,34 +1,30 @@
 .update-info-form-controls {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .update-info-secondary {
-    margin-bottom: 11px;
-    color: #505a5f;
+  margin-bottom: 11px;
+  color: var(--secondary-text-colour);
 }
 
 .width-two-thirds {
-    width: 66.6% !important;
+  width: 66.6% !important;
 }
 
 h1 {
-    font-size: 36px;
-    margin-bottom: 0;
+  font-size: 36px;
+  margin-bottom: 0;
 }
 
 h1 + p {
-    margin-top: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 button {
-    min-width: 10rem;
-    margin-left: 10px;
+  min-width: 10rem;
+  margin-left: 10px;
 }
 
 button:first-child {
-    margin-left: 0;
-}
-
-.secondary {
-    font-size: 24px;
+  margin-left: 0;
 }
