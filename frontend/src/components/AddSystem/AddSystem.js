@@ -4,8 +4,13 @@ import TextField from "../TextField";
 import { Button } from "govuk-react";
 
 import "./AddSystem.css";
+import PropTypes from "prop-types";
 
-export default function AddSystem() {
+export default function AddSystem({ onSubmit }) {
+  const handleSubmit = async (values) => {
+    await onSubmit(values);
+  };
+
   return (
     <div className="centerContent">
       <h1>Add a system to the register</h1>
@@ -14,7 +19,7 @@ export default function AddSystem() {
         Please enter the name for the new system.
       </p>
 
-      <Formik onSubmit={() => {}} initialValues={{}}>
+      <Formik onSubmit={handleSubmit} initialValues={{}}>
         <Form>
           <TextField
             name="name"
@@ -31,3 +36,7 @@ export default function AddSystem() {
     </div>
   );
 }
+
+AddSystem.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
