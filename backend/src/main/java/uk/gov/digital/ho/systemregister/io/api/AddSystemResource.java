@@ -41,7 +41,7 @@ public class AddSystemResource {
             LOG.error(e);
             return Response.serverError().build();
         }
-        return Response.status(201).build();
+        return Response.ok().build();
     }
 
     private SR_Person getAuthor(SecurityContext securityContext) {

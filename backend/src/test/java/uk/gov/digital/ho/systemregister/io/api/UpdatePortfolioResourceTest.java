@@ -5,14 +5,9 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.security.TestSecurity;
 import org.json.JSONException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import uk.gov.digital.ho.systemregister.profiles.WithMockAuthorizationServer;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -34,7 +29,7 @@ public class UpdatePortfolioResourceTest extends ResourceTestBase {
     @TestSecurity
     public void updatesPortfolio() throws JSONException {
         String expectedResponse = getResourceAsString("update-portfolio/expectedResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
 
         String response = sendCommandToApi("update-portfolio/command.json", "/api/systems/1/update-portfolio", 200);
 

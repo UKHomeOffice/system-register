@@ -29,7 +29,7 @@ public class UpdateDevelopedByResourceTest extends ResourceTestBase {
     @TestSecurity
     public void updatesDevelopedBy() throws JSONException {
         String expectedResponse = getResourceAsString("update-developed-by/updateDevelopedBySystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
 
         String response = sendCommandToApi("update-developed-by/command.json", "/api/systems/1/update-developed-by", 200);
 

@@ -28,7 +28,7 @@ public class UpdateSupportedByResourceTest extends ResourceTestBase {
     @TestSecurity
     public void updatesSupportedBy() throws JSONException {
         String expectedResponse = getResourceAsString("update-supported-by/updateSupportedBySystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
 
         String response = sendCommandToApi("update-supported-by/command.json", "/api/systems/1/update-supported-by", 200);
 

@@ -28,7 +28,7 @@ public class UpdateTechnicalOwnerResourceTest extends ResourceTestBase {
     @TestSecurity
     public void updatesTechnicalOwner() throws JSONException {
         String expectedResponse = getResourceAsString("update-technical-owner/updateTechnicalOwnerSystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
 
         String response = sendCommandToApi("update-technical-owner/command.json", "/api/systems/1/update-technical-owner", 200);
 

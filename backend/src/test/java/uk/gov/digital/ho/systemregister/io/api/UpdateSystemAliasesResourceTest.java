@@ -28,7 +28,7 @@ public class UpdateSystemAliasesResourceTest extends ResourceTestBase {
     @TestSecurity
     public void updatesSystemAliases() throws JSONException {
         String expectedResponse = getResourceAsString("update-system-aliases/updateSystemAliasesSystemResponse.json");
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
 
         String response = sendCommandToApi("update-system-aliases/command.json", "/api/systems/1/update-system-aliases", 200);
 

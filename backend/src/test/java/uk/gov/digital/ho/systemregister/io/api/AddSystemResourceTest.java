@@ -28,15 +28,15 @@ class AddSystemResourceTest extends ResourceTestBase {
     @Test
     @TestSecurity
     public void addsSystems() throws JSONException {
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
         checkAllSystemsResponse("add-system/system-response.json");
     }
 
     @Test
     @TestSecurity
     public void multipleSystemsCanBeAddedIndependently() {
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 201);
-        sendCommandToApi("add-system/addAnotherSystemCommand.json", "/api/systems", 201);
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+        sendCommandToApi("add-system/addAnotherSystemCommand.json", "/api/systems", 200);
 
         get("/api/systems").then()
                 .statusCode(200)
