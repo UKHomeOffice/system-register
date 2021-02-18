@@ -4,6 +4,15 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 import AddSystemForm from "../AddSystemForm";
 
+function setUp() {
+  render(
+    <AddSystemForm
+      onSubmit={submitHandler}
+      onBeforeNameChange={onBeforeNameChange}
+    />
+  );
+}
+
 function overtype(field, value) {
   user.clear(field);
   // noinspection JSIgnoredPromiseFromCall
@@ -19,13 +28,7 @@ describe("add system", () => {
   });
 
   it("provides an initial empty system name field", async () => {
-    render(
-      <AddSystemForm
-        onSubmit={submitHandler}
-        onBeforeNameChange={onBeforeNameChange}
-      />
-    );
-
+    setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
 
     expect(systemNameField).toBeInTheDocument();
@@ -33,12 +36,7 @@ describe("add system", () => {
   });
 
   it("calls submission handler with new system name", async () => {
-    render(
-      <AddSystemForm
-        onSubmit={submitHandler}
-        onBeforeNameChange={onBeforeNameChange}
-      />
-    );
+    setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
     const saveButton = await screen.findByText(/save/i);
 
@@ -53,12 +51,7 @@ describe("add system", () => {
   });
 
   it("trims values before calling the submission handler", async () => {
-    render(
-      <AddSystemForm
-        onSubmit={submitHandler}
-        onBeforeNameChange={onBeforeNameChange}
-      />
-    );
+    setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
     const saveButton = await screen.findByText(/save/i);
 
@@ -76,12 +69,7 @@ describe("add system", () => {
   it.each([" ", ""])(
     "does not send empty values to the submission handler: %p",
     async (value) => {
-      render(
-        <AddSystemForm
-          onSubmit={submitHandler}
-          onBeforeNameChange={onBeforeNameChange}
-        />
-      );
+      setUp();
       const systemNameField = await screen.findByLabelText(/system name/i);
       const saveButton = await screen.findByText(/save/i);
 
@@ -95,12 +83,7 @@ describe("add system", () => {
   );
 
   it("validates name before submission", async () => {
-    render(
-      <AddSystemForm
-        onSubmit={submitHandler}
-        onBeforeNameChange={onBeforeNameChange}
-      />
-    );
+    setUp();
     const systemNameField = screen.getByLabelText(/system name/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -113,5 +96,20 @@ describe("add system", () => {
         { selector: "label *" }
       )
     ).toBeInTheDocument();
+  });
+
+  it("shows an error summary containing all error details", async () => {
+    setUp();
+    const systemNameField = await screen.findByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "$");
+    user.click(saveButton);
+
+    const errors = await screen.findByText(/must/i, { selector: "a" });
+    expect(errors).toBeInTheDocument();
+    expect(errors).toHaveTextContent(
+      /must not use the following special characters/i
+    );
   });
 });

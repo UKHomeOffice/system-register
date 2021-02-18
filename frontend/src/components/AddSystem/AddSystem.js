@@ -11,20 +11,14 @@ export default function AddSystem({ onBeforeNameChange }) {
   };
 
   return (
-    <div className="centerContent">
-      <h1>Add a system to the register</h1>
-      {/*secondary class not defined in app.css - should it be?*/}
-      <p className="add-system-secondary">
-        Please enter the name for the new system.
-      </p>
-      <AddSystemForm
-        onSubmit={handleAddSystem}
-        onBeforeNameChange={onBeforeNameChange}
-      />
-    </div>
+    <AddSystemForm
+      onSubmit={handleAddSystem}
+      onBeforeNameChange={onBeforeNameChange}
+    />
   );
 }
 
 AddSystem.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   onBeforeNameChange: PropTypes.func.isRequired,
 };
