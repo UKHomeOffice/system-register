@@ -22,10 +22,10 @@ public class SystemRegisterTest {
         SystemRegister systemRegister = new SystemRegister(new ArrayList<>());
         AddSystemCommand cmd = util.n_add_system_command.build();
 
-        AddSystemResult actual = systemRegister.addSystem(cmd.systemData);
+        AddSystemResult actual = systemRegister.addSystem(cmd.toSystemData());
 
         assertEquals(Change.ADDED, actual.result);
-        assertTrue(actual.system.lastUpdated.compareTo(cmd.timestamp) > 0);
+        assertTrue(actual.system.lastUpdated.compareTo(cmd.getTimestamp()) > 0);
         util.expectSystemToBeCorrect(cmd, actual.system);
     }
 
@@ -36,7 +36,7 @@ public class SystemRegisterTest {
         SystemRegister systemRegister = new SystemRegister(Arrays.asList(seedSystem));
         AddSystemCommand cmd_1 = util.n_add_system_command.withName(duplicateSystemName).build();
 
-        AddSystemResult actual = systemRegister.addSystem(cmd_1.systemData);
+        AddSystemResult actual = systemRegister.addSystem(cmd_1.toSystemData());
 
         assertEquals(Change.DUPLICATE, actual.result);
         assertEquals(seedSystem.id, actual.system.id);
@@ -50,7 +50,7 @@ public class SystemRegisterTest {
         SystemRegister systemRegister = new SystemRegister(Arrays.asList(seedSystem));
         AddSystemCommand cmd_1 = util.n_add_system_command.withName(addedSystemName).build();
 
-        AddSystemResult actual = systemRegister.addSystem(cmd_1.systemData);
+        AddSystemResult actual = systemRegister.addSystem(cmd_1.toSystemData());
 
         assertEquals(Change.ADDED, actual.result);
         assertNotEquals(seedSystem.id, actual.system.id);
@@ -64,8 +64,8 @@ public class SystemRegisterTest {
         AddSystemCommand cmd_1 = util.n_add_system_command.withName(systemA).build();
         AddSystemCommand cmd_2 = util.n_add_system_command.withName(systemB).build();
 
-        systemRegister.addSystem(cmd_1.systemData);
-        systemRegister.addSystem(cmd_2.systemData);
+        systemRegister.addSystem(cmd_1.toSystemData());
+        systemRegister.addSystem(cmd_2.toSystemData());
 
         var actual = systemRegister.getAllSystems();
 

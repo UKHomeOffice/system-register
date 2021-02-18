@@ -17,17 +17,19 @@ public final class DtoMapper {
     }
 
     public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
-        return new AddSystemCommand(author, timestamp, cmd.system.name,
-                cmd.system.description, cmd.system.portfolio,
-                cmd.system.criticality, cmd.system.investmentState, cmd.system.businessOwner, cmd.system.serviceOwner,
+        return new AddSystemCommand(
+                cmd.system.name, cmd.system.description, cmd.system.portfolio, cmd.system.criticality,
+                cmd.system.investmentState, cmd.system.businessOwner, cmd.system.serviceOwner,
                 cmd.system.technicalOwner, cmd.system.productOwner, cmd.system.informationAssetOwner,
-                cmd.system.developedBy, cmd.system.supportedBy, cmd.system.aliases, DtoMapper.mapToDomain(cmd.system.risks));
+                cmd.system.developedBy, cmd.system.supportedBy, cmd.system.aliases, mapToDomain(cmd.system.risks),
+                author, timestamp);
     }
 
     public static RegisteredSystemDTO map(SR_System s) {
-        return new RegisteredSystemDTO(s.id, s.name, s.description, s.portfolio, s.criticality, s.investmentState, s.businessOwner
-                , s.serviceOwner, s.technicalOwner, s.productOwner, s.informationAssetOwner, s.developedBy,
-                s.supportedBy, s.lastUpdated, s.aliases, mapToDto(s.risks));
+        return new RegisteredSystemDTO(
+                s.id, s.name, s.description, s.portfolio, s.criticality, s.investmentState, s.businessOwner,
+                s.serviceOwner, s.technicalOwner, s.productOwner, s.informationAssetOwner, s.developedBy, s.supportedBy,
+                s.lastUpdated, s.aliases, mapToDto(s.risks));
     }
 
     public static List<SR_Risk> mapToDomain(List<RiskDTO> risks) {

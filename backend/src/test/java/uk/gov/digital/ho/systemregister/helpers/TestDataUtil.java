@@ -17,35 +17,34 @@ public class TestDataUtil {
     public AddSystemCommandBuilder n_add_system_command = new AddSystemCommandBuilder();
     public SR_SystemBuilder an_sr_system = new SR_SystemBuilder();
 
-    public void
-    expectSystemToBeCorrect(AddSystemCommand cmd, SystemDTO expectedSystem) {
-        assertEquals(expectedSystem.aliases, cmd.systemData.aliases);
-        assertEquals(expectedSystem.businessOwner, cmd.systemData.businessOwner);
-        assertEquals(expectedSystem.criticality, cmd.systemData.criticality);
-        assertEquals(expectedSystem.description, cmd.systemData.description);
-        assertEquals(expectedSystem.developedBy, cmd.systemData.developedBy);
-        assertEquals(expectedSystem.informationAssetOwner, cmd.systemData.informationAssetOwner);
-        assertEquals(expectedSystem.investmentState, cmd.systemData.investmentState);
-        assertEquals(expectedSystem.name, cmd.systemData.name);
-        assertEquals(expectedSystem.portfolio, cmd.systemData.portfolio);
-        assertEquals(expectedSystem.productOwner, cmd.systemData.productOwner);
+    public void expectSystemToBeCorrect(AddSystemCommand cmd, SystemDTO expectedSystem) {
+        assertEquals(expectedSystem.aliases, cmd.toSystemData().aliases);
+        assertEquals(expectedSystem.businessOwner, cmd.toSystemData().businessOwner);
+        assertEquals(expectedSystem.criticality, cmd.toSystemData().criticality);
+        assertEquals(expectedSystem.description, cmd.toSystemData().description);
+        assertEquals(expectedSystem.developedBy, cmd.toSystemData().developedBy);
+        assertEquals(expectedSystem.informationAssetOwner, cmd.toSystemData().informationAssetOwner);
+        assertEquals(expectedSystem.investmentState, cmd.toSystemData().investmentState);
+        assertEquals(expectedSystem.name, cmd.toSystemData().name);
+        assertEquals(expectedSystem.portfolio, cmd.toSystemData().portfolio);
+        assertEquals(expectedSystem.productOwner, cmd.toSystemData().productOwner);
     }
 
     public void expectSystemToBeCorrect(AddSystemCommand cmd, SR_System expectedSystem) {
-        assertEquals(expectedSystem.aliases, cmd.systemData.aliases);
-        assertEquals(expectedSystem.businessOwner, cmd.systemData.businessOwner);
-        assertEquals(expectedSystem.criticality, cmd.systemData.criticality);
-        assertEquals(expectedSystem.description, cmd.systemData.description);
-        assertEquals(expectedSystem.developedBy, cmd.systemData.developedBy);
-        assertEquals(expectedSystem.informationAssetOwner, cmd.systemData.informationAssetOwner);
-        assertEquals(expectedSystem.investmentState, cmd.systemData.investmentState);
-        assertEquals(expectedSystem.name, cmd.systemData.name);
-        assertEquals(expectedSystem.portfolio, cmd.systemData.portfolio);
-        assertEquals(expectedSystem.productOwner, cmd.systemData.productOwner);
+        assertEquals(expectedSystem.aliases, cmd.toSystemData().aliases);
+        assertEquals(expectedSystem.businessOwner, cmd.toSystemData().businessOwner);
+        assertEquals(expectedSystem.criticality, cmd.toSystemData().criticality);
+        assertEquals(expectedSystem.description, cmd.toSystemData().description);
+        assertEquals(expectedSystem.developedBy, cmd.toSystemData().developedBy);
+        assertEquals(expectedSystem.informationAssetOwner, cmd.toSystemData().informationAssetOwner);
+        assertEquals(expectedSystem.investmentState, cmd.toSystemData().investmentState);
+        assertEquals(expectedSystem.name, cmd.toSystemData().name);
+        assertEquals(expectedSystem.portfolio, cmd.toSystemData().portfolio);
+        assertEquals(expectedSystem.productOwner, cmd.toSystemData().productOwner);
     }
 
     protected void expectMetaDataToBeCorrect(String expectedAuthor, String authorUsername,
                                              AddSystemCommand result) {
-        assertEquals(expectedAuthor, result.author.username);
+        assertEquals(expectedAuthor, result.getAuthor().username);
     }
 }
