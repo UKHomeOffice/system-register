@@ -29,7 +29,11 @@ class AddSystemResourceTest extends ResourceTestBase {
     @Test
     @TestSecurity
     public void addsSystems() throws JSONException {
-        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+        String expectedResponse = getResourceAsString("add-system/expectedResponse.json");
+
+        String response = sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        assertEquals(expectedResponse, response, false);
         checkAllSystemsResponse("add-system/system-response.json");
     }
 

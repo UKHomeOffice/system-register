@@ -6,10 +6,11 @@ import org.mockito.ArgumentCaptor;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
-import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
+import uk.gov.digital.ho.systemregister.domain.SR_System;
+import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.helpers.FakeEventStore;
 import uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommandBuilder;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
@@ -40,8 +41,12 @@ public class AddSystemCommandHandlerTest {
     public void forwardsNewSystemToEventHandler() throws SystemNameNotUniqueException {
         AddSystemCommand command = addSystemCommandBuilder.build();
 
-        commandHandler.handle(command);
+        var addedSystemAndMetadata = commandHandler.handle(command);
+        SR_System system = addedSystemAndMetadata.getItem1();
 
+        assertThat(system).usingRecursiveComparison()
+                .ignoringFields("id", "lastUpdated")
+                .isEqualTo(command.systemData);
         var eventCaptor = ArgumentCaptor.forClass(SystemAddedEvent.class);
         verify(eventHandler).handle(eventCaptor.capture());
         assertThat(eventCaptor.getValue())

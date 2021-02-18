@@ -1,7 +1,8 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
-import org.jboss.logging.Logger;
+import io.smallrye.mutiny.tuples.Tuple2;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
+import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
@@ -11,19 +12,16 @@ import javax.inject.Singleton;
 import java.util.List;
 
 @Singleton
-public final class AddSystemCommandHandler {
-    static final Logger LOG = Logger.getLogger(AddSystemCommandHandler.class);
-
+public class AddSystemCommandHandler {
     private final SystemAddedEventHandler eventHandler;
-
-    CurrentSystemRegisterState currentRegisterState;
+    private final CurrentSystemRegisterState currentRegisterState;
 
     public AddSystemCommandHandler(CurrentSystemRegisterState currentRegisterState, SystemAddedEventHandler eventHandler) {
         this.currentRegisterState = currentRegisterState;
         this.eventHandler = eventHandler;
     }
 
-    public void handle(AddSystemCommand command) throws SystemNameNotUniqueException {
+    public Tuple2<SR_System, UpdateMetadata> handle(AddSystemCommand command) throws SystemNameNotUniqueException {
         List<SR_System> systems = currentRegisterState.getCurrentState().getSystems();
         SystemRegister systemRegister = new SystemRegister(systems);
         AddSystemResult result = systemRegister.addSystem(command.systemData);
@@ -34,5 +32,6 @@ public final class AddSystemCommandHandler {
         if (result.result == Change.DUPLICATE) {
             throw new SystemNameNotUniqueException(command.systemData.name);
         }
+        return Tuple2.of(result.system, new UpdateMetadata(command.author, command.timestamp));
     }
 }

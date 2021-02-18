@@ -8,13 +8,13 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
+import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.time.Instant;
 
@@ -32,13 +32,16 @@ public class AddSystemResource {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Authenticated
-    public Response addSystem(AddSystemCommandDTO cmd, @Context SecurityContext securityContext) throws SystemNameNotUniqueException {
+    public UpdatedSystemDTO addSystem(
+            AddSystemCommandDTO cmd,
+            @Context SecurityContext securityContext
+    ) throws SystemNameNotUniqueException {
         SR_Person author = getAuthor(securityContext);
         AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
 
-        handler.handle(command);
+        var addedSystemAndMetadata = handler.handle(command);
 
-        return Response.ok().build();
+        return UpdatedSystemDTO.from(addedSystemAndMetadata.getItem1(), addedSystemAndMetadata.getItem2());
     }
 
     private SR_Person getAuthor(SecurityContext securityContext) {
