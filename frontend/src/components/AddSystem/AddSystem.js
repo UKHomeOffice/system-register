@@ -2,8 +2,9 @@ import React from "react";
 import AddSystemForm from "./AddSystemForm";
 
 import "./AddSystem.css";
+import PropTypes from "prop-types";
 
-export default function AddSystem() {
+export default function AddSystem({ onBeforeNameChange }) {
   const handleAddSystem = (values) => {
     console.log(values);
     return values;
@@ -16,7 +17,14 @@ export default function AddSystem() {
       <p className="add-system-secondary">
         Please enter the name for the new system.
       </p>
-      <AddSystemForm onSubmit={handleAddSystem} />
+      <AddSystemForm
+        onSubmit={handleAddSystem}
+        onBeforeNameChange={onBeforeNameChange}
+      />
     </div>
   );
 }
+
+AddSystem.propTypes = {
+  onBeforeNameChange: PropTypes.func.isRequired,
+};

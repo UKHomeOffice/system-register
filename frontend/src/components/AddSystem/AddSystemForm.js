@@ -3,10 +3,13 @@ import TextField from "../TextField";
 import { Button } from "govuk-react";
 import React from "react";
 import PropTypes from "prop-types";
+import { mapValues } from "lodash-es";
+import { validateName } from "../System/UpdateInfo/validators";
 
-export default function AddSystemForm({ onSubmit }) {
+export default function AddSystemForm({ onSubmit, onBeforeNameChange }) {
   const handleSubmit = async (values) => {
-    await onSubmit(values);
+    const trimmedValues = mapValues(values, (value) => value.trim());
+    await onSubmit(trimmedValues);
   };
 
   return (
@@ -16,6 +19,9 @@ export default function AddSystemForm({ onSubmit }) {
           name="name"
           hint="What is the primary name for the system?"
           inputClassName="add-system-width-two-thirds"
+          validate={(value) => {
+            return validateName(value, onBeforeNameChange);
+          }}
         >
           System name
         </TextField>
@@ -29,4 +35,5 @@ export default function AddSystemForm({ onSubmit }) {
 
 AddSystemForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onBeforeNameChange: PropTypes.func.isRequired,
 };

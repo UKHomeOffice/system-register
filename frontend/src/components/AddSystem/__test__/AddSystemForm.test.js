@@ -11,6 +11,7 @@ function overtype(field, value) {
 }
 
 const submitHandler = jest.fn();
+const onBeforeNameChange = jest.fn();
 
 describe("add system", () => {
   beforeEach(() => {
@@ -18,7 +19,12 @@ describe("add system", () => {
   });
 
   it("provides an initial empty system name field", async () => {
-    render(<AddSystemForm onSubmit={submitHandler} />);
+    render(
+      <AddSystemForm
+        onSubmit={submitHandler}
+        onBeforeNameChange={onBeforeNameChange}
+      />
+    );
 
     const systemNameField = await screen.findByLabelText(/system name/i);
 
@@ -26,16 +32,13 @@ describe("add system", () => {
     expect(systemNameField.value).toBe("");
   });
 
-  it("displays a save button", async () => {
-    render(<AddSystemForm onSubmit={submitHandler} />);
-
-    const saveButton = await screen.findByText(/save/i);
-
-    expect(saveButton).toBeInTheDocument();
-  });
-
   it("calls submission handler with new system name", async () => {
-    render(<AddSystemForm onSubmit={submitHandler} />);
+    render(
+      <AddSystemForm
+        onSubmit={submitHandler}
+        onBeforeNameChange={onBeforeNameChange}
+      />
+    );
     const systemNameField = await screen.findByLabelText(/system name/i);
     const saveButton = await screen.findByText(/save/i);
 
@@ -47,5 +50,68 @@ describe("add system", () => {
         name: "new system name",
       });
     });
+  });
+
+  it("trims values before calling the submission handler", async () => {
+    render(
+      <AddSystemForm
+        onSubmit={submitHandler}
+        onBeforeNameChange={onBeforeNameChange}
+      />
+    );
+    const systemNameField = await screen.findByLabelText(/system name/i);
+    const saveButton = await screen.findByText(/save/i);
+
+    overtype(systemNameField, "       new system name       ");
+    user.click(saveButton);
+
+    await waitFor(() => {
+      expect(submitHandler).toBeCalledWith({
+        name: "new system name",
+      });
+    });
+  });
+
+  //why does this pass?
+  it.each([" ", ""])(
+    "does not send empty values to the submission handler: %p",
+    async (value) => {
+      render(
+        <AddSystemForm
+          onSubmit={submitHandler}
+          onBeforeNameChange={onBeforeNameChange}
+        />
+      );
+      const systemNameField = await screen.findByLabelText(/system name/i);
+      const saveButton = await screen.findByText(/save/i);
+
+      overtype(systemNameField, value);
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).not.toBeCalled();
+      });
+    }
+  );
+
+  it("validates name before submission", async () => {
+    render(
+      <AddSystemForm
+        onSubmit={submitHandler}
+        onBeforeNameChange={onBeforeNameChange}
+      />
+    );
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "$");
+    user.click(saveButton);
+
+    expect(
+      await screen.findByText(
+        /must not use the following special characters/i,
+        { selector: "label *" }
+      )
+    ).toBeInTheDocument();
   });
 });
