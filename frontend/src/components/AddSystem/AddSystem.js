@@ -19,6 +19,5 @@ export default function AddSystem({ onBeforeNameChange }) {
 }
 
 AddSystem.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   onBeforeNameChange: PropTypes.func.isRequired,
 };
