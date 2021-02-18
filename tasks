@@ -29,6 +29,12 @@ for command in "$@"
 do
   echo "--- ${command} ---"
   case "${command}" in
+    clean)
+        rm -rf "$frontend_dir/build/"
+        cd "$backend_dir"
+        mvn clean
+        cd "$project_dir"
+        ;;
     build-frontend)
         echo "Building for local development environment..."
         set_local_environment_variables
