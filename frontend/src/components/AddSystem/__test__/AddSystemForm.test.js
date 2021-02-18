@@ -2,7 +2,7 @@ import React from "react";
 import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
-import AddSystem from "../AddSystem";
+import AddSystemForm from "../AddSystemForm";
 
 function overtype(field, value) {
   user.clear(field);
@@ -10,11 +10,15 @@ function overtype(field, value) {
   user.type(field, value);
 }
 
+const submitHandler = jest.fn();
+
 describe("add system", () => {
-  const submitHandler = jest.fn();
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   it("provides an initial empty system name field", async () => {
-    render(<AddSystem />);
+    render(<AddSystemForm onSubmit={submitHandler} />);
 
     const systemNameField = await screen.findByLabelText(/system name/i);
 
@@ -23,7 +27,7 @@ describe("add system", () => {
   });
 
   it("displays a save button", async () => {
-    render(<AddSystem />);
+    render(<AddSystemForm onSubmit={submitHandler} />);
 
     const saveButton = await screen.findByText(/save/i);
 
@@ -31,17 +35,17 @@ describe("add system", () => {
   });
 
   it("calls submission handler with new system name", async () => {
-    render(<AddSystem onSubmit={submitHandler} />);
+    render(<AddSystemForm onSubmit={submitHandler} />);
     const systemNameField = await screen.findByLabelText(/system name/i);
     const saveButton = await screen.findByText(/save/i);
 
     overtype(systemNameField, "new system name");
     user.click(saveButton);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(submitHandler).toBeCalledWith({
         name: "new system name",
-      })
-    );
+      });
+    });
   });
 });

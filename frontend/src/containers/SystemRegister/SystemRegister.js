@@ -56,10 +56,6 @@ class SystemRegister extends React.Component {
     this._isMounted = false;
   }
 
-  handleAddSystem = (values) => {
-    console.log(values);
-  };
-
   render() {
     return (
       <>
