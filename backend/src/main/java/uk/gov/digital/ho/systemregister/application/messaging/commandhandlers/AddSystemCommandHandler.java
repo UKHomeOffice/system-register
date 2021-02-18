@@ -5,10 +5,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
-import uk.gov.digital.ho.systemregister.domain.AddSystemResult;
-import uk.gov.digital.ho.systemregister.domain.Change;
-import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.domain.SystemRegister;
+import uk.gov.digital.ho.systemregister.domain.*;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -26,7 +23,7 @@ public final class AddSystemCommandHandler {
         this.eventHandler = eventHandler;
     }
 
-    public void handle(AddSystemCommand command) {
+    public void handle(AddSystemCommand command) throws SystemNameNotUniqueException {
         List<SR_System> systems = currentRegisterState.getCurrentState().getSystems();
         SystemRegister systemRegister = new SystemRegister(systems);
         AddSystemResult result = systemRegister.addSystem(command.systemData);
@@ -35,7 +32,7 @@ public final class AddSystemCommandHandler {
             eventHandler.handle(event);
         }
         if (result.result == Change.DUPLICATE) {
-            LOG.warn("Attempted to add a duplicate system: " + command.systemData.name);
+            throw new SystemNameNotUniqueException(command.systemData.name);
         }
     }
 }

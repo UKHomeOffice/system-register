@@ -2,10 +2,10 @@ package uk.gov.digital.ho.systemregister.io.api;
 
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.jboss.logging.Logger;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
+import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
 
@@ -22,8 +22,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("api/systems")
 public class AddSystemResource {
-    private static final Logger LOG = Logger.getLogger(AddSystemResource.class);
-
     private final AddSystemCommandHandler handler;
 
     public AddSystemResource(AddSystemCommandHandler handler) {
@@ -34,15 +32,12 @@ public class AddSystemResource {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Authenticated
-    public Response addSystem(AddSystemCommandDTO cmd, @Context SecurityContext securityContext) {
-        try {
-            SR_Person author = getAuthor(securityContext);
-            AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
-            handler.handle(command);
-        } catch (Exception e) {
-            LOG.error(e);
-            return Response.serverError().build();
-        }
+    public Response addSystem(AddSystemCommandDTO cmd, @Context SecurityContext securityContext) throws SystemNameNotUniqueException {
+        SR_Person author = getAuthor(securityContext);
+        AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
+
+        handler.handle(command);
+
         return Response.ok().build();
     }
 

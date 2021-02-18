@@ -6,7 +6,7 @@ import org.mockito.ArgumentCaptor;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
+import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
@@ -17,8 +17,11 @@ import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEventBuilder.aSystemAddedEvent;
 
 public class AddSystemCommandHandlerTest {
     private final SystemAddedEventHandler eventHandler = mock(SystemAddedEventHandler.class);
@@ -60,5 +63,16 @@ public class AddSystemCommandHandlerTest {
                 .hasFieldOrPropertyWithValue("system", command.systemData);
         assertThat(event.timestamp)
                 .isAfterOrEqualTo(justBeforeEventCreated);
+    }
+
+    @Test
+    void rejectsNewSystemsWithMatchingNames() {
+        eventStore.save(aSystemAddedEvent()
+                .withSystem(aSystem()
+                        .withName("a name"))
+                .build());
+
+        assertThatThrownBy(() -> commandHandler.handle(addSystemCommandBuilder.withName("a name").build()))
+                .isInstanceOf(SystemNameNotUniqueException.class);
     }
 }

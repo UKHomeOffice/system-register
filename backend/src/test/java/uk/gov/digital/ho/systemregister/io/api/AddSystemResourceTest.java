@@ -46,6 +46,17 @@ class AddSystemResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    public void duplicateSystemsCanNotBeAdded() throws JSONException {
+        String expectedResponse = getResourceAsString("add-system/duplicate-system-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        String response = sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 400);
+
+        assertEquals(expectedResponse, response, true);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorisedToAddSystems() {
         given().auth().none()
                 .contentType(JSON)
