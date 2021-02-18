@@ -16,7 +16,6 @@ export default function AddSystem() {
       <p className="add-system-secondary">
         Please enter the name for the new system.
       </p>
-
       <AddSystemForm onSubmit={handleAddSystem} />
     </div>
   );

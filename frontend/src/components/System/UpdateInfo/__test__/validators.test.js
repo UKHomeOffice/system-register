@@ -1,4 +1,8 @@
-import { validateAlias, validateAliases, validateDescription, validateName } from "../validators";
+import {
+  validateAliases,
+  validateDescription,
+  validateName,
+} from "../validators";
 
 describe("UpdateInfo validators", () => {
   describe("validate system name", () => {
@@ -40,47 +44,56 @@ describe("UpdateInfo validators", () => {
   });
 
   describe("validate system description", () => {
-    it.each(["x", " x", "x "])("returns an error message if description is too short: %p", (value) => {
-      const result = validateDescription(value);
+    it.each(["x", " x", "x "])(
+      "returns an error message if description is too short: %p",
+      (value) => {
+        const result = validateDescription(value);
 
-      expect(result).toContain("must enter a description");
-    });
+        expect(result).toContain("must enter a description");
+      }
+    );
 
-    it.each(["description", ""])
-    ("returns undefined for valid values: %p", (value) => {
-      const result = validateDescription(value);
+    it.each(["description", ""])(
+      "returns undefined for valid values: %p",
+      (value) => {
+        const result = validateDescription(value);
 
-      expect(result).toBeUndefined();
-    });
+        expect(result).toBeUndefined();
+      }
+    );
   });
 
   describe("validates system aliases", () => {
     it("returns undefined for valid values", () => {
-      const values = {aliases: ["alias 1", "alias 2", ""]};
+      const values = { aliases: ["alias 1", "alias 2", ""] };
       const result = validateAliases(values);
 
       expect(result).toStrictEqual({});
     });
 
     it("returns an error message if there is a duplicate value", () => {
-      const values = {aliases: ["duplicate alias", "unique alias", "duplicate alias"]}
+      const values = {
+        aliases: ["duplicate alias", "unique alias", "duplicate alias"],
+      };
       const result = validateAliases(values);
 
       expect(result).toStrictEqual({
         aliases: [
           "You have entered duplicate aliases. Please remove or amend the duplicate.",
           undefined,
-          "You have entered duplicate aliases. Please remove or amend the duplicate."
-        ]
+          "You have entered duplicate aliases. Please remove or amend the duplicate.",
+        ],
       });
-    })
+    });
 
     it("returns an error message if alias contains forbidden characters", () => {
       const result = validateAliases({ aliases: ["ca$h"] });
 
       expect(result).toStrictEqual({
         aliases: expect.arrayContaining([
-          expect.stringContaining("must not use the following special characters")
+          expect.stringContaining(
+            "must not use the following special characters"
+          ),
         ]),
       });
     });
@@ -90,7 +103,7 @@ describe("UpdateInfo validators", () => {
 
       expect(result).toStrictEqual({
         aliases: expect.arrayContaining([
-          expect.stringContaining("You must enter a complete system alias")
+          expect.stringContaining("You must enter a complete system alias"),
         ]),
       });
     });
@@ -101,7 +114,7 @@ describe("UpdateInfo validators", () => {
       expect(result).toStrictEqual({
         aliases: expect.arrayContaining([
           expect.stringContaining("You must enter a complete system alias"),
-          expect.stringContaining("You must enter a complete system alias")
+          expect.stringContaining("You must enter a complete system alias"),
         ]),
       });
     });
