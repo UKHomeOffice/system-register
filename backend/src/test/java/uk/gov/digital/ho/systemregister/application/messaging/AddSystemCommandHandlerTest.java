@@ -1,79 +1,64 @@
 package uk.gov.digital.ho.systemregister.application.messaging;
 
-import com.google.common.eventbus.Subscribe;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.digital.ho.systemregister.application.MissingAuthorException;
+import org.mockito.ArgumentCaptor;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.helpers.FakeEventStore;
 import uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommandBuilder;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AddSystemCommandHandlerTest {
-    AddSystemCommandBuilder addSystemCommandBuilder = new AddSystemCommandBuilder();
-    IEventStore eventStore;
-    CurrentSystemRegisterState currentSystemRegisterState;
+    private final SystemAddedEventHandler eventHandler = mock(SystemAddedEventHandler.class);
+    private final AddSystemCommandBuilder addSystemCommandBuilder = new AddSystemCommandBuilder();
+    private final IEventStore eventStore = new FakeEventStore();
 
-    SR_EventBus eventBus = new SR_EventBus();
-    List<AuthoredMessage> receivedEvents = new ArrayList<>();
+    private AddSystemCommandHandler commandHandler;
 
     @BeforeEach
     public void setup() {
-        eventStore = new FakeEventStore();
-        receivedEvents.clear();
-        currentSystemRegisterState = new CurrentSystemRegisterState(eventStore, new CurrentStateCalculator());
-        eventBus.subscribe(new Subscriber(receivedEvents));
+        var currentSystemRegisterState = new CurrentSystemRegisterState(eventStore, new CurrentStateCalculator());
+        commandHandler = new AddSystemCommandHandler(currentSystemRegisterState, eventHandler);
     }
 
     @Test
-    public void addSystem_EmptyRegister() throws MissingAuthorException {
-        var sut = new AddSystemCommandHandler(eventBus, currentSystemRegisterState);
-        var cmd = addSystemCommandBuilder.build();
+    public void forwardsNewSystemToEventHandler() throws SystemNameNotUniqueException {
+        AddSystemCommand command = addSystemCommandBuilder.build();
 
-        sut.handle(cmd);
+        commandHandler.handle(command);
 
-        assertEquals(1, receivedEvents.size());
-        assertEquals(SystemAddedEvent.class, receivedEvents.get(0).getClass());
-        Assertions.assertEquals(cmd.author, receivedEvents.get(0).author);
+        var eventCaptor = ArgumentCaptor.forClass(SystemAddedEvent.class);
+        verify(eventHandler).handle(eventCaptor.capture());
+        assertThat(eventCaptor.getValue())
+                .hasFieldOrPropertyWithValue("author", command.author);
     }
 
     @Test
-    public void addSystem_withOnlyName_EmptyRegister() throws MissingAuthorException {
-        var sut = new AddSystemCommandHandler(eventBus, currentSystemRegisterState);
-        var cmd = addSystemCommandBuilder.withJustName().build();
+    public void forwardsNewSystemWithMinimalDataToEventHandler() throws SystemNameNotUniqueException {
+        var justBeforeEventCreated = Instant.now();
+        var command = addSystemCommandBuilder.withJustName().build();
 
-        sut.handle(cmd);
+        commandHandler.handle(command);
 
-        assertEquals(1, receivedEvents.size());
-        assertEquals(SystemAddedEvent.class, receivedEvents.get(0).getClass());
-        Assertions.assertEquals(cmd.author, receivedEvents.get(0).author);
-        Assertions.assertEquals(cmd.systemData.name, ((SystemAddedEvent) receivedEvents.get(0)).system.name);
-        assertTrue(receivedEvents.get(0).timestamp.compareTo(Instant.MIN) > 0);
-    }
-
-    private static class Subscriber {
-        private final List<AuthoredMessage> events;
-
-        @SuppressWarnings("CdiInjectionPointsInspection")
-        Subscriber(List<AuthoredMessage> events) {
-            this.events = events;
-        }
-
-        @Subscribe
-        @SuppressWarnings("UnstableApiUsage")
-        public void handle(AuthoredMessage event) {
-            events.add(event);
-        }
+        var eventCaptor = ArgumentCaptor.forClass(SystemAddedEvent.class);
+        verify(eventHandler).handle(eventCaptor.capture());
+        var event = eventCaptor.getValue();
+        assertThat(event)
+                .hasFieldOrPropertyWithValue("author", command.author)
+                .hasFieldOrPropertyWithValue("system", command.systemData);
+        assertThat(event.timestamp)
+                .isAfterOrEqualTo(justBeforeEventCreated);
     }
 }

@@ -3,13 +3,12 @@ package uk.gov.digital.ho.systemregister.io.api;
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
-import uk.gov.digital.ho.systemregister.application.messaging.SR_EventBus;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,8 +24,11 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class AddSystemResource {
     private static final Logger LOG = Logger.getLogger(AddSystemResource.class);
 
-    @Inject
-    SR_EventBus eventBus;
+    private final AddSystemCommandHandler handler;
+
+    public AddSystemResource(AddSystemCommandHandler handler) {
+        this.handler = handler;
+    }
 
     @POST
     @Consumes(APPLICATION_JSON)
@@ -36,7 +38,7 @@ public class AddSystemResource {
         try {
             SR_Person author = getAuthor(securityContext);
             AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
-            eventBus.publish(command);
+            handler.handle(command);
         } catch (Exception e) {
             LOG.error(e);
             return Response.serverError().build();

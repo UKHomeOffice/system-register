@@ -21,6 +21,7 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
 class AddSystemResourceTest extends ResourceTestBase {
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public AddSystemResourceTest(AgroalDataSource dataSource) {
         super(dataSource);
     }
