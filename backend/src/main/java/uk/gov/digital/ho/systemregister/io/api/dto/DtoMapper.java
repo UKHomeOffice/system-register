@@ -32,8 +32,9 @@ public final class DtoMapper {
                 s.lastUpdated, s.aliases, mapToDto(s.risks));
     }
 
-    public static List<SR_Risk> mapToDomain(List<RiskDTO> risks) {
-        return risks.stream().map(r -> new SR_Risk(r.name, r.level, r.rationale))
+    public static List<AddSystemCommand.Risk> mapToDomain(List<RiskDTO> risks) {
+        return risks.stream()
+                .map(r -> new AddSystemCommand.Risk(r.name, r.level, r.rationale))
                 .collect(toList());
     }
 

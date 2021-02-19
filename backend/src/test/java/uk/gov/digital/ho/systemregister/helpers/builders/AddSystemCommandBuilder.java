@@ -2,12 +2,12 @@ package uk.gov.digital.ho.systemregister.helpers.builders;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 
 import java.time.Instant;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class AddSystemCommandBuilder {
     private SR_Person author = new SR_Person("Corey Logan", null, null, null);
@@ -25,7 +25,7 @@ public class AddSystemCommandBuilder {
     private String developedBy = "Home Office";
     private String supportedBy = "Supporter";
     private List<String> aliases = asList("alias 1", "alias 2");
-    private List<SR_Risk> risks = some_risks();
+    private List<RiskBuilder> risks = List.of();
 
     public static AddSystemCommandBuilder anAddSystemCommand() {
         return new AddSystemCommandBuilder();
@@ -46,12 +46,6 @@ public class AddSystemCommandBuilder {
                 .withSupportedBy(null)
                 .withAliases()
                 .withRisks();
-    }
-
-    public List<SR_Risk> some_risks() {
-        return List.of(
-                new SR_Risk("roadmap", "medium", "dunno"),
-                new SR_Risk("sunset", "low", "not sure"));
     }
 
     public AddSystemCommandBuilder withName(String newName) {
@@ -123,11 +117,11 @@ public class AddSystemCommandBuilder {
         return this;
     }
 
-    public AddSystemCommandBuilder withRisks(SR_Risk... risks) {
+    public AddSystemCommandBuilder withRisks(RiskBuilder... risks) {
         return withRisks(asList(risks));
     }
 
-    public AddSystemCommandBuilder withRisks(List<SR_Risk> risks) {
+    public AddSystemCommandBuilder withRisks(List<RiskBuilder> risks) {
         this.risks = List.copyOf(risks);
         return this;
     }
@@ -143,8 +137,40 @@ public class AddSystemCommandBuilder {
     }
 
     public AddSystemCommand build() {
+        var risks = this.risks.stream()
+                .map(RiskBuilder::build)
+                .collect(toUnmodifiableList());
         return new AddSystemCommand(
                 name, description, portfolio, criticality, investmentState, businessOwner, serviceOwner, technicalOwner,
                 productOwner, informationAssetOwner, developedBy, supportedBy, aliases, risks, author, timestamp);
+    }
+
+    public static class RiskBuilder {
+        private final String level;
+        private String name = "a risk";
+        private String rationale = "for some reason";
+
+        @SuppressWarnings({"QsPrivateBeanMembersInspection", "CdiInjectionPointsInspection"})
+        private RiskBuilder(String level) {
+            this.level = level;
+        }
+
+        public static RiskBuilder aHighRisk() {
+            return new RiskBuilder("high");
+        }
+
+        public RiskBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public RiskBuilder withRationale(String rationale) {
+            this.rationale = rationale;
+            return this;
+        }
+
+        public AddSystemCommand.Risk build() {
+            return new AddSystemCommand.Risk(name, level, rationale);
+        }
     }
 }
