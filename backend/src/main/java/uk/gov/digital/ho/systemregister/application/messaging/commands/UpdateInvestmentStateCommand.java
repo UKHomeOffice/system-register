@@ -1,18 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.InvestmentState;
 import uk.gov.digital.ho.systemregister.application.messaging.events.InvestmentStateUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateInvestmentStateCommand implements Command {
     private final int id;
-    @Pattern(regexp = "evergreen|invest|maintain|sunset|decommissioned|cancelled|unknown", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Investment state must be one of the following values: evergreen, invest, maintain, sunset, decommissioned, cancelled, or unknown")
+    @InvestmentState
     private final String investmentState;
     @NotNull
     private final SR_Person author;

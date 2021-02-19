@@ -4,10 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Criticality;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Portfolio;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.*;
 
 import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
@@ -23,7 +20,8 @@ class AddSystemCommandTest {
                 Arguments.of("name", SystemName.class),
                 Arguments.of("description", SystemDescription.class),
                 Arguments.of("portfolio", Portfolio.class),
-                Arguments.of("criticality", Criticality.class));
+                Arguments.of("criticality", Criticality.class),
+                Arguments.of("investmentState", InvestmentState.class));
     }
 
     @ParameterizedTest

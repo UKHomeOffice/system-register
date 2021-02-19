@@ -1,9 +1,6 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Criticality;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Portfolio;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.*;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SystemData;
@@ -23,6 +20,7 @@ public class AddSystemCommand {
     private final String portfolio;
     @Criticality
     private final String criticality;
+    @InvestmentState
     private final String investmentState;
     private final String businessOwner;
     private final String serviceOwner;
