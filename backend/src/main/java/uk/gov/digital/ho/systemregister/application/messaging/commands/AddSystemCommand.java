@@ -22,6 +22,7 @@ public class AddSystemCommand {
     private final String criticality;
     @InvestmentState
     private final String investmentState;
+    @ContactName
     private final String businessOwner;
     private final String serviceOwner;
     private final String technicalOwner;
