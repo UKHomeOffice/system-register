@@ -11,7 +11,7 @@ import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SystemNameTest {
+public class SystemDescriptionTest {
     private Validator validator;
 
     @BeforeEach
@@ -22,29 +22,19 @@ public class SystemNameTest {
     @ParameterizedTest
     @ValueSource(strings = {"a", " "})
     @EmptySource
+    void descriptionMustNotBeTooShort(String description) {
+        var command = new TestCommand(description);
+
+        var constraintViolations = validator.validate(command);
+
+        assertThat(constraintViolations).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"xy", "?-", "Description of system"})
     @NullSource
-    void systemNameMustNotBeTooShort(String systemName) {
-        var command = new TestCommand(systemName);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"!", "£", "$", "%", "^", "*", "|", "<", ">", "~", "\"", "="})
-    void rejectsStringsContainingInvalidSpecialCharacters(String illegalCharacter) {
-        var command = new TestCommand("name" + illegalCharacter);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"xy", "?-", "Name of person"})
-    void allowsSystemNameStringToContainTwoOrMoreCharacters(String systemName) {
-        var command = new TestCommand(systemName);
+    void allowsDescriptionStringToBeNullOrContainTwoOrMoreCharacters(String description) {
+        var command = new TestCommand(description);
 
         var constraintViolations = validator.validate(command);
 
@@ -52,12 +42,12 @@ public class SystemNameTest {
     }
 
     private static class TestCommand {
-        @SystemName
-        final String name;
+        @SystemDescription
+        final String description;
 
         @SuppressWarnings("CdiInjectionPointsInspection")
-        TestCommand(String name) {
-            this.name = name;
+        TestCommand(String description) {
+            this.description = description;
         }
     }
 }

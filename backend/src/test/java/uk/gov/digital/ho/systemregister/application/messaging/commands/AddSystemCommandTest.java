@@ -3,6 +3,7 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,6 +16,12 @@ class AddSystemCommandTest {
     void validatesSystemName() {
         assertThatField("name", AddSystemCommand.class)
                 .hasAnnotations(SystemName.class);
+    }
+
+    @Test
+    void validatesSystemDescription() {
+        assertThatField("description", AddSystemCommand.class)
+                .hasAnnotations(SystemDescription.class);
     }
 
     @ParameterizedTest

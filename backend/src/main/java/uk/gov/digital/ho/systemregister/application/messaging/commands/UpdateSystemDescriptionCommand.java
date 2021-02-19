@@ -1,18 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemDescriptionUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateSystemDescriptionCommand implements Command {
     private final int id;
-    @Size(min = 2, message = "You must enter a description or leave blank if you do not know it.")
+    @SystemDescription
     private final String description;
     @NotNull
     private final SR_Person author;

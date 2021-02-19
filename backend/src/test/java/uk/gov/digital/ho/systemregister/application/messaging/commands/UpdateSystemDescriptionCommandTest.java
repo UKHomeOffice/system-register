@@ -3,10 +3,9 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
@@ -16,6 +15,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static uk.gov.digital.ho.systemregister.assertions.FieldAssert.assertThatField;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
@@ -36,15 +36,10 @@ class UpdateSystemDescriptionCommandTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"a", " "})
-    @EmptySource
-    void descriptionMustNotBeTooShort(String description) {
-        var command = new UpdateSystemDescriptionCommand(ID, description, AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
+    @Test
+    void validatesSystemDescription() {
+        assertThatField("description", UpdateSystemDescriptionCommand.class)
+                .hasAnnotations(SystemDescription.class);
     }
 
     @ParameterizedTest
@@ -55,17 +50,6 @@ class UpdateSystemDescriptionCommandTest {
         var constraintViolations = validator.validate(command);
 
         assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"xy", "?-", "Description of system"})
-    @NullSource
-    void allowsDescriptionStringToBeNullOrContainTwoOrMoreCharacters(String description) {
-        var command = new UpdateSystemDescriptionCommand(ID, description, AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isEmpty();
     }
 
     @Test
