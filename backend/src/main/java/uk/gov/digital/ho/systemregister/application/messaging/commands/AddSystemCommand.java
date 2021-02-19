@@ -24,9 +24,13 @@ public class AddSystemCommand {
     private final String investmentState;
     @ContactName
     private final String businessOwner;
+    @ContactName
     private final String serviceOwner;
+    @ContactName
     private final String technicalOwner;
+    @ContactName
     private final String productOwner;
+    @ContactName
     private final String informationAssetOwner;
     private final String developedBy;
     private final String supportedBy;

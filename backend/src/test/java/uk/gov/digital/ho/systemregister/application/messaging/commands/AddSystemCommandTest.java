@@ -22,7 +22,11 @@ class AddSystemCommandTest {
                 Arguments.of("portfolio", Portfolio.class),
                 Arguments.of("criticality", Criticality.class),
                 Arguments.of("investmentState", InvestmentState.class),
-                Arguments.of("businessOwner", ContactName.class));
+                Arguments.of("businessOwner", ContactName.class),
+                Arguments.of("serviceOwner", ContactName.class),
+                Arguments.of("technicalOwner", ContactName.class),
+                Arguments.of("productOwner", ContactName.class),
+                Arguments.of("informationAssetOwner", ContactName.class));
     }
 
     @ParameterizedTest

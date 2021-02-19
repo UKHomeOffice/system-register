@@ -1,21 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.ContactName;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static uk.gov.digital.ho.systemregister.assertions.FieldAssert.assertThatField;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
@@ -29,63 +26,28 @@ class UpdateTechnicalOwnerCommandTest {
             .build();
     private static final Instant TIMESTAMP = Instant.now();
 
-    private Validator validator;
-
-    @BeforeEach
-    void setUp() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @Test
+    void validatesBusinessOwner() {
+        assertThatField("technicalOwner", UpdateTechnicalOwnerCommand.class)
+                .hasAnnotations(ContactName.class);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"a", " "})
-    @EmptySource
-    void technicalOwnerMustNotBeTooShort(String technicalOwner) {
-        var command = new UpdateTechnicalOwnerCommand(ID, technicalOwner, AUTHOR, TIMESTAMP);
+    @ValueSource(strings = {"\t\fname", "name\r\n", " name "})
+    void extraneousSpacesAreRemoved(String nameWithSpaces) {
+        var command = new UpdateTechnicalOwnerCommand(ID, nameWithSpaces, AUTHOR, TIMESTAMP);
 
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {" x", "x "})
-    void extraneousSpacesDoNotCountTowardsTheMinimumCharacterCount(String technicalOwner) {
-        var command = new UpdateTechnicalOwnerCommand(ID, technicalOwner, AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"!", "£", "$", "%", "^", "*", "|", "<", ">", "~", "\"", "="})
-    void rejectsStringsContainingInvalidSpecialCharacters(String illegalCharacter) {
-        String technicalOwner = "name" + illegalCharacter;
-        var command = new UpdateTechnicalOwnerCommand(ID, technicalOwner, AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"xy", "?-", "Name of person"})
-    @NullSource
-    void allowsTechnicalOwnerStringToBeNullOrContainTwoOrMoreCharacters(String technicalOwner) {
-        var command = new UpdateTechnicalOwnerCommand(ID, technicalOwner, AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isEmpty();
+        assertThat(command).usingRecursiveComparison()
+                .isEqualTo(new UpdateTechnicalOwnerCommand(ID, "name", AUTHOR, TIMESTAMP));
     }
 
     @Test
     void raisesExceptionIfOwnerValueIsUnchanged() {
         SR_System system = aSystem()
-                .withId(456)
+                .withId(ID)
                 .withTechnicalOwner("owner")
                 .build();
-        var command = new UpdateTechnicalOwnerCommand(456, "owner", aPerson().build(), Instant.now());
+        var command = new UpdateTechnicalOwnerCommand(ID, "owner", AUTHOR, TIMESTAMP);
 
         assertThatThrownBy(() -> command.ensureCommandUpdatesSystem(system))
                 .isInstanceOf(CommandHasNoEffectException.class)

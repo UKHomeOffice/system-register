@@ -1,22 +1,23 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.ContactName;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_SystemEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.ServiceOwnerUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateServiceOwnerCommand implements Command {
     private final int id;
-    @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "The contact name must not be incomplete. Please enter a full contact name or leave blank if you do not know it.")
+    @ContactName
     private final String serviceOwner;
+    @NotNull
     private final SR_Person author;
+    @NotNull
     private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
