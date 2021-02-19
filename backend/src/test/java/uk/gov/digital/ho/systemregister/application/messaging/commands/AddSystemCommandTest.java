@@ -1,5 +1,6 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -7,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
@@ -33,6 +35,13 @@ class AddSystemCommandTest {
                 Arguments.of("supportedBy", EntityName.class));
     }
 
+    private static Stream<Arguments> riskFieldValidators() {
+        return Stream.of(
+                Arguments.of("name", RiskName.class),
+                Arguments.of("level", RiskLevel.class),
+                Arguments.of("rationale", RiskRationale.class));
+    }
+
     @ParameterizedTest
     @MethodSource("fieldValidators")
     void validatesFields(String field, Class<? extends Annotation> annotation) {
@@ -47,7 +56,7 @@ class AddSystemCommandTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"aliases"})
+    @ValueSource(strings = {"aliases", "risks"})
     void listsCannotBeNull(String field) {
         assertThatField(field, AddSystemCommand.class)
                 .hasAnnotations(NotNull.class);
@@ -95,5 +104,21 @@ class AddSystemCommandTest {
                                 .withName("value")
                                 .withRationale("value"))
                         .build());
+    }
+
+    @Nested
+    class Risks {
+        @Test
+        void validatesRisks() {
+            assertThatField("risks", AddSystemCommand.class)
+                    .hasTypeArgumentAnnotations(Valid.class);
+        }
+
+        @ParameterizedTest
+        @MethodSource("uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommandTest#riskFieldValidators")
+        void validatesFields(String field, Class<? extends Annotation> annotation) {
+            assertThatField(field, AddSystemCommand.Risk.class)
+                    .hasAnnotations(annotation);
+        }
     }
 }

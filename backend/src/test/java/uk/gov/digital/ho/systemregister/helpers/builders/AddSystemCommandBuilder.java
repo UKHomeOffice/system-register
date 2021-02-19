@@ -15,8 +15,8 @@ public class AddSystemCommandBuilder {
     private String name = "System XYZ";
     private String description = "An example system description...";
     private String portfolio = "SPAN-R";
-    private String criticality = "High";
-    private String investmentState = "Sunset";
+    private String criticality = "high";
+    private String investmentState = "sunset";
     private String businessOwner = "Busy Owner";
     private String serviceOwner = "Service Owner";
     private String technicalOwner = "Techy Owner";

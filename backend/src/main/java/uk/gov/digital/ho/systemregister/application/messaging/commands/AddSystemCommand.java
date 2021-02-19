@@ -5,6 +5,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SystemData;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
@@ -39,7 +40,8 @@ public class AddSystemCommand {
     private final String supportedBy;
     @NotNull
     private final List<@SystemName String> aliases;
-    private final List<Risk> risks;
+    @NotNull
+    private final List<@Valid Risk> risks;
     private final SR_Person author;
     private final Instant timestamp;
 
@@ -87,8 +89,11 @@ public class AddSystemCommand {
 
     @SuppressWarnings("CdiInjectionPointsInspection")
     public static class Risk {
+        @RiskName
         private final String name;
+        @RiskLevel
         private final String level;
+        @RiskRationale
         private final String rationale;
 
         public Risk(String name, String level, String rationale) {
