@@ -13,6 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Size(min = 2, message = "You must enter a description or leave blank if you do not know it.")
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@SuppressWarnings("unused")
 public @interface SystemDescription {
     String message() default "";
 

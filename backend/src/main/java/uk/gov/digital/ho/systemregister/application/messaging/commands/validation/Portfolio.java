@@ -15,6 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @NotNull(message = "You must enter a portfolio.")
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@SuppressWarnings("unused")
 public @interface Portfolio {
     String message() default "";
 
