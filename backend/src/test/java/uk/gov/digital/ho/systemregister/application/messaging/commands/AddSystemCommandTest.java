@@ -26,7 +26,9 @@ class AddSystemCommandTest {
                 Arguments.of("serviceOwner", ContactName.class),
                 Arguments.of("technicalOwner", ContactName.class),
                 Arguments.of("productOwner", ContactName.class),
-                Arguments.of("informationAssetOwner", ContactName.class));
+                Arguments.of("informationAssetOwner", ContactName.class),
+                Arguments.of("developedBy", EntityName.class),
+                Arguments.of("supportedBy", EntityName.class));
     }
 
     @ParameterizedTest

@@ -32,7 +32,9 @@ public class AddSystemCommand {
     private final String productOwner;
     @ContactName
     private final String informationAssetOwner;
+    @EntityName
     private final String developedBy;
+    @EntityName
     private final String supportedBy;
     private final List<String> aliases;
     private final List<Risk> risks;

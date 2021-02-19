@@ -1,22 +1,23 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.EntityName;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_SystemEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SupportedByUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateSupportedByCommand implements Command {
     private final int id;
-    @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "Please enter a full name or leave blank if you do not know it.")
+    @EntityName
     private final String supportedBy;
+    @NotNull
     private final SR_Person author;
+    @NotNull
     private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
