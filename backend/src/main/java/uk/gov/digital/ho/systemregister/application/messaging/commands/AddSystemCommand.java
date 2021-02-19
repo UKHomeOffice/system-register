@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
+import static uk.gov.digital.ho.systemregister.util.NullSafeUtils.*;
 
 public class AddSystemCommand {
     @SystemName
@@ -52,22 +53,6 @@ public class AddSystemCommand {
         this.risks = safelyCopied(risks);
         this.author = author;
         this.timestamp = timestamp;
-    }
-
-    private static <T> List<T> safelyCopied(List<T> values) {
-        return values != null ? List.copyOf(values) : null;
-    }
-
-    private static String safelyTrimmed(String value) {
-        return value != null ? value.trim() : null;
-    }
-
-    private static List<String> allSafelyTrimmed(List<String> values) {
-        return values != null
-               ? values.stream()
-                       .map(AddSystemCommand::safelyTrimmed)
-                       .collect(toUnmodifiableList())
-               : null;
     }
 
     public SR_Person getAuthor() {

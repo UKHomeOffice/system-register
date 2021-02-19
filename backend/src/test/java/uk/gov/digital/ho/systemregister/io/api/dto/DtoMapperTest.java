@@ -3,8 +3,6 @@ package uk.gov.digital.ho.systemregister.io.api.dto;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
-import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.helpers.TestDataUtil;
 
 import java.time.Instant;
@@ -17,26 +15,6 @@ import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
 public class DtoMapperTest extends TestDataUtil {
-    Instant timestamp = Instant.now();
-
-    @Test
-    public void mapAddSystemCommand() {
-        AddSystemCommandDTO dto = new AddSystemCommandDTO(a_system_dto.build());
-        AddSystemCommand result = DtoMapper.map(dto, new SR_Person(expectedAuthor, null, null, null), timestamp);
-
-        expectMetaDataToBeCorrect(expectedAuthor, authorUsername, result);
-        expectSystemToBeCorrect(result, a_system_dto.build());
-    }
-
-    @Test
-    public void mapAddSystemCommand_NeverBeenUpdated() {
-        AddSystemCommandDTO dto = new AddSystemCommandDTO(a_system_dto.build());
-        AddSystemCommand result = DtoMapper.map(dto, new SR_Person(expectedAuthor, null, null, null), timestamp);
-
-        expectMetaDataToBeCorrect(expectedAuthor, authorUsername, result);
-        expectSystemToBeCorrect(result, a_system_dto.build());
-    }
-
     @Test
     void mapsCurrentSystemStateToResponse() {
         var timestamp = Instant.now();

@@ -2,40 +2,15 @@ package uk.gov.digital.ho.systemregister.io.api.dto;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
-import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 public final class DtoMapper {
     private DtoMapper() {
-    }
-
-    public static AddSystemCommand map(AddSystemCommandDTO cmd, SR_Person author, Instant timestamp) {
-        return new AddSystemCommand(
-                cmd.system.name, cmd.system.description, cmd.system.portfolio, cmd.system.criticality,
-                cmd.system.investmentState, cmd.system.businessOwner, cmd.system.serviceOwner,
-                cmd.system.technicalOwner, cmd.system.productOwner, cmd.system.informationAssetOwner,
-                cmd.system.developedBy, cmd.system.supportedBy, cmd.system.aliases, mapToDomain(cmd.system.risks),
-                author, timestamp);
-    }
-
-    public static RegisteredSystemDTO map(SR_System s) {
-        return new RegisteredSystemDTO(
-                s.id, s.name, s.description, s.portfolio, s.criticality, s.investmentState, s.businessOwner,
-                s.serviceOwner, s.technicalOwner, s.productOwner, s.informationAssetOwner, s.developedBy, s.supportedBy,
-                s.lastUpdated, s.aliases, mapToDto(s.risks));
-    }
-
-    public static List<AddSystemCommand.Risk> mapToDomain(List<RiskDTO> risks) {
-        return risks.stream()
-                .map(r -> new AddSystemCommand.Risk(r.name, r.level, r.rationale))
-                .collect(toList());
     }
 
     public static List<RiskDTO> mapToDto(List<SR_Risk> risks) {

@@ -1,12 +1,12 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
+import javax.json.bind.annotation.JsonbProperty;
 import java.time.Instant;
 import java.util.List;
-import javax.json.bind.annotation.JsonbProperty;
 
 import static java.util.Collections.unmodifiableList;
 
-@SuppressWarnings("CdiInjectionPointsInspection")
+@SuppressWarnings({"CdiInjectionPointsInspection", "DuplicatedCode"})
 public class CurrentSystemStateDTO {
     public final List<System> systems;
     public final Instant timestamp;

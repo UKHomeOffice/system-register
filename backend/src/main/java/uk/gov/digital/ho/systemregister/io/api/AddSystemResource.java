@@ -33,11 +33,11 @@ public class AddSystemResource {
     @Produces(APPLICATION_JSON)
     @Authenticated
     public UpdatedSystemDTO addSystem(
-            AddSystemCommandDTO cmd,
+            AddSystemCommandDTO dto,
             @Context SecurityContext securityContext
     ) throws SystemNameNotUniqueException {
         SR_Person author = getAuthor(securityContext);
-        AddSystemCommand command = DtoMapper.map(cmd, author, Instant.now());
+        AddSystemCommand command = dto.toCommand(author, Instant.now());
 
         var addedSystemAndMetadata = handler.handle(command);
 
