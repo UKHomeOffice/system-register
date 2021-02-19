@@ -1,11 +1,16 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Criticality;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Portfolio;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
+
+import java.lang.annotation.Annotation;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.assertions.FieldAssert.assertThatField;
@@ -13,22 +18,19 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommand
 import static uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommandBuilder.aMinimalAddSystemCommand;
 
 class AddSystemCommandTest {
-    @Test
-    void validatesSystemName() {
-        assertThatField("name", AddSystemCommand.class)
-                .hasAnnotations(SystemName.class);
+    private static Stream<Arguments> fieldValidators() {
+        return Stream.of(
+                Arguments.of("name", SystemName.class),
+                Arguments.of("description", SystemDescription.class),
+                Arguments.of("portfolio", Portfolio.class),
+                Arguments.of("criticality", Criticality.class));
     }
 
-    @Test
-    void validatesSystemDescription() {
-        assertThatField("description", AddSystemCommand.class)
-                .hasAnnotations(SystemDescription.class);
-    }
-
-    @Test
-    void validatesPortfolio() {
-        assertThatField("portfolio", AddSystemCommand.class)
-                .hasAnnotations(Portfolio.class);
+    @ParameterizedTest
+    @MethodSource("fieldValidators")
+    void validatesFields(String field, Class<? extends Annotation> annotation) {
+        assertThatField(field, AddSystemCommand.class)
+                .hasAnnotations(annotation);
     }
 
     @ParameterizedTest

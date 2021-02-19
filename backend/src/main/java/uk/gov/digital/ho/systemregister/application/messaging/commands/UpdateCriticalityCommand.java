@@ -1,19 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Criticality;
 import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateCriticalityCommand implements Command {
     private final int id;
-    //TODO update to custom validator with dynamic values in default message
-    @Pattern(regexp = "high|low|medium|cni|unknown", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Criticality must be one of the following values: high, low, medium, cni, unknown")
+    @Criticality
     private final String criticality;
     @NotNull
     private final SR_Person author;
