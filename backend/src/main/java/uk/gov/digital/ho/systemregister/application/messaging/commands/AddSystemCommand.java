@@ -1,13 +1,10 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SystemData;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +12,7 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 public class AddSystemCommand {
-    @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "You must enter a complete system name.")
-    @NotNull(message = "You must enter a system name")
-    @NotEmpty(message = "You must enter a system name")
+    @SystemName
     private final String name;
     private final String description;
     private final String portfolio;

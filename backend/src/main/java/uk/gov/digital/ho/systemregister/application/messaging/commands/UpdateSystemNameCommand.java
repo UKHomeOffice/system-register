@@ -1,23 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdateSystemNameCommand implements Command {
     private final int id;
-    @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-    @Size(min = 2, message = "You must enter a complete system name.")
-    @NotNull(message = "You must enter a system name")
-    @NotEmpty(message = "You must enter a system name")
+    @SystemName
     public final String name;
     @NotNull
     private final SR_Person author;
