@@ -1,11 +1,12 @@
-import axios from 'axios'
-import config from '../config/config'
-import SystemNotFoundException from './systemNotFoundException';
+import axios from "axios";
+import config from "../config/config";
+import SystemNotFoundException from "./systemNotFoundException";
 import ValidationError from "./validationError";
 
 const api = {
   getAllSystems,
   getSystem,
+  addSystem,
   updateSystemName,
   updateSystemDescription,
   updateSystemAliases,
@@ -21,7 +22,7 @@ const api = {
   updateBusinessOwner,
 };
 
-const nullIfEmpty = (value) => value !== "" ? value : null;
+const nullIfEmpty = (value) => (value !== "" ? value : null);
 
 async function getAllSystems() {
   const response = await axios.get(`${config.api.url}/systems`);
@@ -29,20 +30,23 @@ async function getAllSystems() {
     const x = a.name.toUpperCase();
     const y = b.name.toUpperCase();
     if (x > y) {
-      return 1
+      return 1;
     } else if (x < y) {
-      return -1
+      return -1;
     }
-    return 0
-  })
+    return 0;
+  });
   return { ...response.data, systems: sortedSystems };
 }
 
 async function getSystem(id) {
   const register = await getAllSystems();
-  const matchingSystem = register.systems.find(s => s.id.toString() === id);
-  if (matchingSystem) { return matchingSystem }
-  else { throw new SystemNotFoundException(); }
+  const matchingSystem = register.systems.find((s) => s.id.toString() === id);
+  if (matchingSystem) {
+    return matchingSystem;
+  } else {
+    throw new SystemNotFoundException();
+  }
 }
 
 async function updateSystemName(id, data) {
@@ -65,7 +69,6 @@ async function updateSystemAliases(id, data) {
   });
   return response.data;
 }
-
 
 async function updatePortfolio(id, data) {
   const response = await sendPost(`systems/${id}/update-portfolio`, {
@@ -131,23 +134,44 @@ async function updateBusinessOwner(id, data) {
 }
 
 async function updateInformationAssetOwner(id, data) {
-  const response = await sendPost(`systems/${id}/update-information-asset-owner`, {
-    information_asset_owner: nullIfEmpty(data.informationAssetOwner),
+  const response = await sendPost(
+    `systems/${id}/update-information-asset-owner`,
+    {
+      information_asset_owner: nullIfEmpty(data.informationAssetOwner),
+    }
+  );
+  return response.data;
+}
+
+async function addSystem(data) {
+  const response = await sendPost(`systems/`, {
+    system: {
+      name: data.name,
+      aliases: [],
+      description: null,
+      portfolio: "Unknown",
+      criticality: null,
+      investment_state: null,
+      business_owner: null,
+      service_owner: null,
+      tech_owner: null,
+      product_owner: null,
+      information_asset_owner: null,
+      developed_by: null,
+      supported_by: null,
+      risks: [],
+    },
   });
   return response.data;
 }
 
 async function sendPost(path, data) {
-  const response = await axios.post(
-    `${config.api.url}/${path}`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
-      },
-      validateStatus: status => status < 500,
-    }
-  );
+  const response = await axios.post(`${config.api.url}/${path}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("bearer-token")}`,
+    },
+    validateStatus: (status) => status < 500,
+  });
   switch (response.status) {
     case 400:
       throw new ValidationError(response.data.errors);

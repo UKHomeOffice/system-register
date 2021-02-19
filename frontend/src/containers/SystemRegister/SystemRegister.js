@@ -91,7 +91,10 @@ class SystemRegister extends React.Component {
               <Route exact path="/about" component={About} />
               <Route exact path="/contact" component={Contact} />
               <Route exact path="/add-system">
-                <AddSystem onBeforeNameChange={this.checkForDuplicateNames} />
+                <AddSystem
+                  onBeforeNameChange={this.checkForDuplicateNames}
+                  onChange={this.loadSystems}
+                />
               </Route>
               <Route path="/*" component={PageNotFoundError} />
             </Switch>
