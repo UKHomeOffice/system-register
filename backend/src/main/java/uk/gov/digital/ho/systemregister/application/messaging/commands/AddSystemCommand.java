@@ -1,5 +1,6 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Portfolio;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemDescription;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
@@ -17,6 +18,7 @@ public class AddSystemCommand {
     private final String name;
     @SystemDescription
     private final String description;
+    @Portfolio
     private final String portfolio;
     private final String criticality;
     private final String investmentState;

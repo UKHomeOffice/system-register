@@ -1,19 +1,18 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.Portfolio;
 import uk.gov.digital.ho.systemregister.application.messaging.events.PortfolioUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Objects;
 
 public class UpdatePortfolioCommand implements Command {
     private final int id;
-    @Size(min = 2, message = "You must enter a portfolio.")
-    @NotNull
+    @Portfolio
     private final String portfolio;
     @NotNull
     private final SR_Person author;
