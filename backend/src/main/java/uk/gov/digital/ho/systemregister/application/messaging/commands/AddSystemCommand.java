@@ -5,6 +5,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SystemData;
 
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class AddSystemCommand {
     private final String developedBy;
     @EntityName
     private final String supportedBy;
-    private final List<String> aliases;
+    @NotNull
+    private final List<@SystemName String> aliases;
     private final List<Risk> risks;
     private final SR_Person author;
     private final Instant timestamp;

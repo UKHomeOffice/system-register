@@ -1,14 +1,12 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAliasesUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
@@ -16,13 +14,8 @@ import java.util.stream.Collectors;
 
 public class UpdateSystemAliasesCommand implements Command {
     private final int id;
-    @NotNull(message = "aliases may not be null")
-    public final List<
-            @NotNull
-            @NotEmpty
-            @Pattern(regexp = "^[^!£$%^*<>|~\"=]*$", message = "You must not use the following special characters: ! £ $ % ^ * | < > ~ \" =")
-            @Size(min = 2, message = "You must enter a complete system name.")
-                    String> aliases;
+    @NotNull
+    public final List<@SystemName String> aliases;
     @NotNull
     private final SR_Person author;
     @NotNull

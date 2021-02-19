@@ -3,8 +3,11 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.SystemName;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
@@ -14,9 +17,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static uk.gov.digital.ho.systemregister.assertions.FieldAssert.assertThatField;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
@@ -37,47 +40,19 @@ class UpdateSystemAliasesCommandTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"a", " "})
-    @EmptySource
-    @NullSource
-    void systemAliasValuesMustNotBeTooShort(String alias) {
-        var command = new UpdateSystemAliasesCommand(ID, singletonList(alias), AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
+    @Test
+    void validatesAliases() {
+        assertThatField("aliases", UpdateSystemAliasesCommand.class)
+                .hasTypeArgumentAnnotations(SystemName.class);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" x", "x "})
-    void extraneousSpacesDoNotCountTowardsTheMinimumCharacterCount(String alias) {
-        var command = new UpdateSystemAliasesCommand(ID, List.of(alias), AUTHOR, TIMESTAMP);
+    @ValueSource(strings = {"\t\fname", "name\r\n", " name "})
+    void extraneousSpacesAreRemoved(String nameWithSpaces) {
+        var command = new UpdateSystemAliasesCommand(ID, List.of(nameWithSpaces), AUTHOR, TIMESTAMP);
 
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"!", "£", "$", "%", "^", "*", "|", "<", ">", "~", "\"", "="})
-    void rejectsStringsContainingInvalidSpecialCharacters(String illegalCharacter) {
-        String alias = "alias" + illegalCharacter;
-        var command = new UpdateSystemAliasesCommand(ID, List.of(alias), AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"xy", "?-", "some alias"})
-    void allowsSystemAliasStringToContainTwoOrMoreCharacters(String alias) {
-        var command = new UpdateSystemAliasesCommand(ID, List.of(alias), AUTHOR, TIMESTAMP);
-
-        var constraintViolations = validator.validate(command);
-
-        assertThat(constraintViolations).isEmpty();
+        assertThat(command).usingRecursiveComparison()
+                .isEqualTo(new UpdateSystemAliasesCommand(ID, List.of("name"), AUTHOR, TIMESTAMP));
     }
 
     @Test
@@ -89,14 +64,13 @@ class UpdateSystemAliasesCommandTest {
         assertThat(constraintViolations).isNotEmpty();
     }
 
-
     @Test
     void raisesExceptionIfSystemAliasesValuesAreAllUnchanged() {
         SR_System system = aSystem()
-                .withId(345)
+                .withId(ID)
                 .withAliases("alias 1", "alias 2")
                 .build();
-        var command = new UpdateSystemAliasesCommand(345, List.of("alias 2", "alias 1"), aPerson().build(), Instant.now());
+        var command = new UpdateSystemAliasesCommand(ID, List.of("alias 2", "alias 1"), AUTHOR, TIMESTAMP);
 
         assertThatThrownBy(() -> command.ensureCommandUpdatesSystem(system))
                 .isInstanceOf(CommandHasNoEffectException.class)
@@ -107,10 +81,10 @@ class UpdateSystemAliasesCommandTest {
     @NullAndEmptySource
     void willUpdateReturnsTrueIfExistingSystemAliasesIsNullOrEmptyAndCommandHasValues(List<String> existingAliases) {
         SR_System system = aSystem()
-                .withId(345)
+                .withId(ID)
                 .withAliases(existingAliases)
                 .build();
-        var command = new UpdateSystemAliasesCommand(345, List.of("alias 2", "alias 1"), aPerson().build(), Instant.now());
+        var command = new UpdateSystemAliasesCommand(ID, List.of("alias 2", "alias 1"), AUTHOR, TIMESTAMP);
 
         var result = command.willUpdate(system);
 
@@ -121,17 +95,17 @@ class UpdateSystemAliasesCommandTest {
     @MethodSource("nonEmptyAliases")
     void willUpdateReturnsTrueIfExistingSystemAliasesHasDifferentValuesOrLengthToCommand(List<String> aliases) {
         SR_System system = aSystem()
-                .withId(345)
+                .withId(ID)
                 .withAliases(List.of("alias 2", "alias 1"))
                 .build();
-        var command = new UpdateSystemAliasesCommand(345, aliases, aPerson().build(), Instant.now());
+        var command = new UpdateSystemAliasesCommand(ID, aliases, AUTHOR, TIMESTAMP);
 
         var result = command.willUpdate(system);
 
         assertThat(result).isTrue();
     }
 
-    static Stream<List<String>> nonEmptyAliases() {
+    private static Stream<List<String>> nonEmptyAliases() {
         return Stream.of(
                 List.of("alias 1"),
                 List.of("alias 3"),
