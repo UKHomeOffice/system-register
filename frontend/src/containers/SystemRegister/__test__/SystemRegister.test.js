@@ -9,6 +9,7 @@ import { setupServer } from "msw/node";
 
 import data from "../../../data/systems_dummy.json";
 import SystemNotFoundException from "../../../services/systemNotFoundException";
+import { useKeycloak } from "@react-keycloak/web";
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
@@ -19,12 +20,26 @@ const server = setupServer(
   })
 );
 
+jest.mock("@react-keycloak/web", () => ({
+  useKeycloak: jest.fn(),
+}));
+
 describe("<SystemRegister />", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   afterAll(() => server.close());
 
   afterEach(() => server.resetHandlers());
+
+  beforeEach(() => {
+    useKeycloak.mockReturnValue({
+      keycloak: {
+        authenticated: true,
+        tokenParsed: {},
+      },
+      initialized: true,
+    });
+  });
 
   it.each(["/", "/error"])(
     "contains a skip link at the start of the document",
@@ -135,18 +150,22 @@ describe("<SystemRegister />", () => {
       );
     });
 
-    it("navigates to the Add-System page", async () => {
-      //ToDo: amend test to click on add system link in SR-315
-      const history = createMemoryHistory({ initialEntries: ["/add-system"] });
-      const { findByRole } = render(
-        <Router history={history}>
-          <SystemRegister />
-        </Router>
-      );
+    describe("when authorized", () => {
+      it("navigates to the Add-System page", async () => {
+        //ToDo: amend test to click on add system link in SR-315
+        const history = createMemoryHistory({
+          initialEntries: ["/add-system"],
+        });
+        const { findByRole } = render(
+          <Router history={history}>
+            <SystemRegister />
+          </Router>
+        );
 
-      expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
-        "Add a system to the register"
-      );
+        expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
+          "Add a system to the register"
+        );
+      });
     });
   });
 });

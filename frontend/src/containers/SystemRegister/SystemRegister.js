@@ -4,17 +4,18 @@ import { Route, Switch } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
 import About from "../../components/About";
+import AddSystem from "../../components/AddSystem/AddSystem";
 import Banner from "../../components/Banner/Banner";
 import Contact from "../../components/Contact";
 import Link from "../../components/Linking/Link";
 import Menu from "../../components/Menu/Menu";
+import PageNotFoundError from "../../components/Errors/PageNotFoundError";
 import PortfolioHeatmap from "../../components/Visualisations/PortfolioHeatmap/PortfolioHeatmap";
+import SecureRoute from "../../components/SecureRoute";
 import SRFooter from "../../components/SRFooter/SRFooter";
 import System from "../../components/System/System";
 import SystemList from "../../components/SystemList/SystemList";
 import TitleBar from "../../components/TitleBar/TitleBar";
-import PageNotFoundError from "../../components/Errors/PageNotFoundError";
-import AddSystem from "../../components/AddSystem/AddSystem";
 
 import getPortfolios from "../getPortfolios";
 import api from "../../services/api";
@@ -50,6 +51,12 @@ class SystemRegister extends React.Component {
       system.name.toLowerCase()
     );
     return allSystemNames.includes(name);
+  };
+
+  validateNewSystem = ({ name }) => {
+    if (this.checkForDuplicateNames(name)) {
+      return `There is already a system called ${name}.`;
+    }
   };
 
   componentWillUnmount() {
@@ -90,12 +97,12 @@ class SystemRegister extends React.Component {
               />
               <Route exact path="/about" component={About} />
               <Route exact path="/contact" component={Contact} />
-              <Route exact path="/add-system">
+              <SecureRoute path="/add-system">
                 <AddSystem
-                  onBeforeNameChange={this.checkForDuplicateNames}
-                  onChange={this.loadSystems}
+                  onAdd={this.loadSystems}
+                  validateNewSystem={this.validateNewSystem}
                 />
-              </Route>
+              </SecureRoute>
               <Route path="/*" component={PageNotFoundError} />
             </Switch>
           </main>

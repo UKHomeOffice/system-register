@@ -8,7 +8,8 @@ function setUp() {
   render(
     <AddSystemForm
       onSubmit={submitHandler}
-      onBeforeNameChange={onBeforeNameChange}
+      onCancel={cancelHandler}
+      validate={validateName}
     />
   );
 }
@@ -20,7 +21,8 @@ function overtype(field, value) {
 }
 
 const submitHandler = jest.fn();
-const onBeforeNameChange = jest.fn();
+const cancelHandler = jest.fn();
+const validateName = jest.fn();
 
 describe("add system", () => {
   beforeEach(() => {
@@ -65,23 +67,6 @@ describe("add system", () => {
     });
   });
 
-  //why does this pass?
-  it.each([" ", ""])(
-    "does not send empty values to the submission handler: %p",
-    async (value) => {
-      setUp();
-      const systemNameField = await screen.findByLabelText(/system name/i);
-      const saveButton = await screen.findByText(/save/i);
-
-      overtype(systemNameField, value);
-      user.click(saveButton);
-
-      await waitFor(() => {
-        expect(submitHandler).not.toBeCalled();
-      });
-    }
-  );
-
   it("validates name before submission", async () => {
     setUp();
     const systemNameField = screen.getByLabelText(/system name/i);
@@ -98,6 +83,20 @@ describe("add system", () => {
     ).toBeInTheDocument();
   });
 
+  it("verifies new system with given validation function", async () => {
+    validateName.mockReturnValue("system already exists");
+    setUp();
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "name");
+    user.click(saveButton);
+
+    expect(
+      await screen.findByText("system already exists", { selector: "label *" })
+    ).toBeInTheDocument();
+  });
+
   it("shows an error summary containing all error details", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
@@ -111,5 +110,14 @@ describe("add system", () => {
     expect(errors).toHaveTextContent(
       /must not use the following special characters/i
     );
+  });
+
+  it("calls cancel handler", () => {
+    setUp();
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+
+    user.click(cancelButton);
+
+    expect(cancelHandler).toBeCalled();
   });
 });

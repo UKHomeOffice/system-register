@@ -19,13 +19,8 @@ describe("AddSystem validators", () => {
       expect(result).toContain("You must enter a system name");
     });
 
-    it("returns error if system name already exists", () => {
-      const result = validateName("I exisT", () => true);
-
-      expect(result).toContain("There is already a system called");
-    });
     it("returns undefined for valid values", () => {
-      const result = validateName("valid system name", () => false);
+      const result = validateName("valid system name");
 
       expect(result).toBeUndefined();
     });
