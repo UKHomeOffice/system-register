@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Info
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateInformationAssetOwnerCommandHandler extends AbstractCommandHandler<UpdateInformationAssetOwnerCommand> {
+public class UpdateInformationAssetOwnerCommandHandler extends AbstractUpdateCommandHandler<UpdateInformationAssetOwnerCommand> {
     public UpdateInformationAssetOwnerCommandHandler(CurrentSystemRegisterState systemRegisterState, InformationAssetOwnerUpdatedEventHandler handler, CurrentStateCalculator calculator) {
         super(systemRegisterState, handler, calculator);
     }

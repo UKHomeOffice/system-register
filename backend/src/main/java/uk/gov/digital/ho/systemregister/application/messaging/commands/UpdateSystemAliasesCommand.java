@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UpdateSystemAliasesCommand implements Command {
+public class UpdateSystemAliasesCommand implements UpdateCommand {
     private final int id;
     @NotNull
     public final List<@SystemName String> aliases;

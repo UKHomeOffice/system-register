@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateInvestmentStateCommand implements Command {
+public class UpdateInvestmentStateCommand implements UpdateCommand {
     private final int id;
     @InvestmentState
     private final String investmentState;

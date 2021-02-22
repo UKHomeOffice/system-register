@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateServiceOwnerCommand implements Command {
+public class UpdateServiceOwnerCommand implements UpdateCommand {
     private final int id;
     @ContactName
     private final String serviceOwner;

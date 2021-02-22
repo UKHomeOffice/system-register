@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Deve
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateDevelopedByCommandHandler extends AbstractCommandHandler<UpdateDevelopedByCommand> {
+public class UpdateDevelopedByCommandHandler extends AbstractUpdateCommandHandler<UpdateDevelopedByCommand> {
     public UpdateDevelopedByCommandHandler(CurrentSystemRegisterState systemRegisterState, DevelopedByUpdatedEventHandler handler, CurrentStateCalculator calculator) {
         super(systemRegisterState, handler, calculator);
     }

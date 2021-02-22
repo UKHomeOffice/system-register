@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateSupportedByCommand implements Command {
+public class UpdateSupportedByCommand implements UpdateCommand {
     private final int id;
     @EntityName
     private final String supportedBy;

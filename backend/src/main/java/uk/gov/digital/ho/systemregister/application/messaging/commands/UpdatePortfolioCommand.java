@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdatePortfolioCommand implements Command {
+public class UpdatePortfolioCommand implements UpdateCommand {
     private final int id;
     @Portfolio
     private final String portfolio;

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateProductOwnerCommand implements Command{
+public class UpdateProductOwnerCommand implements UpdateCommand {
     private final int id;
     @ContactName
     private final String productOwner;

@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Tech
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateTechnicalOwnerCommandHandler extends AbstractCommandHandler<UpdateTechnicalOwnerCommand> {
+public class UpdateTechnicalOwnerCommandHandler extends AbstractUpdateCommandHandler<UpdateTechnicalOwnerCommand> {
     public UpdateTechnicalOwnerCommandHandler(
             CurrentSystemRegisterState systemRegisterState,
             TechnicalOwnerUpdatedEventHandler eventHandler,

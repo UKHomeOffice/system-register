@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Supp
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateSupportedByCommandHandler extends AbstractCommandHandler<UpdateSupportedByCommand> {
+public class UpdateSupportedByCommandHandler extends AbstractUpdateCommandHandler<UpdateSupportedByCommand> {
     public UpdateSupportedByCommandHandler(
             CurrentSystemRegisterState systemRegisterState,
             SupportedByUpdatedEventHandler eventHandler,

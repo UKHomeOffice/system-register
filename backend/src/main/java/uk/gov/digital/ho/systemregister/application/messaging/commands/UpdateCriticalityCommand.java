@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateCriticalityCommand implements Command {
+public class UpdateCriticalityCommand implements UpdateCommand {
     private final int id;
     @Criticality
     private final String criticality;

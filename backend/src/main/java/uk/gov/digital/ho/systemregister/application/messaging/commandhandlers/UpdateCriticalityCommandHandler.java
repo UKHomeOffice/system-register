@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.Crit
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateCriticalityCommandHandler extends AbstractCommandHandler<UpdateCriticalityCommand> {
+public class UpdateCriticalityCommandHandler extends AbstractUpdateCommandHandler<UpdateCriticalityCommand> {
     public UpdateCriticalityCommandHandler(CurrentSystemRegisterState systemRegisterState, CriticalityUpdatedEventHandler handler, CurrentStateCalculator calculator) {
         super(systemRegisterState, handler, calculator);
     }

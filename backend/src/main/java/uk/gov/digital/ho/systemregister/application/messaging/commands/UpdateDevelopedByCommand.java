@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateDevelopedByCommand implements Command{
+public class UpdateDevelopedByCommand implements UpdateCommand {
     private final int id;
     @EntityName
     private final String developedBy;

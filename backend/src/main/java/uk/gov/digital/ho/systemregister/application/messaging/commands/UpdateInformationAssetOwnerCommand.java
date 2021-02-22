@@ -10,7 +10,7 @@ import uk.gov.digital.ho.systemregister.domain.SR_System;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-public class UpdateInformationAssetOwnerCommand implements Command{
+public class UpdateInformationAssetOwnerCommand implements UpdateCommand {
     private final int id;
     @ContactName
     private final String informationAssetOwner;

@@ -4,20 +4,20 @@ import io.smallrye.mutiny.tuples.Tuple2;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.EventHandler;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.domain.SystemRegister;
 
 import javax.validation.Valid;
 
-public abstract class AbstractCommandHandler<T extends Command> {
+public abstract class AbstractUpdateCommandHandler<T extends UpdateCommand> {
     private final CurrentSystemRegisterState systemRegisterState;
     private final EventHandler eventHandler;
     private final CurrentStateCalculator calculator;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
-    public AbstractCommandHandler(CurrentSystemRegisterState systemRegisterState, EventHandler eventHandler, CurrentStateCalculator calculator) {
+    public AbstractUpdateCommandHandler(CurrentSystemRegisterState systemRegisterState, EventHandler eventHandler, CurrentStateCalculator calculator) {
         this.systemRegisterState = systemRegisterState;
         this.eventHandler = eventHandler;
         this.calculator = calculator;

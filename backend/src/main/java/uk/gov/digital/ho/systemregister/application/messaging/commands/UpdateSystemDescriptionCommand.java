@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class UpdateSystemDescriptionCommand implements Command {
+public class UpdateSystemDescriptionCommand implements UpdateCommand {
     private final int id;
     @SystemDescription
     private final String description;

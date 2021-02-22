@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 import javax.inject.Singleton;
 
 @Singleton
-public class UpdateSystemNameCommandHandler extends AbstractCommandHandler<UpdateSystemNameCommand> {
+public class UpdateSystemNameCommandHandler extends AbstractUpdateCommandHandler<UpdateSystemNameCommand> {
     public UpdateSystemNameCommandHandler(
             CurrentSystemRegisterState systemRegisterState,
             SystemNameUpdatedEventHandler eventHandler,

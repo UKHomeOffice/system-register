@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Singleton
-public class UpdateSystemAliasesCommandHandler extends AbstractCommandHandler<UpdateSystemAliasesCommand> {
+public class UpdateSystemAliasesCommandHandler extends AbstractUpdateCommandHandler<UpdateSystemAliasesCommand> {
     public UpdateSystemAliasesCommandHandler(
             CurrentSystemRegisterState systemRegisterState,
             SystemAliasesUpdatedEventHandler eventHandler,
