@@ -8,7 +8,7 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.Cur
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSystemNameCommand;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemNameUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
@@ -108,7 +108,7 @@ class UpdateSystemNameCommandHandlerTest {
     @Test
     void validatesCommand() throws NoSuchMethodException {
         Method handleMethod = commandHandler.getClass()
-                .getMethod("handle", UpdateCommand.class);
+                .getMethod("handle", Command.class);
         Parameter commandArgument = handleMethod.getParameters()[0];
 
         boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);

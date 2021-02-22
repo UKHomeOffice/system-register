@@ -13,7 +13,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static uk.gov.digital.ho.systemregister.util.NullSafeUtils.*;
 
-public class AddSystemCommand {
+public class AddSystemCommand implements Command {
     @SystemName
     private final String name;
     @SystemDescription

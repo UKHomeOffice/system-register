@@ -3,9 +3,10 @@ package uk.gov.digital.ho.systemregister.io.api;
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandProcessingException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.NoSuchSystemException;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
 import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;
@@ -35,7 +36,7 @@ public class AddSystemResource {
     public UpdatedSystemDTO addSystem(
             AddSystemCommandDTO dto,
             @Context SecurityContext securityContext
-    ) throws SystemNameNotUniqueException {
+    ) throws CommandProcessingException, NoSuchSystemException {
         SR_Person author = getAuthor(securityContext);
         AddSystemCommand command = dto.toCommand(author, Instant.now());
 

@@ -1,6 +1,5 @@
 package uk.gov.digital.ho.systemregister.application.messaging.eventhandlers;
 
-import uk.gov.digital.ho.systemregister.application.messaging.events.CriticalityUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_SystemEvent;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;
 
@@ -19,6 +18,4 @@ public class CriticalityUpdatedEventHandler implements EventHandler {
     public void handle(SR_SystemEvent event) {
         eventStore.save(event);
     }
-
 }
-

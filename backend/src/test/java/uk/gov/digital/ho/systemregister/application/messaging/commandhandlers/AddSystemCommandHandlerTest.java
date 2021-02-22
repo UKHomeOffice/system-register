@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.aggregates.CurrentSystemRegisterState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentStateCalculator;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
+import uk.gov.digital.ho.systemregister.application.messaging.commands.Command;
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
@@ -42,7 +43,7 @@ public class AddSystemCommandHandlerTest {
     @Test
     void validatesCommand() throws NoSuchMethodException {
         Method handleMethod = commandHandler.getClass()
-                .getMethod("handle", AddSystemCommand.class);
+                .getMethod("handle", Command.class);
         Parameter commandArgument = handleMethod.getParameters()[0];
 
         boolean hasValidAnnotation = commandArgument.isAnnotationPresent(Valid.class);
@@ -51,7 +52,7 @@ public class AddSystemCommandHandlerTest {
     }
 
     @Test
-    public void forwardsNewSystemToEventHandler() throws SystemNameNotUniqueException {
+    public void forwardsNewSystemToEventHandler() throws CommandProcessingException, NoSuchSystemException {
         AddSystemCommand command = addSystemCommandBuilder.build();
 
         var addedSystemAndMetadata = commandHandler.handle(command);
@@ -67,7 +68,7 @@ public class AddSystemCommandHandlerTest {
     }
 
     @Test
-    public void forwardsNewSystemWithMinimalDataToEventHandler() throws SystemNameNotUniqueException {
+    public void forwardsNewSystemWithMinimalDataToEventHandler() throws NoSuchSystemException, CommandProcessingException {
         var justBeforeEventCreated = Instant.now();
         var command = aMinimalAddSystemCommand().build();
 
