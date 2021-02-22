@@ -42,7 +42,9 @@ public class AddSystemCommand implements Command {
     private final List<@SystemName String> aliases;
     @NotNull
     private final List<@Valid Risk> risks;
+    @NotNull
     private final SR_Person author;
+    @NotNull
     private final Instant timestamp;
 
     @SuppressWarnings("CdiInjectionPointsInspection")

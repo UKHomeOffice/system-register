@@ -32,7 +32,9 @@ class AddSystemCommandTest {
                 Arguments.of("productOwner", ContactName.class),
                 Arguments.of("informationAssetOwner", ContactName.class),
                 Arguments.of("developedBy", EntityName.class),
-                Arguments.of("supportedBy", EntityName.class));
+                Arguments.of("supportedBy", EntityName.class),
+                Arguments.of("author", NotNull.class),
+                Arguments.of("timestamp", NotNull.class));
     }
 
     private static Stream<Arguments> riskFieldValidators() {
