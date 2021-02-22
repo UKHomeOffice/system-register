@@ -103,7 +103,11 @@ describe("UpdateInfo", () => {
     "does not send unchanged values to the submission handler: %p",
     async (value) => {
       setUp({
-        system: { name: value, description: value, aliases: value && [value] },
+        system: {
+          name: "name",
+          description: value,
+          aliases: value ? [value] : [],
+        },
       });
       const saveButton = screen.getByRole("button", { name: /save/i });
 
