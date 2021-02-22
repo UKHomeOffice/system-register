@@ -9,7 +9,6 @@ import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystem
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemAddedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.helpers.FakeEventStore;
 import uk.gov.digital.ho.systemregister.helpers.builders.AddSystemCommandBuilder;
 import uk.gov.digital.ho.systemregister.io.database.IEventStore;

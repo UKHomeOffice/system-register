@@ -1,6 +1,4 @@
-package uk.gov.digital.ho.systemregister.domain;
-
-import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandProcessingException;
+package uk.gov.digital.ho.systemregister.application.messaging.commandhandlers;
 
 public class SystemNameNotUniqueException extends CommandProcessingException {
     @SuppressWarnings("CdiInjectionPointsInspection")

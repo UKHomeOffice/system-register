@@ -1,6 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.api;
 
-import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

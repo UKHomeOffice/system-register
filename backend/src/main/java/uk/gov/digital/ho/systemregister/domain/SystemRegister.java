@@ -25,13 +25,14 @@ public class SystemRegister {
                 .findFirst();
     }
 
-    public AddSystemResult addSystem(SystemData system) {
-        if (systems.get(system.name) != null) {
-            return AddSystemResult.duplicate(systems.get(system.name));
+    public SR_System addSystem(SystemData system) throws DuplicateSystemException {
+        if (systems.containsKey(system.name)) {
+            throw new DuplicateSystemException(system);
         }
+
         SR_System newSystem = buildSystem(system);
         systems.put(newSystem.name, newSystem);
-        return AddSystemResult.added(newSystem);
+        return newSystem;
     }
 
     public List<SR_System> getAllSystems() {

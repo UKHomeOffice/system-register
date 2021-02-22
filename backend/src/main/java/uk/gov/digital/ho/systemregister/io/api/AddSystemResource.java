@@ -5,7 +5,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.AddSystemCommandHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystemCommand;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
-import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.io.api.dto.AddSystemCommandDTO;
 import uk.gov.digital.ho.systemregister.io.api.dto.DtoMapper;
 import uk.gov.digital.ho.systemregister.io.api.dto.UpdatedSystemDTO;

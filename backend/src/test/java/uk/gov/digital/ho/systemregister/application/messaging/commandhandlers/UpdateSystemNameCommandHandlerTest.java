@@ -13,7 +13,6 @@ import uk.gov.digital.ho.systemregister.application.messaging.commands.UpdateSys
 import uk.gov.digital.ho.systemregister.application.messaging.eventhandlers.SystemNameUpdatedEventHandler;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemNameUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
-import uk.gov.digital.ho.systemregister.domain.SystemNameNotUniqueException;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
 import javax.validation.Valid;
