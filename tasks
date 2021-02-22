@@ -40,7 +40,7 @@ do
         set_local_environment_variables
         cd $frontend_dir
         yarn install
-        yarn audit
+        ./audit.sh
         yarn test --watchAll=false
         yarn run build
         cd $project_dir
