@@ -3,6 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import AddSystemForm from "../AddSystemForm";
+import ValidationError from "../../../services/validationError";
 
 function setUp() {
   render(
@@ -110,6 +111,26 @@ describe("add system", () => {
     expect(errors).toHaveTextContent(
       /must not use the following special characters/i
     );
+  });
+
+  it("shows validation errors returned from the API", async () => {
+    submitHandler.mockRejectedValue(
+      new ValidationError({
+        name: "name validation error",
+      })
+    );
+    setUp();
+    const saveButton = screen.getByRole("button", { name: /save/i });
+    const systemNameField = await screen.findByLabelText(/system name/i);
+
+    overtype(systemNameField, "valid name");
+    user.click(saveButton);
+
+    const error = await screen.findByText(/validation error/i, {
+      selector: "a",
+    });
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent("name validation error");
   });
 
   it("calls cancel handler", () => {

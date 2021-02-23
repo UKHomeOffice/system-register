@@ -1,21 +1,27 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 
 import AddSystemForm from "./AddSystemForm";
+import AddSystemSuccess from "./AddSystemSuccess";
 import api from "../../services/api";
 
 import "./AddSystem.css";
 
 export default function AddSystem({ onAdd, validateNewSystem }) {
   const history = useHistory();
+  const { path } = useRouteMatch();
 
   const handleSubmit = useCallback(
     async (data) => {
-      await api.addSystem(data);
+      const { id, name } = await api.addSystem(data);
       onAdd();
+      history.push(`${path}/success`, {
+        id,
+        name,
+      });
     },
-    [onAdd]
+    [history, path, onAdd]
   );
 
   const handleCancel = useCallback(() => {
@@ -23,11 +29,18 @@ export default function AddSystem({ onAdd, validateNewSystem }) {
   }, [history]);
 
   return (
-    <AddSystemForm
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      validate={validateNewSystem}
-    />
+    <Switch>
+      <Route path={path} exact>
+        <AddSystemForm
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          validate={validateNewSystem}
+        />
+      </Route>
+      <Route path={`${path}/success`}>
+        <AddSystemSuccess returnPath={path} />
+      </Route>
+    </Switch>
   );
 }
 

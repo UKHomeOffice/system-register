@@ -30,6 +30,10 @@ describe("<AddSystem />", () => {
   });
 
   it("sends new system data to the API and refreshes register data on submission", async () => {
+    api.addSystem.mockResolvedValue({
+      id: 456,
+      name: "new system",
+    });
     render(
       withRouting(
         <AddSystem validateNewSystem={() => undefined} onAdd={addHandler} />
@@ -47,6 +51,33 @@ describe("<AddSystem />", () => {
       });
       expect(addHandler).toBeCalled();
     });
+  });
+
+  it("redirect the user to the confirmation page after successfully submission", async () => {
+    api.addSystem.mockResolvedValue({
+      id: 456,
+      name: "new system",
+    });
+    render(
+      withRouting(
+        <AddSystem validateNewSystem={() => undefined} onAdd={addHandler} />
+      )
+    );
+    const systemNameField = await screen.findByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "new system");
+    user.click(saveButton);
+
+    expect(
+      await screen.findByRole("heading", { name: /system added/i })
+    ).toBeInTheDocument();
+    const systemLink = screen.getByRole("link");
+    expect(systemLink).toHaveTextContent("new system");
+    expect(systemLink).toHaveAttribute(
+      "href",
+      expect.stringMatching(/\/system\/456$/)
+    );
   });
 
   function overtype(field, value) {
