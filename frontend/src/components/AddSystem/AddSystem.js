@@ -3,11 +3,20 @@ import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 
 import AddSystemForm from "./AddSystemForm";
+import api from "../../services/api";
 
 import "./AddSystem.css";
 
 export default function AddSystem({ onAdd, validateNewSystem }) {
   const history = useHistory();
+
+  const handleSubmit = useCallback(
+    async (data) => {
+      await api.addSystem(data);
+      onAdd();
+    },
+    [onAdd]
+  );
 
   const handleCancel = useCallback(() => {
     history.push("/");
@@ -15,7 +24,7 @@ export default function AddSystem({ onAdd, validateNewSystem }) {
 
   return (
     <AddSystemForm
-      onSubmit={() => {}}
+      onSubmit={handleSubmit}
       onCancel={handleCancel}
       validate={validateNewSystem}
     />
