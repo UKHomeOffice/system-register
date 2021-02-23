@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useHistory, useLocation } from "react-router-dom";
+import Panel from "@govuk-react/panel";
 
 import Link from "../Linking/Link";
+
+import "./addSystemSuccess.css";
 
 function AddSystemSuccess({ returnPath }) {
   const history = useHistory();
@@ -15,8 +18,12 @@ function AddSystemSuccess({ returnPath }) {
   }, [state, history, returnPath]);
 
   return state ? (
-    <>
-      <h1>System added to the Register</h1>
+    <div className="centerContent">
+      <Panel
+        title="System added to the Register"
+        className="add-system-success-panel"
+      />
+      <h1 className="add-system-success-heading">Next Steps:</h1>
       <p>
         You can continue to{" "}
         <Link to={`/system/${state?.id}`}>
@@ -24,7 +31,7 @@ function AddSystemSuccess({ returnPath }) {
         </Link>
         .
       </p>
-    </>
+    </div>
   ) : null;
 }
 

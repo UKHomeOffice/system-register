@@ -1,0 +1,13 @@
+.add-system-success-panel {
+  background-color: var(--green-success-background) !important;
+  border: var(--green-success-background) !important;
+  width: 48%;
+}
+
+.add-system-success-panel h1 {
+  font-size: 36px;
+}
+
+.add-system-success-heading {
+  margin-bottom: 10px;
+}
