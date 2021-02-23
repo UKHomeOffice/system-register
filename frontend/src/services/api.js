@@ -2,6 +2,7 @@ import axios from "axios";
 import config from "../config/config";
 import SystemNotFoundException from "./systemNotFoundException";
 import ValidationError from "./validationError";
+import addSystemRequestData from "../data/add-system-request-body-template.json";
 
 const api = {
   getAllSystems,
@@ -144,22 +145,10 @@ async function updateInformationAssetOwner(id, data) {
 }
 
 async function addSystem(data) {
-  const response = await sendPost(`systems/`, {
+  const response = await sendPost(`systems`, {
     system: {
+      ...addSystemRequestData,
       name: data.name,
-      aliases: [],
-      description: null,
-      portfolio: "Unknown",
-      criticality: null,
-      investment_state: null,
-      business_owner: null,
-      service_owner: null,
-      tech_owner: null,
-      product_owner: null,
-      information_asset_owner: null,
-      developed_by: null,
-      supported_by: null,
-      risks: [],
     },
   });
   return response.data;
