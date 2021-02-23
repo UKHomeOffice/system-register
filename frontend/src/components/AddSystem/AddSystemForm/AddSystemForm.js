@@ -4,10 +4,10 @@ import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 import { mapValues } from "lodash-es";
 
-import ErrorSummary from "../ErrorSummary/ErrorSummary";
-import SecondaryButton from "../SecondaryButton";
-import TextField from "../TextField";
-import ValidationError from "../../services/validationError";
+import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import SecondaryButton from "../../SecondaryButton";
+import TextField from "../../TextField";
+import ValidationError from "../../../services/validationError";
 import { validateName } from "./validators";
 
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {

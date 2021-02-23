@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useHistory, useLocation } from "react-router-dom";
 import Panel from "@govuk-react/panel";
 
-import Link from "../Linking/Link";
+import Link from "../../Linking/Link";
 
 import "./addSystemSuccess.css";
 

@@ -2,7 +2,7 @@ import {
   containsForbiddenCharacters,
   isEmpty,
   isTooShort,
-} from "../../utilities/sharedValidators";
+} from "../../../utilities/sharedValidators";
 
 function validateName(value) {
   if (containsForbiddenCharacters(value)) {

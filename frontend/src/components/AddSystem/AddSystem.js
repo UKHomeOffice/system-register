@@ -2,8 +2,8 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 
-import AddSystemForm from "./AddSystemForm";
-import AddSystemSuccess from "./AddSystemSuccess";
+import AddSystemForm from "./AddSystemForm/AddSystemForm";
+import AddSystemSuccess from "./AddSystemSuccess/AddSystemSuccess";
 import api from "../../services/api";
 
 import "./AddSystem.css";
