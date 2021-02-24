@@ -1,27 +1,28 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # workaround for missing feature
 # https://github.com/yarnpkg/yarn/issues/6669
 
-set -u
-readonly script_path="$(dirname "$0")"
+script_path=`dirname "$0"`
+audit_output_file=`mktemp -q`
 
-set +e
 cd "${script_path}"
-output="$(yarn audit --json)"
+yarn audit --json > "${audit_output_file}"
 result="$?"
-set -e
 
-if [ $result -eq 0 ]; then
-	# everything is fine
+if [ "$result" -eq 0 ]; then
+	rm "${audit_output_file}"
 	exit 0
 fi
 
-if [ -f yarn-audit-known-issues ] && echo "$output" | grep auditAdvisory | diff -q yarn-audit-known-issues - > /dev/null 2>&1; then
-	echo
-	echo Ignoring known vulnerabilities
-	exit 0
+if [ -f yarn-audit-known-issues ] && grep auditAdvisory "${audit_output_file}" | diff -q yarn-audit-known-issues - > /dev/null 2>&1; then
+  rm "${audit_output_file}"
+  echo
+  echo Ignoring known vulnerabilities
+  exit 0
 fi
+
+rm "${audit_output_file}"
 
 echo
 echo Security vulnerabilities were found that were not ignored
@@ -32,10 +33,8 @@ echo fixes and they do not apply to production, you may ignore them
 echo
 echo To ignore these vulnerabilities, run:
 echo
-echo "yarn audit --json | grep auditAdvisory > yarn-audit-known-issues"
+echo '  yarn audit --json | grep auditAdvisory > yarn-audit-known-issues'
 echo
 echo and commit the yarn-audit-known-issues file
-echo
-echo "$output" | grep auditAdvisory | python -mjson.tool
 
-exit "$result"
+exit "${result}"
