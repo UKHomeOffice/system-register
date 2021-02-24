@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Select from "@govuk-react/select";
-import TextField from "@material-ui/core/TextField";
+import { InputField, Select } from "govuk-react";
 
 import Link from "../Linking/Link";
 import SystemCard from "../SystemCard/SystemCard";
@@ -30,15 +29,16 @@ function SystemList({ register }) {
     <div className="centerContent">
       <h1>System search</h1>
       <div className="system-list-filter">
-        <span className="system-list-search">
-          <TextField
-            id="search"
-            label="search"
-            onChange={(e) => setSearchString(e.target.value)}
-          />
-        </span>
+        <InputField
+          input={{ placeholder: "Search..." }}
+          onChange={(e) => setSearchString(e.target.value)}
+        >
+          <span className="system-list--visually-hidden">
+            Find a system on the System Register
+          </span>
+        </InputField>
+
         <Select
-          data-testid="select-portfolio"
           className="system-list-dropdown"
           name="portfolio-select"
           label="Filter by Portfolio"
@@ -46,20 +46,22 @@ function SystemList({ register }) {
           value={selectedPortfolio}
         >
           <option value="all">All Portfolios</option>
-          {portfolios.map((p, i) => (
-            <option data-testid={`portfolio-option-${p}`} key={i} value={p}>
-              {p}
+          {portfolios.map((portfolio, index) => (
+            <option key={index} value={portfolio}>
+              {portfolio}
             </option>
           ))}
         </Select>
       </div>
+
       <div className="topMarginBig">
         <strong>Number of systems identified: </strong>
-        {systems?.length}
+        {visibleSystems.length}
       </div>
       <p>
         Can’t find your system? <Link to={`/add-system`}>Add a system</Link>
       </p>
+
       <div className="topMarginBig">
         {visibleSystems?.map((system, key) => (
           <SystemCard key={key} system={system} />

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SystemList /> matches snapshot 1`] = `
+exports[`SystemList matches snapshot 1`] = `
 <div
   className="centerContent"
 >
@@ -10,55 +10,56 @@ exports[`<SystemList /> matches snapshot 1`] = `
   <div
     className="system-list-filter"
   >
-    <span
-      className="system-list-search"
+    <label
+      className="sc-dmlrTW kkJFxI"
+      onChange={[Function]}
     >
-      <div
-        className="MuiFormControl-root MuiTextField-root"
+      <span
+        className="sc-idOhPF hakAYg"
       >
-        <label
-          className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-          data-shrink={false}
-          htmlFor="search"
-          id="search-label"
+        <span
+          className="system-list--visually-hidden"
         >
-          search
-        </label>
-        <div
-          className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-          onClick={[Function]}
-        >
-          <input
-            aria-invalid={false}
-            autoFocus={false}
-            className="MuiInputBase-input MuiInput-input"
-            disabled={false}
-            id="search"
-            onAnimationStart={[Function]}
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            required={false}
-            type="text"
-          />
-        </div>
-      </div>
-    </span>
-    <select
-      data-testid="select-portfolio"
+          Find a system on the System Register
+        </span>
+      </span>
+      <input
+        className="sc-hHftDr kvFlge"
+        placeholder="Search..."
+        type="text"
+      />
+    </label>
+    <label
+      className="sc-dmlrTW kkJFxI system-list-dropdown"
+      name="portfolio-select"
       onChange={[Function]}
       value="all"
     >
-      <option
-        value="Portfolio 1"
-      />
-      <option
-        value="Portfolio 2"
-      />
-      <option
-        value="Portfolio 3"
-      />
-    </select>
+      <span
+        className="sc-idOhPF hakAYg"
+      >
+        Filter by Portfolio
+      </span>
+      <select
+        className="sc-jXktwP kXcGdf"
+      >
+        <option
+          value="all"
+        >
+          All Portfolios
+        </option>
+        <option
+          value="Portfolio 1"
+        >
+          Portfolio 1
+        </option>
+        <option
+          value="Portfolio 2"
+        >
+          Portfolio 2
+        </option>
+      </select>
+    </label>
   </div>
   <div
     className="topMarginBig"
@@ -72,7 +73,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     Can’t find your system? 
     <a
       aria-current={null}
-      className="sc-bdfBwQ gTeTd  system-register-link"
+      className="sc-gsTCUz eGDAMx  system-register-link"
       href="/add-system"
       onClick={[Function]}
     >
@@ -87,7 +88,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-gsTCUz eGDAMx systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -127,7 +128,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-gsTCUz eGDAMx systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
@@ -167,7 +168,7 @@ exports[`<SystemList /> matches snapshot 1`] = `
     >
       <a
         aria-current={null}
-        className="sc-bdfBwQ gTeTd systemCard-link system-register-link"
+        className="sc-gsTCUz eGDAMx systemCard-link system-register-link"
         href="/system/undefined"
         onClick={[Function]}
         style={
