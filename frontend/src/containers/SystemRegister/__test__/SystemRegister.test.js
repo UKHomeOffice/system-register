@@ -106,6 +106,21 @@ describe("<SystemRegister />", () => {
       });
     });
 
+    it("navigates to add-system page", async () => {
+      const { getByText } = render(
+        <BrowserRouter>
+          <SystemRegister />
+        </BrowserRouter>
+      );
+
+      userEvent.click(getByText(/Add a system/i));
+
+      await waitFor(() => {
+        const dashboard = getByText("Add a system to the register");
+        expect(dashboard).toBeInTheDocument();
+      });
+    });
+
     it("navigates to the risk dashboard", async () => {
       const { getByText } = render(
         <BrowserRouter>
