@@ -11,5 +11,26 @@
   "information_asset_owner": null,
   "developed_by": null,
   "supported_by": null,
-  "risks": []
+  "risks": [
+    {
+      "name": "architecture",
+      "level": null,
+      "rationale": null
+    },
+    {
+      "name": "change",
+      "level": null,
+      "rationale": null
+    },
+    {
+      "name": "commercial",
+      "level": null,
+      "rationale": null
+    },
+    {
+      "name": "technology",
+      "level": null,
+      "rationale": null
+    }
+  ]
 }
