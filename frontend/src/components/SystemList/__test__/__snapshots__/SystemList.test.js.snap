@@ -64,10 +64,21 @@ exports[`<SystemList /> matches snapshot 1`] = `
     className="topMarginBig"
   >
     <strong>
-      Number of systems identified: 
+      Number of systems identified:
     </strong>
     3
   </div>
+  <p>
+    Can't find your system?
+    <a
+      aria-current={null}
+      className="sc-bdfBwQ gTeTd  system-register-link"
+      href="/add-system"
+      onClick={[Function]}
+    >
+      Add a system
+    </a>
+  </p>
   <div
     className="topMarginBig"
   >
@@ -89,18 +100,18 @@ exports[`<SystemList /> matches snapshot 1`] = `
           System 1
         </strong>
         <small>
-           (Portfolio: 
+           (Portfolio:
           Portfolio 1
-          , 
+          ,
           <span
             className="message"
             data-testid="modified-on"
           >
-            Last modified: 
+            Last modified:
             <span>
               Never
             </span>
-            
+
           </span>
           )
         </small>
@@ -129,18 +140,18 @@ exports[`<SystemList /> matches snapshot 1`] = `
           System 3
         </strong>
         <small>
-           (Portfolio: 
+           (Portfolio:
           Portfolio 2
-          , 
+          ,
           <span
             className="message"
             data-testid="modified-on"
           >
-            Last modified: 
+            Last modified:
             <span>
               Never
             </span>
-            
+
           </span>
           )
         </small>
@@ -169,18 +180,18 @@ exports[`<SystemList /> matches snapshot 1`] = `
           System 2
         </strong>
         <small>
-           (Portfolio: 
+           (Portfolio:
           Portfolio 2
-          , 
+          ,
           <span
             className="message"
             data-testid="modified-on"
           >
-            Last modified: 
+            Last modified:
             <span>
               Never
             </span>
-            
+
           </span>
           )
         </small>
