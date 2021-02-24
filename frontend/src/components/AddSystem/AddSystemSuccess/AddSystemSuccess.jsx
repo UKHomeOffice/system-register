@@ -23,7 +23,7 @@ function AddSystemSuccess({ returnPath }) {
         title="System added to the Register"
         className="add-system-success-panel"
       />
-      <h1 className="add-system-success-heading">Next Steps:</h1>
+      <h1 className="add-system-success-heading">Next steps</h1>
       <p>
         You can continue to{" "}
         <Link to={`/system/${state?.id}`}>
