@@ -1,14 +1,16 @@
-/* eslint-disable */
-import "./SystemList.css";
-import React, { useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Select from "@govuk-react/select";
-import SystemCard from "../SystemCard/SystemCard";
+import TextField from "@material-ui/core/TextField";
+
 import Link from "../Linking/Link";
+import SystemCard from "../SystemCard/SystemCard";
+
+import "./SystemList.css";
 
 //todo make stateless, all components stateless all, state should be in the containers only
-const SystemList = (props) => {
-  const systems = props.register?.systems;
+function SystemList({ register }) {
+  const systems = register?.systems;
   const [visibleSystems, setVisibleSystems] = useState(systems);
   const [selectedPortfolio, setSelectedPortfolio] = useState("all");
   const [searchString, setSearchString] = useState("");
@@ -22,7 +24,7 @@ const SystemList = (props) => {
     );
   };
 
-  useEffect(filter, [searchString, selectedPortfolio, props.register]);
+  useEffect(filter, [searchString, selectedPortfolio, register]);
 
   return (
     <div className="centerContent">
@@ -56,7 +58,7 @@ const SystemList = (props) => {
         {systems?.length}
       </div>
       <p>
-        Can't find your system? <Link to={`/add-system`}>Add a system</Link>
+        Can’t find your system? <Link to={`/add-system`}>Add a system</Link>
       </p>
       <div className="topMarginBig">
         {visibleSystems?.map((system, key) => (
@@ -65,6 +67,18 @@ const SystemList = (props) => {
       </div>
     </div>
   );
+}
+
+SystemList.propTypes = {
+  register: PropTypes.shape({
+    systems: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        aliases: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+        portfolio: PropTypes.string,
+      }).isRequired
+    ).isRequired,
+  }),
 };
 
 function containsCaseInsensitive(a, b) {
@@ -76,10 +90,10 @@ function matchesPortfolio(system, portfolio) {
 }
 
 function matchesSearch(system, needle) {
-  const result =
+  return (
     containsCaseInsensitive(system.name, needle) ||
-    system.aliases.some((alias) => containsCaseInsensitive(alias, needle));
-  return result;
+    system.aliases.some((alias) => containsCaseInsensitive(alias, needle))
+  );
 }
 
 export default SystemList;
