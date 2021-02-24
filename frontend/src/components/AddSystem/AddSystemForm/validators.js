@@ -14,4 +14,10 @@ function validateName(value) {
   }
 }
 
-export { validateName };
+function validateDescription(value) {
+  if (isTooShort(value)) {
+    return "You must enter a description or leave blank if you do not know it.";
+  }
+}
+
+export { validateName, validateDescription };

@@ -30,7 +30,7 @@ describe("add system", () => {
     jest.resetAllMocks();
   });
 
-  it("provides an initial empty system name field", async () => {
+  it("provides an initially empty system name field", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
 
@@ -38,17 +38,28 @@ describe("add system", () => {
     expect(systemNameField.value).toBe("");
   });
 
-  it("calls submission handler with new system name", async () => {
+  it("provides an initially empty system description field", async () => {
+    setUp();
+    const systemDescriptionField = screen.getByLabelText(/system description/i);
+
+    expect(systemDescriptionField).toBeInTheDocument();
+    expect(systemDescriptionField.value).toBe("");
+  });
+
+  it("calls submission handler with new values for system name and description", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
+    const systemDescriptionField = screen.getByLabelText(/system description/i);
     const saveButton = await screen.findByText(/save/i);
 
     overtype(systemNameField, "new system name");
+    overtype(systemDescriptionField, "new system description");
     user.click(saveButton);
 
     await waitFor(() => {
       expect(submitHandler).toBeCalledWith({
         name: "new system name",
+        description: "new system description",
       });
     });
   });
@@ -64,6 +75,7 @@ describe("add system", () => {
     await waitFor(() => {
       expect(submitHandler).toBeCalledWith({
         name: "new system name",
+        description: "",
       });
     });
   });
@@ -95,6 +107,21 @@ describe("add system", () => {
 
     expect(
       await screen.findByText("system already exists", { selector: "label *" })
+    ).toBeInTheDocument();
+  });
+
+  it("validates description before submission", async () => {
+    setUp();
+    const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemDescriptionField, "x");
+    user.click(saveButton);
+
+    expect(
+      await screen.findByText(/must enter a description or leave blank/i, {
+        selector: "label *",
+      })
     ).toBeInTheDocument();
   });
 

@@ -40,14 +40,19 @@ describe("<AddSystem />", () => {
       )
     );
     const systemNameField = await screen.findByLabelText(/system name/i);
+    const systemDescriptionField = await screen.findByLabelText(
+      /system description/i
+    );
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     overtype(systemNameField, "new system");
+    overtype(systemDescriptionField, "new system description");
     user.click(saveButton);
 
     await waitFor(() => {
       expect(api.addSystem).toBeCalledWith({
         name: "new system",
+        description: "new system description",
       });
       expect(addHandler).toBeCalled();
     });

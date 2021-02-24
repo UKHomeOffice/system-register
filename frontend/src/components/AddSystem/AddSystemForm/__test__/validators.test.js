@@ -1,4 +1,4 @@
-import { validateName } from "../validators";
+import { validateName, validateDescription } from "../validators";
 
 describe("AddSystem validators", () => {
   describe("validate system name", () => {
@@ -24,5 +24,25 @@ describe("AddSystem validators", () => {
 
       expect(result).toBeUndefined();
     });
+  });
+
+  describe("validate system description", () => {
+    it.each(["a", " a", "a "])(
+      "returns an error message if description is too short: %p",
+      (value) => {
+        const result = validateDescription(value);
+
+        expect(result).toContain("must enter a description");
+      }
+    );
+
+    it.each(["description", ""])(
+      "returns undefined for valid values: %p",
+      (value) => {
+        const result = validateDescription(value);
+
+        expect(result).toBeUndefined();
+      }
+    );
   });
 });

@@ -8,7 +8,9 @@ import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
-import { validateName } from "./validators";
+import { validateName, validateDescription } from "./validators";
+
+import Textarea from "../../Textarea";
 
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {
   const handleSubmit = useCallback(
@@ -38,11 +40,11 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
     <div className="centerContent">
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ name: "" }}
+        initialValues={{ name: "", description: "" }}
         validateOnChange={false}
       >
         <>
-          <ErrorSummary order={["name"]} />
+          <ErrorSummary order={["name", "description"]} />
 
           <h1>Add a system to the register</h1>
           <p className="add-system-secondary">
@@ -58,6 +60,14 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
             >
               System name
             </TextField>
+            <Textarea
+              name="description"
+              hint="Please provide a non-specialist summary of what the system is used for."
+              inputClassName="width-two-thirds"
+              validate={validateDescription}
+            >
+              System description
+            </Textarea>
             <div className="add-system-form-controls">
               <Button type="submit">Save</Button>
               <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>

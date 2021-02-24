@@ -149,6 +149,7 @@ async function addSystem(data) {
     system: {
       ...addSystemRequestData,
       name: data.name,
+      description: data.description,
     },
   });
   return response.data;

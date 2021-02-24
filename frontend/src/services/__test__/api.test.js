@@ -701,9 +701,13 @@ describe("api", () => {
       server.use(
         rest.post("/api/systems", (req, res, ctx) => {
           const {
-            system: { name: Name },
+            system: { name: Name, description: Description },
           } = req.body;
           if (Name !== "newly added system") {
+            console.error("System name does not match");
+            return;
+          }
+          if (Description !== "new system description") {
             console.error("System name does not match");
             return;
           }
@@ -719,6 +723,7 @@ describe("api", () => {
 
       const pendingSystem = api.addSystem({
         name: "newly added system",
+        description: "new system description",
       });
 
       await expect(pendingSystem).resolves.toMatchObject(data);
