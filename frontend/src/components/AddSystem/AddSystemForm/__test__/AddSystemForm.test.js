@@ -148,6 +148,87 @@ describe("add system", () => {
     ).toBeInTheDocument();
   });
 
+  it("validates alias for invalid values before submission", async () => {
+    setUp();
+    const aliasInputFields = getAliasFields();
+
+    overtype(aliasInputFields[0], "$");
+    user.tab();
+
+    expect(
+      await screen.findByText(
+        /must not use the following special characters/i,
+        { selector: ".alias-input-list *" }
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("validates aliases for duplicates before submission", async () => {
+    setUp();
+    const addAliasButton = screen.getByRole("button", {
+      name: /add another alias/i,
+    });
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(addAliasButton);
+    const aliasInputFields = getAliasFields();
+
+    overtype(aliasInputFields[0], "alias");
+    overtype(aliasInputFields[1], "alias");
+    user.click(saveButton);
+
+    expect(
+      await screen.findAllByText(/duplicate alias/, {
+        selector: ".alias-input-list *",
+      })
+    ).toHaveLength(2);
+  });
+
+  it("revalidates duplicates after one of the duplicates has been removed", async () => {
+    setUp();
+    const addAliasButton = screen.getByRole("button", {
+      name: /add another alias/i,
+    });
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.click(addAliasButton);
+    const aliasInputFields = getAliasFields();
+
+    overtype(aliasInputFields[0], "alias");
+    overtype(aliasInputFields[1], "alias");
+    user.click(saveButton);
+
+    expect(await screen.findAllByText(/duplicate alias/)).not.toHaveLength(0);
+
+    const removeButtons = screen.getAllByRole("button", { name: /remove/i });
+    user.click(removeButtons[0]);
+
+    await waitFor(() => {
+      expect(screen.queryByText(/duplicate alias/i)).not.toBeInTheDocument();
+    });
+  });
+
+  it.each(["", " "])("does not submit blank aliases", async (value) => {
+    setUp();
+    const aliasInputFields = getAliasFields();
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "irrelevant");
+    overtype(systemDescriptionField, "irrelevant");
+    overtype(aliasInputFields[0], value);
+    user.click(saveButton);
+
+    await waitFor(() =>
+      expect(submitHandler).toBeCalledWith({
+        name: "irrelevant",
+        description: "irrelevant",
+        aliases: [],
+      })
+    );
+  });
+
   it("shows an error summary containing all error details", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);

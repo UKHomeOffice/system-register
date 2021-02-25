@@ -2,13 +2,25 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { isArray, map, mapValues, trim } from "lodash-es";
+import {
+  isArray,
+  isEmpty,
+  map,
+  mapValues,
+  reject,
+  trim,
+  update,
+} from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
-import { validateName, validateDescription } from "./validators";
+import {
+  validateName,
+  validateDescription,
+  validateAliases,
+} from "./validators";
 
 import Textarea from "../../Textarea";
 import AliasInputList from "../../AliasInputList";
@@ -18,12 +30,16 @@ const deepTrim = (values) =>
     isArray(value) ? map(value, trim) : trim(value)
   );
 
+const removeBlankAliases = (values) =>
+  update(values, "aliases", (aliases) => reject(aliases, isEmpty));
+
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
       const trimmedValues = deepTrim(values);
+      const newValues = removeBlankAliases(trimmedValues);
       try {
-        await onSubmit(trimmedValues);
+        await onSubmit(newValues);
       } catch (e) {
         if (e instanceof ValidationError) {
           formik.setErrors(e.errors);
@@ -48,9 +64,10 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
         onSubmit={handleSubmit}
         initialValues={{ name: "", description: "", aliases: [""] }}
         validateOnChange={false}
+        validate={validateAliases}
       >
         <>
-          <ErrorSummary order={["name", "description"]} />
+          <ErrorSummary order={["name", "description", "aliases"]} />
 
           <h1>Add a system to the register</h1>
           <p className="add-system-secondary">
