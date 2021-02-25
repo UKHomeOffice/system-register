@@ -150,6 +150,7 @@ async function addSystem(data) {
       ...addSystemRequestData,
       name: data.name,
       description: data.description,
+      aliases: data.aliases,
     },
   });
   return response.data;

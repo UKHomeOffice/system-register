@@ -701,14 +701,18 @@ describe("api", () => {
       server.use(
         rest.post("/api/systems", (req, res, ctx) => {
           const {
-            system: { name: Name, description: Description },
+            system: { name, description, aliases },
           } = req.body;
-          if (Name !== "newly added system") {
+          if (name !== "newly added system") {
             console.error("System name does not match");
             return;
           }
-          if (Description !== "new system description") {
+          if (description !== "new system description") {
             console.error("System name does not match");
+            return;
+          }
+          if (aliases !== "[new system alias]") {
+            console.error("Alias list does not match:");
             return;
           }
           if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
@@ -724,6 +728,7 @@ describe("api", () => {
       const pendingSystem = api.addSystem({
         name: "newly added system",
         description: "new system description",
+        aliases: "[new system alias]",
       });
 
       await expect(pendingSystem).resolves.toMatchObject(data);

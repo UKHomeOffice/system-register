@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 import {
+  flow,
   isArray,
   isEmpty,
   map,
@@ -29,15 +30,21 @@ const deepTrim = (values) =>
   mapValues(values, (value) =>
     isArray(value) ? map(value, trim) : trim(value)
   );
-
 const removeBlankAliases = (values) =>
   update(values, "aliases", (aliases) => reject(aliases, isEmpty));
+const descriptionNullIfEmpty = (values) =>
+  update(values, "description", (description) =>
+    description != "" ? description : null
+  );
 
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
-      const trimmedValues = deepTrim(values);
-      const newValues = removeBlankAliases(trimmedValues);
+      const newValues = flow(
+        deepTrim,
+        removeBlankAliases,
+        descriptionNullIfEmpty
+      )(values);
       try {
         await onSubmit(newValues);
       } catch (e) {
