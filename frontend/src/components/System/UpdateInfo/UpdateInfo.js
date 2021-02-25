@@ -15,7 +15,7 @@ import {
   update,
 } from "lodash-es";
 
-import AliasInputList from "./AliasInputList";
+import AliasInputList from "../../AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";

@@ -1,6 +1,6 @@
 import React from "react";
 import user from "@testing-library/user-event";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route } from "react-router-dom";
 
 import AddSystem from "../AddSystem";
@@ -11,6 +11,13 @@ jest.mock("../../../services/api", () => ({
 }));
 
 const addHandler = jest.fn();
+
+function getAliasFields() {
+  const aliasesContainer = screen
+    .getByText("Aliases")
+    .closest(".alias-input-list");
+  return within(aliasesContainer).getAllByRole("textbox");
+}
 
 describe("<AddSystem />", () => {
   beforeEach(() => {
@@ -43,16 +50,19 @@ describe("<AddSystem />", () => {
     const systemDescriptionField = await screen.findByLabelText(
       /system description/i
     );
+    const aliasInputFields = getAliasFields();
     const saveButton = screen.getByRole("button", { name: /save/i });
 
     overtype(systemNameField, "new system");
     overtype(systemDescriptionField, "new system description");
+    overtype(aliasInputFields[0], "new system alias");
     user.click(saveButton);
 
     await waitFor(() => {
       expect(api.addSystem).toBeCalledWith({
         name: "new system",
         description: "new system description",
+        aliases: ["new system alias"],
       });
       expect(addHandler).toBeCalled();
     });

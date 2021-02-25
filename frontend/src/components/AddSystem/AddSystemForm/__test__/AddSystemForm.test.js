@@ -1,6 +1,6 @@
 import React from "react";
 import user from "@testing-library/user-event";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 
 import AddSystemForm from "../AddSystemForm";
 import ValidationError from "../../../../services/validationError";
@@ -25,20 +25,27 @@ const submitHandler = jest.fn();
 const cancelHandler = jest.fn();
 const validateName = jest.fn();
 
+function getAliasFields() {
+  const aliasesContainer = screen
+    .getByText("Aliases")
+    .closest(".alias-input-list");
+  return within(aliasesContainer).getAllByRole("textbox");
+}
+
 describe("add system", () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  it("provides an initially empty system name field", async () => {
+  it("displays an initially empty system name field", () => {
     setUp();
-    const systemNameField = await screen.findByLabelText(/system name/i);
+    const systemNameField = screen.getByLabelText(/system name/i);
 
     expect(systemNameField).toBeInTheDocument();
     expect(systemNameField.value).toBe("");
   });
 
-  it("provides an initially empty system description field", async () => {
+  it("displays an initially empty system description field", () => {
     setUp();
     const systemDescriptionField = screen.getByLabelText(/system description/i);
 
@@ -46,20 +53,31 @@ describe("add system", () => {
     expect(systemDescriptionField.value).toBe("");
   });
 
+  it("displays a single, initially empty alias input field", () => {
+    setUp();
+    const aliasInputFields = getAliasFields();
+
+    expect(aliasInputFields.length).toBe(1);
+    expect(aliasInputFields[0].value).toBe("");
+  });
+
   it("calls submission handler with new values for system name and description", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
     const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const aliasInputFields = getAliasFields();
     const saveButton = await screen.findByText(/save/i);
 
     overtype(systemNameField, "new system name");
     overtype(systemDescriptionField, "new system description");
+    overtype(aliasInputFields[0], "new system alias");
     user.click(saveButton);
 
     await waitFor(() => {
       expect(submitHandler).toBeCalledWith({
         name: "new system name",
         description: "new system description",
+        aliases: ["new system alias"],
       });
     });
   });
@@ -67,15 +85,20 @@ describe("add system", () => {
   it("trims values before calling the submission handler", async () => {
     setUp();
     const systemNameField = await screen.findByLabelText(/system name/i);
+    const systemDescriptionField = screen.getByLabelText(/system description/i);
+    const aliasInputFields = getAliasFields();
     const saveButton = await screen.findByText(/save/i);
 
     overtype(systemNameField, "       new system name       ");
+    overtype(systemDescriptionField, "     new system description     ");
+    overtype(aliasInputFields[0], "     new system alias    ");
     user.click(saveButton);
 
     await waitFor(() => {
       expect(submitHandler).toBeCalledWith({
         name: "new system name",
-        description: "",
+        description: "new system description",
+        aliases: ["new system alias"],
       });
     });
   });

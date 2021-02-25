@@ -3,7 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 import { Form, Formik } from "formik";
 
-import AliasInputList from ".";
+import AliasInputList from "./index";
 
 describe("AliasInputList", () => {
   const submitHandler = jest.fn();
@@ -31,13 +31,21 @@ describe("AliasInputList", () => {
 
   describe("removing entries", () => {
     it("removes the corresponding entry when a Remove button is clicked", async () => {
-      setup({ initialValues: { aliases: ["an alias", "another alias", "yet another value"] } });
-      const removeButtons = await screen.findAllByRole("button", { name: /remove/i });
+      setup({
+        initialValues: {
+          aliases: ["an alias", "another alias", "yet another value"],
+        },
+      });
+      const removeButtons = await screen.findAllByRole("button", {
+        name: /remove/i,
+      });
 
       user.click(removeButtons[1]);
 
       await waitFor(() => {
-        expect(screen.queryByDisplayValue("another alias")).not.toBeInTheDocument();
+        expect(
+          screen.queryByDisplayValue("another alias")
+        ).not.toBeInTheDocument();
       });
       expect(screen.getByDisplayValue("an alias")).toBeInTheDocument();
       expect(screen.getByDisplayValue("yet another value")).toBeInTheDocument();
@@ -45,7 +53,9 @@ describe("AliasInputList", () => {
 
     it("does not submit the form when removing an entry", async () => {
       setup({ initialValues: { aliases: [""] } });
-      const removeButton = await screen.findByRole("button", { name: /remove/i });
+      const removeButton = await screen.findByRole("button", {
+        name: /remove/i,
+      });
 
       user.click(removeButton);
 
@@ -80,7 +90,9 @@ describe("AliasInputList", () => {
   describe("moving focus", () => {
     it("gives focus to the Add button when the only remaining input is removed", async () => {
       setup({ initialValues: { aliases: [""] } });
-      const removeButton = await screen.findByRole("button", { name: /remove/i });
+      const removeButton = await screen.findByRole("button", {
+        name: /remove/i,
+      });
 
       user.click(removeButton);
 
@@ -90,7 +102,9 @@ describe("AliasInputList", () => {
 
     it("gives focus to the next text field when an input (other than the last) is removed", async () => {
       setup({ initialValues: { aliases: ["first", "second"] } });
-      const removeButtons = await screen.findAllByRole("button", { name: /remove/i });
+      const removeButtons = await screen.findAllByRole("button", {
+        name: /remove/i,
+      });
 
       user.click(removeButtons[0]);
 
@@ -102,7 +116,9 @@ describe("AliasInputList", () => {
 
     it("gives focus to the previous text field when the last input is removed", async () => {
       setup({ initialValues: { aliases: ["first", "second"] } });
-      const removeButtons = await screen.findAllByRole("button", { name: /remove/i });
+      const removeButtons = await screen.findAllByRole("button", {
+        name: /remove/i,
+      });
 
       user.click(removeButtons[1]);
 

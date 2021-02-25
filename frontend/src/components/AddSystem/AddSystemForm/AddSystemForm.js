@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { mapValues } from "lodash-es";
+import { isArray, map, mapValues, trim } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import SecondaryButton from "../../SecondaryButton";
@@ -11,11 +11,17 @@ import ValidationError from "../../../services/validationError";
 import { validateName, validateDescription } from "./validators";
 
 import Textarea from "../../Textarea";
+import AliasInputList from "../../AliasInputList";
+
+const deepTrim = (values) =>
+  mapValues(values, (value) =>
+    isArray(value) ? map(value, trim) : trim(value)
+  );
 
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
-      const trimmedValues = mapValues(values, (value) => value.trim());
+      const trimmedValues = deepTrim(values);
       try {
         await onSubmit(trimmedValues);
       } catch (e) {
@@ -40,7 +46,7 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
     <div className="centerContent">
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ name: "", description: "" }}
+        initialValues={{ name: "", description: "", aliases: [""] }}
         validateOnChange={false}
       >
         <>
@@ -68,6 +74,7 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
             >
               System description
             </Textarea>
+            <AliasInputList />
             <div className="add-system-form-controls">
               <Button type="submit">Save</Button>
               <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
