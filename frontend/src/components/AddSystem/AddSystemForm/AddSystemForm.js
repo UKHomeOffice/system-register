@@ -70,7 +70,8 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
 
           <h1>Add a system to the register</h1>
           <p className="add-system-secondary">
-            Please enter the name for the new system.
+            Please enter the name, description and any aliases for the new
+            system.
           </p>
 
           <Form>
