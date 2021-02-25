@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { InputField, Select } from "govuk-react";
+import { flow, map, partialRight, sortBy, sortedUniq } from "lodash-es";
 
 import Link from "../Linking/Link";
 import SystemCard from "../SystemCard/SystemCard";
 
 import "./SystemList.css";
 
-//todo make stateless, all components stateless all, state should be in the containers only
+const mapToPortfolio = partialRight(map, "portfolio");
+const getPortfolios = flow(mapToPortfolio, sortBy, sortedUniq);
+
 function SystemList({ register }) {
-  const systems = register?.systems;
-  const [visibleSystems, setVisibleSystems] = useState(systems);
+  const systems = register.systems || [];
   const [selectedPortfolio, setSelectedPortfolio] = useState("all");
   const [searchString, setSearchString] = useState("");
-  const portfolios = [...new Set(systems?.map((s) => s.portfolio))].sort();
+  const portfolios = getPortfolios(systems);
 
-  const filter = () => {
-    setVisibleSystems(
-      systems
-        ?.filter((s) => matchesPortfolio(s, selectedPortfolio))
-        .filter((s) => matchesSearch(s, searchString))
-    );
-  };
-
-  useEffect(filter, [searchString, selectedPortfolio, register]);
+  const visibleSystems = systems.filter(
+    (system) =>
+      matchesPortfolio(system, selectedPortfolio) &&
+      matchesSearch(system, searchString)
+  );
 
   return (
     <div className="centerContent">
@@ -63,7 +61,7 @@ function SystemList({ register }) {
       </p>
 
       <div className="topMarginBig">
-        {visibleSystems?.map((system, key) => (
+        {visibleSystems.map((system, key) => (
           <SystemCard key={key} system={system} />
         ))}
       </div>
