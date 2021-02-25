@@ -149,7 +149,7 @@ async function addSystem(data) {
     system: {
       ...addSystemRequestData,
       name: data.name,
-      description: data.description,
+      description: nullIfEmpty(data.description),
       aliases: data.aliases,
     },
   });

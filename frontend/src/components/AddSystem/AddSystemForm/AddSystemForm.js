@@ -32,19 +32,11 @@ const deepTrim = (values) =>
   );
 const removeBlankAliases = (values) =>
   update(values, "aliases", (aliases) => reject(aliases, isEmpty));
-const descriptionNullIfEmpty = (values) =>
-  update(values, "description", (description) =>
-    description != "" ? description : null
-  );
 
 export default function AddSystemForm({ onSubmit, onCancel, validate }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
-      const newValues = flow(
-        deepTrim,
-        removeBlankAliases,
-        descriptionNullIfEmpty
-      )(values);
+      const newValues = flow(deepTrim, removeBlankAliases)(values);
       try {
         await onSubmit(newValues);
       } catch (e) {
