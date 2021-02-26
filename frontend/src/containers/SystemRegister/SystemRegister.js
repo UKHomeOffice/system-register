@@ -66,8 +66,8 @@ class SystemRegister extends React.Component {
   render() {
     return (
       <>
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
         <header>
+          <SkipLink href="#main-content">Skip to main content</SkipLink>
           <TitleBar />
           <Banner phase="in development">
             This is a new service - your <Link to="/contact">feedback</Link>{" "}
