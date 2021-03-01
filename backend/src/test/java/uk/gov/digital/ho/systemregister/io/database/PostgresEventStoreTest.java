@@ -35,6 +35,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEvent
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAliasesUpdatedEventBuilder.aSystemAliasesUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemRisksUpdatedEventBuilder.aSystemRisksUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.TechnicalOwnerUpdatedEventBuilder.aTechnicalOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
@@ -262,6 +263,19 @@ public class PostgresEventStoreTest {
     @Test
     public void saveSupportedByUpdatedEvent() {
         var expected = aSupportedByUpdatedEvent()
+                .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void saveRiskUpdatedEvent() {
+        var expected = aSystemRisksUpdatedEvent()
                 .build();
         eventStore.save(expected);
 
