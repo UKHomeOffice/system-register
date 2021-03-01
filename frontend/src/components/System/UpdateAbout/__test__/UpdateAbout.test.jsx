@@ -29,6 +29,18 @@ describe("UpdateAbout", () => {
     user.type(field, value);
   }
 
+  async function givenTheUserHasEnteredInvalidValues() {
+    setUp({ system: { name: "system" } });
+    const developedByField = screen.getByLabelText(/who develops/i);
+    const supportedByField = screen.getByLabelText(/who supports/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(developedByField, "x");
+    overtype(supportedByField, "$!");
+
+    return { developedByField, supportedByField, saveButton };
+  }
+
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -53,6 +65,7 @@ describe("UpdateAbout", () => {
     setUp({ system: null });
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
+    expect(document.title).toBe("Loading system... — System Register");
   });
 
   describe("portfolio", () => {
@@ -256,25 +269,16 @@ describe("UpdateAbout", () => {
   });
 
   it("shows an error summary containing all error details", async () => {
-    setUp({
-      system: {
-        name: "system",
-        developed_by: "developer",
-        supported_by: "person",
-      },
-    });
-    const developedByField = screen.getByLabelText(/who develops/i);
-    const supportedByField = screen.getByLabelText(/who supports/i);
-    const saveButton = screen.getByRole("button", { name: /save/i });
+    const { saveButton } = await givenTheUserHasEnteredInvalidValues();
 
-    overtype(developedByField, "x");
-    overtype(supportedByField, "$!");
     user.click(saveButton);
 
-    const errors = await screen.findAllByText(/must|enter/i, { selector: "a" });
-    expect(errors).toHaveLength(2);
-    expect(errors[0]).toHaveTextContent("leave blank");
-    expect(errors[1]).toHaveTextContent("special characters");
+    await waitFor(() => {
+      const errors = screen.getAllByText(/must|enter/i, { selector: "a" });
+      expect(errors).toHaveLength(2);
+      expect(errors[0]).toHaveTextContent("leave blank");
+      expect(errors[1]).toHaveTextContent("special characters");
+    });
   });
 
   it("shows validation errors returned from the API", async () => {
@@ -295,5 +299,15 @@ describe("UpdateAbout", () => {
     expect(
       await screen.findAllByText(/validation error/i, { selector: "a" })
     ).toHaveLength(5);
+  });
+
+  it("indicates there was an error in the title", async () => {
+    const { saveButton } = await givenTheUserHasEnteredInvalidValues();
+
+    user.click(saveButton);
+
+    await waitFor(() => {
+      expect(document.title).toEqual(expect.stringMatching(/^Error\b/));
+    });
   });
 });

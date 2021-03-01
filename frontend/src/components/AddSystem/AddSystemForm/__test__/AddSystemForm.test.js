@@ -37,6 +37,12 @@ describe("add system", () => {
     jest.resetAllMocks();
   });
 
+  it("has a page title", () => {
+    setUp();
+
+    expect(document.title).toBe("Add a system — System Register");
+  });
+
   it("displays an initially empty system name field", () => {
     setUp();
     const systemNameField = screen.getByLabelText(/system name/i);
@@ -271,5 +277,18 @@ describe("add system", () => {
     user.click(cancelButton);
 
     expect(cancelHandler).toBeCalled();
+  });
+
+  it("indicates there was an error in the title", async () => {
+    setUp();
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(systemNameField, "o");
+    user.click(saveButton);
+
+    await waitFor(() => {
+      expect(document.title).toEqual(expect.stringMatching(/^Error\b/));
+    });
   });
 });

@@ -5,7 +5,7 @@ import { Button } from "govuk-react";
 import { defaultTo, mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
-import PageTitle from "../../PageTitle";
+import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import Radio from "../../Radio";
 import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
@@ -49,8 +49,6 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
 
   return (
     <div className="centerContent">
-      <PageTitle>{`Update about — ${system?.name}`}</PageTitle>
-
       {system ? (
         <Formik
           initialValues={infoAbout(system)}
@@ -58,6 +56,8 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <Form>
+            <FormikAwarePageTitle>{`Update about — ${system.name}`}</FormikAwarePageTitle>
+
             <ErrorSummary
               order={[
                 "portfolio",
@@ -198,7 +198,11 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
           </Form>
         </Formik>
       ) : (
-        <p>Loading system data...</p>
+        <>
+          <PageTitle>Loading system...</PageTitle>
+
+          <p>Loading system data...</p>
+        </>
       )}
     </div>
   );

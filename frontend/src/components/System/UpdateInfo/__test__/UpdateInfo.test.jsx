@@ -51,6 +51,7 @@ describe("UpdateInfo", () => {
     setUp({ system: null });
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
+    expect(document.title).toBe("Loading system... — System Register");
   });
 
   it("calls submission handler with updated values", async () => {
@@ -338,5 +339,18 @@ describe("UpdateInfo", () => {
         selector: ".alias-input-list *",
       })
     ).toBeInTheDocument();
+  });
+
+  it("indicates there was an error in the title", async () => {
+    setUp({ system: { name: "value", aliases: [] } });
+    const systemNameField = screen.getByLabelText(/system name/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    user.clear(systemNameField);
+    user.click(saveButton);
+
+    await waitFor(() => {
+      expect(document.title).toEqual(expect.stringMatching(/^Error\b/));
+    });
   });
 });

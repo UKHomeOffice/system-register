@@ -15,7 +15,7 @@ import {
 
 import AliasInputList from "../../AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
-import PageTitle from "../../PageTitle";
+import { FormikAwarePageTitle } from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";
@@ -59,8 +59,6 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
 
   return (
     <div className="centerContent">
-      <PageTitle>Add a system</PageTitle>
-
       <Formik
         onSubmit={handleSubmit}
         initialValues={{ name: "", description: "", aliases: [""] }}
@@ -68,6 +66,8 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
         validate={validateAliases}
       >
         <>
+          <FormikAwarePageTitle>Add a system</FormikAwarePageTitle>
+
           <ErrorSummary order={["name", "description", "aliases"]} />
 
           <h1>Add a system to the register</h1>

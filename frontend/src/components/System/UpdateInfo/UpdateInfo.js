@@ -18,7 +18,7 @@ import {
 
 import AliasInputList from "../../AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
-import PageTitle from "../../PageTitle";
+import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";
@@ -86,8 +86,6 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
 
   return (
     <div className="centerContent">
-      <PageTitle>{`Update name & description — ${system?.name}`}</PageTitle>
-
       {system ? (
         <Formik
           initialValues={infoAbout(system)}
@@ -96,6 +94,8 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
           onSubmit={handleSubmit}
         >
           <>
+            <FormikAwarePageTitle>{`Update name & description — ${system?.name}`}</FormikAwarePageTitle>
+
             <ErrorSummary order={["name", "description", "aliases"]} />
 
             <h1>{system.name}</h1>
@@ -139,7 +139,11 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
           </>
         </Formik>
       ) : (
-        <p>Loading system data...</p>
+        <>
+          <PageTitle>Loading system...</PageTitle>
+
+          <p>Loading system data...</p>
+        </>
       )}
     </div>
   );

@@ -22,6 +22,12 @@ describe("UpdateContacts", () => {
     );
   }
 
+  function overtype(field, value) {
+    user.clear(field);
+    // noinspection JSIgnoredPromiseFromCall
+    user.type(field, value);
+  }
+
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -44,6 +50,7 @@ describe("UpdateContacts", () => {
     setUp(null);
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
+    expect(document.title).toBe("Loading system... — System Register");
   });
 
   it("calls submission handler with updated contacts", async () => {
@@ -63,21 +70,11 @@ describe("UpdateContacts", () => {
     );
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    user.clear(businessOwnerField);
-    user.clear(productOwnerField);
-    user.clear(technicalOwnerField);
-    user.clear(serviceOwnerField);
-    user.clear(informationAssetOwnerField);
-    // noinspection ES6MissingAwait
-    user.type(businessOwnerField, "new business owner");
-    // noinspection ES6MissingAwait
-    user.type(productOwnerField, "new product owner");
-    // noinspection ES6MissingAwait
-    user.type(technicalOwnerField, "new technical owner");
-    // noinspection ES6MissingAwait
-    user.type(serviceOwnerField, "new service owner");
-    // noinspection ES6MissingAwait
-    user.type(informationAssetOwnerField, "new information asset owner");
+    overtype(businessOwnerField, "new business owner");
+    overtype(productOwnerField, "new product owner");
+    overtype(technicalOwnerField, "new technical owner");
+    overtype(serviceOwnerField, "new service owner");
+    overtype(informationAssetOwnerField, "new information asset owner");
 
     user.click(saveButton);
 
@@ -103,16 +100,11 @@ describe("UpdateContacts", () => {
     );
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(businessOwnerField, "  busy owner with extra spaces  ");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "  owner with extra spaces  ");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(technicalOwnerField, "  another owner with more spaces  ");
-    // noinspection ES6MissingAwait
-    user.type(serviceOwnerField, "  service owner with extra spaces  ");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(
+    overtype(businessOwnerField, "  busy owner with extra spaces  ");
+    overtype(productOwnerField, "  owner with extra spaces  ");
+    overtype(technicalOwnerField, "  another owner with more spaces  ");
+    overtype(serviceOwnerField, "  service owner with extra spaces  ");
+    overtype(
       informationAssetOwnerField,
       "  yet another owner with more spaces  "
     );
@@ -161,8 +153,7 @@ describe("UpdateContacts", () => {
     const ownerField = screen.getByLabelText(new RegExp(label, "i"));
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(ownerField, "$");
+    overtype(ownerField, "$");
     user.click(saveButton);
 
     expect(
@@ -184,16 +175,11 @@ describe("UpdateContacts", () => {
     );
     const saveButton = screen.getByRole("button", { name: /save/i });
 
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(businessOwnerField, "!!!");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(technicalOwnerField, "x");
-    // noinspection ES6MissingAwait
-    user.type(serviceOwnerField, "x");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(productOwnerField, "!?$");
-    // noinspection ES6MissingAwait: there is no typing delay
-    user.type(informationAssetOwnerField, "x");
+    overtype(businessOwnerField, "!!!");
+    overtype(technicalOwnerField, "x");
+    overtype(serviceOwnerField, "x");
+    overtype(productOwnerField, "!?$");
+    overtype(informationAssetOwnerField, "x");
     user.click(saveButton);
 
     const errors = await screen.findAllByText(/must/i, { selector: "a" });
@@ -223,5 +209,18 @@ describe("UpdateContacts", () => {
     expect(
       await screen.findAllByText(/validation error/i, { selector: "a" })
     ).toHaveLength(5);
+  });
+
+  it("indicates there was an error in the title", async () => {
+    setUp();
+    const businessOwnerField = screen.getByLabelText(/business owner/i);
+    const saveButton = screen.getByRole("button", { name: /save/i });
+
+    overtype(businessOwnerField, "!");
+    user.click(saveButton);
+
+    await waitFor(() => {
+      expect(document.title).toEqual(expect.stringMatching(/^Error\b/));
+    });
   });
 });

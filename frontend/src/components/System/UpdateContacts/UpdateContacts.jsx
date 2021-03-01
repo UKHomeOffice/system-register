@@ -5,7 +5,7 @@ import { Button } from "govuk-react";
 import { mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
-import PageTitle from "../../PageTitle";
+import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
@@ -48,8 +48,6 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
   return (
     <div className="centerContent">
-      <PageTitle>{`Update contacts — ${system?.name}`}</PageTitle>
-
       {system ? (
         <Formik
           initialValues={ownersOf(system)}
@@ -57,6 +55,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
+            <FormikAwarePageTitle>{`Update contacts — ${system?.name}`}</FormikAwarePageTitle>
+
             <ErrorSummary
               order={[
                 "businessOwner",
@@ -133,7 +133,11 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           </>
         </Formik>
       ) : (
-        <p>Loading system data...</p>
+        <>
+          <PageTitle>Loading system...</PageTitle>
+
+          <p>Loading system data...</p>
+        </>
       )}
     </div>
   );
