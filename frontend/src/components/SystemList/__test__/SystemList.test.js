@@ -30,6 +30,12 @@ const test_data = {
 };
 
 describe("SystemList", () => {
+  it("has a page title", () => {
+    render(<SystemList register={test_data} />);
+
+    expect(document.title).toBe("Search — System Register");
+  });
+
   describe("searching by name", () => {
     it("renders search, filter and all systems when loaded", () => {
       render(<SystemList register={test_data} />);

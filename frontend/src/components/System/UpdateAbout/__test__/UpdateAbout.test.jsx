@@ -10,6 +10,9 @@ describe("UpdateAbout", () => {
   const cancelHandler = jest.fn();
 
   function setUp(props = {}) {
+    if (props.system && !props.system.name) {
+      throw new Error();
+    }
     const actualProps = {
       system: null,
       portfolios: [],
@@ -33,96 +36,118 @@ describe("UpdateAbout", () => {
   });
 
   it("displays the name of the system", () => {
-    setUp({ system: {name: 'system name' }})
+    setUp({ system: { name: "system name" } });
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("system name");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "system name"
+    );
+  });
+
+  it("has a page title", () => {
+    setUp({ system: { name: "system name" } });
+
+    expect(document.title).toBe("Update about — system name — System Register");
   });
 
   it("displays a loading message if data is unavailable", () => {
-    setUp({system: null});
+    setUp({ system: null });
 
     expect(screen.getByText(/loading system data/i)).toBeInTheDocument();
   });
 
   describe("portfolio", () => {
     it("displays current portfolio button as checked", () => {
-      setUp({system: {portfolio: "Option 1"}, portfolios: ["Option 1"]});
-      expect(screen.getByRole("radio", {name: /Option 1/i}).checked).toEqual(true);
+      setUp({
+        system: { name: "system", portfolio: "Option 1" },
+        portfolios: ["Option 1"],
+      });
+      expect(screen.getByRole("radio", { name: /Option 1/i })).toBeChecked();
     });
 
     it("calls submission handler with updated portfolio", async () => {
-      setUp({system: {portfolio: "Option 1"}, portfolios: ["Option 1", "Option 2"]});
+      setUp({
+        system: { name: "system", portfolio: "Option 1" },
+        portfolios: ["Option 1", "Option 2"],
+      });
       const unknownRadio = screen.getByLabelText(/Option 2/i);
-      const saveButton = screen.getByRole("button", {name: /save/i});
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
       user.click(unknownRadio);
       user.click(saveButton);
 
-      await waitFor(() => expect(submitHandler).toBeCalledWith({
-        portfolio: "Option 2",
-      }));
+      await waitFor(() =>
+        expect(submitHandler).toBeCalledWith({
+          portfolio: "Option 2",
+        })
+      );
     });
   });
 
   describe("criticality", () => {
     it("displays current criticality button as checked", () => {
-      setUp({system: {criticality: "medium"}});
+      setUp({ system: { name: "system", criticality: "medium" } });
 
-      expect(screen.getByRole("radio", {name: /medium/i}).checked).toEqual(true);
+      expect(screen.getByRole("radio", { name: /medium/i })).toBeChecked();
     });
 
     it("calls submission handler with updated criticality", async () => {
-      setUp({system: {criticality: "low"}});
+      setUp({ system: { name: "system", criticality: "low" } });
 
       const cniRadio = screen.getByLabelText(/cni/i);
-      const saveButton = screen.getByRole("button", {name: /save/i});
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
       user.click(cniRadio);
       user.click(saveButton);
 
-      await waitFor(() => expect(submitHandler).toBeCalledWith({
-        criticality: "cni",
-      }));
+      await waitFor(() =>
+        expect(submitHandler).toBeCalledWith({
+          criticality: "cni",
+        })
+      );
     });
   });
 
   describe("investment state", () => {
     it("displays current investment state button as checked", () => {
-      setUp({system: {investment_state: "invest"}});
+      setUp({ system: { name: "system", investment_state: "invest" } });
 
-      expect(screen.getByDisplayValue("invest").checked).toEqual(true);
+      expect(screen.getByDisplayValue("invest")).toBeChecked();
     });
 
     it("calls submission handler with updated investment state", async () => {
-      setUp({system: {investment_state: "invest"}});
+      setUp({ system: { name: "system", investment_state: "invest" } });
       const maintainRadio = screen.getByLabelText(/maintain/i);
-      const saveButton = screen.getByRole("button", {name: /save/i});
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
       user.click(maintainRadio);
       user.click(saveButton);
 
-      await waitFor(() => expect(submitHandler).toBeCalledWith({
-        investmentState: "maintain",
-      }));
+      await waitFor(() =>
+        expect(submitHandler).toBeCalledWith({
+          investmentState: "maintain",
+        })
+      );
     });
   });
 
   describe("supported by", () => {
     it("calls submission handler with updated supported by value", async () => {
-      setUp({ system: { supported_by: "original supporter" } });
+      setUp({ system: { name: "system", supported_by: "original supporter" } });
       const textField = screen.getByLabelText(/who supports/i);
-      const saveButton = screen.getByRole("button", {name: /save/i});
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
       overtype(textField, "new supporter");
       user.click(saveButton);
 
-      await waitFor(() => expect(submitHandler).toBeCalledWith({
-        supportedBy: "new supporter",
-      }));
+      await waitFor(() =>
+        expect(submitHandler).toBeCalledWith({
+          supportedBy: "new supporter",
+        })
+      );
     });
 
     it("validates before submission", async () => {
-      setUp({ system: { supported_by: "someone" }});
+      setUp({ system: { name: "system", supported_by: "someone" } });
       const textField = await screen.findByLabelText(/who supports/i);
       const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -130,27 +155,32 @@ describe("UpdateAbout", () => {
       user.click(saveButton);
 
       expect(
-        await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+        await screen.findByText(
+          /must not use the following special characters/i,
+          { selector: "label *" }
+        )
       ).toBeVisible();
     });
   });
 
   describe("developed by", () => {
     it("calls submission handler with updated developed by value", async () => {
-      setUp({ system: { supported_by: "original developer" } });
+      setUp({ system: { name: "system", supported_by: "original developer" } });
       const textField = screen.getByLabelText(/who develops/i);
-      const saveButton = screen.getByRole("button", {name: /save/i});
+      const saveButton = screen.getByRole("button", { name: /save/i });
 
       overtype(textField, "new developer");
       user.click(saveButton);
 
-      await waitFor(() => expect(submitHandler).toBeCalledWith({
-        developedBy: "new developer",
-      }));
+      await waitFor(() =>
+        expect(submitHandler).toBeCalledWith({
+          developedBy: "new developer",
+        })
+      );
     });
 
     it("validates before submission", async () => {
-      setUp({ system: { developed_by: "someone" }});
+      setUp({ system: { name: "system", developed_by: "someone" } });
       const textField = await screen.findByLabelText(/who develops/i);
       const saveButton = screen.getByRole("button", { name: /save/i });
 
@@ -158,13 +188,16 @@ describe("UpdateAbout", () => {
       user.click(saveButton);
 
       expect(
-        await screen.findByText(/must not use the following special characters/i, { selector: "label *" })
+        await screen.findByText(
+          /must not use the following special characters/i,
+          { selector: "label *" }
+        )
       ).toBeVisible();
     });
   });
 
   it("trims values before calling the submission handler", async () => {
-    setUp({ system: {} });
+    setUp({ system: { name: "system" } });
     const developedByField = screen.getByLabelText(/who develops/i);
     const supportedByField = screen.getByLabelText(/who supports/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -173,22 +206,25 @@ describe("UpdateAbout", () => {
     overtype(supportedByField, "  a supportive person with extra spaces    ");
     user.click(saveButton);
 
-    await waitFor(() => expect(submitHandler).toBeCalledWith({
-      developedBy: "a developer with extra spaces",
-      supportedBy: "a supportive person with extra spaces",
-    }));
+    await waitFor(() =>
+      expect(submitHandler).toBeCalledWith({
+        developedBy: "a developer with extra spaces",
+        supportedBy: "a supportive person with extra spaces",
+      })
+    );
   });
 
   it("does not send data to submission handler when field values are unchanged", async () => {
     setUp({
       system: {
+        name: "system",
         criticality: "low",
         investment_state: "invest",
         portfolio: "Option 1",
         developed_by: "developer",
-        supported_by: "person"
+        supported_by: "person",
       },
-      portfolios: ["Option 1"]
+      portfolios: ["Option 1"],
     });
     const portfolioRadio = screen.getByLabelText(/Option 1/i);
     const criticalityRadio = screen.getByLabelText(/low/i);
@@ -208,7 +244,7 @@ describe("UpdateAbout", () => {
   });
 
   it("cancels correctly", async () => {
-    setUp({system: {criticality: "low"}});
+    setUp({ system: { name: "system", criticality: "low" } });
     const cniRadio = screen.getByLabelText(/cni/i);
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
 
@@ -220,7 +256,13 @@ describe("UpdateAbout", () => {
   });
 
   it("shows an error summary containing all error details", async () => {
-    setUp({ system: { developed_by: "developer", supported_by: "person" } });
+    setUp({
+      system: {
+        name: "system",
+        developed_by: "developer",
+        supported_by: "person",
+      },
+    });
     const developedByField = screen.getByLabelText(/who develops/i);
     const supportedByField = screen.getByLabelText(/who supports/i);
     const saveButton = screen.getByRole("button", { name: /save/i });
@@ -236,18 +278,22 @@ describe("UpdateAbout", () => {
   });
 
   it("shows validation errors returned from the API", async () => {
-    submitHandler.mockRejectedValue(new ValidationError({
-      portfolio: "portfolio validation error",
-      criticality: "criticality validation error",
-      investmentState: "investment state validation error",
-      developedBy: "developed by validation error",
-      supportedBy: "supported by validation error",
-    }));
-    setUp({ system: {} });
+    submitHandler.mockRejectedValue(
+      new ValidationError({
+        portfolio: "portfolio validation error",
+        criticality: "criticality validation error",
+        investmentState: "investment state validation error",
+        developedBy: "developed by validation error",
+        supportedBy: "supported by validation error",
+      })
+    );
+    setUp({ system: { name: "system" } });
     const saveButton = await screen.findByRole("button", { name: /save/i });
 
     user.click(saveButton);
 
-    expect(await screen.findAllByText(/validation error/i, { selector: "a" })).toHaveLength(5);
+    expect(
+      await screen.findAllByText(/validation error/i, { selector: "a" })
+    ).toHaveLength(5);
   });
 });

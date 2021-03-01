@@ -36,6 +36,16 @@ describe("<AddSystem />", () => {
     expect(element).toBeInTheDocument();
   });
 
+  it("has a page title", () => {
+    render(
+      withRouting(
+        <AddSystem validateNewSystem={() => undefined} onAdd={addHandler} />
+      )
+    );
+
+    expect(document.title).toBe("Add a system — System Register");
+  });
+
   it("sends new system data to the API and refreshes register data on submission", async () => {
     api.addSystem.mockResolvedValue({
       id: 456,

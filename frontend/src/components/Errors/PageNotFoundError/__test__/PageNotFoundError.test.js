@@ -1,14 +1,23 @@
-import React from 'react'
-import { cleanup, render } from '@testing-library/react'
-import PageNotFoundError from '../PageNotFoundError';
-import { BrowserRouter } from 'react-router-dom';
+import React from "react";
+import { render as _render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
-afterEach(cleanup)
+import PageNotFoundError from "../PageNotFoundError";
 
-describe('<PageNotFoundError />', () => {
-    it('renders', () => {
-        const { getByText } = render(<BrowserRouter><PageNotFoundError /></BrowserRouter>)
-        const element = getByText('Page not found')
-        expect(element).toBeInTheDocument()
-    });
+function render(component) {
+  return _render(component, { wrapper: MemoryRouter });
+}
+
+describe("PageNotFoundError", () => {
+  it("renders", () => {
+    render(<PageNotFoundError />);
+
+    expect(screen.getByText("Page not found")).toBeInTheDocument();
+  });
+
+  it("has a title", () => {
+    render(<PageNotFoundError />);
+
+    expect(document.title).toBe("Page not found — System Register");
+  });
 });

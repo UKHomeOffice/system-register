@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 import {
@@ -17,6 +18,8 @@ import {
 
 import AliasInputList from "../../AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import PageTitle from "../../PageTitle";
+import SecondaryButton from "../../SecondaryButton";
 import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
@@ -25,10 +28,8 @@ import {
   validateDescription,
   validateName,
 } from "./validators";
-import SecondaryButton from "../../SecondaryButton";
 
 import "./UpdateInfo.css";
-import PropTypes from "prop-types";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
 const emptyArrayIfUndefined = (value) => (value != null ? value : []);
@@ -85,6 +86,8 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
 
   return (
     <div className="centerContent">
+      <PageTitle>{`Update name & description — ${system?.name}`}</PageTitle>
+
       {system ? (
         <Formik
           initialValues={infoAbout(system)}

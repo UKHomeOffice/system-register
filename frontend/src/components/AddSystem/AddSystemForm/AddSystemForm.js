@@ -13,8 +13,11 @@ import {
   update,
 } from "lodash-es";
 
+import AliasInputList from "../../AliasInputList";
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import PageTitle from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
+import Textarea from "../../Textarea";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
 import {
@@ -22,9 +25,6 @@ import {
   validateDescription,
   validateAliases,
 } from "./validators";
-
-import Textarea from "../../Textarea";
-import AliasInputList from "../../AliasInputList";
 
 const deepTrim = (values) =>
   mapValues(values, (value) =>
@@ -59,6 +59,8 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
 
   return (
     <div className="centerContent">
+      <PageTitle>Add a system</PageTitle>
+
       <Formik
         onSubmit={handleSubmit}
         initialValues={{ name: "", description: "", aliases: [""] }}

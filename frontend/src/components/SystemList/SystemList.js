@@ -4,6 +4,7 @@ import { InputField, Select } from "govuk-react";
 import { flow, map, partialRight, sortBy, sortedUniq } from "lodash-es";
 
 import Link from "../Linking/Link";
+import PageTitle from "../PageTitle";
 import SystemCard from "../SystemCard/SystemCard";
 
 import "./SystemList.css";
@@ -25,6 +26,8 @@ function SystemList({ register }) {
 
   return (
     <div className="centerContent">
+      <PageTitle>Search</PageTitle>
+
       <h1>System search</h1>
       <div className="system-list-filter">
         <InputField

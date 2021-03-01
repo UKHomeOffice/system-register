@@ -74,8 +74,34 @@ const test_unknown_system = {
   ],
 };
 
-describe("<SystemView>", () => {
+describe("SystemView", () => {
+  const closeHandler = jest.fn();
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it.each([
+    [test_system, "System X — System Register"],
+    [null, "Loading system... — System Register"],
+  ])("has a page title", (system, title) => {
+    setup(system);
+
+    expect(document.title).toBe(title);
+  });
+
   describe("When we have data", () => {
+    describe("update notifications", () => {
+      it("displays a success message after updating a system", () => {
+        setup(test_system, { status: "success" });
+
+        expect(document.title).toEqual(
+          expect.stringMatching(/^Update saved\b/)
+        );
+        expect(screen.getByText(/update has been saved/i)).toBeInTheDocument();
+      });
+    });
+
     describe("Renders system section", () => {
       it("renders system name", async () => {
         setup(test_system);
@@ -304,13 +330,14 @@ describe("<SystemView>", () => {
       });
     });
   });
-});
 
-function setup(system) {
-  const history = createMemoryHistory();
-  render(
-    <Router history={history}>
-      <SystemView system={system} />
-    </Router>
-  );
-}
+  function setup(system, options = {}) {
+    const history = createMemoryHistory();
+    const { status } = options;
+    render(
+      <Router history={history}>
+        <SystemView system={system} status={status} onClose={closeHandler} />
+      </Router>
+    );
+  }
+});

@@ -8,16 +8,30 @@ import KeyInfo from "../KeyInfo/KeyInfo";
 import Link from "../../Linking/Link";
 import ModifiedDetails from "../../ModifiedDetails/ModifiedDetails";
 import RiskDetails from "../RiskDetails/RiskDetails";
+import SystemPageTitle from "./SystemPageTitle";
+import UpdateSuccessMessage from "../UpdateSuccessMessage";
+import useOnUnmount from "../../../utilities/useOnUnmount";
 
 import "./SystemView.css";
 
-function SystemView({ system, status }) {
+function buildStatusNotification(status) {
+  if (status === "success") {
+    return <UpdateSuccessMessage />;
+  }
+  return null;
+}
+
+function SystemView({ system, status, onClose }) {
+  useOnUnmount(onClose);
+
   return (
     <div className="systemDetails centerContent">
+      <SystemPageTitle name={system?.name} status={status} />
+
       {system ? (
         <>
           <div className="contentBlock">
-            {status}
+            {buildStatusNotification(status)}
 
             <h1>{system.name}</h1>
             <Link
@@ -167,7 +181,8 @@ SystemView.propTypes = {
       author_name: PropTypes.string,
     }).isRequired,
   }),
-  status: PropTypes.node,
+  status: PropTypes.oneOf(["success"]),
+  onClose: PropTypes.func.isRequired,
 };
 
 function renderAliases(aliases) {

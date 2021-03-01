@@ -7,6 +7,14 @@ describe("Contact", () => {
   it("has a heading", () => {
     render(<Contact />);
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Get in touch");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Get in touch"
+    );
+  });
+
+  it("has a page title", () => {
+    render(<Contact />);
+
+    expect(document.title).toBe("Contact — System Register");
   });
 });

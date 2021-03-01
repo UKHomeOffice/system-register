@@ -1,17 +1,19 @@
 import React, { useCallback } from "react";
+import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 import { mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
+import PageTitle from "../../PageTitle";
+import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
 import validateContact from "./validators";
 
 import "./UpdateContacts.css";
-import SecondaryButton from "../../SecondaryButton";
 
-const emptyIfUndefined = (value) => value != null ? value : "";
+const emptyIfUndefined = (value) => (value != null ? value : "");
 
 const ownersOf = (system) => ({
   businessOwner: emptyIfUndefined(system.business_owner),
@@ -22,19 +24,23 @@ const ownersOf = (system) => ({
 });
 
 function UpdateContacts({ system, onSubmit, onCancel }) {
-  const handleSubmit = useCallback(async (values, formik) => {
-    const initialOwners = ownersOf(system);
-    const changedOwners = omitBy(
-      mapValues(values, (value) => value.trim()),
-      (value, key) => value === initialOwners[key]);
-    try {
-      await onSubmit(changedOwners);
-    } catch (e) {
-      if (e instanceof ValidationError) {
-        formik.setErrors(e.errors);
+  const handleSubmit = useCallback(
+    async (values, formik) => {
+      const initialOwners = ownersOf(system);
+      const changedOwners = omitBy(
+        mapValues(values, (value) => value.trim()),
+        (value, key) => value === initialOwners[key]
+      );
+      try {
+        await onSubmit(changedOwners);
+      } catch (e) {
+        if (e instanceof ValidationError) {
+          formik.setErrors(e.errors);
+        }
       }
-    }
-  }, [system, onSubmit]);
+    },
+    [system, onSubmit]
+  );
 
   const handleCancel = () => {
     onCancel();
@@ -42,6 +48,8 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
   return (
     <div className="centerContent">
+      <PageTitle>{`Update contacts — ${system?.name}`}</PageTitle>
+
       {system ? (
         <Formik
           initialValues={ownersOf(system)}
@@ -49,12 +57,21 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
           onSubmit={handleSubmit}
         >
           <>
-            <ErrorSummary order={["businessOwner","technicalOwner", "serviceOwner", "productOwner", "informationAssetOwner"]} />
+            <ErrorSummary
+              order={[
+                "businessOwner",
+                "technicalOwner",
+                "serviceOwner",
+                "productOwner",
+                "informationAssetOwner",
+              ]}
+            />
 
             <h1>{system.name}</h1>
             <p className="secondary">
-              You can provide named individuals as key points of contact for your system.
-              An individual can be named multiple times if applicable.
+              You can provide named individuals as key points of contact for
+              your system. An individual can be named multiple times if
+              applicable.
             </p>
 
             <Form>
@@ -110,18 +127,29 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
 
               <div className="form-controls">
                 <Button type="submit">Save</Button>
-                <SecondaryButton onClick={handleCancel}>
-                  Cancel
-                </SecondaryButton>
+                <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
               </div>
             </Form>
           </>
         </Formik>
       ) : (
-          <p>Loading system data...</p>
-        )}
+        <p>Loading system data...</p>
+      )}
     </div>
   );
 }
+
+UpdateContacts.propTypes = {
+  system: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    business_owner: PropTypes.string,
+    product_owner: PropTypes.string,
+    tech_owner: PropTypes.string,
+    service_owner: PropTypes.string,
+    information_asset_owner: PropTypes.string,
+  }),
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
 
 export default UpdateContacts;

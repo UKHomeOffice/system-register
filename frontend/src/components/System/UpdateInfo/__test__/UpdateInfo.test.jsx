@@ -39,6 +39,14 @@ describe("UpdateInfo", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("system name");
   });
 
+  it("has a page title", () => {
+    setUp({ system: { name: "system name", aliases: [] } });
+
+    expect(document.title).toBe(
+      "Update name & description — system name — System Register"
+    );
+  });
+
   it("displays a loading message if data is unavailable", () => {
     setUp({ system: null });
 

@@ -4,6 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import Panel from "@govuk-react/panel";
 
 import Link from "../../Linking/Link";
+import PageTitle from "../../PageTitle";
 
 import "./addSystemSuccess.css";
 
@@ -19,6 +20,8 @@ function AddSystemSuccess({ returnPath }) {
 
   return state ? (
     <div className="centerContent">
+      <PageTitle>New system added successfully</PageTitle>
+
       <Panel
         title="System added to the Register"
         className="add-system-success-panel"

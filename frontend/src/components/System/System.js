@@ -9,11 +9,13 @@ import SystemView from "./SystemView/SystemView";
 import UpdateAbout from "./UpdateAbout/UpdateAbout";
 import UpdateContacts from "./UpdateContacts";
 import UpdateInfo from "./UpdateInfo";
-import UpdateSuccessMessage from "./UpdateSuccessMessage";
 import api from "../../services/api";
 import useAsyncError from "../../utilities/useAsyncError";
 
 import "./System.css";
+
+const CHANGE_STATUS_NONE = null;
+const CHANGE_STATUS_SUCCESS = "success";
 
 const actionsByField = {
   name: api.updateSystemName,
@@ -46,7 +48,7 @@ function useReturnToSystemView() {
   }, [history, url]);
 }
 
-function useUpdateCallbackFactory(id, onChange, setSystem, setUpdated) {
+function useUpdateCallbackFactory(id, onChange, setSystem, setChangeStatus) {
   const returnToSystemView = useReturnToSystemView();
 
   return useCallback(
@@ -58,10 +60,10 @@ function useUpdateCallbackFactory(id, onChange, setSystem, setUpdated) {
       if (!isEmpty(actions)) {
         onChange();
       }
-      setUpdated(true);
+      setChangeStatus(CHANGE_STATUS_SUCCESS);
       returnToSystemView();
     },
-    [id, returnToSystemView, onChange, setSystem, setUpdated]
+    [id, returnToSystemView, onChange, setSystem, setChangeStatus]
   );
 }
 
@@ -71,7 +73,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     params: { id },
   } = useRouteMatch();
   const [system, setSystem] = useState(null);
-  const [updated, setUpdated] = useState(false);
+  const [changeStatus, setChangeStatus] = useState(CHANGE_STATUS_NONE);
   const throwError = useAsyncError();
 
   useEffect(() => {
@@ -85,7 +87,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     id,
     onChange,
     setSystem,
-    setUpdated
+    setChangeStatus
   );
   const handleUpdateInfo = createUpdateCallback(
     "name",
@@ -108,7 +110,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
   );
   const handleCancel = useReturnToSystemView();
   const handleDismiss = useCallback(() => {
-    setUpdated(false);
+    setChangeStatus(CHANGE_STATUS_NONE);
   }, []);
 
   return (
@@ -116,7 +118,8 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
       <Route path={`${path}`} exact>
         <SystemView
           system={system}
-          status={updated && <UpdateSuccessMessage onDismiss={handleDismiss} />}
+          status={changeStatus}
+          onClose={handleDismiss}
         />
       </Route>
       <SecureRoute path={`${path}/update-info`}>
