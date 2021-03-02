@@ -24,12 +24,20 @@ jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
 }));
 
+function suppressErrors() {
+  jest.spyOn(console, "error").mockImplementation(() => {});
+}
+
 describe("<SystemRegister />", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   afterAll(() => server.close());
 
-  afterEach(() => server.resetHandlers());
+  afterEach(() => {
+    server.resetHandlers();
+
+    jest.restoreAllMocks();
+  });
 
   beforeEach(() => {
     useKeycloak.mockReturnValue({
@@ -89,20 +97,18 @@ describe("<SystemRegister />", () => {
     });
 
     it("shows <PageNotFound /> if system does not exist", async () => {
-      //TODO help writing this test
+      suppressErrors();
       const history = createMemoryHistory({ initialEntries: ["/system/9999"] });
-      const { getByText } = render(
+
+      render(
         <Router history={history}>
           <SystemRegister />
         </Router>
       );
+
       await waitFor(() => {
-        try {
-          const dashboard = getByText("Page not found");
-          expect(dashboard).toBeInTheDocument();
-        } catch (e) {
-          // ignored
-        }
+        const dashboard = screen.getByText("Page not found");
+        expect(dashboard).toBeInTheDocument();
       });
     });
 
