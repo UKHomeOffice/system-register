@@ -7,6 +7,7 @@ import InvestmentState from "../InvestmentState/InvestmentState";
 import KeyInfo from "../KeyInfo/KeyInfo";
 import Link from "../../Linking/Link";
 import ModifiedDetails from "../../ModifiedDetails/ModifiedDetails";
+import PageTitle from "../../PageTitle";
 import RiskDetails from "../RiskDetails/RiskDetails";
 import SystemPageTitle from "./SystemPageTitle";
 import UpdateSuccessMessage from "../UpdateSuccessMessage";
@@ -26,10 +27,10 @@ function SystemView({ system, status, onClose }) {
 
   return (
     <div className="systemDetails centerContent">
-      <SystemPageTitle name={system?.name} status={status} />
-
       {system ? (
         <>
+          <SystemPageTitle status={status}>{system.name}</SystemPageTitle>
+
           <div className="contentBlock">
             {buildStatusNotification(status)}
 
@@ -148,7 +149,11 @@ function SystemView({ system, status, onClose }) {
           </div>
         </>
       ) : (
-        <p>loading system data...</p>
+        <>
+          <PageTitle>Loading system...</PageTitle>
+
+          <p>loading system data...</p>
+        </>
       )}
     </div>
   );
