@@ -94,7 +94,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
           onSubmit={handleSubmit}
         >
           <>
-            <FormikAwarePageTitle>{`Update name & description — ${system?.name}`}</FormikAwarePageTitle>
+            <FormikAwarePageTitle>{`Update name, description & alias — ${system?.name}`}</FormikAwarePageTitle>
 
             <ErrorSummary order={["name", "description", "aliases"]} />
 

@@ -43,7 +43,7 @@ describe("UpdateInfo", () => {
     setUp({ system: { name: "system name", aliases: [] } });
 
     expect(document.title).toBe(
-      "Update name & description — system name — System Register"
+      "Update name, description & alias — system name — System Register"
     );
   });
 
