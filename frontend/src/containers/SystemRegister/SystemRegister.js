@@ -69,7 +69,7 @@ class SystemRegister extends React.Component {
         <header>
           <SkipLink href="#main-content">Skip to main content</SkipLink>
           <TitleBar />
-          <Banner phase="in development">
+          <Banner phase="Beta">
             This is a new service - your <Link to="/contact">feedback</Link>{" "}
             will help us to improve it.
           </Banner>
