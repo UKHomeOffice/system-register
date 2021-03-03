@@ -91,7 +91,7 @@ class UpdateSystemRiskCommandHandlerTest {
 
         assertThatThrownBy(() -> commandHandler.handle(command))
                 .isInstanceOf(CommandHasNoEffectException.class)
-                .hasMessageContaining("system risks are the same");
+                .hasMessage("The risk values are unchanged.");
     }
 
     @Test

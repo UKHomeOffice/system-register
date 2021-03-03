@@ -71,7 +71,7 @@ public class UpdateSystemRiskCommand implements UpdateCommand {
     @Override
     public void ensureCommandUpdatesSystem(SR_System system) throws CommandHasNoEffectException {
         if (!willUpdate(system)) {
-            throw new CommandHasNoEffectException("system risks are the same: " + system.risks.toString());
+            throw new CommandHasNoEffectException("The risk values are unchanged.");
         }
     }
 
