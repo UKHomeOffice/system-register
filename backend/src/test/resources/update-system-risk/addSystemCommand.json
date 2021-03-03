@@ -1,0 +1,29 @@
+{
+  "system": {
+    "name": "Newly added system",
+    "aliases": ["new sys 1"],
+    "description": "A test system for testing purposes",
+    "portfolio": "SPAN-R",
+    "criticality": "low",
+    "investment_state": "evergreen",
+    "business_owner": null,
+    "service_owner": null,
+    "tech_owner": null,
+    "product_owner": "Indie Bunga",
+    "information_asset_owner": null,
+    "developed_by": "Home Office",
+    "supported_by": null,
+    "risks": [
+      {
+        "name": "roadmap",
+        "level": "low",
+        "rationale": "Meaningful data here"
+      },
+      {
+        "name": "existing risk",
+        "level": "low",
+        "rationale": "Things aren't too risky"
+      }
+    ]
+  }
+}
