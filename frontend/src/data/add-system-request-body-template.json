@@ -13,22 +13,22 @@
     {
       "name": "architecture",
       "level": null,
-      "rationale": null
+      "rationale": "This risk has not been assessed."
     },
     {
       "name": "change",
       "level": null,
-      "rationale": null
+      "rationale": "This risk has not been assessed."
     },
     {
       "name": "commercial",
       "level": null,
-      "rationale": null
+      "rationale": "This risk has not been assessed."
     },
     {
       "name": "technology",
       "level": null,
-      "rationale": null
+      "rationale": "This risk has not been assessed."
     }
   ]
 }
