@@ -18,7 +18,7 @@ const test_data = [
     risks: [{ name: "roadmap", level: "low" }],
   },
   {
-    id: "1111",
+    id: 1111,
     name: "Riskinator 5000",
     portfolio: "No risk no reward",
     risks: [
@@ -27,7 +27,7 @@ const test_data = [
     ],
   },
   {
-    id: "1_test",
+    id: 11,
     name: "Riskinator 6000",
     portfolio: "No risk no reward",
     risks: [
@@ -72,7 +72,7 @@ const test_data = [
     ],
   },
   {
-    id: "1",
+    id: 1,
     name: "Mysterion",
     portfolio: "Department of mystery",
     risks: [
