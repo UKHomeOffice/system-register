@@ -6,12 +6,10 @@ import uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
-class SystemRisksUpdatedEventTest {
+class SystemRiskUpdatedEventTest {
     @Test
     void updatesRisks() {
         SR_SystemBuilder partialSystem = aSystem();
@@ -19,7 +17,7 @@ class SystemRisksUpdatedEventTest {
                 .withRisks(SR_RiskBuilder.aHighRisk().withName("existing risk").withRationale("some reason"))
                 .build();
 
-        SystemRisksUpdatedEvent event = new SystemRisksUpdatedEvent(0, List.of(new SR_Risk("existing risk", "low", "a different reason")), null, null);
+        SystemRiskUpdatedEvent event = new SystemRiskUpdatedEvent(0, new SR_Risk("existing risk", "low", "a different reason"), null, null);
         var updatedSystem = event.update(system);
 
         assertThat(updatedSystem).usingRecursiveComparison()

@@ -5,23 +5,22 @@ import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
 
 import java.beans.ConstructorProperties;
 import java.time.Instant;
-import java.util.List;
 
-public class SystemRisksUpdatedEventDAO_v1 extends BaseDao {
+public class SystemRiskUpdatedEventDAO_v1 extends BaseDao {
     public final int id;
-    public final SystemRisksUpdatedEventDAO_v1.Person author;
-    public List<SR_Risk> risks;
+    public final SystemRiskUpdatedEventDAO_v1.Person author;
+    public SR_Risk risk;
 
     @ConstructorProperties({"id", "timestamp", "author"})
     @SuppressWarnings({"unused", "CdiInjectionPointsInspection"})
-    public SystemRisksUpdatedEventDAO_v1(int id, Instant timestamp, SystemRisksUpdatedEventDAO_v1.Person author) {
+    public SystemRiskUpdatedEventDAO_v1(int id, Instant timestamp, SystemRiskUpdatedEventDAO_v1.Person author) {
         this(id, null, timestamp, author);
     }
 
-    public SystemRisksUpdatedEventDAO_v1(int id, List<SR_Risk> risks, Instant timestamp, SystemRisksUpdatedEventDAO_v1.Person author) {
+    public SystemRiskUpdatedEventDAO_v1(int id, SR_Risk risk, Instant timestamp, SystemRiskUpdatedEventDAO_v1.Person author) {
         super(timestamp);
         this.id = id;
-        this.risks = risks;
+        this.risk = risk;
         this.author = author;
     }
 

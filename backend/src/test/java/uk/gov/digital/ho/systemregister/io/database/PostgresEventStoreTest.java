@@ -35,7 +35,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAddedEvent
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemAliasesUpdatedEventBuilder.aSystemAliasesUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemDescriptionUpdatedEventBuilder.aSystemDescriptionUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SystemNameUpdatedEventBuilder.aSystemNameUpdatedEvent;
-import static uk.gov.digital.ho.systemregister.helpers.builders.SystemRisksUpdatedEventBuilder.aSystemRisksUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemRiskUpdatedEventBuilder.aSystemRiskUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.TechnicalOwnerUpdatedEventBuilder.aTechnicalOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
@@ -275,7 +275,7 @@ public class PostgresEventStoreTest {
 
     @Test
     public void saveRiskUpdatedEvent() {
-        var expected = aSystemRisksUpdatedEvent()
+        var expected = aSystemRiskUpdatedEvent()
                 .build();
         eventStore.save(expected);
 

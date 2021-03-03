@@ -1,12 +1,10 @@
 {
   "id": 789,
-  "risks": [
-    {
-      "name": "some risk",
-      "level": "low",
-      "rationale": "some reason"
-    }
-  ],
+  "risk": {
+    "name": "some risk",
+    "level": "low",
+    "rationale": "some reason"
+  },
   "author": {
     "email": "user@example.com",
     "firstName": "test_FirstName",

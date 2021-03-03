@@ -5,32 +5,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
-import uk.gov.digital.ho.systemregister.application.messaging.events.SystemRisksUpdatedEvent;
+import uk.gov.digital.ho.systemregister.application.messaging.events.SystemRiskUpdatedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.io.database.dao.BaseDao;
-import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemRisksUpdatedEventDAO_v1;
+import uk.gov.digital.ho.systemregister.io.database.dao.v1.SystemRiskUpdatedEventDAO_v1;
 
 import javax.json.bind.JsonbBuilder;
 import java.time.Instant;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
-import static uk.gov.digital.ho.systemregister.helpers.builders.SystemRisksUpdatedEventBuilder.aSystemRisksUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.SystemRiskUpdatedEventBuilder.aSystemRiskUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsString;
 
-class SystemRisksUpdatedEventDaoMapper_v1Test {
-    private SystemRisksUpdatedEventDaoMapper_v1 mapper;
+class SystemRiskUpdatedEventDaoMapper_v1Test {
+    private SystemRiskUpdatedEventDaoMapper_v1 mapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new SystemRisksUpdatedEventDaoMapper_v1(JsonbBuilder.create());
+        mapper = new SystemRiskUpdatedEventDaoMapper_v1(JsonbBuilder.create());
     }
 
     @Test
     void supportsV1SystemRisksUpdatedEvents() {
-        boolean supported = mapper.supports(SystemRisksUpdatedEventDAO_v1.class);
+        boolean supported = mapper.supports(SystemRiskUpdatedEventDAO_v1.class);
 
         assertThat(supported).isTrue();
     }
@@ -45,7 +44,7 @@ class SystemRisksUpdatedEventDaoMapper_v1Test {
 
     @Test
     void mapsToSystemRisksUpdatedEventDAO() {
-        SystemRisksUpdatedEvent event = aSystemRisksUpdatedEvent()
+        SystemRiskUpdatedEvent event = aSystemRiskUpdatedEvent()
                 .withAuthor(aPerson()
                         .withEmail("some@email.com")
                         .withFirstName("John")
@@ -70,9 +69,9 @@ class SystemRisksUpdatedEventDaoMapper_v1Test {
 
     @Test
     void mapsToSystemRisksUpdatedEvent() {
-        SystemRisksUpdatedEvent expectedEvent = aSystemRisksUpdatedEvent()
+        SystemRiskUpdatedEvent expectedEvent = aSystemRiskUpdatedEvent()
                 .withId(789)
-                .withRisks(List.of(new SR_Risk("some risk", "low", "some reason")))
+                .withRisk(new SR_Risk("some risk", "low", "some reason"))
                 .withTimestamp(Instant.parse("2020-01-02T03:04:05Z"))
                 .withAuthor(aPerson()
                         .withEmail("user@example.com")
@@ -81,29 +80,7 @@ class SystemRisksUpdatedEventDaoMapper_v1Test {
                         .withUsername("test_Username"))
                 .build();
 
-        String json = getResourceAsString("dao/v1/system-risks-updated-event.json");
-
-        SR_Event event = mapper.mapToDomain(json);
-
-        assertThat(event).usingRecursiveComparison()
-                .isEqualTo(expectedEvent);
-    }
-
-    //Ask Mike: do we need this
-    @Test
-    void mapsEmptySetToSystemRisksUpdatedEvent() {
-        SystemRisksUpdatedEvent expectedEvent = aSystemRisksUpdatedEvent()
-                .withId(890)
-                .withRisks(List.of())
-                .withTimestamp(Instant.parse("2020-04-01T12:21:22Z"))
-                .withAuthor(aPerson()
-                        .withEmail("user@example.com")
-                        .withFirstName("test_FirstName")
-                        .withSurname("test_Surname")
-                        .withUsername("test_Username"))
-                .build();
-
-        String json = getResourceAsString("dao/v1/empty-system-risks-updated-event.json");
+        String json = getResourceAsString("dao/v1/system-risk-updated-event.json");
 
         SR_Event event = mapper.mapToDomain(json);
 

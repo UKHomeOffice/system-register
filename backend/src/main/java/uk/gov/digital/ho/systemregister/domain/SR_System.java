@@ -2,10 +2,14 @@ package uk.gov.digital.ho.systemregister.domain;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 public final class SR_System extends SystemData {
-     // todo I want to make all these immutable but cant
+    // todo I want to make all these immutable but cant
     //  because they need to be serialisable; help!
     public int id;
     public Instant lastUpdated;
@@ -103,10 +107,27 @@ public final class SR_System extends SystemData {
                 List.copyOf(aliases), List.copyOf(risks));
     }
 
-    public SR_System withRisks(List<SR_Risk> risks) {
+    public SR_System withRisk(SR_Risk risk) {
+        var risks = this.risks.stream()
+                .map(replacingMatchingRisk(risk))
+                .collect(toUnmodifiableList());
+
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy, supportedBy,
-                List.copyOf(aliases), List.copyOf(risks));
+                List.copyOf(aliases), risks);
+    }
+
+    private Function<SR_Risk, SR_Risk> replacingMatchingRisk(SR_Risk risk) {
+        return existingRisk -> existingRisk.name.equals(risk.name) ? risk : existingRisk;
+    }
+
+    public Optional<SR_Risk> getRiskByName(String name) {
+        if (risks == null) {
+            return Optional.empty();
+        }
+        return risks.stream()
+                .filter(risk -> name.equals(risk.name))
+                .findAny();
     }
 
     @Override

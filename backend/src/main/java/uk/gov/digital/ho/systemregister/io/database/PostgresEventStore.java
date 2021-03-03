@@ -87,7 +87,7 @@ public class PostgresEventStore implements IEventStore {
     SupportedByUpdatedEventDaoMapper_v1 supportedByUpdatedDaoMapper;
 
     @Inject
-    SystemRisksUpdatedEventDaoMapper_v1 risksUpdatedDaoMapper;
+    SystemRiskUpdatedEventDaoMapper_v1 risksUpdatedDaoMapper;
 
 
     @Inject
@@ -163,7 +163,7 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = developedByUpdatedDaoMapper;
         } else if (event instanceof SupportedByUpdatedEvent) {
             daoMapper = supportedByUpdatedDaoMapper;
-        } else if (event instanceof SystemRisksUpdatedEvent) {
+        } else if (event instanceof SystemRiskUpdatedEvent) {
             daoMapper = risksUpdatedDaoMapper;
         } else {
             throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + ". Please implement a DAO Mapper for this event type");
