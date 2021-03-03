@@ -4,8 +4,10 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Ri
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 import java.util.Map;
 
+@Provider
 public class RiskDoesNotExistExceptionMapper implements ExceptionMapper<RiskDoesNotExistException> {
     @Override
     public Response toResponse(RiskDoesNotExistException exception) {
