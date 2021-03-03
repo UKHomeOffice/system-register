@@ -7,8 +7,11 @@ import uk.gov.digital.ho.systemregister.application.messaging.commands.validatio
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.digital.ho.systemregister.assertions.FieldAssert.assertThatField;
+import static uk.gov.digital.ho.systemregister.domain.SR_PersonBuilder.aPerson;
 
 class UpdateSystemRiskCommandTest {
 
@@ -35,4 +38,14 @@ class UpdateSystemRiskCommandTest {
         assertThatField("rationale", UpdateSystemRiskCommand.Risk.class)
                 .hasAnnotations(RiskRationale.class);
     }
+
+    @Test
+    void trimsValuesForRiskFields() {
+        var timeStamp = Instant.now();
+        var actual = new UpdateSystemRiskCommand(123, new UpdateSystemRiskCommand.Risk("   some name   ", "   low   ", "   some reason   "), aPerson().build(), timeStamp);
+        var expected = new UpdateSystemRiskCommand(123, new UpdateSystemRiskCommand.Risk("some name", "low", "some reason"), aPerson().build(), timeStamp);
+
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
 }
