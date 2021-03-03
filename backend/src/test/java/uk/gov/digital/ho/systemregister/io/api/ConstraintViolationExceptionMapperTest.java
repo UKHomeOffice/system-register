@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +57,11 @@ class ConstraintViolationExceptionMapperTest {
                 .extracting("errors", map(String.class, String.class))
                 .hasEntrySatisfying("field", value ->
                         assertThat(value).matches("not (blank|null)"));
+    }
+
+    @Test
+    void isDiscoverableByQuarkus() {
+        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
     }
 
     @SuppressWarnings("unused")

@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Du
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,5 +34,10 @@ class DuplicateAliasProvidedExceptionMapperTest {
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .extracting("errors", map(String.class, String.class))
                 .containsEntry("aliases", "You have entered duplicate aliases: duplicate alias. Please amend or remove the duplicates.");
+    }
+
+    @Test
+    void isDiscoverableByQuarkus() {
+        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }

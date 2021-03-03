@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Co
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,5 +31,10 @@ class CommandHasNoEffectExceptionMapperTest {
                 .hasFieldOrPropertyWithValue("status", UNPROCESSABLE_ENTITY);
         assertThat(response.readEntity(new GenericType<Map<String, Object>>() {}))
                 .containsEntry("reason", "reason message");
+    }
+
+    @Test
+    void isDiscoverableByQuarkus() {
+        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }

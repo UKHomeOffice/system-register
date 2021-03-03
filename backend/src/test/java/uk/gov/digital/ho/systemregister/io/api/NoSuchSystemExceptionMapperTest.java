@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.NoSuchSystemException;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,5 +27,10 @@ class NoSuchSystemExceptionMapperTest {
         assertThat(response)
                 .extracting(Response::getStatusInfo)
                 .isEqualTo(NOT_FOUND);
+    }
+
+    @Test
+    void isDiscoverableByQuarkus() {
+        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }
