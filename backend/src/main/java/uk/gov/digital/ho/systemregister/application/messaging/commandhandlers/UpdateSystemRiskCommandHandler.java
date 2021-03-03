@@ -20,7 +20,7 @@ public class UpdateSystemRiskCommandHandler extends AbstractUpdateCommandHandler
 
     @Override
     protected void checkCommand(UpdateSystemRiskCommand command, SR_System system, SystemRegister register) throws CommandProcessingException {
-        //TODO: other checking method from command
+        command.ensureRiskExistsOnSystem(system);
         super.checkCommand(command, system, register);
     }
 }

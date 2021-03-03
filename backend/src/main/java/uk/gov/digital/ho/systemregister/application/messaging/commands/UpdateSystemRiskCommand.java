@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.application.messaging.commands;
 
 import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.CommandHasNoEffectException;
+import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.RiskDoesNotExistException;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.RiskLevel;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.RiskName;
 import uk.gov.digital.ho.systemregister.application.messaging.commands.validation.RiskRationale;
@@ -61,9 +62,11 @@ public class UpdateSystemRiskCommand implements UpdateCommand {
         return !Objects.equals(existingRisk.level, risk.level) || !risk.rationale.equals(existingRisk.rationale);
     }
 
-    //TODO:
-    // do risks exist at all on system (ask System)
-    // does relevant risk exist on system (ask System)
+    public void ensureRiskExistsOnSystem(SR_System system) throws RiskDoesNotExistException {
+        if (system.getRiskByName(risk.name).isEmpty()) {
+            throw new RiskDoesNotExistException(risk.name);
+        }
+    }
 
     @Override
     public void ensureCommandUpdatesSystem(SR_System system) throws CommandHasNoEffectException {

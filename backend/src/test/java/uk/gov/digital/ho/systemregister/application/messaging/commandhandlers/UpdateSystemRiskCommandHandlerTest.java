@@ -113,4 +113,17 @@ class UpdateSystemRiskCommandHandlerTest {
                         Map.of(systemBuilder.build(), metadata),
                         Instant.now()));
     }
+
+    @Test
+    void raisesExceptionIfRiskToBeUpdatedDoesNotExist() {
+        givenCurrentStateWithSystem(aSystem()
+                .withId(987)
+                .withRisks(aLowRisk().withName("existing risk").withRationale("existing reason") ));
+        var command = new UpdateSystemRiskCommand(987, new UpdateSystemRiskCommand
+                .Risk("a different risk", "high","some reason"), aPerson().build(), Instant.now());
+
+        assertThatThrownBy(() -> commandHandler.handle(command))
+                .isInstanceOf(RiskDoesNotExistException.class)
+                .hasMessageContaining("system does not have risk: a different risk");
+    }
 }
