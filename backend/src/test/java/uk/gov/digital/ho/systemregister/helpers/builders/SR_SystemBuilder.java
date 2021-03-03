@@ -111,6 +111,11 @@ public class SR_SystemBuilder {
         return this;
     }
 
+    public SR_SystemBuilder withNoRisks() {
+        this.risks = null;
+        return this;
+    }
+
     public SR_SystemBuilder withTechnicalOwner(String technicalOwner) {
         this.technicalOwner = technicalOwner;
         return this;

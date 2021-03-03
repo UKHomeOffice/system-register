@@ -2,8 +2,7 @@ package uk.gov.digital.ho.systemregister.application.messaging.commands.validati
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.validation.Validation;
@@ -21,8 +20,8 @@ public class RiskRationaleTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"a", " "})
-    @EmptySource
-    void rationaleMustNotBeTooShort(String rationale) {
+    @NullAndEmptySource
+    void rationaleMustNotBeTooShortOrMissing(String rationale) {
         var command = new TestCommand(rationale);
 
         var constraintViolations = validator.validate(command);
@@ -32,8 +31,7 @@ public class RiskRationaleTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"xy", "?-", "Rationale for risk"})
-    @NullSource
-    void allowsRationaleStringToBeNullOrContainTwoOrMoreCharacters(String rationale) {
+    void allowsRationaleStringToContainTwoOrMoreCharacters(String rationale) {
         var command = new TestCommand(rationale);
 
         var constraintViolations = validator.validate(command);
