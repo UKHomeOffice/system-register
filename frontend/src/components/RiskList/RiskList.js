@@ -39,16 +39,16 @@ const useStyles = makeStyles({
   },
 });
 
-const ALL_RISK_LENSE = "combined";
+const ALL_RISK_LENSES = "combined";
 
 const RiskList = (props) => {
   const classes = useStyles();
 
   let systems;
-  if (props.riskLens === ALL_RISK_LENSE) {
+  if (props.riskLens === ALL_RISK_LENSES) {
     systems = props.systems
       .map((sys) => {
-        const risk = { name: ALL_RISK_LENSE, score: sumKnownRisk(sys) };
+        const risk = { name: ALL_RISK_LENSES, score: sumKnownRisk(sys) };
         return {
           name: sys.name,
           id: sys.id,
@@ -103,7 +103,7 @@ const RiskList = (props) => {
           <TableBody>
             {systems.map((s) => {
               const riskClass =
-                props.riskLens === ALL_RISK_LENSE
+                props.riskLens === ALL_RISK_LENSES
                   ? styleRiskScoreBackground(
                       0,
                       riskTypes.length * riskConfig.RISK_VALUES.high,
@@ -124,7 +124,7 @@ const RiskList = (props) => {
                     align="left"
                   >
                     <strong style={{ color: "white" }}>
-                      {props.riskLens === ALL_RISK_LENSE
+                      {props.riskLens === ALL_RISK_LENSES
                         ? s.risk.score
                         : formatLevel(s.risk.level, props.rootValue)}
                     </strong>
@@ -161,7 +161,7 @@ RiskList.propTypes = {
 const NOT_APPLICABLE = "not_applicable";
 
 function formatLevel(level) {
-  if (!level) return "UKNOWN";
+  if (!level) return "UNKNOWN";
   if (level === NOT_APPLICABLE) {
     return "N/A";
   }
