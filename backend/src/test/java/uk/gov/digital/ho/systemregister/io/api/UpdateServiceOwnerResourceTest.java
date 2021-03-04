@@ -38,6 +38,17 @@ public class UpdateServiceOwnerResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    void canSetServiceOwnerToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-service-owner/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-service-owner/minimal-update-command.json", "/api/systems/1/update-service-owner", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorised() {
         given().auth().none()
                 .contentType(JSON)

@@ -38,6 +38,17 @@ public class UpdateSystemAliasesResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    void canSetNoAliases() throws JSONException {
+        var expectedResponse = getResourceAsString("update-system-aliases/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-system-aliases/minimal-update-command.json", "/api/systems/1/update-system-aliases", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorised() {
         given().auth().none()
                 .contentType(JSON)

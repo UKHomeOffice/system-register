@@ -37,6 +37,16 @@ public class UpdateInformationAssetOwnerResourceTest extends ResourceTestBase {
         checkAllSystemsResponse("update-information-asset-owner/expectedAllSystemsResponse.json");
     }
 
+    @Test
+    @TestSecurity
+    void canSetInformationAssetOwnerToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-information-asset-owner/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-information-asset-owner/minimal-update-command.json", "/api/systems/1/update-information-asset-owner", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
 
     @Test
     @TestSecurity

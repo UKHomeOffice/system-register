@@ -1,15 +1,20 @@
 {
   "systems": [
     {
-      "aliases": [
-        "new sys 1"
-      ],
-      "criticality": "low",
-      "description": "A test system for testing purposes",
-      "developed_by": "Home Office",
-      "investment_state": "evergreen",
+      "id": 1,
       "name": "Newly added system",
+      "aliases": ["new sys 1"],
+      "description": "A test system for testing purposes",
       "portfolio": "SPAN-R",
+      "criticality": "low",
+      "investment_state": "evergreen",
+      "business_owner": "business owner",
+      "product_owner": "Indie Bunga",
+      "information_asset_owner": "information asset owner",
+      "service_owner": "service owner",
+      "tech_owner": "tech owner",
+      "developed_by": "Home Office",
+      "supported_by": "a supporter",
       "risks": [
         {
           "level": "low",
@@ -17,7 +22,6 @@
           "rationale": "Meaningful data here"
         }
       ],
-      "id": 1,
       "last_updated": {
         "author_name": "Basil Barkley"
       }

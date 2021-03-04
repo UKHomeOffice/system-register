@@ -20,7 +20,6 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
 public class UpdateCriticalityResourceTest extends ResourceTestBase {
-
     public UpdateCriticalityResourceTest(@SuppressWarnings("CdiInjectionPointsInspection") AgroalDataSource dataSource) {
         super(dataSource);
     }
@@ -35,6 +34,17 @@ public class UpdateCriticalityResourceTest extends ResourceTestBase {
 
         assertEquals(expectedResponse, response, false);
         checkAllSystemsResponse("update-criticality/expectedAllSystemsResponse.json");
+    }
+
+    @Test
+    @TestSecurity
+    void canSetCriticalityToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-criticality/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-criticality/minimal-update-command.json", "/api/systems/1/update-criticality", 200);
+
+        assertEquals(expectedResponse, response, false);
     }
 
     @Test

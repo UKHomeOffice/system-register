@@ -19,6 +19,12 @@ public class AddSystemCommandDTO {
     public SystemDTO system;
 
     public AddSystemCommand toCommand(SR_Person author, Instant timestamp) {
+        if (system == null) {
+            return new AddSystemCommand(
+                    null, null, null, null, null, null,
+                    null, null, null, null, null, null,
+                    null, null, author, timestamp);
+        }
         var risks = safelyMapped(
                 system.risks,
                 risk -> new AddSystemCommand.Risk(risk.name, risk.level, risk.rationale));

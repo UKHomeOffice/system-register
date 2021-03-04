@@ -1,9 +1,7 @@
 {
   "name": "Newly added system",
   "id": 1,
-  "aliases": [
-    "new sys 1"
-  ],
+  "aliases": ["new sys 1"],
   "description": "A test system for testing purposes",
   "portfolio": "SPAN-R",
   "criticality": "low",
@@ -11,6 +9,10 @@
   "product_owner": "Indie Bunga",
   "business_owner": "Snarf",
   "developed_by": "Home Office",
+  "information_asset_owner": "information asset owner",
+  "service_owner": "service owner",
+  "tech_owner": "tech owner",
+  "supported_by": "a supporter",
   "risks": [
     {
       "name": "roadmap",

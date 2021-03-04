@@ -38,6 +38,17 @@ public class UpdateSupportedByResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    void canSetSupportedByToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-supported-by/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-supported-by/minimal-update-command.json", "/api/systems/1/update-supported-by", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorised() {
         given().auth().none()
                 .contentType(JSON)

@@ -20,7 +20,6 @@ import static uk.gov.digital.ho.systemregister.util.ResourceUtils.getResourceAsS
 @DisabledIfEnvironmentVariable(named = "CI", matches = "drone")
 @TestProfile(WithMockAuthorizationServer.class)
 public class UpdateSystemRiskResourceTest extends ResourceTestBase {
-
     public UpdateSystemRiskResourceTest(@SuppressWarnings("CdiInjectionPointsInspection") AgroalDataSource dataSource) {
         super(dataSource);
     }
@@ -35,6 +34,17 @@ public class UpdateSystemRiskResourceTest extends ResourceTestBase {
 
         assertEquals(expectedResponse, response, false);
         checkAllSystemsResponse("update-system-risk/expectedAllSystemsResponse.json");
+    }
+
+    @Test
+    @TestSecurity
+    void canSetRiskLevelToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-system-risk/minimal-update-response.json");
+        sendCommandToApi("update-system-risk/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-system-risk/minimal-update-command.json", "/api/systems/1/update-risk", 200);
+
+        assertEquals(expectedResponse, response, false);
     }
 
     @Test

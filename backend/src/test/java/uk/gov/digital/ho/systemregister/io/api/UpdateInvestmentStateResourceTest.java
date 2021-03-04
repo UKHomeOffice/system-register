@@ -39,6 +39,17 @@ public class UpdateInvestmentStateResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    void canSetInvestmentStateToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-investment-state/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+
+        var response = sendCommandToApi("update-investment-state/minimal-update-command.json", "/api/systems/1/update-investment-state", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorised() {
         given().auth().none()
                 .contentType(JSON)
