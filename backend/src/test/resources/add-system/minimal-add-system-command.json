@@ -1,0 +1,25 @@
+{
+  "system": {
+    "name": "Minimal system",
+    "aliases": [],
+    "portfolio": "Unknown",
+    "risks": [
+      {
+        "name": "architecture",
+        "rationale": "This risk has not been assessed."
+      },
+      {
+        "name": "change",
+        "rationale": "This risk has not been assessed."
+      },
+      {
+        "name": "commercial",
+        "rationale": "This risk has not been assessed."
+      },
+      {
+        "name": "technology",
+        "rationale": "This risk has not been assessed."
+      }
+    ]
+  }
+}

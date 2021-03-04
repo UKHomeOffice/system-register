@@ -1,0 +1,31 @@
+{
+  "id": 1,
+  "name": "Minimal system",
+  "aliases": [],
+  "portfolio": "Unknown",
+  "risks": [
+    {
+      "name": "architecture",
+      "level": null,
+      "rationale": "This risk has not been assessed."
+    },
+    {
+      "name": "change",
+      "level": null,
+      "rationale": "This risk has not been assessed."
+    },
+    {
+      "name": "commercial",
+      "level": null,
+      "rationale": "This risk has not been assessed."
+    },
+    {
+      "name": "technology",
+      "level": null,
+      "rationale": "This risk has not been assessed."
+    }
+  ],
+  "last_updated": {
+    "author_name": "Basil Barkley"
+  }
+}

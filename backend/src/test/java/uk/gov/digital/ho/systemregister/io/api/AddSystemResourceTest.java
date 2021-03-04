@@ -61,6 +61,16 @@ class AddSystemResourceTest extends ResourceTestBase {
 
     @Test
     @TestSecurity
+    void canAddSystemWithMinimalData() throws JSONException {
+        var expectedResponse = getResourceAsString("add-system/minimal-add-system-response.json");
+
+        var response = sendCommandToApi("add-system/minimal-add-system-command.json", "/api/systems", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
+
+    @Test
+    @TestSecurity
     public void mustBeAuthorisedToAddSystems() {
         given().auth().none()
                 .contentType(JSON)

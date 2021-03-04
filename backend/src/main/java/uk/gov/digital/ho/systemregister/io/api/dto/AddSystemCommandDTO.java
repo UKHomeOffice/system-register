@@ -5,11 +5,9 @@ import uk.gov.digital.ho.systemregister.application.messaging.commands.AddSystem
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 
 import javax.json.bind.annotation.JsonbProperty;
-import java.beans.ConstructorProperties;
 import java.time.Instant;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
 import static uk.gov.digital.ho.systemregister.util.NullSafeUtils.safelyCopied;
 import static uk.gov.digital.ho.systemregister.util.NullSafeUtils.safelyMapped;
 
@@ -32,61 +30,27 @@ public class AddSystemCommandDTO {
     }
 
     public static class SystemDTO {
-        public final String name;
-        public final String description;
-        public final String portfolio;
-        public final String criticality;
+        public String name;
+        public String description;
+        public String portfolio;
+        public String criticality;
         @JsonbProperty("investment_state")
-        public final String investmentState;
+        public String investmentState;
         @JsonbProperty("business_owner")
-        public final String businessOwner;
+        public String businessOwner;
         @JsonbProperty("service_owner")
-        public final String serviceOwner;
+        public String serviceOwner;
         @JsonbProperty("tech_owner")
-        public final String technicalOwner;
+        public String technicalOwner;
         @JsonbProperty("product_owner")
-        public final String productOwner;
+        public String productOwner;
         @JsonbProperty("information_asset_owner")
-        public final String informationAssetOwner;
+        public String informationAssetOwner;
         @JsonbProperty("developed_by")
-        public final String developedBy;
+        public String developedBy;
         @JsonbProperty("supported_by")
-        public final String supportedBy;
-        public final List<String> aliases;
-        public final List<RiskDTO> risks;
-
-        @ConstructorProperties({
-                "name", "description", "portfolio", "criticality", "investment_state", "business_owner", "service_owner",
-                "tech_owner", "product_owner", "information_asset_owner", "developed_by", "supported_by", "aliases",
-                "risks",
-        })
-        @SuppressWarnings({"CdiInjectionPointsInspection", "DuplicatedCode"})
-        public SystemDTO(String name, String description,
-                         String portfolio, String criticality,
-                         String investmentState,
-                         String businessOwner,
-                         String serviceOwner,
-                         String technicalOwner,
-                         String productOwner,
-                         String informationAssetOwner,
-                         String developedBy,
-                         String supportedBy,
-                         List<String> aliases,
-                         List<RiskDTO> risks) {
-            this.name = name;
-            this.description = description;
-            this.portfolio = portfolio;
-            this.criticality = criticality;
-            this.investmentState = investmentState;
-            this.businessOwner = businessOwner;
-            this.serviceOwner = serviceOwner;
-            this.technicalOwner = technicalOwner;
-            this.productOwner = productOwner;
-            this.informationAssetOwner = informationAssetOwner;
-            this.developedBy = developedBy;
-            this.supportedBy = supportedBy;
-            this.aliases = unmodifiableList(aliases);
-            this.risks = unmodifiableList(risks);
-        }
+        public String supportedBy;
+        public List<String> aliases;
+        public List<RiskDTO> risks;
     }
 }
