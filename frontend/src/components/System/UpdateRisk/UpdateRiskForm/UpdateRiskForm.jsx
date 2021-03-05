@@ -1,28 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
-import { defaultTo, map } from "lodash-es";
+import { defaultTo } from "lodash-es";
 
-import Radio from "../../../Radio";
+import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
 import toLower from "../../../../utilities/toLower";
+import toTitle from "../../../../utilities/toTitle";
 
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
 });
-const makeRating = (value, text) => ({ value, text });
-const toRadioButton = ({ value, text }, index) => (
-  <Radio key={index} name="level" value={value}>
-    {text}
-  </Radio>
-);
 
 const riskRatings = [
-  makeRating("low", "Low"),
-  makeRating("medium", "Medium"),
-  makeRating("high", "High"),
-  makeRating("unknown", "Unknown"),
-  makeRating("not_applicable", "Not applicable"),
+  makeRadio("low", "Low"),
+  makeRadio("medium", "Medium"),
+  makeRadio("high", "High"),
+  makeRadio("unknown", "Unknown"),
+  makeRadio("not_applicable", "Not applicable"),
 ];
 
 function UpdateRiskForm({ risk, systemName, onCancel }) {
@@ -35,11 +30,13 @@ function UpdateRiskForm({ risk, systemName, onCancel }) {
           {toLower(risk.name)} risks associated with your system.
         </p>
 
-        <h2 className="update-risk-form__group-title">Roadmap risk rating</h2>
-        <p className="update-risk-form__secondary">
-          What is the level of risk?
-        </p>
-        {map(riskRatings, toRadioButton)}
+        <RadioGroup
+          name="level"
+          items={riskRatings}
+          hint="What is the level of risk?"
+        >
+          {toTitle(risk.name)} risk rating
+        </RadioGroup>
 
         <div className="update-risk-form__risk-controls">
           <SecondaryButton onClick={onCancel}>Cancel</SecondaryButton>

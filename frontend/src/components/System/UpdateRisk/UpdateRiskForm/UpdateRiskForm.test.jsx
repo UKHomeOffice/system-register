@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import UpdateRiskForm from "./UpdateRiskForm";
+
+import UpdateRiskForm from ".";
 
 describe("UpdateRiskForm", () => {
   const cancelHandler = jest.fn();
@@ -18,6 +19,14 @@ describe("UpdateRiskForm", () => {
   });
 
   describe("risk rating", () => {
+    it("derives the heading from the lens", () => {
+      setUp({ name: "a__lens_name", rationale: "" });
+
+      expect(
+        screen.getByRole("heading", { name: "A Lens Name risk rating" })
+      ).toBeVisible();
+    });
+
     it("shows the available ratings", () => {
       const options = [
         ["low", "Low"],
