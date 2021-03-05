@@ -4,6 +4,7 @@ import { find } from "lodash-es";
 import { useHistory } from "react-router-dom";
 
 import PageTitle from "../../PageTitle";
+import UpdateRiskForm from "./UpdateRiskForm";
 import { useQueryParams } from "../../../hooks";
 
 const isMatchingRisk = (lens) => ({ name }) => name === lens;
@@ -12,7 +13,7 @@ const findMatchingRisk = (system, lens) => {
   return find(risks, isMatchingRisk(lens));
 };
 
-function UpdateRisk({ system, returnPath }) {
+function UpdateRisk({ system, returnPath, onCancel }) {
   const history = useHistory();
   const { lens } = useQueryParams();
   const risk = findMatchingRisk(system, lens);
@@ -29,7 +30,11 @@ function UpdateRisk({ system, returnPath }) {
         <>
           <PageTitle>{`Update ${lens} risk information — ${system.name}`}</PageTitle>
 
-          <h1>{system.name}</h1>
+          <UpdateRiskForm
+            systemName={system.name}
+            risk={risk}
+            onCancel={onCancel}
+          />
         </>
       ) : (
         <>
@@ -52,6 +57,7 @@ UpdateRisk.propTypes = {
     ).isRequired,
   }),
   returnPath: PropTypes.string.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default UpdateRisk;

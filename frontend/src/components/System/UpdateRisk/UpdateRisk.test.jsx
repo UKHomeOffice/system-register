@@ -1,4 +1,5 @@
 import React from "react";
+import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Route, Router } from "react-router-dom";
@@ -6,7 +7,12 @@ import { Route, Router } from "react-router-dom";
 import UpdateRisk from ".";
 
 describe("UpdateRisk", () => {
+  const cancelHandler = jest.fn();
   const returnPath = "/system/123";
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   describe("system details have not been loaded", () => {
     it("informs the user that data is being loaded", () => {
@@ -19,7 +25,10 @@ describe("UpdateRisk", () => {
 
   describe("system details are available", () => {
     it("displays the system name", () => {
-      setUp({ name: "the system name", risks: [{ name: "risk lens" }] });
+      setUp({
+        name: "the system name",
+        risks: [{ name: "risk lens", rationale: "" }],
+      });
 
       expect(
         screen.getByRole("heading", { name: "the system name" })
@@ -27,18 +36,33 @@ describe("UpdateRisk", () => {
     });
 
     it("includes the risk in the page title", () => {
-      setUp({ name: "the system name", risks: [{ name: "a lens" }] }, "a lens");
+      setUp(
+        { name: "the system name", risks: [{ name: "a lens", rationale: "" }] },
+        "a lens"
+      );
 
       expect(document.title).toBe(
         "Update a lens risk information — the system name — System Register"
       );
+    });
+
+    it("triggers the cancel handler when the cancel button is clicked", () => {
+      setUp(
+        { name: "system", risks: [{ name: "lens", rationale: "" }] },
+        "lens"
+      );
+      const cancelButton = screen.getByRole("button", { name: /cancel/i });
+
+      user.click(cancelButton);
+
+      expect(cancelHandler).toBeCalled();
     });
   });
 
   describe("lens is invalid", () => {
     it("redirects the user to the system view when the lens is missing", () => {
       const { history } = setUp(
-        { name: "name", risks: [{ name: "risk lens" }] },
+        { name: "name", risks: [{ name: "risk lens", rationale: "" }] },
         null
       );
 
@@ -51,7 +75,7 @@ describe("UpdateRisk", () => {
 
     it("redirects the user to the system view when the lens does not apply to the system", () => {
       const { history } = setUp(
-        { name: "name", risks: [{ name: "a lens" }] },
+        { name: "name", risks: [{ name: "a lens", rationale: "" }] },
         "a different lens"
       );
 
@@ -71,7 +95,11 @@ describe("UpdateRisk", () => {
     const renderResult = render(
       <Router history={history}>
         <Route path="/update-risk">
-          <UpdateRisk system={system} returnPath={returnPath} />
+          <UpdateRisk
+            system={system}
+            returnPath={returnPath}
+            onCancel={cancelHandler}
+          />
         </Route>
       </Router>
     );
