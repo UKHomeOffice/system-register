@@ -1,5 +1,5 @@
-const toLower = (s) => {
-    return s.replace("_", " ")
+function toLower(value) {
+  return value.replace("_", " ").toLowerCase();
 }
 
-export default toLower
+export default toLower;
