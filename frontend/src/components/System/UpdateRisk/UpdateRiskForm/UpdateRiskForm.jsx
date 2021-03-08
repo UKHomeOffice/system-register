@@ -4,13 +4,14 @@ import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 import { defaultTo, flow, isEqual, mapValues, omitBy, trim } from "lodash-es";
 
+import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
 import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
 import Textarea from "../../../Textarea";
+import ValidationError from "../../../../services/validationError";
 import toLower from "../../../../utilities/toLower";
 import toTitle from "../../../../utilities/toTitle";
 import { validateRationale } from "./validators";
-import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
 
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
@@ -30,13 +31,20 @@ const riskRatings = [
 
 function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
   const handleSubmit = useCallback(
-    async (values) => {
+    async (values, formik) => {
       const initialValues = detailsOf(risk);
       const changedValues = flow(
         trimSpaces,
         removeUnchangedValues(initialValues)
       )(values);
-      await onSubmit(changedValues);
+
+      try {
+        await onSubmit(changedValues);
+      } catch (e) {
+        if (e instanceof ValidationError) {
+          formik.setErrors(e.errors);
+        }
+      }
     },
     [risk, onSubmit]
   );

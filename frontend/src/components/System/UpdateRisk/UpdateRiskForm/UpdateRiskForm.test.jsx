@@ -2,6 +2,8 @@ import React from "react";
 import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 
+import ValidationError from "../../../../services/validationError";
+
 import UpdateRiskForm from ".";
 
 describe("UpdateRiskForm", () => {
@@ -141,6 +143,23 @@ describe("UpdateRiskForm", () => {
         const error = screen.getByText(/must|enter/i, { selector: "a" });
         expect(error).toHaveTextContent("must enter a rationale");
       });
+    });
+
+    it("shows validation errors returned from the API", async () => {
+      submitHandler.mockRejectedValue(
+        new ValidationError({
+          level: "level validation error",
+          rationale: "rationale validation error",
+        })
+      );
+      setUp({ name: "name", level: "low", rationale: "rationale" });
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.click(saveButton);
+
+      expect(
+        await screen.findAllByText(/validation error/i, { selector: "a" })
+      ).toHaveLength(2);
     });
   });
 
