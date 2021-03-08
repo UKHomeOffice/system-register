@@ -10,6 +10,7 @@ import Textarea from "../../../Textarea";
 import toLower from "../../../../utilities/toLower";
 import toTitle from "../../../../utilities/toTitle";
 import { validateRationale } from "./validators";
+import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
 
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
@@ -43,6 +44,8 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
   return (
     <Formik initialValues={detailsOf(risk)} onSubmit={handleSubmit}>
       <Form>
+        <ErrorSummary order={["level", "rationale"]} />
+
         <h1>{systemName}</h1>
         <p className="update-risk-form__secondary">
           Please provide a high level assessment and enter a rationale for{" "}

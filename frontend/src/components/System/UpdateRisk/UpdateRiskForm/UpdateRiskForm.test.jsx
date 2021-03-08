@@ -119,8 +119,28 @@ describe("UpdateRiskForm", () => {
       user.clear(rationaleTextbox);
       user.click(saveButton);
 
-      expect(await screen.findByText(/must enter a rationale/)).toBeVisible();
+      expect(
+        await screen.findByText(/must enter a rationale/, {
+          selector: "label *",
+        })
+      ).toBeVisible();
       expect(submitHandler).not.toBeCalled();
+    });
+  });
+
+  describe("error messaging", () => {
+    it("shows a summary containing all error details", async () => {
+      setUp({ name: "name", rationale: "rationale" });
+      const rationaleTextbox = screen.getByRole("textbox");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.clear(rationaleTextbox);
+      user.click(saveButton);
+
+      await waitFor(() => {
+        const error = screen.getByText(/must|enter/i, { selector: "a" });
+        expect(error).toHaveTextContent("must enter a rationale");
+      });
     });
   });
 
