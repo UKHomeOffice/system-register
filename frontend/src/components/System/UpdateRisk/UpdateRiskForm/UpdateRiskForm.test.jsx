@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import user from "@testing-library/user-event";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import UpdateRiskForm from ".";
 
@@ -94,6 +95,21 @@ describe("UpdateRiskForm", () => {
         expect(screen.getByRole("textbox", /rationale/i)).toHaveValue("");
       }
     );
+
+    it("trims extraneous spaces during submission", async () => {
+      setUp({ name: "name", rationale: "rationale" });
+      const rationaleTextbox = screen.getByRole("textbox");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(rationaleTextbox, "\n  a new\f rationale \t with  spaces \v ");
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({
+          rationale: "a new\f rationale \t with  spaces",
+        });
+      });
+    });
   });
 
   function setUp(risk, systemName = "system") {
@@ -105,5 +121,10 @@ describe("UpdateRiskForm", () => {
         onCancel={cancelHandler}
       />
     );
+  }
+
+  function overtype(element, text) {
+    user.clear(element);
+    user.type(element, text);
   }
 });

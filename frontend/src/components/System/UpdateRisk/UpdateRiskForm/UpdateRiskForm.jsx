@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { defaultTo, isEqual, omitBy } from "lodash-es";
+import { defaultTo, flow, isEqual, mapValues, omitBy, trim } from "lodash-es";
 
 import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
@@ -14,8 +14,9 @@ const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
   rationale: defaultTo(risk.rationale, ""),
 });
-const removeUnchangedValues = (initialValues, currentValues) =>
+const removeUnchangedValues = (initialValues) => (currentValues) =>
   omitBy(currentValues, (value, key) => isEqual(value, initialValues[key]));
+const trimSpaces = (values) => mapValues(values, trim);
 
 const riskRatings = [
   makeRadio("low", "Low"),
@@ -29,7 +30,10 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
   const handleSubmit = useCallback(
     async (values) => {
       const initialValues = detailsOf(risk);
-      const changedValues = removeUnchangedValues(initialValues, values);
+      const changedValues = flow(
+        trimSpaces,
+        removeUnchangedValues(initialValues)
+      )(values);
       await onSubmit(changedValues);
     },
     [risk, onSubmit]
