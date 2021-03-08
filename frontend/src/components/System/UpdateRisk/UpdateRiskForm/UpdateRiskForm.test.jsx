@@ -161,6 +161,19 @@ describe("UpdateRiskForm", () => {
         await screen.findAllByText(/validation error/i, { selector: "a" })
       ).toHaveLength(2);
     });
+
+    it("indicates that there is problem in the title", async () => {
+      setUp({ name: "name", rationale: "rationale" });
+      const rationaleTextbox = screen.getByRole("textbox");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.clear(rationaleTextbox);
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(document.title).toMatch(/^Error:/);
+      });
+    });
   });
 
   function setUp(risk, systemName = "system") {

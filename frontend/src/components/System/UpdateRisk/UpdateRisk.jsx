@@ -27,16 +27,12 @@ function UpdateRisk({ system, returnPath, onSubmit, onCancel }) {
   return (
     <div className="centerContent">
       {system && risk ? (
-        <>
-          <PageTitle>{`Update ${lens} risk information — ${system.name}`}</PageTitle>
-
-          <UpdateRiskForm
-            systemName={system.name}
-            risk={risk}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-          />
-        </>
+        <UpdateRiskForm
+          systemName={system.name}
+          risk={risk}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+        />
       ) : (
         <>
           <PageTitle>Loading system...</PageTitle>

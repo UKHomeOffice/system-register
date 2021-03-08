@@ -5,6 +5,7 @@ import { Button } from "govuk-react";
 import { defaultTo, flow, isEqual, mapValues, omitBy, trim } from "lodash-es";
 
 import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
+import { FormikAwarePageTitle } from "../../../PageTitle";
 import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
 import Textarea from "../../../Textarea";
@@ -51,36 +52,42 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
 
   return (
     <Formik initialValues={detailsOf(risk)} onSubmit={handleSubmit}>
-      <Form>
+      <>
+        <FormikAwarePageTitle>{`Update ${toLower(
+          risk.name
+        )} risk information — ${systemName}`}</FormikAwarePageTitle>
+
         <ErrorSummary order={["level", "rationale"]} />
 
-        <h1>{systemName}</h1>
-        <p className="update-risk-form__secondary">
-          Please provide a high level assessment and enter a rationale for{" "}
-          {toLower(risk.name)} risks associated with your system.
-        </p>
+        <Form>
+          <h1>{systemName}</h1>
+          <p className="update-risk-form__secondary">
+            Please provide a high level assessment and enter a rationale for{" "}
+            {toLower(risk.name)} risks associated with your system.
+          </p>
 
-        <RadioGroup
-          name="level"
-          items={riskRatings}
-          hint="What is the level of risk?"
-        >
-          {toTitle(risk.name)} risk rating
-        </RadioGroup>
+          <RadioGroup
+            name="level"
+            items={riskRatings}
+            hint="What is the level of risk?"
+          >
+            {toTitle(risk.name)} risk rating
+          </RadioGroup>
 
-        <Textarea
-          name="rationale"
-          hint="Please provide a high-level overview to explain the selected risk rating"
-          validate={validateRationale}
-        >
-          {toTitle(risk.name)} rationale
-        </Textarea>
+          <Textarea
+            name="rationale"
+            hint="Please provide a high-level overview to explain the selected risk rating."
+            validate={validateRationale}
+          >
+            {toTitle(risk.name)} rationale
+          </Textarea>
 
-        <div className="update-risk-form__risk-controls">
-          <Button type="submit">Save</Button>
-          <SecondaryButton onClick={onCancel}>Cancel</SecondaryButton>
-        </div>
-      </Form>
+          <div className="update-risk-form__risk-controls">
+            <Button type="submit">Save</Button>
+            <SecondaryButton onClick={onCancel}>Cancel</SecondaryButton>
+          </div>
+        </Form>
+      </>
     </Formik>
   );
 }
