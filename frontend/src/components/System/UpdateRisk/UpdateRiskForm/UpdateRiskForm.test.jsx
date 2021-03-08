@@ -5,6 +5,7 @@ import UpdateRiskForm from ".";
 
 describe("UpdateRiskForm", () => {
   const cancelHandler = jest.fn();
+  const submitHandler = jest.fn();
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -100,6 +101,7 @@ describe("UpdateRiskForm", () => {
       <UpdateRiskForm
         risk={risk}
         systemName={systemName}
+        onSubmit={submitHandler}
         onCancel={cancelHandler}
       />
     );

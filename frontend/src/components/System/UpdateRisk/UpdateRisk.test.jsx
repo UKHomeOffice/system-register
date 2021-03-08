@@ -1,6 +1,6 @@
 import React from "react";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Route, Router } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import UpdateRisk from ".";
 
 describe("UpdateRisk", () => {
   const cancelHandler = jest.fn();
+  const submitHandler = jest.fn();
   const returnPath = "/system/123";
 
   beforeEach(() => {
@@ -45,6 +46,67 @@ describe("UpdateRisk", () => {
         "Update a lens risk information — the system name — System Register"
       );
     });
+
+    it("sends changed values to the submit event callback", async () => {
+      setUp(
+        {
+          name: "system",
+          risks: [{ name: "lens", rationale: "existing rationale" }],
+        },
+        "lens"
+      );
+      const mediumRiskRating = screen.getByRole("radio", { name: /medium/i });
+      const rationaleTextbox = screen.getByRole("textbox", {
+        name: /rationale/i,
+      });
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.click(mediumRiskRating);
+      overtype(rationaleTextbox, "a new rationale");
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({
+          level: "medium",
+          rationale: "a new rationale",
+        });
+      });
+    });
+
+    it.each([
+      ["level", { level: "high", rationale: "existing rationale" }],
+      ["rationale", { level: "low", rationale: "new rationale" }],
+    ])(
+      "excludes unchanged values from data sent to the submit event callback: %p",
+      async (expectedFieldName, { level, rationale }) => {
+        setUp(
+          {
+            name: "system",
+            risks: [
+              { name: "lens", level: "low", rationale: "existing rationale" },
+            ],
+          },
+          "lens"
+        );
+        const riskRating = screen.getByRole("radio", {
+          name: new RegExp(level, "i"),
+        });
+        const rationaleTextbox = screen.getByRole("textbox", {
+          name: /rationale/i,
+        });
+        const saveButton = screen.getByRole("button", { name: /save/i });
+
+        user.click(riskRating);
+        overtype(rationaleTextbox, rationale);
+        user.click(saveButton);
+
+        await waitFor(() => {
+          expect(submitHandler).toBeCalledWith({
+            [expectedFieldName]: expect.any(String),
+          });
+        });
+      }
+    );
 
     it("triggers the cancel handler when the cancel button is clicked", () => {
       setUp(
@@ -98,11 +160,17 @@ describe("UpdateRisk", () => {
           <UpdateRisk
             system={system}
             returnPath={returnPath}
+            onSubmit={submitHandler}
             onCancel={cancelHandler}
           />
         </Route>
       </Router>
     );
     return { ...renderResult, history };
+  }
+
+  function overtype(element, text) {
+    user.clear(element);
+    user.type(element, text);
   }
 });

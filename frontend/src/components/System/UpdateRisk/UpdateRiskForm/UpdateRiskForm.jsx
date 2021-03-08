@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
-import { defaultTo } from "lodash-es";
+import { Button } from "govuk-react";
+import { defaultTo, isEqual, omitBy } from "lodash-es";
 
 import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
@@ -13,6 +14,8 @@ const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
   rationale: defaultTo(risk.rationale, ""),
 });
+const removeUnchangedValues = (initialValues, currentValues) =>
+  omitBy(currentValues, (value, key) => isEqual(value, initialValues[key]));
 
 const riskRatings = [
   makeRadio("low", "Low"),
@@ -22,9 +25,18 @@ const riskRatings = [
   makeRadio("not_applicable", "Not applicable"),
 ];
 
-function UpdateRiskForm({ risk, systemName, onCancel }) {
+function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
+  const handleSubmit = useCallback(
+    async (values) => {
+      const initialValues = detailsOf(risk);
+      const changedValues = removeUnchangedValues(initialValues, values);
+      await onSubmit(changedValues);
+    },
+    [risk, onSubmit]
+  );
+
   return (
-    <Formik initialValues={detailsOf(risk)} onSubmit={() => {}}>
+    <Formik initialValues={detailsOf(risk)} onSubmit={handleSubmit}>
       <Form>
         <h1>{systemName}</h1>
         <p className="update-risk-form__secondary">
@@ -48,6 +60,7 @@ function UpdateRiskForm({ risk, systemName, onCancel }) {
         </Textarea>
 
         <div className="update-risk-form__risk-controls">
+          <Button type="submit">Save</Button>
           <SecondaryButton onClick={onCancel}>Cancel</SecondaryButton>
         </div>
       </Form>
@@ -63,6 +76,7 @@ UpdateRiskForm.propTypes = {
   }).isRequired,
   systemName: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default UpdateRiskForm;

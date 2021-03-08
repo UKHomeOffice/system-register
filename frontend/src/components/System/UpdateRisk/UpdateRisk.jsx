@@ -13,7 +13,7 @@ const findMatchingRisk = (system, lens) => {
   return find(risks, isMatchingRisk(lens));
 };
 
-function UpdateRisk({ system, returnPath, onCancel }) {
+function UpdateRisk({ system, returnPath, onSubmit, onCancel }) {
   const history = useHistory();
   const { lens } = useQueryParams();
   const risk = findMatchingRisk(system, lens);
@@ -33,6 +33,7 @@ function UpdateRisk({ system, returnPath, onCancel }) {
           <UpdateRiskForm
             systemName={system.name}
             risk={risk}
+            onSubmit={onSubmit}
             onCancel={onCancel}
           />
         </>
@@ -59,6 +60,7 @@ UpdateRisk.propTypes = {
   }),
   returnPath: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default UpdateRisk;
