@@ -53,6 +53,7 @@ UpdateRisk.propTypes = {
     risks: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
+        rationale: PropTypes.string,
       })
     ).isRequired,
   }),

@@ -5,11 +5,13 @@ import { defaultTo } from "lodash-es";
 
 import RadioGroup, { makeRadio } from "../../../RadioGroup";
 import SecondaryButton from "../../../SecondaryButton";
+import Textarea from "../../../Textarea";
 import toLower from "../../../../utilities/toLower";
 import toTitle from "../../../../utilities/toTitle";
 
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
+  rationale: defaultTo(risk.rationale, ""),
 });
 
 const riskRatings = [
@@ -38,6 +40,13 @@ function UpdateRiskForm({ risk, systemName, onCancel }) {
           {toTitle(risk.name)} risk rating
         </RadioGroup>
 
+        <Textarea
+          name="rationale"
+          hint="Please provide a high-level overview to explain the selected risk rating"
+        >
+          {toTitle(risk.name)} rationale
+        </Textarea>
+
         <div className="update-risk-form__risk-controls">
           <SecondaryButton onClick={onCancel}>Cancel</SecondaryButton>
         </div>
@@ -50,7 +59,7 @@ UpdateRiskForm.propTypes = {
   risk: PropTypes.shape({
     name: PropTypes.string.isRequired,
     level: PropTypes.string,
-    rationale: PropTypes.string.isRequired,
+    rationale: PropTypes.string,
   }).isRequired,
   systemName: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,

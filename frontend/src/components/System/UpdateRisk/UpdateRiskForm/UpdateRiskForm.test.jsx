@@ -68,6 +68,33 @@ describe("UpdateRiskForm", () => {
     );
   });
 
+  describe("risk rationale", () => {
+    it("derives the heading from the lens", () => {
+      setUp({ name: "another_lens_name", rationale: "" });
+
+      expect(
+        screen.getByRole("textbox", { name: /^Another Lens Name rationale/ })
+      ).toBeVisible();
+    });
+
+    it("pre-populates the existing rationale", () => {
+      setUp({ name: "name", rationale: "a rationale" });
+
+      expect(screen.getByRole("textbox", /rationale/i)).toHaveValue(
+        "a rationale"
+      );
+    });
+
+    it.each([null, undefined])(
+      "defaults missing values to a blank rationale: %p",
+      (rationale) => {
+        setUp({ name: "name", rationale });
+
+        expect(screen.getByRole("textbox", /rationale/i)).toHaveValue("");
+      }
+    );
+  });
+
   function setUp(risk, systemName = "system") {
     return render(
       <UpdateRiskForm
