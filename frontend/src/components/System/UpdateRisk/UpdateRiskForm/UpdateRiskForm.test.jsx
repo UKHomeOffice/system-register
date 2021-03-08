@@ -110,6 +110,18 @@ describe("UpdateRiskForm", () => {
         });
       });
     });
+
+    it("is validated before submission", async () => {
+      setUp({ name: "name", rationale: "rationale" });
+      const rationaleTextbox = screen.getByRole("textbox");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.clear(rationaleTextbox);
+      user.click(saveButton);
+
+      expect(await screen.findByText(/must enter a rationale/)).toBeVisible();
+      expect(submitHandler).not.toBeCalled();
+    });
   });
 
   function setUp(risk, systemName = "system") {

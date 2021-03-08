@@ -9,6 +9,7 @@ import SecondaryButton from "../../../SecondaryButton";
 import Textarea from "../../../Textarea";
 import toLower from "../../../../utilities/toLower";
 import toTitle from "../../../../utilities/toTitle";
+import { validateRationale } from "./validators";
 
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
@@ -59,6 +60,7 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
         <Textarea
           name="rationale"
           hint="Please provide a high-level overview to explain the selected risk rating"
+          validate={validateRationale}
         >
           {toTitle(risk.name)} rationale
         </Textarea>
