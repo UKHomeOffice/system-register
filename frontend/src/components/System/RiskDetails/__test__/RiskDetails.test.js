@@ -1,5 +1,6 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render as _render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
 import RiskDetails from "../RiskDetails";
 
@@ -75,4 +76,19 @@ describe("<RiskDetails />", () => {
     const element = queryByText(/Rationale:/);
     expect(element).not.toBeInTheDocument();
   });
+
+  it("links to the update risk page", () => {
+    render(<RiskDetails risk={test_risk_known} />);
+
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute(
+      "href",
+      expect.stringMatching(/\/update-risk\?lens=tech_stack$/)
+    );
+    expect(link).toHaveAttribute("title", "Update tech stack risk information");
+  });
+
+  function render(component) {
+    return _render(<MemoryRouter>{component}</MemoryRouter>);
+  }
 });

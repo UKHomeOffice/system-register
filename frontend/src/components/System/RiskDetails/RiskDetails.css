@@ -1,0 +1,25 @@
+.risk-details {
+  background-color: #fafafa;
+  margin-bottom: 32px;
+  padding: 20px;
+  position: relative;
+  width: 400px;
+  word-wrap: break-word;
+}
+
+.risk-details__title {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.risk-details__rationale {
+  margin-top: 16px;
+  margin-bottom: 10px;
+}
+
+.risk-details__update {
+  position: absolute;
+  top: 22px;
+  right: 20px;
+}
