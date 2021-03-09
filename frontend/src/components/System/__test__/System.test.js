@@ -3,6 +3,7 @@ import user from "@testing-library/user-event";
 import { useKeycloak } from "@react-keycloak/web";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
+import { forEach, omit } from "lodash-es";
 import { ErrorBoundary } from "react-error-boundary";
 import { Route, Router } from "react-router-dom";
 
@@ -592,10 +593,9 @@ async function checkCancelButton(path) {
   user.click(cancelButton);
 
   await returnToSystemView(123, history);
-  expect(api.updateProductOwner).not.toBeCalled();
-  expect(api.updateTechnicalOwner).not.toBeCalled();
-  expect(api.updateInformationAssetOwner).not.toBeCalled();
-  expect(api.updateCriticality).not.toBeCalled(); //todo refactor to loop through all update api methods
+  forEach(omit(api, "getSystem"), (method) => {
+    expect(method).not.toBeCalled();
+  });
 }
 
 async function returnToSystemView(systemId, history) {
