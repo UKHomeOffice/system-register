@@ -6,7 +6,8 @@ import { map } from "lodash-es";
 import RadioGroup, { makeRadio } from ".";
 
 const labelFor = (control) => control.closest("label");
-const toRadioButtons = ([value, text, hint]) => makeRadio(value, text, hint);
+const toRadioButtons = ([value, text, hint, title]) =>
+  makeRadio(value, text, { hint, title });
 
 describe("RadioGroup", () => {
   it("displays a heading for the group", () => {
@@ -57,6 +58,19 @@ describe("RadioGroup", () => {
       expect(
         within(labelFor(radioButtons[1])).getByText("hint 2")
       ).toBeVisible();
+    });
+
+    it("includes an optional label with each radio button", () => {
+      const items = [
+        ["value 1", "text 1", undefined, "title 1"],
+        ["value 2", "text 2"],
+      ];
+
+      setUp({ items: map(items, toRadioButtons) });
+
+      const radioButtons = screen.getAllByRole("radio");
+      expect(radioButtons[0]).toHaveAttribute("title", "title 1");
+      expect(radioButtons[1]).not.toHaveAttribute("title");
     });
 
     it.each(["abc", "def"])(

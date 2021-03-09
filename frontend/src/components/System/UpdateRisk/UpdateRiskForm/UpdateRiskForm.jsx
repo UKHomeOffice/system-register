@@ -28,11 +28,13 @@ const isNotEqual = negate(isEqual);
 const trimSpaces = (values) => mapValues(values, trim);
 
 const riskRatings = [
-  makeRadio("low", "Low"),
-  makeRadio("medium", "Medium"),
-  makeRadio("high", "High"),
-  makeRadio("unknown", "Unknown"),
-  makeRadio("not_applicable", "Not applicable"),
+  makeRadio("low", "Low", { title: "Low risk rating" }),
+  makeRadio("medium", "Medium", { title: "Medium risk rating" }),
+  makeRadio("high", "High", { title: "High risk rating" }),
+  makeRadio("unknown", "Unknown", { title: "Unknown risk rating" }),
+  makeRadio("not_applicable", "Not applicable", {
+    title: "Risk rating is not applicable",
+  }),
 ];
 
 function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {

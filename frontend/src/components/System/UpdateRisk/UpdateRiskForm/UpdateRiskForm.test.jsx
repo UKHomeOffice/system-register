@@ -33,11 +33,11 @@ describe("UpdateRiskForm", () => {
 
     it("shows the available ratings", () => {
       const options = [
-        ["low", "Low"],
-        ["medium", "Medium"],
-        ["high", "High"],
-        ["unknown", "Unknown"],
-        ["not_applicable", "Not applicable"],
+        ["low", "Low", "Low risk rating"],
+        ["medium", "Medium", "Medium risk rating"],
+        ["high", "High", "High risk rating"],
+        ["unknown", "Unknown", "Unknown risk rating"],
+        ["not_applicable", "Not applicable", "Risk rating is not applicable"],
       ];
 
       setUp({ name: "lens_name", rationale: "" });
@@ -45,11 +45,12 @@ describe("UpdateRiskForm", () => {
       const ratingOptions = screen.getAllByRole("radio");
       expect(ratingOptions).toHaveLength(5);
       ratingOptions.forEach((option, index) => {
-        const [value, text] = options[index];
+        const [value, text, title] = options[index];
         expect(option.closest("label")).toHaveTextContent(
           new RegExp(`^${text}$`)
         );
         expect(option.value).toBe(value);
+        expect(option).toHaveAttribute("title", title);
       });
     });
 

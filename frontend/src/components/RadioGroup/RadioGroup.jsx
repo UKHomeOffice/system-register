@@ -6,11 +6,16 @@ import Radio from "../Radio";
 
 import "./RadioGroup.css";
 
-const makeRadio = (value, text, hint) => ({ value, text, hint });
+const makeRadio = (value, text, { hint, title }) => ({
+  value,
+  text,
+  hint,
+  title,
+});
 
 // eslint-disable-next-line react/display-name,react/prop-types
-const toRadioButton = (name) => ({ value, text, hint }, index) => (
-  <Radio key={index} name={name} value={value} hint={hint}>
+const toRadioButton = (name) => ({ value, text, hint, title }, index) => (
+  <Radio key={index} name={name} value={value} hint={hint} title={title}>
     {text}
   </Radio>
 );
@@ -40,6 +45,7 @@ RadioGroup.propTypes = {
       value: PropTypes.string.isRequired,
       text: PropTypes.node.isRequired,
       hint: PropTypes.node,
+      title: PropTypes.string,
     }).isRequired
   ).isRequired,
 };
