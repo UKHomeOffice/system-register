@@ -1,45 +1,45 @@
 label {
-    display: block;
+  display: block;
 }
 
 input {
-    width: 44px;
-    height: 44px;
+  width: 44px;
+  height: 44px;
 }
 
 .form-controls {
-    margin-top: 44px;
+  margin-top: 44px;
 }
 
 .update-about-secondary {
-    color: #505a5f;
-    font-size: 24px;
+  color: var(--secondary-text-colour);
+  font-size: 19px;
 }
 
 .update-about-two-thirds {
-    width: 66.6% !important;
+  width: 66.6% !important;
 }
 
 h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
+  font-size: 36px;
+  margin-bottom: 8px;
 }
 h1 + p {
-    margin-top: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 button {
-    min-width: 10rem;
-    margin-top: 10px;
+  min-width: 10rem;
+  margin-top: 10px;
 }
 
 .update-about-radio-group-hint {
-    font-size: 19px;
-    color: #505a5f;
-    margin-top: 5px;
+  font-size: 19px;
+  color: #505a5f;
+  margin-top: 5px;
 }
 
 .update-about-radio-group-title {
-    margin-bottom: 5px;
-    margin-top: 30px;
+  margin-bottom: 5px;
+  margin-top: 30px;
 }

@@ -71,7 +71,7 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
           <ErrorSummary order={["name", "description", "aliases"]} />
 
           <h1>Add a system to the register</h1>
-          <p className="add-system-secondary">
+          <p className="add-system__secondary">
             Please enter the name, description and any aliases for the new
             system.
           </p>

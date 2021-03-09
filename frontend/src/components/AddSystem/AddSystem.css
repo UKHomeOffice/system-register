@@ -1,7 +1,6 @@
-.add-system-secondary {
-  margin-bottom: 11px;
+.add-system__secondary {
   color: var(--secondary-text-colour);
-  font-size: 24px;
+  font-size: 19px;
 }
 
 .add-system-width-two-thirds {

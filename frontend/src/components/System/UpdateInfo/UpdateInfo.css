@@ -3,8 +3,8 @@
 }
 
 .update-info-secondary {
-  margin-bottom: 11px;
   color: var(--secondary-text-colour);
+  font-size: 19px;
 }
 
 .width-two-thirds {

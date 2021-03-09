@@ -68,7 +68,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
             />
 
             <h1>{system.name}</h1>
-            <p className="secondary">
+            <p className="update-contacts__secondary">
               You can provide named individuals as key points of contact for
               your system. An individual can be named multiple times if
               applicable.
