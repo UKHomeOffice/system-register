@@ -7,9 +7,8 @@ import { Route, Router } from "react-router-dom";
 import UpdateRisk from ".";
 
 describe("UpdateRisk", () => {
-  const cancelHandler = jest.fn();
+  const closeHandler = jest.fn();
   const submitHandler = jest.fn();
-  const returnPath = "/system/123";
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -117,35 +116,27 @@ describe("UpdateRisk", () => {
 
       user.click(cancelButton);
 
-      expect(cancelHandler).toBeCalled();
+      expect(closeHandler).toBeCalled();
     });
   });
 
   describe("lens is invalid", () => {
     it("redirects the user to the system view when the lens is missing", () => {
-      const { history } = setUp(
+      setUp(
         { name: "name", risks: [{ name: "risk lens", rationale: "" }] },
         null
       );
 
-      expect(history.entries).toEqual([
-        expect.objectContaining({
-          pathname: returnPath,
-        }),
-      ]);
+      expect(closeHandler).toBeCalled();
     });
 
     it("redirects the user to the system view when the lens does not apply to the system", () => {
-      const { history } = setUp(
+      setUp(
         { name: "name", risks: [{ name: "a lens", rationale: "" }] },
         "a different lens"
       );
 
-      expect(history.entries).toEqual([
-        expect.objectContaining({
-          pathname: returnPath,
-        }),
-      ]);
+      expect(closeHandler).toBeCalled();
     });
   });
 
@@ -159,9 +150,8 @@ describe("UpdateRisk", () => {
         <Route path="/update-risk">
           <UpdateRisk
             system={system}
-            returnPath={returnPath}
             onSubmit={submitHandler}
-            onCancel={cancelHandler}
+            onClose={closeHandler}
           />
         </Route>
       </Router>

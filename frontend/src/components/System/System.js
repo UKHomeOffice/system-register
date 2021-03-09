@@ -150,8 +150,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
         <UpdateRisk
           system={system}
           onSubmit={() => {}}
-          onCancel={handleCancel}
-          returnPath={path}
+          onClose={handleCancel}
         />
       </SecureRoute>
       <Route path="/*" component={PageNotFoundError} />

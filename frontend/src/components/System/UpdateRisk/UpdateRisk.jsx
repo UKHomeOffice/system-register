@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { find } from "lodash-es";
-import { useHistory } from "react-router-dom";
 
 import PageTitle from "../../PageTitle";
 import UpdateRiskForm from "./UpdateRiskForm";
@@ -13,16 +12,15 @@ const findMatchingRisk = (system, lens) => {
   return find(risks, isMatchingRisk(lens));
 };
 
-function UpdateRisk({ system, returnPath, onSubmit, onCancel }) {
-  const history = useHistory();
+function UpdateRisk({ system, onSubmit, onClose }) {
   const { lens } = useQueryParams();
   const risk = findMatchingRisk(system, lens);
 
   useEffect(() => {
     if (system && !risk) {
-      history.replace(returnPath);
+      onClose();
     }
-  }, [history, system, risk, returnPath]);
+  }, [system, risk, onClose]);
 
   return (
     <div className="centerContent">
@@ -31,7 +29,7 @@ function UpdateRisk({ system, returnPath, onSubmit, onCancel }) {
           systemName={system.name}
           risk={risk}
           onSubmit={onSubmit}
-          onCancel={onCancel}
+          onCancel={onClose}
         />
       ) : (
         <>
@@ -54,8 +52,7 @@ UpdateRisk.propTypes = {
       })
     ).isRequired,
   }),
-  returnPath: PropTypes.string.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
