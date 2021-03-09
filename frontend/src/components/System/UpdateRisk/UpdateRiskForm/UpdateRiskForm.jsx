@@ -11,7 +11,7 @@ import SecondaryButton from "../../../SecondaryButton";
 import Textarea from "../../../Textarea";
 import ValidationError from "../../../../services/validationError";
 import toLower from "../../../../utilities/toLower";
-import toTitle from "../../../../utilities/toTitle";
+import toSentenceCase from "../../../../utilities/toSentenceCase";
 import { validateRationale } from "./validators";
 
 const detailsOf = (risk) => ({
@@ -74,7 +74,7 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
             items={riskRatings}
             hint="What is the level of risk?"
           >
-            {toTitle(risk.name)} risk rating
+            {toSentenceCase(risk.name)} risk rating
           </RadioGroup>
 
           <Textarea
@@ -82,7 +82,7 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
             hint="Please provide a high-level overview to explain the selected risk rating."
             validate={validateRationale}
           >
-            {toTitle(risk.name)} rationale
+            {toSentenceCase(risk.name)} rationale
           </Textarea>
 
           <div className="update-risk-form__risk-controls">

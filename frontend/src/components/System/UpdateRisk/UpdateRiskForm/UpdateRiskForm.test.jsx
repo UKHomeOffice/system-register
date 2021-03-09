@@ -27,7 +27,7 @@ describe("UpdateRiskForm", () => {
       setUp({ name: "a__lens_name", rationale: "" });
 
       expect(
-        screen.getByRole("heading", { name: "A Lens Name risk rating" })
+        screen.getByRole("heading", { name: "A lens name risk rating" })
       ).toBeVisible();
     });
 
@@ -77,7 +77,7 @@ describe("UpdateRiskForm", () => {
       setUp({ name: "another_lens_name", rationale: "" });
 
       expect(
-        screen.getByRole("textbox", { name: /^Another Lens Name rationale/ })
+        screen.getByRole("textbox", { name: /^Another lens name rationale/ })
       ).toBeVisible();
     });
 
