@@ -39,7 +39,10 @@ const test_system = {
   criticality: "low",
   investment_state: "invest",
   last_updated: {},
-  risks: [],
+  risks: [
+    { name: "lens1", rationale: "rationale1" },
+    { name: "lens2", rationale: "rationale2" },
+  ],
   aliases: [],
 };
 
@@ -132,6 +135,17 @@ describe("<System />", () => {
 
       expect(element).toBeInTheDocument();
     });
+
+    it.each(test_system.risks)(
+      "shows an edit view for risks: %p",
+      async ({ name }) => {
+        renderWithRouting(`1/update-risk?lens=${name}`);
+
+        const element = await screen.findByText("Test System");
+
+        expect(element).toBeInTheDocument();
+      }
+    );
 
     it("hides the status message after it’s been viewed", async () => {
       api.updateSystemName.mockResolvedValue({

@@ -9,6 +9,7 @@ import SystemView from "./SystemView/SystemView";
 import UpdateAbout from "./UpdateAbout/UpdateAbout";
 import UpdateContacts from "./UpdateContacts";
 import UpdateInfo from "./UpdateInfo";
+import UpdateRisk from "./UpdateRisk";
 import api from "../../services/api";
 import useAsyncError from "../../utilities/useAsyncError";
 
@@ -143,6 +144,14 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
           system={system}
           onSubmit={handleUpdateContacts}
           onCancel={handleCancel}
+        />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-risk`}>
+        <UpdateRisk
+          system={system}
+          onSubmit={() => {}}
+          onCancel={handleCancel}
+          returnPath={path}
         />
       </SecureRoute>
       <Route path="/*" component={PageNotFoundError} />
