@@ -76,7 +76,11 @@ describe("<System />", () => {
       render(
         <Router history={createMemoryHistory()}>
           <ErrorBoundary fallback={<PageNotFoundError />}>
-            <System />
+            <System
+              portfolios={[]}
+              onBeforeNameChange={() => {}}
+              onChange={changeHandler}
+            />
           </ErrorBoundary>
         </Router>
       );
