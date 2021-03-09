@@ -27,6 +27,7 @@ jest.mock("../../../services/api", () => ({
   updateTechnicalOwner: jest.fn(),
   updateServiceOwner: jest.fn(),
   updateInformationAssetOwner: jest.fn(),
+  updateRisk: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -593,6 +594,47 @@ describe("<System />", () => {
           expect(changeHandler).not.toBeCalled();
           expect(api.updateSupportedBy).not.toBeCalled();
         });
+      });
+    });
+
+    describe("editing risks", () => {
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-risk?lens=lens1");
+      });
+
+      it("returns to the system view after a successful update", async () => {
+        api.updateRisk.mockResolvedValue(test_system);
+        renderWithRouting("123/update-risk?lens=lens1");
+        const mediumRating = await screen.findByLabelText(/medium/i);
+        const saveButton = screen.getByRole("button", { name: /save/i });
+
+        user.click(mediumRating);
+        user.click(saveButton);
+
+        expect(
+          await screen.findByText(/update has been saved/i)
+        ).toBeInTheDocument();
+        expect(changeHandler).toBeCalled();
+        expect(api.updateRisk).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            lens: "lens1",
+            level: "medium",
+          })
+        );
+      });
+
+      it("does not invoke api if nothing changed", async () => {
+        const { history } = renderWithRouting("123/update-risk?lens=lens2");
+        const saveButton = await screen.findByRole("button", {
+          name: /save/i,
+        });
+
+        user.click(saveButton);
+
+        await returnToSystemView(123, history);
+        expect(changeHandler).not.toBeCalled();
+        expect(api.updateRisk).not.toBeCalled();
       });
     });
   });

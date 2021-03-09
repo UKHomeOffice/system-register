@@ -21,6 +21,7 @@ const api = {
   updateServiceOwner,
   updateInformationAssetOwner,
   updateBusinessOwner,
+  updateRisk,
 };
 
 const nullIfEmpty = (value) => (value !== "" ? value : null);
@@ -143,6 +144,8 @@ async function updateInformationAssetOwner(id, data) {
   );
   return response.data;
 }
+
+async function updateRisk(id, data) {}
 
 async function addSystem(data) {
   const response = await sendPost(`systems`, {

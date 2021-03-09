@@ -107,9 +107,11 @@ describe("UpdateRiskForm", () => {
       user.click(saveButton);
 
       await waitFor(() => {
-        expect(submitHandler).toBeCalledWith({
-          rationale: "a new\f rationale \t with  spaces",
-        });
+        expect(submitHandler).toBeCalledWith(
+          expect.objectContaining({
+            rationale: "a new\f rationale \t with  spaces",
+          })
+        );
       });
     });
 

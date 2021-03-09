@@ -46,44 +46,17 @@ describe("UpdateRisk", () => {
       );
     });
 
-    it("sends changed values to the submit event callback", async () => {
-      setUp(
-        {
-          name: "system",
-          risks: [{ name: "lens", rationale: "existing rationale" }],
-        },
-        "lens"
-      );
-      const mediumRiskRating = screen.getByRole("radio", { name: /medium/i });
-      const rationaleTextbox = screen.getByRole("textbox", {
-        name: /rationale/i,
-      });
-      const saveButton = screen.getByRole("button", { name: /save/i });
-
-      user.click(mediumRiskRating);
-      overtype(rationaleTextbox, "a new rationale");
-      user.click(saveButton);
-
-      await waitFor(() => {
-        expect(submitHandler).toBeCalledWith({
-          level: "medium",
-          rationale: "a new rationale",
-        });
-      });
-    });
-
     it.each([
-      ["level", { level: "high", rationale: "existing rationale" }],
-      ["rationale", { level: "low", rationale: "new rationale" }],
+      ["all", "medium", "a new rationale"],
+      ["only rating", "high", "existing rationale"],
+      ["only rationale", "unknown", "a new rationale"],
     ])(
-      "excludes unchanged values from data sent to the submit event callback: %p",
-      async (expectedFieldName, { level, rationale }) => {
+      "sends all values to the submit event callback if %s changed",
+      async (field, level, rationale) => {
         setUp(
           {
             name: "system",
-            risks: [
-              { name: "lens", level: "low", rationale: "existing rationale" },
-            ],
+            risks: [{ name: "lens", rationale: "existing rationale" }],
           },
           "lens"
         );
@@ -101,11 +74,32 @@ describe("UpdateRisk", () => {
 
         await waitFor(() => {
           expect(submitHandler).toBeCalledWith({
-            [expectedFieldName]: expect.any(String),
+            lens: "lens",
+            level,
+            rationale,
           });
         });
       }
     );
+
+    it("sends no data to the submit event callback if nothing changed", async () => {
+      setUp(
+        {
+          name: "system",
+          risks: [
+            { name: "lens", level: "low", rationale: "existing rationale" },
+          ],
+        },
+        "lens"
+      );
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({});
+      });
+    });
 
     it("triggers the cancel handler when the cancel button is clicked", () => {
       setUp(

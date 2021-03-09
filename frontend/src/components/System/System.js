@@ -32,6 +32,7 @@ const actionsByField = {
   technicalOwner: api.updateTechnicalOwner,
   serviceOwner: api.updateServiceOwner,
   informationAssetOwner: api.updateInformationAssetOwner,
+  lens: api.updateRisk,
 };
 
 const findMatchingActions = (data, fields) =>
@@ -109,6 +110,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "productOwner",
     "informationAssetOwner"
   );
+  const handleUpdateRisk = createUpdateCallback("lens");
   const handleCancel = useReturnToSystemView();
   const handleDismiss = useCallback(() => {
     setChangeStatus(CHANGE_STATUS_NONE);
@@ -149,7 +151,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
       <SecureRoute path={`${path}/update-risk`}>
         <UpdateRisk
           system={system}
-          onSubmit={() => {}}
+          onSubmit={handleUpdateRisk}
           onClose={handleCancel}
         />
       </SecureRoute>

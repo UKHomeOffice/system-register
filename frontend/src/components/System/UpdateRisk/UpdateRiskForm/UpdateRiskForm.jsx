@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { defaultTo, flow, isEqual, mapValues, omitBy, trim } from "lodash-es";
+import { defaultTo, isEqual, mapValues, negate, some, trim } from "lodash-es";
 
 import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
 import { FormikAwarePageTitle } from "../../../PageTitle";
@@ -18,8 +18,11 @@ const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
   rationale: defaultTo(risk.rationale, ""),
 });
-const removeUnchangedValues = (initialValues) => (currentValues) =>
-  omitBy(currentValues, (value, key) => isEqual(value, initialValues[key]));
+const changesPresent = (initialValues, currentValues) =>
+  some(currentValues, areDifferentFrom(initialValues));
+const areDifferentFrom = (initialValues) => (value, key) =>
+  isNotEqual(value, initialValues[key]);
+const isNotEqual = negate(isEqual);
 const trimSpaces = (values) => mapValues(values, trim);
 
 const riskRatings = [
@@ -34,13 +37,13 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
       const initialValues = detailsOf(risk);
-      const changedValues = flow(
-        trimSpaces,
-        removeUnchangedValues(initialValues)
-      )(values);
+      const trimmedValues = trimSpaces(values);
+      const updateValues = changesPresent(initialValues, trimmedValues)
+        ? { ...trimmedValues, lens: risk.name }
+        : {};
 
       try {
-        await onSubmit(changedValues);
+        await onSubmit(updateValues);
       } catch (e) {
         if (e instanceof ValidationError) {
           formik.setErrors(e.errors);
