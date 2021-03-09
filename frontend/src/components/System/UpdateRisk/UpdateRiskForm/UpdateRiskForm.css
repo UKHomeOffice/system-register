@@ -1,0 +1,8 @@
+.update-risk-form__secondary {
+  color: var(--secondary-text-colour);
+  font-size: 19px;
+}
+
+.update-risk-form__risk-controls {
+  margin-top: 30px;
+}

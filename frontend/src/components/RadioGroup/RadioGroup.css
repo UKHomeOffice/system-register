@@ -1,0 +1,38 @@
+.radio-group {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.radio-group > legend {
+  margin: 0;
+  padding: 0;
+}
+
+.radio-group__heading,
+.radio-group__hint {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.radio-group__heading {
+  margin: 0;
+  padding-bottom: 2px;
+}
+
+.radio-group__hint {
+  color: #6f777b;
+  margin-bottom: 15px;
+}
+
+.radio-group__radios {
+  margin-top: 15px;
+}
+
+@media only screen and (min-width: 641px) {
+  .radio-group__heading,
+  .radio-group__hint {
+    font-size: 19px;
+    line-height: 1.316;
+  }
+}

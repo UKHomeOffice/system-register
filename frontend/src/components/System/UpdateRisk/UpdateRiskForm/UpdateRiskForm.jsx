@@ -14,6 +14,8 @@ import toLower from "../../../../utilities/toLower";
 import toSentenceCase from "../../../../utilities/toSentenceCase";
 import { validateRationale } from "./validators";
 
+import "./UpdateRiskForm.css";
+
 const detailsOf = (risk) => ({
   level: defaultTo(risk.level, "unknown"),
   rationale: defaultTo(risk.rationale, ""),

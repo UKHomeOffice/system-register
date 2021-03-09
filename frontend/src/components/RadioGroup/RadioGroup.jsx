@@ -4,6 +4,8 @@ import { map } from "lodash-es";
 
 import Radio from "../Radio";
 
+import "./RadioGroup.css";
+
 const makeRadio = (value, text, hint) => ({ value, text, hint });
 
 // eslint-disable-next-line react/display-name,react/prop-types
