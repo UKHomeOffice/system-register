@@ -145,7 +145,14 @@ async function updateInformationAssetOwner(id, data) {
   return response.data;
 }
 
-async function updateRisk(id, data) {}
+async function updateRisk(id, data) {
+  const response = await sendPost(`systems/${id}/update-risk`, {
+    name: data.lens,
+    level: data.level,
+    rationale: data.rationale,
+  });
+  return response.data;
+}
 
 async function addSystem(data) {
   const response = await sendPost(`systems`, {

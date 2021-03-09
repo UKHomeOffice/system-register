@@ -970,4 +970,72 @@ describe("api", () => {
       );
     });
   });
+
+  describe("update risk", () => {
+    it("sends update risk to the API", async () => {
+      server.use(
+        rest.post("/api/systems/987/update-risk", (req, res, ctx) => {
+          const { name, level, rationale } = req.body;
+          if (name !== "lens") {
+            console.error("Risk lens does not match");
+            return;
+          }
+          if (level !== "high") {
+            console.error("Risk rating does not match");
+            return;
+          }
+          if (rationale !== "new rationale") {
+            console.error("Risk rationale does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error(
+              "Authorization header does not contain a bearer token"
+            );
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateRisk(987, {
+        lens: "lens",
+        level: "high",
+        rationale: "new rationale",
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
+    });
+
+    it("raises error if validation fails", async () => {
+      server.use(
+        rest.post("/api/systems/678/update-risk", (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              errors: {
+                level: "invalid level",
+                rationale: "invalid rationale",
+              },
+            })
+          );
+        })
+      );
+
+      const pendingSystem = api.updateRisk(678, {
+        name: "lens",
+        level: "unrecognised",
+        rationale: "",
+      });
+
+      await expect(pendingSystem).rejects.toBeInstanceOf(ValidationError);
+      await expect(pendingSystem).rejects.toHaveProperty(
+        "errors",
+        expect.objectContaining({
+          level: "invalid level",
+          rationale: "invalid rationale",
+        })
+      );
+    });
+  });
 });
