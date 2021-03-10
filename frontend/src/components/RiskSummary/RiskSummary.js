@@ -18,32 +18,32 @@ const RiskSummary = (props) => {
 }
 
 function renderVis(systems, riskLens, root) {
-    const lenseData = buildLenseData(systems, riskLens)
+    const lenseData = buildLensData(systems, riskLens)
     if (lenseData) {
         renderBarGraph(lenseData, root)
     }
 }
 
-function buildLenseData(systems, lenseName) {
+function buildLensData(systems, lensName) {
     const lenses = summariseRisk(systems)
-    const lense  = lenses.find(s => s.name === lenseName)
-    if (!lense) {
+    const lens  = lenses.find(s => s.name === lensName)
+    if (!lens) {
       return
     }
     const riskCounts = [
-      { "label": "Unknown", count: lense.unknownSystems, class: "unknownRisk" },
-      { "label": "Low Risk", count: lense.lowRiskSystems, class: "lowRisk" },
-      { "label": "Medium Risk", count: lense.mediumRiskSystems, class: "mediumRisk" },
-      { "label": "High Risk", count: lense.highRiskSystems, class: "highRisk" }
+      { "label": "Unknown", count: lens.unknownSystems, class: "unknownRisk" },
+      { "label": "Low Risk", count: lens.lowRiskSystems, class: "lowRisk" },
+      { "label": "Medium Risk", count: lens.mediumRiskSystems, class: "mediumRisk" },
+      { "label": "High Risk", count: lens.highRiskSystems, class: "highRisk" }
     ]
     return {
-      name: toLower(lenseName),
+      name: toLower(lensName),
       riskCounts: riskCounts,
       totalSystems: riskCounts.map(c => c.count).reduce((a, b) => a + b, 0)
     }
 }
 
-function renderBarGraph(lenseData, root) {
+function renderBarGraph(lensData, root) {
 
     const barWidth = 50
     const barPadding = 30
@@ -51,7 +51,7 @@ function renderBarGraph(lenseData, root) {
     const bottomPadding = 35
     const textPadding = 20;
     const leftPadding = 0;
-    const numBars = lenseData.riskCounts.length
+    const numBars = lensData.riskCounts.length
 
 
     const barAreaHeight = HEIGHT - topPadding - bottomPadding
@@ -61,14 +61,14 @@ function renderBarGraph(lenseData, root) {
         y: topPadding
     }
 
-    const yRamp = d3.scaleLinear().domain([0, lenseData.totalSystems]).range([0, barAreaHeight])
+    const yRamp = d3.scaleLinear().domain([0, lensData.totalSystems]).range([0, barAreaHeight])
 
     const vis = d3.select("#summaryVis")
     vis.selectAll(".containerG").remove()
     vis.selectAll("#riskSummaryTitle").remove()
     vis.selectAll("#noSystemsMessage").remove()
 
-    if (lenseData.totalSystems === 0) {
+    if (lensData.totalSystems === 0) {
         vis.append("text")
             .attr("id", 'noSystemsMessage')
             .html("No applicable systems")
@@ -85,12 +85,12 @@ function renderBarGraph(lenseData, root) {
     vis
         .append('text')
         .attr('id', 'riskSummaryTitle')
-        .html(`${root} systems by ${lenseData.name} risk level`)
+        .html(`${root} systems by ${lensData.name} risk level`)
         .style("text-anchor", "middle")
         .attr('transform', `translate(${WIDTH / 2}, 28)`)
 
     const barGroup = container.selectAll(".systemCountG")
-        .data(lenseData.riskCounts)
+        .data(lensData.riskCounts)
         .enter()
         .append('g')
         .attr('class', 'systemCountG')
