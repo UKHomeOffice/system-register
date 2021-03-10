@@ -3,7 +3,7 @@ package uk.gov.digital.ho.systemregister.io.database;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 
 @SuppressWarnings("CdiInjectionPointsInspection")
-public interface Codec {
+public interface Codec extends Comparable<Codec> {
     boolean canEncode(Object event);
     EncodedData encode(Object event);
 
