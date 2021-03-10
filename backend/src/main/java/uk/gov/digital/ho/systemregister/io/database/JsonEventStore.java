@@ -7,6 +7,7 @@ import javax.enterprise.inject.Instance;
 import java.time.Instant;
 import java.util.List;
 
+import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.toList;
 
 public class JsonEventStore implements EventStore {
@@ -21,8 +22,9 @@ public class JsonEventStore implements EventStore {
     @Override
     public void save(@NonNull SR_Event event) throws EventStoreException {
         Codec codec = codecs.stream()
-                .findFirst()
-                .get();
+                .filter(theCodec -> theCodec.canEncode(event))
+                .max(naturalOrder())
+                .orElseThrow(() -> new EventStoreException("event not supported: " + event.getClass().getSimpleName()));
 
         var encodedData = codec.encode(event);
 
@@ -39,6 +41,8 @@ public class JsonEventStore implements EventStore {
             return dataStore.getData(after).stream()
                     .map(this::toEvent)
                     .collect(toList());
+        } catch (UnsupportedTypeIdException e) {
+            throw new EventStoreException("event not supported: " + e.typeId);
         } catch (DataStoreException e) {
             throw new EventStoreException("unable to retrieve events", e);
         }
@@ -47,9 +51,18 @@ public class JsonEventStore implements EventStore {
     private SR_Event toEvent(DataStore.EncodedData encodedData) {
         Codec codec = codecs.stream()
                 .filter(theCodec -> theCodec.canDecode(encodedData.getTypeId()))
-                .findFirst()
-                .get();
+                .max(naturalOrder())
+                .orElseThrow(() -> new UnsupportedTypeIdException(encodedData.getTypeId()));
 
         return codec.decode(encodedData.getData(), encodedData.getTypeId());
+    }
+
+    @SuppressWarnings({"QsPrivateBeanMembersInspection", "CdiInjectionPointsInspection"})
+    private static class UnsupportedTypeIdException extends RuntimeException {
+        private final String typeId;
+
+        private UnsupportedTypeIdException(String typeId) {
+            this.typeId = typeId;
+        }
     }
 }
