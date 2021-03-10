@@ -131,7 +131,7 @@ function UpdateInfo({ system, onSubmit, onCancel, onBeforeNameChange }) {
 
               <AliasInputList />
 
-              <div className="update-info-form-controls">
+              <div className="update-info__form-controls">
                 <Button type="submit">Save</Button>
                 <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
               </div>

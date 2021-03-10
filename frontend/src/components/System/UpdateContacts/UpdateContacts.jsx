@@ -125,7 +125,7 @@ function UpdateContacts({ system, onSubmit, onCancel }) {
                 Information asset owner
               </TextField>
 
-              <div className="form-controls">
+              <div className="update-contacts__form-controls">
                 <Button type="submit">Save</Button>
                 <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
               </div>

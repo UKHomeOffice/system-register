@@ -94,7 +94,7 @@ export default function AddSystemForm({ onSubmit, onCancel, validate }) {
               System description
             </Textarea>
             <AliasInputList />
-            <div className="add-system-form-controls">
+            <div className="add-system__form-controls">
               <Button type="submit">Save</Button>
               <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
             </div>

@@ -154,7 +154,7 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
               Who supports the system?
             </TextField>
 
-            <div className="form-controls">
+            <div className="update-about__form-controls">
               <Button type="submit">Save</Button>
               <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
             </div>

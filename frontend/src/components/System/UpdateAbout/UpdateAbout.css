@@ -7,10 +7,6 @@ input {
   height: 44px;
 }
 
-.form-controls {
-  margin-top: 44px;
-}
-
 .update-about-secondary {
   color: var(--secondary-text-colour);
   font-size: 19px;
