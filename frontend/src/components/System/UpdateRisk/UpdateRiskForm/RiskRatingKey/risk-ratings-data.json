@@ -1,0 +1,22 @@
+[
+  {
+    "level": "low",
+    "description": "Any ongoing issues will have minor or no impact on the system conducting its activities and achieving its desired goals."
+  },
+  {
+    "level": "medium",
+    "description": "Any ongoing issues will have moderate impact on the system conducting its activities and achieving its desired goals, to the extent that one or more outcome objectives will fall below goals but above minimum acceptable levels."
+  },
+  {
+    "level": "high",
+    "description": "Any ongoing issues will have a significant impact on achieving desired results, to the extent that one or more of the systems critical outcome objectives will not be achieved."
+  },
+  {
+    "level": "unknown",
+    "description": "Unable to assess due to limited information available."
+  },
+  {
+    "level": "not_applicable",
+    "description": "This risk is not applicable to my system."
+  }
+]

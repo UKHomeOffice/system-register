@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
-import { Button } from "govuk-react";
+import { Button, Details } from "govuk-react";
 import { defaultTo, isEqual, mapValues, negate, some, trim } from "lodash-es";
 
 import ErrorSummary from "../../../ErrorSummary/ErrorSummary";
@@ -15,6 +15,7 @@ import toSentenceCase from "../../../../utilities/toSentenceCase";
 import { validateRationale } from "./validators";
 
 import "./UpdateRiskForm.css";
+import RiskRatingKey from "./RiskRatingKey/RiskRatingKey";
 
 const detailsOf = (risk) => ({
   level: risk.level || "unknown",
@@ -72,6 +73,10 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
             Please provide a high-level assessment and enter a rationale for{" "}
             {toLower(risk.name)} risks associated with your system.
           </p>
+
+          <Details summary="Help with risk levels">
+            <RiskRatingKey />
+          </Details>
 
           <RadioGroup
             name="level"

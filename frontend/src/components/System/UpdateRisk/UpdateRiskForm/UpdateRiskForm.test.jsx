@@ -22,6 +22,23 @@ describe("UpdateRiskForm", () => {
     ).toBeVisible();
   });
 
+  it("displays a details link to show information about risk ratings", () => {
+    setUp({ name: "lens_name", rationale: "" });
+
+    expect(screen.getByText(/help with risk levels/i)).toBeVisible();
+  });
+
+  it("displays a description of each risk level when the details menu is opened", () => {
+    setUp({ name: "lens_name", rationale: "" });
+    const details = screen.getByText(/help with risk levels/i);
+
+    user.click(details);
+
+    expect(
+      screen.getByText(/^any ongoing issues will have minor or no impact/i)
+    ).toBeVisible();
+  });
+
   describe("risk rating", () => {
     it("derives the heading from the lens", () => {
       setUp({ name: "a__lens_name", rationale: "" });
