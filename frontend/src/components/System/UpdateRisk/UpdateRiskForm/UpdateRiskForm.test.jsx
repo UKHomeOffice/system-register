@@ -63,7 +63,7 @@ describe("UpdateRiskForm", () => {
       }
     );
 
-    it.each([null, undefined])(
+    it.each(["", null, undefined])(
       "defaults missing values to unknown: %p",
       (level) => {
         setUp({ name: "name", level, rationale: "" });

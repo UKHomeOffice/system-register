@@ -17,7 +17,7 @@ import { validateRationale } from "./validators";
 import "./UpdateRiskForm.css";
 
 const detailsOf = (risk) => ({
-  level: defaultTo(risk.level, "unknown"),
+  level: risk.level || "unknown",
   rationale: defaultTo(risk.rationale, ""),
 });
 const changesPresent = (initialValues, currentValues) =>
