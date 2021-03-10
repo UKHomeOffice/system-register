@@ -2,11 +2,11 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
-import { defaultTo, mapValues, omitBy } from "lodash-es";
+import { defaultTo, map, mapValues, omitBy } from "lodash-es";
 
 import ErrorSummary from "../../ErrorSummary/ErrorSummary";
 import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
-import Radio from "../../Radio";
+import RadioGroup, { makeRadio } from "../../RadioGroup";
 import SecondaryButton from "../../SecondaryButton";
 import TextField from "../../TextField";
 import ValidationError from "../../../services/validationError";
@@ -23,6 +23,40 @@ const infoAbout = (system) => ({
   developedBy: emptyIfUndefined(system.developed_by),
   supportedBy: emptyIfUndefined(system.supported_by),
 });
+
+const criticalityOptions = [
+  makeRadio("low", "Low"),
+  makeRadio("medium", "Medium"),
+  makeRadio("high", "High"),
+  makeRadio("cni", "CNI"),
+  makeRadio("unknown", "Unknown"),
+];
+const investmentStateOptions = [
+  makeRadio("evergreen", "Evergreen", {
+    hint: "Constantly funded system or product without a financial cliff edge.",
+  }),
+  makeRadio("invest", "Invest", {
+    hint:
+      "System or product in conception, development, launch or maturity phase where the investment is increasing capability.",
+  }),
+  makeRadio("maintain", "Maintain", {
+    hint:
+      "System or product in conception, development, launch, maturity or plateau phase where the capability is not being increased.",
+  }),
+  makeRadio("sunset", "Sunset", {
+    hint: "System or product still in production but planned for end of life.",
+  }),
+  makeRadio("decommissioned", "Decommissioned", {
+    hint:
+      "System or product is no longer in production and has been switched off.",
+  }),
+  makeRadio("cancelled", "Cancelled", {
+    hint: "System or product did not go ahead and was never implemented.",
+  }),
+  makeRadio("unknown", "Unknown", {
+    hint: "The investment state for this system or product is unknown.",
+  }),
+];
 
 function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleSubmit = useCallback(
@@ -46,6 +80,10 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
   const handleCancel = () => {
     onCancel();
   };
+
+  const portfolioOptions = map([...portfolios, "Unknown"], (portfolio) =>
+    makeRadio(portfolio, portfolio)
+  );
 
   return (
     <div className="centerContent">
@@ -76,100 +114,25 @@ function UpdateAbout({ system, portfolios, onSubmit, onCancel }) {
               navigation header.
             </p>
 
-            <h2 className="update-about-radio-group-title">
+            <RadioGroup items={portfolioOptions} name="portfolio">
               What portfolio does the system belong to?
-            </h2>
-            <br />
-            {portfolios.map((v) => (
-              <Radio name="portfolio" key={v} value={v}>
-                {v}
-              </Radio>
-            ))}
-            <Radio name="portfolio" value="Unknown">
-              Unknown
-            </Radio>
+            </RadioGroup>
 
-            <h2 className="update-about-radio-group-title">
+            <RadioGroup
+              items={criticalityOptions}
+              name="criticality"
+              hint="Please select the level of criticality, as per the system’s Service Criticality Assessment."
+            >
               What is the criticality of the system?
-            </h2>
-            <p className="update-about-radio-group-hint">
-              Please select the level of criticality, as per the system’s
-              Service Criticality Assessment.
-            </p>
-            {[
-              { value: "low", label: "Low" },
-              { value: "medium", label: "Medium" },
-              { value: "high", label: "High" },
-              { value: "cni", label: "CNI" },
-              { value: "unknown", label: "Unknown" },
-            ].map((v) => {
-              return (
-                <Radio name="criticality" key={v.value} value={v.value}>
-                  {v.label}
-                </Radio>
-              );
-            })}
-            <h2 className="update-about-radio-group-title">
+            </RadioGroup>
+
+            <RadioGroup
+              items={investmentStateOptions}
+              name="investmentState"
+              hint="Please select the most applicable lifecycle stage."
+            >
               What is the investment state of the system?
-            </h2>
-            <p className="update-about-radio-group-hint">
-              Please select the most applicable lifecycle stage.
-            </p>
-            {[
-              {
-                value: "evergreen",
-                label: "Evergreen",
-                hint:
-                  "Constantly funded system or product without a financial cliff edge.",
-              },
-              {
-                value: "invest",
-                label: "Invest",
-                hint:
-                  "System or product in conception, development, launch or maturity phase where the investment is increasing capability.",
-              },
-              {
-                value: "maintain",
-                label: "Maintain",
-                hint:
-                  "System or product in conception, development, launch, maturity or plateau phase where the capability is not being increased.",
-              },
-              {
-                value: "sunset",
-                label: "Sunset",
-                hint:
-                  "System or product still in production but planned for end of life.",
-              },
-              {
-                value: "decommissioned",
-                label: "Decommissioned",
-                hint:
-                  "System or product is no longer in production and has been switched off.",
-              },
-              {
-                value: "cancelled",
-                label: "Cancelled",
-                hint:
-                  "System or product did not go ahead and was never implemented.",
-              },
-              {
-                value: "unknown",
-                label: "Unknown",
-                hint:
-                  "The investment state for this system or product is unknown.",
-              },
-            ].map((v) => {
-              return (
-                <Radio
-                  name="investmentState"
-                  key={v.value}
-                  value={v.value}
-                  hint={v.hint}
-                >
-                  {v.label}{" "}
-                </Radio>
-              );
-            })}
+            </RadioGroup>
 
             <TextField
               name="developedBy"

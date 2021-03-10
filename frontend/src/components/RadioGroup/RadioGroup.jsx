@@ -6,7 +6,7 @@ import Radio from "../Radio";
 
 import "./RadioGroup.css";
 
-const makeRadio = (value, text, { hint, title }) => ({
+const makeRadio = (value, text, { hint, title } = {}) => ({
   value,
   text,
   hint,
