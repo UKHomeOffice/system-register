@@ -15,7 +15,7 @@ import toSentenceCase from "../../../../utilities/toSentenceCase";
 import { validateRationale } from "./validators";
 
 import "./UpdateRiskForm.css";
-import RiskRatingKey from "./RiskRatingKey/RiskRatingKey";
+import RiskLevelsKey from "./RiskLevelsKey/RiskLevelsKey";
 
 const detailsOf = (risk) => ({
   level: risk.level || "unknown",
@@ -28,13 +28,13 @@ const areDifferentFrom = (initialValues) => (value, key) =>
 const isNotEqual = negate(isEqual);
 const trimSpaces = (values) => mapValues(values, trim);
 
-const riskRatings = [
-  makeRadio("low", "Low", { title: "Low risk rating" }),
-  makeRadio("medium", "Medium", { title: "Medium risk rating" }),
-  makeRadio("high", "High", { title: "High risk rating" }),
-  makeRadio("unknown", "Unknown", { title: "Unknown risk rating" }),
+const riskLevels = [
+  makeRadio("low", "Low", { title: "Low risk level" }),
+  makeRadio("medium", "Medium", { title: "Medium risk level" }),
+  makeRadio("high", "High", { title: "High risk level" }),
+  makeRadio("unknown", "Unknown", { title: "Unknown risk level" }),
   makeRadio("not_applicable", "Not applicable", {
-    title: "Risk rating is not applicable",
+    title: "Risk level is not applicable",
   }),
 ];
 
@@ -75,20 +75,20 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
           </p>
 
           <Details summary="Help with risk levels">
-            <RiskRatingKey />
+            <RiskLevelsKey />
           </Details>
 
           <RadioGroup
             name="level"
-            items={riskRatings}
+            items={riskLevels}
             hint="What is the level of risk?"
           >
-            {toSentenceCase(risk.name)} risk rating
+            {toSentenceCase(risk.name)} risk level
           </RadioGroup>
 
           <Textarea
             name="rationale"
-            hint="Please provide a high-level overview to explain the selected risk rating."
+            hint="Please provide a high-level overview to explain the selected risk level."
             validate={validateRationale}
           >
             {toSentenceCase(risk.name)} rationale

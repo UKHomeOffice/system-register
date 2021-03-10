@@ -2,15 +2,15 @@ import { GridCol, GridRow } from "govuk-react";
 import RiskBadge from "../../../RiskBadge/RiskBadge";
 import React from "react";
 
-import "./RiskRatingKey.css";
+import "./RiskLevelsKey.css";
 
-import riskDescriptions from "./risk-ratings-data.json";
+import riskDescriptions from "./risk-levels-data.json";
 
 function getRiskDescriptions() {
   return riskDescriptions;
 }
 
-export default function RiskRatingKey() {
+export default function RiskLevelsKey() {
   return (
     <>
       {getRiskDescriptions().map(({ level, description }) => (

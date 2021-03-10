@@ -981,7 +981,7 @@ describe("api", () => {
             return;
           }
           if (level !== "high") {
-            console.error("Risk rating does not match");
+            console.error("Risk level does not match");
             return;
           }
           if (rationale !== "new rationale") {

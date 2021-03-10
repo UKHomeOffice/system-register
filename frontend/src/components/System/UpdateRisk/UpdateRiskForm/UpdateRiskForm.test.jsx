@@ -22,7 +22,7 @@ describe("UpdateRiskForm", () => {
     ).toBeVisible();
   });
 
-  it("displays a details link to show information about risk ratings", () => {
+  it("displays a details link to show information about risk levels", () => {
     setUp({ name: "lens_name", rationale: "" });
 
     expect(screen.getByText(/help with risk levels/i)).toBeVisible();
@@ -39,29 +39,29 @@ describe("UpdateRiskForm", () => {
     ).toBeVisible();
   });
 
-  describe("risk rating", () => {
+  describe("risk level", () => {
     it("derives the heading from the lens", () => {
       setUp({ name: "a__lens_name", rationale: "" });
 
       expect(
-        screen.getByRole("heading", { name: "A lens name risk rating" })
+        screen.getByRole("heading", { name: "A lens name risk level" })
       ).toBeVisible();
     });
 
-    it("shows the available ratings", () => {
+    it("shows the available levels", () => {
       const options = [
-        ["low", "Low", "Low risk rating"],
-        ["medium", "Medium", "Medium risk rating"],
-        ["high", "High", "High risk rating"],
-        ["unknown", "Unknown", "Unknown risk rating"],
-        ["not_applicable", "Not applicable", "Risk rating is not applicable"],
+        ["low", "Low", "Low risk level"],
+        ["medium", "Medium", "Medium risk level"],
+        ["high", "High", "High risk level"],
+        ["unknown", "Unknown", "Unknown risk level"],
+        ["not_applicable", "Not applicable", "Risk level is not applicable"],
       ];
 
       setUp({ name: "lens_name", rationale: "" });
 
-      const ratingOptions = screen.getAllByRole("radio");
-      expect(ratingOptions).toHaveLength(5);
-      ratingOptions.forEach((option, index) => {
+      const riskLevelOptions = screen.getAllByRole("radio");
+      expect(riskLevelOptions).toHaveLength(5);
+      riskLevelOptions.forEach((option, index) => {
         const [value, text, title] = options[index];
         expect(option.closest("label")).toHaveTextContent(
           new RegExp(`^${text}$`)
@@ -72,7 +72,7 @@ describe("UpdateRiskForm", () => {
     });
 
     it.each(["low", "medium", "high", "unknown", "not_applicable"])(
-      "preselects the current rating: %p",
+      "preselects the current level: %p",
       (level) => {
         setUp({ name: "name", level, rationale: "" });
 

@@ -48,7 +48,7 @@ describe("UpdateRisk", () => {
 
     it.each([
       ["all", "medium", "a new rationale"],
-      ["only rating", "high", "existing rationale"],
+      ["only level", "high", "existing rationale"],
       ["only rationale", "unknown", "a new rationale"],
     ])(
       "sends all values to the submit event callback if %s changed",

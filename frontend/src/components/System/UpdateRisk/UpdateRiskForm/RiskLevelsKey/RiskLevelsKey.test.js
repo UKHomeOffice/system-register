@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import RiskRatingKey from "./RiskRatingKey";
+import RiskLevelsKey from "./RiskLevelsKey";
 
-describe("<RiskRatingKey />", () => {
+describe("<RiskLevelsKey />", () => {
   it("displays generic description for low risk", () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(
@@ -14,7 +14,7 @@ describe("<RiskRatingKey />", () => {
   });
 
   it("displays generic description for medium risk", async () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(
@@ -24,7 +24,7 @@ describe("<RiskRatingKey />", () => {
   });
 
   it("displays generic description for medium risk", async () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(
@@ -34,7 +34,7 @@ describe("<RiskRatingKey />", () => {
   });
 
   it("displays generic description for high risk", async () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(
@@ -44,7 +44,7 @@ describe("<RiskRatingKey />", () => {
   });
 
   it("displays generic description for unknown risk", async () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(
@@ -54,7 +54,7 @@ describe("<RiskRatingKey />", () => {
   });
 
   it("displays generic description for inapplicable risk", async () => {
-    render(<RiskRatingKey />);
+    render(<RiskLevelsKey />);
 
     expect(
       screen.getByText(/this risk is not applicable to my system./i)
