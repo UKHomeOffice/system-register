@@ -69,7 +69,7 @@ function UpdateRiskForm({ risk, systemName, onSubmit, onCancel }) {
         <Form>
           <h1>{systemName}</h1>
           <p className="update-risk-form__secondary">
-            Please provide a high level assessment and enter a rationale for{" "}
+            Please provide a high-level assessment and enter a rationale for{" "}
             {toLower(risk.name)} risks associated with your system.
           </p>
 
