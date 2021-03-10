@@ -1,5 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.database;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 
 import javax.enterprise.inject.Instance;
@@ -18,7 +19,7 @@ public class JsonEventStore implements EventStore {
     }
 
     @Override
-    public void save(SR_Event event) throws EventStoreException {
+    public void save(@NonNull SR_Event event) throws EventStoreException {
         Codec codec = codecs.stream()
                 .findFirst()
                 .get();
@@ -33,7 +34,7 @@ public class JsonEventStore implements EventStore {
     }
 
     @Override
-    public List<SR_Event> getEvents(Instant after) throws EventStoreException {
+    public List<SR_Event> getEvents(@NonNull Instant after) throws EventStoreException {
         try {
             return dataStore.getData(after).stream()
                     .map(this::toEvent)
