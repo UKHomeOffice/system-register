@@ -31,6 +31,6 @@ class NoSuchSystemExceptionMapperTest {
 
     @Test
     void isDiscoverableByQuarkus() {
-        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
+        assertThat(NoSuchSystemExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }

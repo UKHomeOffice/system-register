@@ -35,6 +35,6 @@ class CommandHasNoEffectExceptionMapperTest {
 
     @Test
     void isDiscoverableByQuarkus() {
-        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
+        assertThat(CommandHasNoEffectExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }

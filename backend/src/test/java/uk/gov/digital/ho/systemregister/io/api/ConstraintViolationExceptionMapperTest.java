@@ -61,7 +61,7 @@ class ConstraintViolationExceptionMapperTest {
 
     @Test
     void isDiscoverableByQuarkus() {
-        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
+        assertThat(ConstraintViolationExceptionMapper.class).hasAnnotation(Provider.class);
     }
 
     @SuppressWarnings("unused")

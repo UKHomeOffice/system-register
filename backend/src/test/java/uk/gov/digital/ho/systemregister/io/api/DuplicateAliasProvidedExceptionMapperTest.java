@@ -6,6 +6,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.commandhandlers.Du
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,6 @@ class DuplicateAliasProvidedExceptionMapperTest {
 
     @Test
     void isDiscoverableByQuarkus() {
-        assertThat(RiskDoesNotExistExceptionMapper.class).hasAnnotation(Provider.class);
+        assertThat(DuplicateAliasProvidedExceptionMapper.class).hasAnnotation(Provider.class);
     }
 }
