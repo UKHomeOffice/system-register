@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import RiskList from "../RiskList";
 import { BrowserRouter } from "react-router-dom";
 
@@ -89,6 +89,29 @@ describe("<RiskList />", () => {
       );
       const element = getByTestId("risk_cell_Sys Name 2");
       expect(element).toHaveClass("unknownRiskBackground");
+    });
+
+    it("shows risk as not applicable when lens is absent for a system", () => {
+      renderRiskList(
+        [
+          ...test_data,
+          {
+            id: 678,
+            name: "system without sunset lens",
+            portfolio: "portfolio",
+            criticality: "cni",
+            risks: [{ name: "roadmap", level: "medium" }],
+          },
+        ],
+        "portfolio",
+        null,
+        "sunset"
+      );
+
+      const systemRow = screen
+        .getByRole("link", { name: "system without sunset lens" })
+        .closest("tr");
+      expect(within(systemRow).getByText("UNKNOWN")).toBeVisible();
     });
   });
 
