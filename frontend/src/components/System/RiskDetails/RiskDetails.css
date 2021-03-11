@@ -1,10 +1,12 @@
 .risk-details {
-  background-color: #fafafa;
+  background-color: #f8f8f8;
+  border-bottom: 3px solid #005ea5;
   margin-bottom: 32px;
   padding: 20px;
   position: relative;
   width: 400px;
   word-wrap: break-word;
+  font-size: 19px;
 }
 
 .risk-details__title {
