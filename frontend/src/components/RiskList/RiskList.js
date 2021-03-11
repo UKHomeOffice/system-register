@@ -60,7 +60,10 @@ const RiskList = (props) => {
   } else {
     systems = props.systems
       .map((sys) => {
-        const risk = sys.risks.find((r) => r.name === props.riskLens);
+        const risk = sys.risks.find((r) => r.name === props.riskLens) || {
+          name: props.riskLens,
+          level: "unknown",
+        };
         risk.score = riskConfig.mapToKnownRisk(risk.level);
         return {
           name: sys.name,
