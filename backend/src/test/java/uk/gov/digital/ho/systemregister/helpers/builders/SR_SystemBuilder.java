@@ -2,6 +2,7 @@ package uk.gov.digital.ho.systemregister.helpers.builders;
 
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
 import uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder;
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import java.security.SecureRandom;
@@ -46,9 +47,9 @@ public class SR_SystemBuilder {
     }
 
     public SR_System build() {
-        return new SR_System(id, name, description, lastUpdated, portfolio, criticality,
-                investmentState, businessOwner, serviceOwner, technicalOwner, productOwner,
-                informationAssetOwner, developedBy, supportedBy, aliases, risks);
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy,
+                supportedBy, aliases, risks, new SR_Sunset(null, null));
     }
 
     public SR_SystemBuilder withId(int id) {

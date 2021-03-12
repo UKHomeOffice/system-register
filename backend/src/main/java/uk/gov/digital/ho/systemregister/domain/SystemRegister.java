@@ -40,10 +40,9 @@ public class SystemRegister {
     }
 
     private SR_System buildSystem(SystemData sys) {
-        return new SR_System(getId(), sys.name, sys.description, Instant.now(),
-                sys.portfolio, sys.criticality, sys.investmentState, sys.businessOwner,
-                sys.serviceOwner, sys.technicalOwner, sys.productOwner, sys.informationAssetOwner,
-                sys.developedBy, sys.supportedBy, sys.aliases, sys.risks);
+        return new SR_System(getId(), sys.name, sys.description, Instant.now(), sys.portfolio, sys.criticality, sys.investmentState, sys.businessOwner,
+                sys.serviceOwner, sys.technicalOwner, sys.productOwner, sys.informationAssetOwner, sys.developedBy,
+                sys.supportedBy, sys.aliases, sys.risks, new SR_Sunset(null, null));
     }
 
     private int getId() {

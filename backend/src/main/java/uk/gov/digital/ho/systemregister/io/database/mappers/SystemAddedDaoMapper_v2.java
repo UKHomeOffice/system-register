@@ -4,6 +4,7 @@ import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SystemAddedEvent;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2;
 import uk.gov.digital.ho.systemregister.io.database.dao.v2.SystemAddedEventDAO_v2.Person;
@@ -84,23 +85,9 @@ public class SystemAddedDaoMapper_v2 implements DaoMapper<SystemAddedEventDAO_v2
         List<SR_Risk> risks = system.risks.stream()
                 .map(risk -> new SR_Risk(risk.name, risk.level, risk.rationale))
                 .collect(toList());
-        return new SR_System(
-                system.id,
-                system.name,
-                system.description,
-                system.lastUpdated,
-                system.portfolio,
-                system.criticality,
-                system.investmentState,
-                system.businessOwner,
-                system.serviceOwner,
-                system.technicalOwner,
-                system.productOwner,
-                system.informationAssetOwner,
-                system.developedBy,
-                system.supportedBy,
-                List.copyOf(system.aliases),
-                risks);
+        return new SR_System(system.id, system.name, system.description, system.lastUpdated, system.portfolio, system.criticality, system.investmentState, system.businessOwner,
+                system.serviceOwner, system.technicalOwner, system.productOwner, system.informationAssetOwner, system.developedBy,
+                system.supportedBy, List.copyOf(system.aliases), risks, new SR_Sunset(null, null));
     }
 
     private SR_Person fromAuthorDao(Person author) {
