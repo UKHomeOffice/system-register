@@ -1,5 +1,7 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
+
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.Instant;
 import java.util.List;
@@ -40,6 +42,7 @@ public class CurrentSystemStateDTO {
         public final String supportedBy;
         public final List<String> aliases;
         public final List<RiskDTO> risks;
+        public final SR_Sunset sunset;
         @JsonbProperty("last_updated")
         public final UpdateMetadata lastUpdated;
 
@@ -55,7 +58,7 @@ public class CurrentSystemStateDTO {
                       String supportedBy,
                       List<String> aliases,
                       List<RiskDTO> risks,
-                      UpdateMetadata lastUpdated) {
+                      SR_Sunset sunset, UpdateMetadata lastUpdated) {
             this.id = id;
             this.name = name;
             this.description = description;
@@ -71,6 +74,7 @@ public class CurrentSystemStateDTO {
             this.supportedBy = supportedBy;
             this.aliases = unmodifiableList(aliases);
             this.risks = unmodifiableList(risks);
+            this.sunset = sunset;
             this.lastUpdated = lastUpdated;
         }
     }

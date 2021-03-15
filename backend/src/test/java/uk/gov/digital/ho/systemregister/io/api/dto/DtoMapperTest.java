@@ -53,7 +53,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         system.supportedBy,
                                         system.aliases,
                                         List.of(),
-                                        new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
+                                        system.sunset, new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
                                 new CurrentSystemStateDTO.System(
                                         anotherSystem.id,
                                         anotherSystem.name,
@@ -70,7 +70,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         anotherSystem.supportedBy,
                                         anotherSystem.aliases,
                                         List.of(new RiskDTO("risk", "low", "rationale")),
-                                        new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
+                                        system.sunset, new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
                         timestamp));
     }
 }

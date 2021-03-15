@@ -1,6 +1,7 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.json.bind.annotation.JsonbNillable;
@@ -35,6 +36,7 @@ public class UpdatedSystemDTO {
     public final String supportedBy;
     public final List<String> aliases;
     public final List<RiskDTO> risks;
+    public final SR_Sunset sunset;
     @JsonbProperty("last_updated")
     public final Metadata lastUpdated;
 
@@ -53,7 +55,7 @@ public class UpdatedSystemDTO {
             String supportedBy,
             List<String> aliases,
             List<RiskDTO> risks,
-            Metadata lastUpdated) {
+            SR_Sunset sunset, Metadata lastUpdated) {
 
         this.id = id;
         this.name = name;
@@ -70,6 +72,7 @@ public class UpdatedSystemDTO {
         this.supportedBy = supportedBy;
         this.aliases = unmodifiableList(aliases);
         this.risks = unmodifiableList(risks);
+        this.sunset = sunset;
         this.lastUpdated = lastUpdated;
     }
 
@@ -77,7 +80,7 @@ public class UpdatedSystemDTO {
         return new UpdatedSystemDTO(system.id, system.name, system.description, system.portfolio, system.criticality,
                 system.investmentState, system.businessOwner, system.serviceOwner, system.technicalOwner, system.productOwner,
                 system.informationAssetOwner, system.developedBy, system.supportedBy, List.copyOf(system.aliases),
-                DtoMapper.mapToDto(system.risks), new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
+                DtoMapper.mapToDto(system.risks), system.sunset, new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
     }
 
     public static class Metadata {
