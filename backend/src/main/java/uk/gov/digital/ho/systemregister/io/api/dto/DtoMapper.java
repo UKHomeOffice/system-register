@@ -40,7 +40,7 @@ public final class DtoMapper {
                             system.supportedBy,
                             system.aliases,
                             mapToDto(system.risks),
-                            toUpdateMetadata(metadata));
+                            system.sunset, toUpdateMetadata(metadata));
                 })
                 .collect(toList());
         return new CurrentSystemStateDTO(systems, currentState.getLastUpdatedAt());
