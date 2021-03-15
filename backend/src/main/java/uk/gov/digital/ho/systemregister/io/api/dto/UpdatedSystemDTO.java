@@ -36,7 +36,7 @@ public class UpdatedSystemDTO {
     public final String supportedBy;
     public final List<String> aliases;
     public final List<RiskDTO> risks;
-    public final SR_Sunset sunset;
+    public final SunsetDTO sunset;
     @JsonbProperty("last_updated")
     public final Metadata lastUpdated;
 
@@ -55,7 +55,8 @@ public class UpdatedSystemDTO {
             String supportedBy,
             List<String> aliases,
             List<RiskDTO> risks,
-            SR_Sunset sunset, Metadata lastUpdated) {
+            SunsetDTO sunset,
+            Metadata lastUpdated) {
 
         this.id = id;
         this.name = name;
@@ -80,7 +81,7 @@ public class UpdatedSystemDTO {
         return new UpdatedSystemDTO(system.id, system.name, system.description, system.portfolio, system.criticality,
                 system.investmentState, system.businessOwner, system.serviceOwner, system.technicalOwner, system.productOwner,
                 system.informationAssetOwner, system.developedBy, system.supportedBy, List.copyOf(system.aliases),
-                DtoMapper.mapToDto(system.risks), system.sunset, new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
+                DtoMapper.mapToDto(system.risks), DtoMapper.mapToDto(system.sunset), new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
     }
 
     public static class Metadata {

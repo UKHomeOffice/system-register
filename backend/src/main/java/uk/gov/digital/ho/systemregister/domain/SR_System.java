@@ -159,7 +159,6 @@ public final class SR_System extends SystemData {
                 + informationAssetOwner + "'" + ", developedBy='" + developedBy + "'"
                 + ", supportedBy='" + supportedBy + "'" + ", aliases='" + aliases + "'"
                 + ", risks='" + risks + "'" + "'"
-                + ", sunset='" + "{" + "date: " + sunset.date.toString() + ", " + "additionalInformation: "
-                + sunset.additionalInformation + "}" + "'" + "}";
+                + ", sunset='" + sunset.toString() + "'" + "}";
     }
 }

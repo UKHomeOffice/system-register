@@ -14,4 +14,12 @@ public class SR_Sunset {
         this.date = date;
         this.additionalInformation = additionalInformation;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "date=" + date +
+                ", additionalInformation='" + additionalInformation + '\'' +
+                '}';
+    }
 }

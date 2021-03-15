@@ -42,7 +42,8 @@ public class CurrentSystemStateDTO {
         public final String supportedBy;
         public final List<String> aliases;
         public final List<RiskDTO> risks;
-        public final SR_Sunset sunset;
+        @JsonbProperty("sunset")
+        public final SunsetDTO sunset;
         @JsonbProperty("last_updated")
         public final UpdateMetadata lastUpdated;
 
@@ -58,7 +59,7 @@ public class CurrentSystemStateDTO {
                       String supportedBy,
                       List<String> aliases,
                       List<RiskDTO> risks,
-                      SR_Sunset sunset, UpdateMetadata lastUpdated) {
+                      SunsetDTO sunset, UpdateMetadata lastUpdated) {
             this.id = id;
             this.name = name;
             this.description = description;
