@@ -109,6 +109,12 @@ public final class SR_System extends SystemData {
                 supportedBy, List.copyOf(aliases), List.copyOf(risks), new SR_Sunset(null, null));
     }
 
+    public SR_System withSunset(SR_Sunset sunset) {
+        return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
+                serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy,
+                supportedBy, List.copyOf(aliases), List.copyOf(risks), sunset);
+    }
+
     public SR_System withRisk(SR_Risk risk) {
         var risks = this.risks.stream()
                 .map(replacingMatchingRisk(risk))
@@ -152,6 +158,8 @@ public final class SR_System extends SystemData {
                 + "'" + ", productOwner='" + productOwner + "'" + ", informationAssetOwner='"
                 + informationAssetOwner + "'" + ", developedBy='" + developedBy + "'"
                 + ", supportedBy='" + supportedBy + "'" + ", aliases='" + aliases + "'"
-                + ", risks='" + risks + "'" + "}";
+                + ", risks='" + risks + "'" + "'"
+                + ", sunset='" + "{" + "date: " + sunset.date.toString() + ", " + "additionalInformation: "
+                + sunset.additionalInformation + "}" + "'" + "}";
     }
 }

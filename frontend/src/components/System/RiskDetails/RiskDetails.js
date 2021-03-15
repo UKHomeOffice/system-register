@@ -27,7 +27,6 @@ function renderRationale(level, rationale, name) {
 
 function useUpdatedLocation(lens) {
   const { url } = useRouteMatch();
-
   return `${url}/update-risk?lens=${lens}`;
 }
 

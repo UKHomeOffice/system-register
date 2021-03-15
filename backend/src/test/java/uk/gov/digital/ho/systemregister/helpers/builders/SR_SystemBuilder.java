@@ -1,9 +1,6 @@
 package uk.gov.digital.ho.systemregister.helpers.builders;
 
-import uk.gov.digital.ho.systemregister.domain.SR_Risk;
-import uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder;
-import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
-import uk.gov.digital.ho.systemregister.domain.SR_System;
+import uk.gov.digital.ho.systemregister.domain.*;
 
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -31,6 +28,7 @@ public class SR_SystemBuilder {
     private String supportedBy = "All";
     private List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
     private List<SR_Risk> risks = some_risks();
+    private SR_Sunset sunset = new SR_Sunset(null, null);
 
     public static SR_SystemBuilder aSystem() {
         return new SR_SystemBuilder();
@@ -49,7 +47,7 @@ public class SR_SystemBuilder {
     public SR_System build() {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy,
-                supportedBy, aliases, risks, new SR_Sunset(null, null));
+                supportedBy, aliases, risks, sunset);
     }
 
     public SR_SystemBuilder withId(int id) {
@@ -102,6 +100,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withDevelopedBy(String developedBy) {
         this.developedBy = developedBy;
+        return this;
+    }
+
+    public SR_SystemBuilder withSunset(SR_SunsetBuilder sunset) {
+        this.sunset = sunset.build();
         return this;
     }
 
