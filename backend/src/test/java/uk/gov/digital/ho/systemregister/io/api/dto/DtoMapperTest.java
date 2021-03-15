@@ -3,9 +3,12 @@ package uk.gov.digital.ho.systemregister.io.api.dto;
 import org.junit.jupiter.api.Test;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.helpers.TestDataUtil;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +18,27 @@ import static uk.gov.digital.ho.systemregister.domain.SR_RiskBuilder.aLowRisk;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 
 public class DtoMapperTest extends TestDataUtil {
+
+    @Test
+    void mapsEmptySunset() {
+        SR_Sunset sunset = new SR_Sunset();
+
+        var result = DtoMapper.mapToDto(sunset);
+
+        assertThat(result.date).isEqualTo(null);
+        assertThat(result.additionalInformation).isEqualTo(sunset.additionalInformation);
+    }
+
+    @Test
+    void mapsSunset() {
+        SR_Sunset sunset = new SR_Sunset(LocalDate.parse("2021-09-01"), "info!");
+
+        var result = DtoMapper.mapToDto(sunset);
+
+        assertThat(result.date).isEqualTo("2021-09-01");
+        assertThat(result.additionalInformation).isEqualTo(sunset.additionalInformation);
+    }
+
     @Test
     void mapsCurrentSystemStateToResponse() {
         var timestamp = Instant.now();
@@ -53,7 +77,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         system.supportedBy,
                                         system.aliases,
                                         List.of(),
-                                        system.sunset, new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
+                                        new SunsetDTO(null,null), new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
                                 new CurrentSystemStateDTO.System(
                                         anotherSystem.id,
                                         anotherSystem.name,
@@ -70,7 +94,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         anotherSystem.supportedBy,
                                         anotherSystem.aliases,
                                         List.of(new RiskDTO("risk", "low", "rationale")),
-                                        system.sunset, new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
+                                        new SunsetDTO(null, null), new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
                         timestamp));
     }
 }

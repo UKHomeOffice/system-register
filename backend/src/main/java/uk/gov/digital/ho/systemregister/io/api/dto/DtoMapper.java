@@ -4,6 +4,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.CurrentState;
 import uk.gov.digital.ho.systemregister.domain.SR_Person;
 import uk.gov.digital.ho.systemregister.domain.SR_Risk;
+import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public final class DtoMapper {
         return risks.stream().map(r -> new RiskDTO(r.name, r.level, r.rationale))
                 .collect(toList());
     }
+
+    public static SunsetDTO mapToDto(SR_Sunset sunset) {
+        String dateStr = null;
+        if(sunset.date != null){
+            dateStr = sunset.date.toString();
+        }
+        return new SunsetDTO(dateStr, sunset.additionalInformation);    }
 
     public static CurrentSystemStateDTO map(CurrentState currentState) {
         List<CurrentSystemStateDTO.System> systems = currentState.getUpdatesBySystem()
@@ -40,7 +48,7 @@ public final class DtoMapper {
                             system.supportedBy,
                             system.aliases,
                             mapToDto(system.risks),
-                            system.sunset, toUpdateMetadata(metadata));
+                            mapToDto(system.sunset), toUpdateMetadata(metadata));
                 })
                 .collect(toList());
         return new CurrentSystemStateDTO(systems, currentState.getLastUpdatedAt());

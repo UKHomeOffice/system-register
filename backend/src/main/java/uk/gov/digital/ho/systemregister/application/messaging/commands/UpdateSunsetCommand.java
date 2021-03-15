@@ -58,7 +58,7 @@ public class UpdateSunsetCommand implements UpdateCommand {
     }
 
     public boolean willUpdate(SR_System system) {
-        return !Objects.equals(sunset.date.toString(), system.sunset.date.toString())
+        return system.sunset.date == null || !Objects.equals(sunset.date.toString(), system.sunset.date.toString())
                 && !Objects.equals(sunset.additionalInformation, system.sunset.additionalInformation);
     }
 
