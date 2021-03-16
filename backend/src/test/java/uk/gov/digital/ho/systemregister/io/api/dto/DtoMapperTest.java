@@ -6,7 +6,6 @@ import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.Up
 import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.helpers.TestDataUtil;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,8 +24,8 @@ public class DtoMapperTest extends TestDataUtil {
 
         var result = DtoMapper.mapToDto(sunset);
 
-        assertThat(result.date).isEqualTo(null);
-        assertThat(result.additionalInformation).isEqualTo(sunset.additionalInformation);
+        assertThat(result.date).isNull();
+        assertThat(result.additionalInformation).isNull();
     }
 
     @Test

@@ -36,16 +36,17 @@ public class UpdateSunsetResourceTest extends ResourceTestBase {
         checkAllSystemsResponse("update-sunset/expectedAllSystemsResponse.json");
     }
 
-//    @Test
-//    @TestSecurity
-//    void canSetSunsetToUnknown() throws JSONException {
-//        var expectedResponse = getResourceAsString("update-sunset/minimal-update-response.json");
-//        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
-//
-//        var response = sendCommandToApi("update-sunset/minimal-update-command.json", "/api/systems/1/update-sunset", 200);
-//
-//        assertEquals(expectedResponse, response, false);
-//    }
+    @Test
+    @TestSecurity
+    void canSetSunsetToUnknown() throws JSONException {
+        var expectedResponse = getResourceAsString("update-sunset/minimal-update-response.json");
+        sendCommandToApi("add-system/addSystemCommand.json", "/api/systems", 200);
+        sendCommandToApi("update-sunset/command.json", "/api/systems/1/update-sunset", 200);
+
+        var response = sendCommandToApi("update-sunset/minimal-update-command.json", "/api/systems/1/update-sunset", 200);
+
+        assertEquals(expectedResponse, response, false);
+    }
 
     @Test
     @TestSecurity

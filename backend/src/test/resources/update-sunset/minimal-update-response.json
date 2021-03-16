@@ -12,6 +12,7 @@
   "service_owner": "service owner",
   "tech_owner": "tech owner",
   "developed_by": "Home Office",
+  "supported_by": "a supporter",
   "risks": [
     {
       "name": "roadmap",
@@ -19,6 +20,9 @@
       "rationale": "Meaningful data here"
     }
   ],
+  "sunset": {
+    "date": null
+  },
   "last_updated": {
     "author_name": "Basil Barkley"
   }

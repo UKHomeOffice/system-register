@@ -22,6 +22,7 @@ public class UpdateSunsetCommand implements UpdateCommand {
     private final SR_Person author;
     private final Instant timestamp;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public UpdateSunsetCommand(int id, Sunset sunset, SR_Person author, Instant timestamp) {
         this.id = id;
         this.sunset = sunset;
@@ -52,21 +53,21 @@ public class UpdateSunsetCommand implements UpdateCommand {
     @Override
     public void ensureCommandUpdatesSystem(SR_System system) throws CommandHasNoEffectException {
         if (!willUpdate(system)) {
-            throw new CommandHasNoEffectException("sunset is the same: date=" + sunset.date.toString() + ", "
+            throw new CommandHasNoEffectException("sunset is the same: date=" + sunset.date + ", "
                     + "additional information=" + sunset.additionalInformation);
         }
     }
 
     public boolean willUpdate(SR_System system) {
-        return system.sunset.date == null || !Objects.equals(sunset.date.toString(), system.sunset.date.toString())
-                && !Objects.equals(sunset.additionalInformation, system.sunset.additionalInformation);
+        return !Objects.equals(sunset.additionalInformation, system.sunset.additionalInformation) || !Objects.equals(sunset.date, system.sunset.date);
     }
 
-
+    @SuppressWarnings("CdiInjectionPointsInspection")
     public static class Sunset {
         private final LocalDate date;
         @AdditionalInformation
         private final String additionalInformation;
+
 
 
         public Sunset(LocalDate date, String additionalInformation) {

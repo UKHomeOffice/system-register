@@ -59,7 +59,8 @@ public class CurrentSystemStateDTO {
                       String supportedBy,
                       List<String> aliases,
                       List<RiskDTO> risks,
-                      SunsetDTO sunset, UpdateMetadata lastUpdated) {
+                      SunsetDTO sunset,
+                      UpdateMetadata lastUpdated) {
             this.id = id;
             this.name = name;
             this.description = description;

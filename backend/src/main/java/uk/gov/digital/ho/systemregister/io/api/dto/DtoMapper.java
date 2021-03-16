@@ -20,11 +20,7 @@ public final class DtoMapper {
     }
 
     public static SunsetDTO mapToDto(SR_Sunset sunset) {
-        String dateStr = null;
-        if(sunset.date != null){
-            dateStr = sunset.date.toString();
-        }
-        return new SunsetDTO(dateStr, sunset.additionalInformation);    }
+        return new SunsetDTO(sunset.date, sunset.additionalInformation);    }
 
     public static CurrentSystemStateDTO map(CurrentState currentState) {
         List<CurrentSystemStateDTO.System> systems = currentState.getUpdatesBySystem()
@@ -48,7 +44,8 @@ public final class DtoMapper {
                             system.supportedBy,
                             system.aliases,
                             mapToDto(system.risks),
-                            mapToDto(system.sunset), toUpdateMetadata(metadata));
+                            mapToDto(system.sunset),
+                            toUpdateMetadata(metadata));
                 })
                 .collect(toList());
         return new CurrentSystemStateDTO(systems, currentState.getLastUpdatedAt());
