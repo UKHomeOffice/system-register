@@ -14,6 +14,7 @@ import UpdateSuccessMessage from "../UpdateSuccessMessage";
 import useOnUnmount from "../../../utilities/useOnUnmount";
 
 import "./SystemView.css";
+import SunsetDate from "../../SunsetDate/SunsetDate";
 
 function buildStatusNotification(status) {
   if (status === "success") {
@@ -101,6 +102,27 @@ function SystemView({ system, status, onClose }) {
               </GridCol>
             </GridRow>
           </div>
+
+          <div className="contentBlock">
+            <h2>Key dates</h2>
+            {/*TODO: add update link*/}
+            <GridRow className="system-view-row">
+              <GridCol setWidth="one-quarter">Sunset date</GridCol>
+              <GridCol setWidth="one-half">
+                <SunsetDate
+                  investment_state={system.investment_state}
+                  date={system.sunset.date}
+                />
+              </GridCol>
+            </GridRow>
+            <GridRow className="system-view-row">
+              <GridCol setWidth="one-quarter">Additional information</GridCol>
+              <GridCol setWidth="one-half">
+                <KeyInfo info={system.sunset.additional_information} />
+              </GridCol>
+            </GridRow>
+          </div>
+
           <div className="contentBlock">
             <h2>Contacts</h2>
             <Link
@@ -181,6 +203,10 @@ SystemView.propTypes = {
         rationale: PropTypes.string,
       })
     ).isRequired,
+    sunset: PropTypes.shape({
+      date: PropTypes.string,
+      additional_information: PropTypes.string,
+    }).isRequired,
     last_updated: PropTypes.shape({
       timestamp: PropTypes.string,
       author_name: PropTypes.string,

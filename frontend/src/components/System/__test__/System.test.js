@@ -45,6 +45,10 @@ const test_system = {
     { name: "lens2", rationale: "rationale2" },
   ],
   aliases: [],
+  sunset: {
+    date: null,
+    additional_information: null,
+  },
 };
 
 const changeHandler = jest.fn();

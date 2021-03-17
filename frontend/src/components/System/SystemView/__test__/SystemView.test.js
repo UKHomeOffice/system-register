@@ -39,6 +39,10 @@ const test_system = {
       rationale: "Really good tech",
     },
   ],
+  sunset: {
+    date: "2021-06-01",
+    additional_information: "some sunset info",
+  },
 };
 
 const test_unknown_system = {
@@ -72,6 +76,10 @@ const test_unknown_system = {
       rationale: null,
     },
   ],
+  sunset: {
+    date: null,
+    additional_information: null,
+  },
 };
 
 describe("SystemView", () => {
@@ -185,6 +193,35 @@ describe("SystemView", () => {
       });
     });
 
+    describe("Key dates section", () => {
+      it("renders a Key dates section", async () => {
+        setup(test_system);
+        const element = await screen.findByRole("heading", {
+          name: "Key dates",
+        });
+
+        expect(element).toBeInTheDocument();
+      });
+
+      it("displays a sunset date", async () => {
+        setup(test_system);
+        const row = screen.getByText("Sunset date").closest(".system-view-row");
+        const cell = within(row).getByText("1 June 2021");
+
+        expect(cell).toBeInTheDocument();
+      });
+
+      it("displays additional sunset information", async () => {
+        setup(test_system);
+        const row = screen
+          .getByText("Additional information")
+          .closest(".system-view-row");
+        const cell = within(row).getByText("some sunset info");
+
+        expect(cell).toBeInTheDocument();
+      });
+    });
+
     describe("Contacts section", () => {
       it("renders Contacts section", async () => {
         setup(test_system);
@@ -278,6 +315,17 @@ describe("SystemView", () => {
         const cell = within(row).getByText("UNKNOWN");
 
         expect(cell).toBeInTheDocument();
+      });
+    });
+
+    describe("Key dates section", () => {
+      it("renders a Key dates section", async () => {
+        setup(test_unknown_system);
+        const element = await screen.findByRole("heading", {
+          name: "Key dates",
+        });
+
+        expect(element).toBeInTheDocument();
       });
     });
 

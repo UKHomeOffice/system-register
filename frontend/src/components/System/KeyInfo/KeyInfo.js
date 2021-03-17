@@ -1,10 +1,20 @@
-import React from 'react'
-import "./KeyInfo.css"
+import React from "react";
+import "./KeyInfo.css";
+import PropTypes from "prop-types";
 
-const KeyInfo = (props) => {
-    if (!props.info || props.info.toLowerCase() === 'unknown')
-        return <strong className="unknownKeyInfo">UNKNOWN</strong>
-    return props.info
-}
+const KeyInfo = ({ info }) => {
+  if (!info || info.toLowerCase() === "unknown") {
+    return <strong className="unknownKeyInfo">UNKNOWN</strong>;
+  } else if (info.toLowerCase() === "none") {
+    return <strong className="unknownKeyInfo">NONE</strong>;
+  } else if (info.toLowerCase() === "n/a") {
+    return <strong className="naKeyInfo">N/A</strong>;
+  }
+  return info;
+};
 
-export default KeyInfo
+KeyInfo.propTypes = {
+  info: PropTypes.string.isRequired,
+};
+
+export default KeyInfo;
