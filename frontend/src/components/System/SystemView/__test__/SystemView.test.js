@@ -171,13 +171,6 @@ describe("SystemView", () => {
         expect(element).toHaveAttribute("href", "//update-about"); //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
-      it("renders Change link for contacts section", () => {
-        setup(test_system);
-        const element = screen.getByTestId("contacts-change-link");
-        expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", "//update-contacts"); //TODO discuss with team if better way to do relative path with react-router-dom
-      });
-
       it.each([
         ["Portfolio", "Portfolio Y"],
         ["Criticality assessment", "HIGH"],
@@ -201,6 +194,13 @@ describe("SystemView", () => {
         });
 
         expect(element).toBeInTheDocument();
+      });
+
+      it("renders Change link for key dates section", () => {
+        setup(test_system);
+        const element = screen.getByTestId("key-dates-change-link");
+        expect(element).toBeInTheDocument();
+        expect(element).toHaveAttribute("href", "//update-key-dates");
       });
 
       it("displays a sunset date", async () => {
@@ -229,6 +229,13 @@ describe("SystemView", () => {
           name: "Contacts",
         });
         expect(element).toBeInTheDocument();
+      });
+
+      it("renders Change link for contacts section", () => {
+        setup(test_system);
+        const element = screen.getByTestId("contacts-change-link");
+        expect(element).toBeInTheDocument();
+        expect(element).toHaveAttribute("href", "//update-contacts"); //TODO discuss with team if better way to do relative path with react-router-dom
       });
 
       it.each([

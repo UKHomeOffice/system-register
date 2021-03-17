@@ -14,6 +14,7 @@ import api from "../../services/api";
 import useAsyncError from "../../utilities/useAsyncError";
 
 import "./System.css";
+import UpdateKeyDates from "./UpdateKeyDates/UpdateKeyDates";
 
 const CHANGE_STATUS_NONE = null;
 const CHANGE_STATUS_SUCCESS = "success";
@@ -103,6 +104,8 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "developedBy",
     "supportedBy"
   );
+  const handleUpdateKeyDates = () => console.log("Hello!");
+
   const handleUpdateContacts = createUpdateCallback(
     "businessOwner",
     "technicalOwner",
@@ -139,6 +142,13 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
           portfolios={portfolios}
           onSubmit={handleUpdateAbout}
           onCancel={handleCancel}
+        />
+      </SecureRoute>
+      <SecureRoute path={`${path}/update-key-dates`}>
+        <UpdateKeyDates
+          system={system}
+          onCancel={handleCancel}
+          onSubmit={handleUpdateKeyDates}
         />
       </SecureRoute>
       <SecureRoute path={`${path}/update-contacts`}>

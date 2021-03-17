@@ -133,6 +133,14 @@ describe("<System />", () => {
       expect(element).toBeInTheDocument();
     });
 
+    it("shows an edit view for key dates", async () => {
+      renderWithRouting("1/update-key-dates");
+
+      const element = await screen.findByText("Test System");
+
+      expect(element).toBeInTheDocument();
+    });
+
     it("shows an edit view for contacts", async () => {
       renderWithRouting("1/update-contacts");
 

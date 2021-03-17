@@ -9,12 +9,11 @@ const KeyInfo = ({ info }) => {
     return <strong className="unknownKeyInfo">NONE</strong>;
   } else if (info.toLowerCase() === "n/a") {
     return <strong className="naKeyInfo">N/A</strong>;
-  }
-  return info;
+  } else return info;
 };
 
 KeyInfo.propTypes = {
-  info: PropTypes.string.isRequired,
+  info: PropTypes.string,
 };
 
 export default KeyInfo;

@@ -105,7 +105,13 @@ function SystemView({ system, status, onClose }) {
 
           <div className="contentBlock">
             <h2>Key dates</h2>
-            {/*TODO: add update link*/}
+            <Link
+              data-testid="key-dates-change-link"
+              className="change-link"
+              to={window.location.pathname + `/update-key-dates`}
+            >
+              Update
+            </Link>
             <GridRow className="system-view-row">
               <GridCol setWidth="one-quarter">Sunset date</GridCol>
               <GridCol setWidth="one-half">
