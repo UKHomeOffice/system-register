@@ -1,0 +1,28 @@
+.date-field-primary {
+  padding: 0 0 3px;
+  margin-bottom: 0;
+}
+
+.date-field-secondary {
+  color: #6f777b;
+  font-size: 19px;
+  margin: 0 0 15px;
+}
+
+.date-field-date-container {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 25%;
+}
+
+.date-field-day-field {
+  width: 40px !important;
+}
+
+.date-field-month-field {
+  width: 40px !important;
+}
+
+.date-field-year-field {
+  width: 70px !important;
+}

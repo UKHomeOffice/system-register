@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 
 import "./UpdateKeyDates.css";
 import Textarea from "../../Textarea";
-import { Button, DateField } from "govuk-react";
+import { Button } from "govuk-react";
 import SecondaryButton from "../../SecondaryButton";
+import DateField from "../../DateField/DateField";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
 
@@ -14,9 +15,11 @@ const infoAbout = (system) => ({
   sunset_additional_information: emptyIfUndefined(
     system.sunset.additional_information
   ),
-  sunsetDay: emptyIfUndefined(new Date(system.sunset.date).getDate()),
-  sunsetMonth: emptyIfUndefined(new Date(system.sunset.date).getMonth() + 1), //js getMonth() is zero-indexed, for some reason??!
-  sunsetYear: emptyIfUndefined(new Date(system.sunset.date).getFullYear()),
+  sunset_date: {
+    day: emptyIfUndefined(new Date(system.sunset.date).getDate()),
+    month: emptyIfUndefined(new Date(system.sunset.date).getMonth() + 1), //js getMonth() is zero-indexed, for some reason??!
+    year: emptyIfUndefined(new Date(system.sunset.date).getFullYear()),
+  },
 });
 
 function UpdateKeyDates({ system, onCancel, onSubmit }) {
@@ -50,24 +53,9 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
 
             <DateField
               hintText="Please provide the date when the system is due for sunset. For example, 25 03 2021."
-              input={{
-                day: "sunsetDay",
-                month: "sunsetMonth",
-                year: "sunsetYear",
-              }}
-              inputNames={{
-                day: "sunsetDay",
-                month: "sunsetMonth",
-                year: "sunsetYear",
-              }}
-
-              // defaultValues={{
-              //   day: infoAbout(system).sunset_date.Day,
-              //   month: infoAbout(system).sunset_date.Month,
-              //   year: infoAbout(system).sunset_date.Year,
-              // }}
+              name="sunset_date"
             >
-              Sunset Date
+              Sunset date
             </DateField>
 
             <Textarea

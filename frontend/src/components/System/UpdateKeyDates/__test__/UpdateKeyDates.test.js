@@ -5,6 +5,7 @@ import UpdateKeyDates from "../UpdateKeyDates";
 
 describe("UpdateKeyDates", () => {
   const cancelHandler = jest.fn();
+  const submitHandler = jest.fn();
 
   function setUp(props = {}) {
     if (props.system && !props.system.name) {
@@ -12,7 +13,7 @@ describe("UpdateKeyDates", () => {
     }
     const actualProps = {
       system: null,
-      // onSubmit: submitHandler,
+      onSubmit: submitHandler,
       onCancel: cancelHandler,
       ...props,
     };
@@ -78,23 +79,23 @@ describe("UpdateKeyDates", () => {
     expect(screen.getByText("some sunset info")).toBeInTheDocument();
   });
 
-  it("displays a date field pre-filled with existing system data", () => {
-    setUp({
-      system: {
-        name: "system name",
-        sunset: {
-          date: "2021-06-01",
-          additional_information: "some sunset info",
-        },
-      },
-    });
-
-    const day = screen.getByLabelText("Day");
-    const month = screen.getByLabelText("Month");
-    const year = screen.getByLabelText("Year");
-
-    expect(day.value).toEqual("1");
-    expect(month.value).toEqual("6");
-    expect(year.value).toEqual("2021");
-  });
+  // it("displays a date field pre-filled with existing system data", () => {
+  //   setUp({
+  //     system: {
+  //       name: "system name",
+  //       sunset: {
+  //         date: "2021-06-01",
+  //         additional_information: "some sunset info",
+  //       },
+  //     },
+  //   });
+  //
+  //   const day = screen.getByLabelText("Day");
+  //   const month = screen.getByLabelText("Month");
+  //   const year = screen.getByLabelText("Year");
+  //
+  //   expect(day.value).toEqual("1");
+  //   expect(month.value).toEqual("6");
+  //   expect(year.value).toEqual("2021");
+  // });
 });

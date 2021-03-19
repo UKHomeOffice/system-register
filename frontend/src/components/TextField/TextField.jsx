@@ -6,7 +6,6 @@ import "./TextField.css";
 import PropTypes from "prop-types";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
-//JB: Looook!
 function TextField({
   children,
   hint,
