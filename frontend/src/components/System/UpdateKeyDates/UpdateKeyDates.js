@@ -13,23 +13,24 @@ import "./UpdateKeyDates.css";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
 
-const keyDateOf = (system) => ({
-  sunset_additional_information: emptyIfUndefined(
-    system.sunset.additional_information
-  ),
-  sunset_date: {
-    day: emptyIfUndefined(String(new Date(system.sunset.date).getDate())),
-    month: emptyIfUndefined(
-      String(new Date(system.sunset.date).getMonth() + 1)
-    ), //js getMonth() is zero-indexed
-    year: emptyIfUndefined(String(new Date(system.sunset.date).getFullYear())),
-  },
-});
+const keyDatesOf = (system) => {
+  const sunsetDate = new Date(system.sunset.date);
+  return {
+    sunsetAdditionalInformation: emptyIfUndefined(
+      system.sunset.additional_information
+    ),
+    sunsetDate: {
+      day: emptyIfUndefined(String(sunsetDate.getDate())),
+      month: emptyIfUndefined(String(sunsetDate.getMonth() + 1)), //js getMonth() is zero-indexed
+      year: emptyIfUndefined(String(sunsetDate.getFullYear())),
+    },
+  };
+};
 
 function UpdateKeyDates({ system, onCancel, onSubmit }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
-      const initialValues = keyDateOf(system);
+      const initialValues = keyDatesOf(system);
       console.log(initialValues);
       console.log(values);
       try {
@@ -51,7 +52,7 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
     <div className="centerContent">
       {system ? (
         <Formik
-          initialValues={keyDateOf(system)}
+          initialValues={keyDatesOf(system)}
           validateOnChange={false}
           onSubmit={handleSubmit}
         >
@@ -67,13 +68,13 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
 
             <DateField
               hintText="Please provide the date when the system is due for sunset. For example, 25 03 2021."
-              name="sunset_date"
+              name="sunsetDate"
             >
               Sunset date
             </DateField>
 
             <Textarea
-              name="sunset_additional_information"
+              name="sunsetAdditionalInformation"
               hint="Please provide any relevant additional information for the sunset date, if applicable."
               inputClassName="width-two-thirds"
             >

@@ -26,3 +26,7 @@
 .date-field-year-field {
   width: 70px !important;
 }
+
+.date-field span:first-child {
+  font-weight: bold;
+}

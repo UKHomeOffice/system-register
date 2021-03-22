@@ -15,6 +15,7 @@ function DateField({ children, hintText, name, validate }) {
       }) => {
         return (
           <GovDateField
+            className="date-field"
             hintText={hintText}
             errorText={error}
             input={{
