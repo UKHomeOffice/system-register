@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import PropTypes from "prop-types";
@@ -8,26 +8,39 @@ import Textarea from "../../Textarea";
 import { Button } from "govuk-react";
 import SecondaryButton from "../../SecondaryButton";
 import DateField from "../../DateField/DateField";
+import ValidationError from "../../../services/validationError";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
 
-const infoAbout = (system) => ({
+const keyDateOf = (system) => ({
   sunset_additional_information: emptyIfUndefined(
     system.sunset.additional_information
   ),
   sunset_date: {
-    day: emptyIfUndefined(new Date(system.sunset.date).getDate()),
-    month: emptyIfUndefined(new Date(system.sunset.date).getMonth() + 1), //js getMonth() is zero-indexed, for some reason??!
-    year: emptyIfUndefined(new Date(system.sunset.date).getFullYear()),
+    day: emptyIfUndefined(String(new Date(system.sunset.date).getDate())),
+    month: emptyIfUndefined(
+      String(new Date(system.sunset.date).getMonth() + 1)
+    ), //js getMonth() is zero-indexed
+    year: emptyIfUndefined(String(new Date(system.sunset.date).getFullYear())),
   },
 });
 
 function UpdateKeyDates({ system, onCancel, onSubmit }) {
-  const handleSubmit = async (values, formik) => {
-    const initialValues = infoAbout(system);
-    console.log(values);
-    console.log(initialValues);
-  };
+  const handleSubmit = useCallback(
+    async (values, formik) => {
+      const initialValues = keyDateOf(system);
+      console.log(initialValues);
+      console.log(values);
+      try {
+        await onSubmit(values);
+      } catch (e) {
+        if (e instanceof ValidationError) {
+          formik.setErrors(e.errors);
+        }
+      }
+    },
+    [system, onSubmit]
+  );
 
   const handleCancel = () => {
     onCancel();
@@ -37,7 +50,7 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
     <div className="centerContent">
       {system ? (
         <Formik
-          initialValues={infoAbout(system)}
+          initialValues={keyDateOf(system)}
           validateOnChange={false}
           onSubmit={handleSubmit}
         >
@@ -62,7 +75,6 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
               name="sunset_additional_information"
               hint="Please provide any relevant additional information for the sunset date, if applicable."
               inputClassName="width-two-thirds"
-              // validate={validateDescription}
             >
               Additional information
             </Textarea>

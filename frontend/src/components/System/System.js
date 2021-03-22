@@ -104,7 +104,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "developedBy",
     "supportedBy"
   );
-  const handleUpdateKeyDates = () => console.log("Hello!");
+  const handleUpdateKeyDates = () => {};
 
   const handleUpdateContacts = createUpdateCallback(
     "businessOwner",
