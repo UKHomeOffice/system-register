@@ -6,11 +6,20 @@ import DateField from "../index";
 
 const submitHandler = jest.fn();
 
-function setup({ initialValues = {} }) {
+function setUp({
+  initialValues = {},
+  initialErrors = { testDate: undefined },
+  initialTouched = { testDate: false },
+}) {
   return render(
-    <Formik initialValues={initialValues} onSubmit={submitHandler}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={submitHandler}
+      initialErrors={initialErrors}
+      initialTouched={initialTouched}
+    >
       <Form>
-        <DateField hintText="a hint about the field" name="test_date">
+        <DateField hintText="a hint about the field" name="testDate">
           Test date
         </DateField>
       </Form>
@@ -20,14 +29,14 @@ function setup({ initialValues = {} }) {
 
 describe("DateField", () => {
   it("displays the field heading", () => {
-    setup({ initialValues: {} });
+    setUp({ initialValues: {} });
     const fieldHeading = screen.getByText("Test date");
 
     expect(fieldHeading).toBeInTheDocument();
   });
 
   it("displays the field hint text", () => {
-    setup({ initialValues: {} });
+    setUp({ initialValues: {} });
 
     const hint = screen.getByText("a hint about the field");
 
@@ -35,8 +44,8 @@ describe("DateField", () => {
   });
 
   it("displays fields with initial values", () => {
-    setup({
-      initialValues: { test_date: { day: "1", month: "6", year: "2021" } },
+    setUp({
+      initialValues: { testDate: { day: "1", month: "6", year: "2021" } },
     });
 
     const day = screen.getByLabelText("Day");
@@ -46,5 +55,16 @@ describe("DateField", () => {
     expect(day).toHaveValue(1);
     expect(month).toHaveValue(6);
     expect(year).toHaveValue(2021);
+  });
+
+  it("displays an error message if a validation error occurs", () => {
+    setUp({
+      initialValues: {},
+      initialErrors: { testDate: "There is an error!" },
+      initialTouched: { testDate: true },
+    });
+    const errorMessage = screen.getByText("There is an error!");
+
+    expect(errorMessage).toBeInTheDocument();
   });
 });

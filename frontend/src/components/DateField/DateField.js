@@ -5,17 +5,25 @@ import { DateField as GovDateField } from "govuk-react";
 
 import "./DateField.css";
 
-function DateField({ children, hintText, name }) {
+function DateField({ children, hintText, name, validate }) {
   return (
-    <Field name={name}>
-      {({ field: { value }, form: { setFieldValue } }) => {
+    <Field name={name} validate={validate}>
+      {({
+        field: { value },
+        form: { setFieldValue, setFieldTouched },
+        meta: { error },
+      }) => {
         return (
           <GovDateField
             hintText={hintText}
+            errorText={error}
             input={{
               value,
-              onChange: (e) => {
-                setFieldValue(name, e);
+              onChange: (values) => {
+                setFieldValue(name, values);
+              },
+              onBlur: () => {
+                setFieldTouched(name);
               },
             }}
           >
@@ -33,4 +41,5 @@ DateField.propTypes = {
   children: PropTypes.string,
   hintText: PropTypes.string,
   name: PropTypes.string,
+  validate: PropTypes.func,
 };
