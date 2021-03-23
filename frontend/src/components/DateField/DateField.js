@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Field } from "formik";
 import { DateField as GovDateField } from "govuk-react";
 
+import { validateDate } from "./validators";
+
 import "./DateField.css";
 
-function DateField({ children, hintText, name, validate }) {
+function DateField({ children, hintText, name, validate: customValidator }) {
+  const validate = useCallback(
+    (values) => {
+      const isInvalidDate = validateDate(values);
+      if (isInvalidDate) {
+        return isInvalidDate;
+      }
+      if (customValidator) {
+        return customValidator(values);
+      }
+    },
+    [customValidator]
+  );
+
   return (
     <Field name={name} validate={validate}>
       {({
