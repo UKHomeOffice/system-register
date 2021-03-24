@@ -4,6 +4,7 @@ import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 
 import DateField from "../../DateField/DateField";
+import ErrorSummary from "../../ErrorSummary";
 import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
 import Textarea from "../../Textarea";
@@ -66,6 +67,10 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
         >
           <Form>
             <FormikAwarePageTitle>{`Update key dates — ${system.name}`}</FormikAwarePageTitle>
+
+            <ErrorSummary
+              order={["sunsetDate", "sunsetAdditionalInformation"]}
+            />
 
             <h1>{system.name}</h1>
             <p className="update-key-dates-secondary">

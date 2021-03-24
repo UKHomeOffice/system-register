@@ -3,7 +3,7 @@ import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
-import ErrorSummary from "../ErrorSummary";
+import ErrorSummary from "..";
 import withBlurOnNavigate from "../../BlurOnNavigate";
 import { MemoryRouter } from "react-router-dom";
 

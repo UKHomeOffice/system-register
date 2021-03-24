@@ -138,9 +138,29 @@ describe("UpdateKeyDates", () => {
       user.click(saveButton);
 
       await waitFor(() => {
-        const errors = screen.getAllByText(/must/);
+        const errors = screen.getAllByText(/must/, {
+          selector: "label *, span",
+        });
         expect(errors).toHaveLength(2);
       });
+    });
+
+    it("display a summary of any errors if fields contain invalid values", async () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {},
+        },
+      });
+      const sunsetMonthField = screen.getByLabelText("Month");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(sunsetMonthField, "1");
+      user.click(saveButton);
+
+      expect(
+        await screen.findByText(/must/, { selector: "a" })
+      ).toBeInTheDocument();
     });
   });
 });
