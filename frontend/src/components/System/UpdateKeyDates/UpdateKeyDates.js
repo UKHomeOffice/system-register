@@ -1,13 +1,14 @@
 import React, { useCallback } from "react";
-import { Form, Formik } from "formik";
-import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import PropTypes from "prop-types";
+import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
 
-import ValidationError from "../../../services/validationError";
 import DateField from "../../DateField/DateField";
-import Textarea from "../../Textarea";
+import PageTitle, { FormikAwarePageTitle } from "../../PageTitle";
 import SecondaryButton from "../../SecondaryButton";
+import Textarea from "../../Textarea";
+import ValidationError from "../../../services/validationError";
+import { validateAdditionalInformation } from "./validators";
 
 import "./UpdateKeyDates.css";
 
@@ -84,6 +85,7 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
               name="sunsetAdditionalInformation"
               hint="Please provide any relevant additional information for the sunset date, if applicable."
               inputClassName="width-two-thirds"
+              validate={validateAdditionalInformation}
             >
               Additional information
             </Textarea>

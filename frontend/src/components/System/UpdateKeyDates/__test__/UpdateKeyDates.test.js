@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import user from "@testing-library/user-event";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import UpdateKeyDates from "../UpdateKeyDates";
 
@@ -20,11 +21,11 @@ describe("UpdateKeyDates", () => {
     return render(<UpdateKeyDates {...actualProps} />);
   }
 
-  // function overtype(field, value) {
-  //   user.clear(field);
-  //   // noinspection JSIgnoredPromiseFromCall
-  //   user.type(field, value);
-  // }
+  function overtype(field, value) {
+    user.clear(field);
+    // noinspection JSIgnoredPromiseFromCall
+    user.type(field, value);
+  }
 
   it("displays the name of the system", () => {
     setUp({
@@ -116,5 +117,30 @@ describe("UpdateKeyDates", () => {
     expect(day.value).toEqual("");
     expect(month.value).toEqual("");
     expect(year.value).toEqual("");
+  });
+
+  describe("validation", () => {
+    it("displays error messages if fields contain invalid values", async () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {},
+        },
+      });
+      const sunsetDayField = screen.getByLabelText("Day");
+      const additionalSunsetInformation = screen.getByLabelText(
+        /additional information for the sunset date/
+      );
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(sunsetDayField, "1");
+      overtype(additionalSunsetInformation, "x");
+      user.click(saveButton);
+
+      await waitFor(() => {
+        const errors = screen.getAllByText(/must/);
+        expect(errors).toHaveLength(2);
+      });
+    });
   });
 });
