@@ -98,4 +98,23 @@ describe("UpdateKeyDates", () => {
     expect(month.value).toEqual("6");
     expect(year.value).toEqual("2021");
   });
+
+  it("leaves the sunset date fields blank if there is no sunset date", () => {
+    setUp({
+      system: {
+        name: "system name",
+        sunset: {
+          date: null,
+        },
+      },
+    });
+
+    const day = screen.getByLabelText("Day");
+    const month = screen.getByLabelText("Month");
+    const year = screen.getByLabelText("Year");
+
+    expect(day.value).toEqual("");
+    expect(month.value).toEqual("");
+    expect(year.value).toEqual("");
+  });
 });

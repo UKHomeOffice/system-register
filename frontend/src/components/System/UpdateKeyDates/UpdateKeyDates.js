@@ -12,18 +12,25 @@ import SecondaryButton from "../../SecondaryButton";
 import "./UpdateKeyDates.css";
 
 const emptyIfUndefined = (value) => (value != null ? value : "");
+const extractDateFields = (dateString) => {
+  if (!dateString) {
+    return { day: "", month: "", year: "" };
+  }
+
+  const date = new Date(dateString);
+  return {
+    day: String(date.getDate()),
+    month: String(date.getMonth() + 1),
+    year: String(date.getFullYear()),
+  };
+};
 
 const keyDatesOf = (system) => {
-  const sunsetDate = new Date(system.sunset.date);
   return {
     sunsetAdditionalInformation: emptyIfUndefined(
       system.sunset.additional_information
     ),
-    sunsetDate: {
-      day: emptyIfUndefined(String(sunsetDate.getDate())),
-      month: emptyIfUndefined(String(sunsetDate.getMonth() + 1)), //js getMonth() is zero-indexed
-      year: emptyIfUndefined(String(sunsetDate.getFullYear())),
-    },
+    sunsetDate: extractDateFields(system.sunset.date),
   };
 };
 
@@ -101,6 +108,10 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
 UpdateKeyDates.propTypes = {
   system: PropTypes.shape({
     name: PropTypes.string.isRequired,
+    sunset: PropTypes.shape({
+      date: PropTypes.string,
+      additionalInformation: PropTypes.string,
+    }).isRequired,
   }),
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
