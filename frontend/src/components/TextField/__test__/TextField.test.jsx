@@ -13,13 +13,22 @@ describe("TextField", () => {
   });
 
   it("displays placeholder text if provided", () => {
-    renderWithFormik(<TextField name="field" placeholder="Unknown" />);
+    renderWithFormik(
+      <TextField name="field" placeholder="Unknown">
+        label
+      </TextField>
+    );
 
     expect(screen.getByPlaceholderText("Unknown")).toBeInTheDocument();
   });
 
   it("shows an error message if the value is invalid", async () => {
-    renderWithFormik(<TextField name="field" validate={() => "error message"} />, { field: "" });
+    renderWithFormik(
+      <TextField name="field" validate={() => "error message"}>
+        label
+      </TextField>,
+      { field: "" }
+    );
     const field = screen.getByRole("textbox");
 
     // noinspection ES6MissingAwait: not using typing delay
@@ -33,29 +42,42 @@ describe("TextField", () => {
 
   describe("field value", () => {
     it("initialises the field with existing values", () => {
-      renderWithFormik(<TextField name="field-name" />, { "field-name": "value" });
+      renderWithFormik(<TextField name="field-name">label</TextField>, {
+        "field-name": "value",
+      });
 
       expect(screen.getByDisplayValue("value")).toBeInTheDocument();
     });
 
-    it.each([null, undefined])
-    ("leaves the field blank if no value is specified", (value) => {
-      renderWithFormik(<TextField name="field" />, { "field": value });
+    it.each([null, undefined])(
+      "leaves the field blank if no value is specified",
+      (value) => {
+        renderWithFormik(<TextField name="field">label</TextField>, {
+          field: value,
+        });
 
-      expect(screen.getByDisplayValue("")).toBeInTheDocument();
-    });
+        expect(screen.getByDisplayValue("")).toBeInTheDocument();
+      }
+    );
   });
 
   describe("hint text", () => {
     it("displays value when available", () => {
-      renderWithFormik(<TextField name="field" hint="some hints" />)
+      renderWithFormik(
+        <TextField name="field" hint="some hints">
+          label
+        </TextField>
+      );
 
       expect(screen.getByText("some hints")).toBeInTheDocument();
     });
 
-    it.each([null, undefined])
-    ("omits the hint when not provided", (hint) => {
-      renderWithFormik(<TextField name="field" hint={hint} />)
+    it.each([null, undefined])("omits the hint when not provided", (hint) => {
+      renderWithFormik(
+        <TextField name="field" hint={hint}>
+          label
+        </TextField>
+      );
 
       expect(screen.queryByText(`${hint}`)).not.toBeInTheDocument();
     });

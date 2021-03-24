@@ -50,9 +50,9 @@ function TextField({
 }
 
 TextField.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.string.isRequired,
   hint: PropTypes.string,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   validate: PropTypes.func,
   inputClassName: PropTypes.string,
