@@ -37,7 +37,7 @@ describe("date field validation", () => {
         year,
       });
 
-      expect(errors).toContain(field + " is required");
+      expect(errors).toContain(`enter a ${field}`);
     }
   );
 
@@ -54,7 +54,7 @@ describe("date field validation", () => {
         year,
       });
 
-      expect(errors).toContain(fields + " are required");
+      expect(errors).toContain(`enter a ${fields}`);
     }
   );
 

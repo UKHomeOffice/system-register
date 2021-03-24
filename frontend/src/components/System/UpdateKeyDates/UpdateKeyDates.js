@@ -67,7 +67,7 @@ function UpdateKeyDates({ system, onCancel, onSubmit }) {
             </p>
 
             <DateField
-              hintText="Please provide the date when the system is due for sunset. For example, 25 03 2021."
+              hintText="Please provide the date when the system is due for sunset, or leave all fields blank if not applicable. For example, 25 03 2021."
               name="sunsetDate"
             >
               Sunset date

@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import toSentenceCase from "../../utilities/toSentenceCase";
 
+const parenthesisedRemarks = /\s*\([^)]*\)\s*/g;
 const validNumber = /^\s*\d+\s*$/;
 
 function validateDate({ day, month, year }) {
@@ -16,10 +17,8 @@ function validateDate({ day, month, year }) {
     emptyFields.push("year");
   }
 
-  if (emptyFields.length === 1) {
-    return `A value for ${emptyFields[0]} is required`;
-  } else if (emptyFields.length === 2) {
-    return `Values for ${emptyFields[0]} and ${emptyFields[1]} are required`;
+  if (emptyFields.length === 1 || emptyFields.length === 2) {
+    return `You must enter a ${emptyFields.join(" and ")}`;
   } else if (emptyFields.length === 3) {
     return;
   }
@@ -40,7 +39,7 @@ function validateDate({ day, month, year }) {
 
   if (!date.isValid) {
     return toSentenceCase(
-      date.invalidExplanation.replace("(of type number) ", "")
+      date.invalidExplanation.replace(parenthesisedRemarks, " ")
     );
   }
 }
