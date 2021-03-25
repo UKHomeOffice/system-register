@@ -11,6 +11,7 @@ import PageNotFoundError from "../../Errors/PageNotFoundError";
 import System from "../System";
 import SystemNotFoundException from "../../../services/systemNotFoundException";
 import api from "../../../services/api";
+import { DateTime } from "luxon";
 
 jest.mock("../../../services/api", () => ({
   getSystem: jest.fn(),
@@ -28,6 +29,7 @@ jest.mock("../../../services/api", () => ({
   updateServiceOwner: jest.fn(),
   updateInformationAssetOwner: jest.fn(),
   updateRisk: jest.fn(),
+  updateSunset: jest.fn(),
 }));
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: jest.fn(),
@@ -647,6 +649,58 @@ describe("<System />", () => {
         await returnToSystemView(123, history);
         expect(changeHandler).not.toBeCalled();
         expect(api.updateRisk).not.toBeCalled();
+      });
+    });
+
+    describe("editing sunset", () => {
+      it("returns to system view on cancel", async () => {
+        await checkCancelButton("update-key-dates");
+      });
+
+      it("returns to the system view after a successful update", async () => {
+        api.updateSunset.mockResolvedValue(test_system);
+        renderWithRouting("123/update-key-dates");
+
+        const sunsetDay = await screen.findByLabelText(/day/i);
+        const sunsetMonth = await screen.findByLabelText(/month/i);
+        const sunsetYear = await screen.findByLabelText(/year/i);
+        const additionalSunsetInformation = await screen.findByLabelText(
+          /additional information/i
+        );
+        const saveButton = screen.getByRole("button", { name: /save/i });
+
+        overtype(sunsetDay, "5");
+        overtype(sunsetMonth, "7");
+        overtype(sunsetYear, "2021");
+        overtype(additionalSunsetInformation, "some info");
+        user.click(saveButton);
+
+        expect(
+          await screen.findByText(/update has been saved/i)
+        ).toBeInTheDocument();
+        expect(changeHandler).toBeCalled();
+        expect(api.updateSunset).toBeCalledWith(
+          "123",
+          expect.objectContaining({
+            sunset: {
+              date: DateTime.local(2021, 7, 5),
+              additionalInformation: "some info",
+            },
+          })
+        );
+      });
+
+      it("does not invoke api if nothing changed", async () => {
+        const { history } = renderWithRouting("123/update-key-dates");
+        const saveButton = await screen.findByRole("button", {
+          name: /save/i,
+        });
+
+        user.click(saveButton);
+
+        await returnToSystemView(123, history);
+        expect(changeHandler).not.toBeCalled();
+        expect(api.updateSunset).not.toBeCalled();
       });
     });
   });

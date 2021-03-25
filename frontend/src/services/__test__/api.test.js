@@ -5,6 +5,7 @@ import ValidationError from "../validationError";
 import api from "../api";
 import data from "../../data/systems_dummy.json";
 import SystemNotFoundException from "../systemNotFoundException";
+import { DateTime } from "luxon";
 
 const server = setupServer(
   rest.get("/api/systems", (req, res, ctx) => {
@@ -1036,6 +1037,41 @@ describe("api", () => {
           rationale: "invalid rationale",
         })
       );
+    });
+  });
+
+  describe("update sunset", () => {
+    it("sends update sunset to the API", async () => {
+      const dateTime = DateTime.local("2021-06-01");
+      server.use(
+        rest.post("/api/systems/987/update-sunset", (req, res, ctx) => {
+          const { date, additional_information } = req.body;
+          if (date !== dateTime.toISODate()) {
+            console.error("Sunset date does not match");
+            return;
+          }
+          if (additional_information !== "new information") {
+            console.error("Sunset additional information does not match");
+            return;
+          }
+          if (!req.headers.get("Authorization")?.startsWith("Bearer")) {
+            console.error(
+              "Authorization header does not contain a bearer token"
+            );
+            return;
+          }
+          return res(ctx.status(200), ctx.json(data));
+        })
+      );
+
+      const pendingSystem = api.updateSunset(987, {
+        sunset: {
+          date: dateTime,
+          additionalInformation: "new information",
+        },
+      });
+
+      await expect(pendingSystem).resolves.toMatchObject(data);
     });
   });
 });

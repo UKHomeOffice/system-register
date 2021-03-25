@@ -34,6 +34,7 @@ const actionsByField = {
   serviceOwner: api.updateServiceOwner,
   informationAssetOwner: api.updateInformationAssetOwner,
   lens: api.updateRisk,
+  sunset: api.updateSunset,
 };
 
 const findMatchingActions = (data, fields) =>
@@ -104,7 +105,7 @@ function System({ portfolios, onChange, onBeforeNameChange }) {
     "developedBy",
     "supportedBy"
   );
-  const handleUpdateKeyDates = () => {};
+  const handleUpdateKeyDates = createUpdateCallback("sunset");
 
   const handleUpdateContacts = createUpdateCallback(
     "businessOwner",

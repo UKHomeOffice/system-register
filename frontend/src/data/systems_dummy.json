@@ -1,65 +1,63 @@
 {
-    "systems": [
+  "systems": [
+    {
+      "aliases": ["systems register", "systems audit", "system audit"],
+      "business_owner": null,
+      "criticality": "low",
+      "description": "Central source of system names, contacts and risk information",
+      "developed_by": "Home Office",
+      "information_asset_owner": null,
+      "investment_state": "evergreen",
+      "name": "System Register",
+      "portfolio": "SPAN-R",
+      "product_owner": null,
+      "risks": [
         {
-            "aliases": [
-                "systems register",
-                "systems audit",
-                "system audit"
-            ],
-            "business_owner": null,
-            "criticality": "low",
-            "description": "Central source of system names, contacts and risk information",
-            "developed_by": "Home Office",
-            "information_asset_owner": null,
-            "investment_state": "evergreen",
-            "name": "System Register",
-            "portfolio": "SPAN-R",
-            "product_owner": null,
-            "risks": [
-                {
-                    "level": "low",
-                    "name": "change",
-                    "rationale": "Designed to be easy to change"
-                }
-            ],
-            "service_owner": "Home Office",
-            "supported_by": "All",
-            "tech_owner": "Home Office",
-            "id": 1,
-            "last_updated": {
-                "timestamp": "2020-11-18T11:22:50.326570Z",
-                "author_name": "Betty Franklin"
-            }
-        },
-        {
-            "aliases": [
-                "testing more entries"
-            ],
-            "business_owner": null,
-            "criticality": "high",
-            "description": "I'm a cute new system",
-            "developed_by": "Home Office",
-            "information_asset_owner": null,
-            "investment_state": "sunset",
-            "name": "Our second system",
-            "portfolio": "SPAN-R",
-            "product_owner": null,
-            "risks": [
-                {
-                    "level": "medium",
-                    "name": "scorpion",
-                    "rationale": "Designed to sting"
-                }
-            ],
-            "service_owner": "Home Office",
-            "supported_by": "All",
-            "tech_owner": "Fun Office",
-            "id": 2,
-            "last_updated": {
-                "timestamp": "2020-11-18T11:22:50.326570Z",
-                "author_name": "Betty Franklin"
-            }
+          "level": "low",
+          "name": "change",
+          "rationale": "Designed to be easy to change"
         }
-    ],
-    "timestamp": "2020-10-09T16:04:36.227867Z"
+      ],
+      "service_owner": "Home Office",
+      "supported_by": "All",
+      "tech_owner": "Home Office",
+      "id": 1,
+      "last_updated": {
+        "timestamp": "2020-11-18T11:22:50.326570Z",
+        "author_name": "Betty Franklin"
+      }
+    },
+    {
+      "aliases": ["testing more entries"],
+      "business_owner": null,
+      "criticality": "high",
+      "description": "I'm a cute new system",
+      "developed_by": "Home Office",
+      "information_asset_owner": null,
+      "investment_state": "sunset",
+      "name": "Our second system",
+      "portfolio": "SPAN-R",
+      "product_owner": null,
+      "risks": [
+        {
+          "level": "medium",
+          "name": "scorpion",
+          "rationale": "Designed to sting"
+        }
+      ],
+      "sunset": {
+        "date": "2021-06-01",
+        "additional_information": "new information"
+      },
+      "service_owner": "Home Office",
+      "supported_by": "All",
+      "tech_owner": "Fun Office",
+      "id": 2,
+      "last_updated": {
+        "timestamp": "2020-11-18T11:22:50.326570Z",
+        "author_name": "Betty Franklin"
+      }
+    }
+  ],
+  "timestamp": "2020-10-09T16:04:36.227867Z"
 }

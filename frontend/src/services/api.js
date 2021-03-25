@@ -22,6 +22,7 @@ const api = {
   updateInformationAssetOwner,
   updateBusinessOwner,
   updateRisk,
+  updateSunset,
 };
 
 const nullIfEmpty = (value) => (value !== "" ? value : null);
@@ -150,6 +151,14 @@ async function updateRisk(id, data) {
     name: data.lens,
     level: data.level,
     rationale: data.rationale,
+  });
+  return response.data;
+}
+
+async function updateSunset(id, data) {
+  const response = await sendPost(`systems/${id}/update-sunset`, {
+    date: nullIfEmpty(data.sunset.date.toISODate()),
+    additional_information: nullIfEmpty(data.sunset.additionalInformation),
   });
   return response.data;
 }
