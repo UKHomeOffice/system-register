@@ -1,6 +1,7 @@
 import React from "react";
 import user from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
+import { DateTime } from "luxon";
 
 import UpdateKeyDates from "../UpdateKeyDates";
 
@@ -41,6 +42,10 @@ describe("UpdateKeyDates", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "system name"
     );
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
   it("has a page title", () => {
@@ -161,6 +166,112 @@ describe("UpdateKeyDates", () => {
       expect(
         await screen.findByText(/must/, { selector: "a" })
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("submission", () => {
+    it("sends changed sunset data to the submit handler", async () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {},
+        },
+      });
+      const sunsetDayField = screen.getByLabelText("Day");
+      const sunsetMonthField = screen.getByLabelText("Month");
+      const sunsetYearField = screen.getByLabelText("Year");
+      const additionalSunsetInformationField = screen.getByLabelText(
+        /additional information/i
+      );
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(sunsetDayField, "1");
+      overtype(sunsetMonthField, "4");
+      overtype(sunsetYearField, "2021");
+      overtype(additionalSunsetInformationField, "some info");
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({
+          sunset: {
+            date: DateTime.fromISO("2021-04-01"),
+            additionalInformation: "some info",
+          },
+        });
+      });
+    });
+
+    it("sends changed sunset data to the submit handler", async () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {
+            date: "2020-05-01",
+            additional_information: "some info",
+          },
+        },
+      });
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({});
+      });
+    });
+
+    it("sends trims data before submission", async () => {
+      setUp({
+        system: {
+          name: "the system",
+          sunset: {},
+        },
+      });
+      const sunsetDayField = screen.getByLabelText("Day");
+      const sunsetMonthField = screen.getByLabelText("Month");
+      const sunsetYearField = screen.getByLabelText("Year");
+      const additionalSunsetInformationField = screen.getByLabelText(
+        /additional information/i
+      );
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      overtype(sunsetDayField, "5");
+      overtype(sunsetMonthField, "6");
+      overtype(sunsetYearField, "1789");
+      overtype(additionalSunsetInformationField, "\f text\t");
+      user.click(saveButton);
+
+      await waitFor(() => {
+        expect(submitHandler).toBeCalledWith({
+          sunset: {
+            date: DateTime.fromISO("1789-06-05"),
+            additionalInformation: "text",
+          },
+        });
+      });
+    });
+
+    it("does not submit values if they are invalid", async () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {
+            date: "2020-05-01",
+            additional_information: "some info",
+          },
+        },
+      });
+      const sunsetDayField = screen.getByLabelText("Day");
+      const saveButton = screen.getByRole("button", { name: /save/i });
+
+      user.clear(sunsetDayField);
+      user.click(saveButton);
+
+      const errorMessage = await screen.findByText(/must/, {
+        selector: "label *, span",
+      });
+      expect(errorMessage).toBeInTheDocument();
+      expect(submitHandler).not.toBeCalled();
     });
   });
 });

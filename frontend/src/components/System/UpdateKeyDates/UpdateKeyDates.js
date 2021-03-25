@@ -2,6 +2,8 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Button } from "govuk-react";
+import { isEqual, isObject, mapValues, negate, some, trim } from "lodash-es";
+import { DateTime } from "luxon";
 
 import DateField from "../../DateField/DateField";
 import ErrorSummary from "../../ErrorSummary";
@@ -35,15 +37,36 @@ const keyDatesOf = (system) => {
     sunsetDate: extractDateFields(system.sunset.date),
   };
 };
+const changesPresent = (initialValues, currentValues) =>
+  some(currentValues, areDifferentFrom(initialValues));
+const areDifferentFrom = (initialValues) => (value, key) =>
+  isNotEqual(value, initialValues[key]);
+const isNotEqual = negate(isEqual);
+const deepTrim = (values) =>
+  mapValues(values, (value) =>
+    isObject(value) ? mapValues(value, trim) : trim(value)
+  );
 
 function UpdateKeyDates({ system, onCancel, onSubmit }) {
   const handleSubmit = useCallback(
     async (values, formik) => {
       const initialValues = keyDatesOf(system);
-      console.log(initialValues);
-      console.log(values);
+      const trimmedValues = deepTrim(values);
+      const updatedValues = changesPresent(initialValues, trimmedValues)
+        ? {
+            sunset: {
+              date: DateTime.local(
+                +trimmedValues.sunsetDate.year,
+                +trimmedValues.sunsetDate.month,
+                +trimmedValues.sunsetDate.day
+              ),
+              additionalInformation: trimmedValues.sunsetAdditionalInformation,
+            },
+          }
+        : {};
+
       try {
-        await onSubmit(values);
+        await onSubmit(updatedValues);
       } catch (e) {
         if (e instanceof ValidationError) {
           formik.setErrors(e.errors);
