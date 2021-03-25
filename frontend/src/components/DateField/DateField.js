@@ -33,6 +33,7 @@ function DateField({ children, hintText, name, validate: customValidator }) {
             className="date-field"
             hintText={hintText}
             errorText={error}
+            inputNames={{ day: "sunsetDate" }}
             input={{
               value,
               onChange: (values) => {
