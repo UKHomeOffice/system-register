@@ -168,6 +168,18 @@ describe("UpdateKeyDates", () => {
         await screen.findByText(/must/, { selector: "a" })
       ).toBeInTheDocument();
     });
+
+    it("gives day field a name recognised by error-summary", () => {
+      setUp({
+        system: {
+          name: "system name",
+          sunset: {},
+        },
+      });
+      const sunsetDayField = screen.getByLabelText("Day");
+
+      expect(sunsetDayField).toHaveAttribute("name", "sunsetDate");
+    });
   });
 
   describe("submission", () => {
