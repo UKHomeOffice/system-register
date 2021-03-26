@@ -4,6 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { DateTime } from "luxon";
 
 import UpdateKeyDates from "../UpdateKeyDates";
+import ValidationError from "../../../../services/validationError";
 
 describe("UpdateKeyDates", () => {
   const cancelHandler = jest.fn();
@@ -273,5 +274,36 @@ describe("UpdateKeyDates", () => {
       expect(errorMessage).toBeInTheDocument();
       expect(submitHandler).not.toBeCalled();
     });
+  });
+
+  it("displays errors returned by the API", async () => {
+    submitHandler.mockRejectedValue(
+      new ValidationError({
+        sunsetDate: "sunset date validation error",
+        sunsetAdditionalInformation:
+          "additional sunset date information validation error",
+      })
+    );
+    setUp({
+      system: {
+        name: "system name",
+        sunset: {
+          date: "2020-05-01",
+          additional_information: "some info",
+        },
+      },
+    });
+    const sunsetMonthField = screen.getByLabelText("Month");
+    const saveButton = screen.getByRole("button", { name: /save/i });
+    overtype(sunsetMonthField, "4");
+    user.click(saveButton);
+    const errors = await screen.findAllByText(/validation error/, {
+      selector: "label *, span",
+    });
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toHaveTextContent("sunset date validation error");
+    expect(errors[1]).toHaveTextContent(
+      "additional sunset date information validation error"
+    );
   });
 });
