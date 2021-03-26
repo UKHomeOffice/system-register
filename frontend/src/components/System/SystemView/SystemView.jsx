@@ -50,7 +50,7 @@ function SystemView({ system, status, onClose }) {
               />
             </p>
             <h2>Description</h2>
-            <p data-testid="system-description">
+            <p data-testid="system-description" className="paragraph-break">
               <KeyInfo info={system.description} />
             </p>
             <div className="hanging-indent">
@@ -124,7 +124,9 @@ function SystemView({ system, status, onClose }) {
             <GridRow className="system-view-row">
               <GridCol setWidth="one-quarter">Additional information</GridCol>
               <GridCol setWidth="one-half">
-                <KeyInfo info={system.sunset.additional_information} />
+                <span className="paragraph-break">
+                  <KeyInfo info={system.sunset.additional_information} />
+                </span>
               </GridCol>
             </GridRow>
           </div>

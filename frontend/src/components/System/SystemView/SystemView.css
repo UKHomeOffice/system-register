@@ -17,3 +17,7 @@ h1 {
 .systemDetails .system-view-row {
   margin: 15px 0 15px -15px;
 }
+
+.paragraph-break {
+  white-space: pre-line;
+}
