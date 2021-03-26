@@ -59,7 +59,7 @@ public class AddSystemCommandHandlerTest {
         SR_System system = addedSystemAndMetadata.getItem1();
 
         assertThat(system).usingRecursiveComparison()
-                .ignoringFields("id", "lastUpdated", "sunset")
+                .ignoringFields("id", "lastUpdated", "sunset", "publicFacing")
                 .isEqualTo(command.toSystemData());
         var eventCaptor = ArgumentCaptor.forClass(SystemAddedEvent.class);
         verify(eventHandler).handle(eventCaptor.capture());

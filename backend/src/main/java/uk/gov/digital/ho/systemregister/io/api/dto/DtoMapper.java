@@ -35,6 +35,7 @@ public final class DtoMapper {
                             system.portfolio,
                             system.criticality,
                             system.investmentState,
+                            system.publicFacing,
                             system.businessOwner,
                             system.serviceOwner,
                             system.technicalOwner,
@@ -44,8 +45,7 @@ public final class DtoMapper {
                             system.supportedBy,
                             system.aliases,
                             mapToDto(system.risks),
-                            mapToDto(system.sunset),
-                            toUpdateMetadata(metadata));
+                            mapToDto(system.sunset), toUpdateMetadata(metadata));
                 })
                 .collect(toList());
         return new CurrentSystemStateDTO(systems, currentState.getLastUpdatedAt());

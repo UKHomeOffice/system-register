@@ -29,6 +29,7 @@ public class SR_SystemBuilder {
     private List<String> aliases = Arrays.asList("systems register", "systems audit", "system audit");
     private List<SR_Risk> risks = some_risks();
     private SR_Sunset sunset = new SR_Sunset(null, null);
+    private String publicFacing = null;
 
     public static SR_SystemBuilder aSystem() {
         return new SR_SystemBuilder();
@@ -47,7 +48,7 @@ public class SR_SystemBuilder {
     public SR_System build() {
         return new SR_System(id, name, description, lastUpdated, portfolio, criticality, investmentState, businessOwner,
                 serviceOwner, technicalOwner, productOwner, informationAssetOwner, developedBy,
-                supportedBy, aliases, risks, sunset);
+                supportedBy, aliases, risks, sunset, publicFacing);
     }
 
     public SR_SystemBuilder withId(int id) {
@@ -147,6 +148,11 @@ public class SR_SystemBuilder {
 
     public SR_SystemBuilder withSupportedBy(String supportedBy) {
         this.supportedBy = supportedBy;
+        return this;
+    }
+
+    public SR_SystemBuilder withPublicFacing(String publicFacing) {
+        this.publicFacing = publicFacing;
         return this;
     }
 }

@@ -1,7 +1,5 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
-import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
-
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.Instant;
 import java.util.List;
@@ -26,6 +24,8 @@ public class CurrentSystemStateDTO {
         public final String criticality;
         @JsonbProperty("investment_state")
         public final String investmentState;
+        @JsonbProperty("public_facing")
+        public final String publicFacing;
         @JsonbProperty("business_owner")
         public final String businessOwner;
         @JsonbProperty("service_owner")
@@ -50,6 +50,7 @@ public class CurrentSystemStateDTO {
         public System(int id, String name, String description,
                       String portfolio, String criticality,
                       String investmentState,
+                      String publicFacing,
                       String businessOwner,
                       String serviceOwner,
                       String technicalOwner,
@@ -67,6 +68,7 @@ public class CurrentSystemStateDTO {
             this.portfolio = portfolio;
             this.criticality = criticality;
             this.investmentState = investmentState;
+            this.publicFacing = publicFacing;
             this.businessOwner = businessOwner;
             this.serviceOwner = serviceOwner;
             this.technicalOwner = technicalOwner;

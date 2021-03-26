@@ -87,7 +87,7 @@ public class SystemAddedDaoMapper_v2 implements DaoMapper<SystemAddedEventDAO_v2
                 .collect(toList());
         return new SR_System(system.id, system.name, system.description, system.lastUpdated, system.portfolio, system.criticality, system.investmentState, system.businessOwner,
                 system.serviceOwner, system.technicalOwner, system.productOwner, system.informationAssetOwner, system.developedBy,
-                system.supportedBy, List.copyOf(system.aliases), risks, new SR_Sunset(null, null));
+                system.supportedBy, List.copyOf(system.aliases), risks, new SR_Sunset(null, null), null);
     }
 
     private SR_Person fromAuthorDao(Person author) {

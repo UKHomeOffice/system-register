@@ -92,6 +92,9 @@ public class PostgresEventStore implements IEventStore {
     @Inject
     SunsetUpdatedEventDaoMapper_v1 sunsetUpdatedDaoMapper;
 
+    @Inject
+    PublicFacingUpdatedEventDaoMapper_v1 publicFacingDaoMapper;
+
 
     @Inject
     Instance<DaoMapper<? extends BaseDao>> mappers;
@@ -170,6 +173,8 @@ public class PostgresEventStore implements IEventStore {
             daoMapper = risksUpdatedDaoMapper;
         } else if (event instanceof SunsetUpdatedEvent) {
             daoMapper = sunsetUpdatedDaoMapper;
+        } else if (event instanceof PublicFacingUpdatedEvent) {
+            daoMapper = publicFacingDaoMapper;
         } else {
             throw new UnsupportedOperationException("Event type not supported: " + event.getClass().getName() + ". Please implement a DAO Mapper for this event type");
         }

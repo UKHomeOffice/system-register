@@ -67,6 +67,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         system.portfolio,
                                         system.criticality,
                                         system.investmentState,
+                                        system.publicFacing,
                                         system.businessOwner,
                                         system.serviceOwner,
                                         system.technicalOwner,
@@ -75,8 +76,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         system.developedBy,
                                         system.supportedBy,
                                         system.aliases,
-                                        List.of(),
-                                        new SunsetDTO(null,null), new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
+                                        List.of(), new SunsetDTO(null,null), new CurrentSystemStateDTO.UpdateMetadata(system.lastUpdated, null)),
                                 new CurrentSystemStateDTO.System(
                                         anotherSystem.id,
                                         anotherSystem.name,
@@ -84,6 +84,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         anotherSystem.portfolio,
                                         anotherSystem.criticality,
                                         anotherSystem.investmentState,
+                                        anotherSystem.publicFacing,
                                         anotherSystem.businessOwner,
                                         anotherSystem.serviceOwner,
                                         anotherSystem.technicalOwner,
@@ -92,8 +93,7 @@ public class DtoMapperTest extends TestDataUtil {
                                         anotherSystem.developedBy,
                                         anotherSystem.supportedBy,
                                         anotherSystem.aliases,
-                                        List.of(new RiskDTO("risk", "low", "rationale")),
-                                        new SunsetDTO(null, null), new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
+                                        List.of(new RiskDTO("risk", "low", "rationale")), new SunsetDTO(null, null), new CurrentSystemStateDTO.UpdateMetadata(anotherSystem.lastUpdated, null))),
                         timestamp));
     }
 }

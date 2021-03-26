@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import uk.gov.digital.ho.systemregister.application.messaging.events.PublicFacingUpdatedEvent;
 import uk.gov.digital.ho.systemregister.application.messaging.events.SR_Event;
+import uk.gov.digital.ho.systemregister.helpers.builders.PublicFacingUpdatedEventBuilder;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -28,6 +30,7 @@ import static uk.gov.digital.ho.systemregister.helpers.builders.InformationAsset
 import static uk.gov.digital.ho.systemregister.helpers.builders.InvestmentStateUpdatedEventBuilder.anInvestmentStateUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.PortfolioUpdatedEventBuilder.aPortfolioUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ProductOwnerUpdatedEventBuilder.aProductOwnerUpdatedEvent;
+import static uk.gov.digital.ho.systemregister.helpers.builders.PublicFacingUpdatedEventBuilder.aPublicFacingUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SR_SystemBuilder.aSystem;
 import static uk.gov.digital.ho.systemregister.helpers.builders.ServiceOwnerUpdatedEventBuilder.aServiceOwnerUpdatedEvent;
 import static uk.gov.digital.ho.systemregister.helpers.builders.SunsetUpdatedEventBuilder.aSunsetUpdatedEvent;
@@ -291,6 +294,20 @@ public class PostgresEventStoreTest {
     public void saveRiskUpdatedEvent() {
         var expected = aSystemRiskUpdatedEvent()
                 .build();
+        eventStore.save(expected);
+
+        var actual = eventStore.getEvents();
+
+        assertTrue(actual.isPresent());
+        assertThat(actual.get()).usingRecursiveComparison()
+                .isEqualTo(List.of(expected));
+    }
+
+    @Test
+    public void savePublicFacingUpdatedEvent() {
+
+        var expected = aPublicFacingUpdatedEvent().build();
+
         eventStore.save(expected);
 
         var actual = eventStore.getEvents();

@@ -1,7 +1,6 @@
 package uk.gov.digital.ho.systemregister.io.api.dto;
 
 import uk.gov.digital.ho.systemregister.application.eventsourcing.calculators.UpdateMetadata;
-import uk.gov.digital.ho.systemregister.domain.SR_Sunset;
 import uk.gov.digital.ho.systemregister.domain.SR_System;
 
 import javax.json.bind.annotation.JsonbNillable;
@@ -20,6 +19,8 @@ public class UpdatedSystemDTO {
     public final String criticality;
     @JsonbProperty("investment_state")
     public final String investmentState;
+    @JsonbProperty("public_facing")
+    public final String publicFacing;
     @JsonbProperty("business_owner")
     public final String businessOwner;
     @JsonbProperty("service_owner")
@@ -46,6 +47,7 @@ public class UpdatedSystemDTO {
             int id, String name, String description,
             String portfolio, String criticality,
             String investmentState,
+            String publicFacing,
             String businessOwner,
             String serviceOwner,
             String technicalOwner,
@@ -64,6 +66,7 @@ public class UpdatedSystemDTO {
         this.portfolio = portfolio;
         this.criticality = criticality;
         this.investmentState = investmentState;
+        this.publicFacing = publicFacing;
         this.businessOwner = businessOwner;
         this.serviceOwner = serviceOwner;
         this.technicalOwner = technicalOwner;
@@ -79,9 +82,9 @@ public class UpdatedSystemDTO {
 
     public static UpdatedSystemDTO from(SR_System system, UpdateMetadata metadata) {
         return new UpdatedSystemDTO(system.id, system.name, system.description, system.portfolio, system.criticality,
-                system.investmentState, system.businessOwner, system.serviceOwner, system.technicalOwner, system.productOwner,
-                system.informationAssetOwner, system.developedBy, system.supportedBy, List.copyOf(system.aliases),
-                DtoMapper.mapToDto(system.risks), DtoMapper.mapToDto(system.sunset), new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
+                system.investmentState, system.publicFacing, system.businessOwner, system.serviceOwner, system.technicalOwner,
+                system.productOwner, system.informationAssetOwner, system.developedBy, system.supportedBy,
+                List.copyOf(system.aliases), DtoMapper.mapToDto(system.risks), DtoMapper.mapToDto(system.sunset), new Metadata(metadata.updatedAt, metadata.updatedBy.toAuthorName()));
     }
 
     public static class Metadata {
