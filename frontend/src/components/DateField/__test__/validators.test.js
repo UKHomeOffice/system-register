@@ -77,15 +77,18 @@ describe("date field validation", () => {
     }
   );
 
-  it("returns an error if the year is out of bounds", () => {
-    const errors = validateDate({
-      day: "01",
-      month: "01",
-      year: "10000",
-    });
+  it.each(["10000", "999"])(
+    "returns an error if the year is out of bounds: %s",
+    (year) => {
+      const errors = validateDate({
+        day: "01",
+        month: "01",
+        year: year,
+      });
 
-    expect(errors).toContain(`year, which is invalid`);
-  });
+      expect(errors).toContain(`year, which is invalid`);
+    }
+  );
 
   it.each([".1", "1.", "1e1", "-1"])(
     "rejects 'e' and floating point numbers: %s",

@@ -33,7 +33,7 @@ function validateDate({ day, month, year }) {
 
   const date = DateTime.local(+year, +month, +day);
 
-  if (date.year >= 10000 || date.year < 0) {
+  if (date.year < 1000 || date.year > 9999) {
     return `You specified ${date.year} as a year, which is invalid`;
   }
 
