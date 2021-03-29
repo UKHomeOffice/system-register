@@ -88,5 +88,24 @@ class CriticalityUpdatedEventDaoMapper_v1Test {
                 .isEqualTo(expectedEvent);
     }
 
-//    TODO I dont think null criticality works
+    @Test
+    void mapsNullValueToCriticalityUpdatedEvent() {
+        CriticalityUpdatedEvent expectedEvent = aCriticalityUpdatedEvent()
+                .withId(9113)
+                .withCriticality(null)
+                .withTimestamp(Instant.parse("2020-09-17T15:09:00Z"))
+                .withAuthor(aPerson()
+                        .withEmail("user@example.com")
+                        .withFirstName("test_FirstName")
+                        .withSurname("test_Surname")
+                        .withUsername("test_Username"))
+                .build();
+
+        String json = getResourceAsString("dao/v1/unknown-criticality-updated-event.json");
+
+        SR_Event event = mapper.mapToDomain(json);
+
+        assertThat(event).usingRecursiveComparison()
+                .isEqualTo(expectedEvent);
+    }
 }

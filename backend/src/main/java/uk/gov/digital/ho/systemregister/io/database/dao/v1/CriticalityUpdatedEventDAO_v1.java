@@ -7,11 +7,15 @@ import java.time.Instant;
 
 public class CriticalityUpdatedEventDAO_v1 extends BaseDao {
     public final int id;
-    public final String criticality;
+    public String criticality;
     public final Person author;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
-    @ConstructorProperties({"id", "criticality", "timestamp", "author"})
+    @ConstructorProperties({"id", "timestamp", "author"})
+    public CriticalityUpdatedEventDAO_v1(int id, Instant timestamp, CriticalityUpdatedEventDAO_v1.Person author) {
+        this(id, null, timestamp, author);
+    }
+
     public CriticalityUpdatedEventDAO_v1(int id, String criticality, Instant timestamp, Person author) {
         super(timestamp);
         this.id = id;
@@ -39,7 +43,3 @@ public class CriticalityUpdatedEventDAO_v1 extends BaseDao {
     }
 
 }
-
-
-
-
