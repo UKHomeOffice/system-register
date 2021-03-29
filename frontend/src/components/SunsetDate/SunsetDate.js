@@ -20,7 +20,10 @@ const SunsetDate = ({ investment_state, date }) => {
       return <KeyInfo info={investment_state} />;
     } else if (positiveInvestmentStates.includes(investment_state)) {
       return <KeyInfo info="none" />;
-    } else if (endOfLifeInvestmentStates.includes(investment_state)) {
+    } else if (
+      endOfLifeInvestmentStates.includes(investment_state) ||
+      !investment_state
+    ) {
       return <KeyInfo info="unknown" />;
     } else {
       return <KeyInfo info="N/A" />;
