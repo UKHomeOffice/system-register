@@ -177,6 +177,7 @@ UpdateAbout.propTypes = {
     portfolio: PropTypes.string,
     criticality: PropTypes.oneOf(["low", "medium", "high", "cni", "unknown"]),
     investment_state: PropTypes.oneOf([
+      "evergreen",
       "invest",
       "maintain",
       "sunset",
