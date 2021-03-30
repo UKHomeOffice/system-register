@@ -77,7 +77,6 @@ const RiskList = (props) => {
           b.risk.score - a.risk.score ||
           scoreCriticality(b.criticality) - scoreCriticality(a.criticality)
       );
-    //todo test ordering
   }
   const riskTypes = props.systems[0]?.risks;
 
@@ -160,7 +159,6 @@ RiskList.propTypes = {
   ).isRequired,
 };
 
-// TODO: Re use the following
 const NOT_APPLICABLE = "not_applicable";
 
 function formatLevel(level) {

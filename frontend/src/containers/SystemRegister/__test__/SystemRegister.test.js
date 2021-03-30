@@ -170,23 +170,5 @@ describe("<SystemRegister />", () => {
         "Get in touch"
       );
     });
-
-    describe("when authorized", () => {
-      it("navigates to the Add-System page", async () => {
-        //ToDo: amend test to click on add system link in SR-315
-        const history = createMemoryHistory({
-          initialEntries: ["/add-system"],
-        });
-        const { findByRole } = render(
-          <Router history={history}>
-            <SystemRegister />
-          </Router>
-        );
-
-        expect(await findByRole("heading", { level: 1 })).toHaveTextContent(
-          "Add a system to the register"
-        );
-      });
-    });
   });
 });

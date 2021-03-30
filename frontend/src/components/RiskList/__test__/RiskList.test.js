@@ -160,7 +160,6 @@ describe("<RiskList />", () => {
       expect(element).toHaveClass("lowRiskBackground");
     });
   });
-  //todo test orders by high, med, low, n/a, unknown
 });
 
 function renderRiskList(

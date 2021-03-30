@@ -89,6 +89,4 @@ public class SystemRegisterTest {
 
         assertThat(retrievedSystem).isEmpty();
     }
-
-    // todo test to check copy system list , mutation safe
 }

@@ -70,7 +70,6 @@ function SystemView({ system, status, onClose }) {
             >
               Update
             </Link>
-            {/* TODO discuss with team if better way to do relative path with react-router-dom */}
             <GridRow className="system-view-row">
               <GridCol setWidth="one-quarter">Portfolio</GridCol>
               <GridCol setWidth="one-half">

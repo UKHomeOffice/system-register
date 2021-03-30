@@ -153,7 +153,7 @@ describe("SystemView", () => {
         setup(test_system);
         const element = screen.getByTestId("info-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", "//update-info"); //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-info");
       });
     });
 
@@ -168,7 +168,7 @@ describe("SystemView", () => {
         setup(test_system);
         const element = screen.getByTestId("about-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", "//update-about"); //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-about");
       });
 
       it.each([
@@ -235,7 +235,7 @@ describe("SystemView", () => {
         setup(test_system);
         const element = screen.getByTestId("contacts-change-link");
         expect(element).toBeInTheDocument();
-        expect(element).toHaveAttribute("href", "//update-contacts"); //TODO discuss with team if better way to do relative path with react-router-dom
+        expect(element).toHaveAttribute("href", "//update-contacts");
       });
 
       it.each([
